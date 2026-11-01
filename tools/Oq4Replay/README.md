@@ -70,3 +70,16 @@ Run the deterministic symbol-domain phase-feedback diagnostic with
 It isolates LDPC-assisted tracking after synchronization, without opening audio or
 PTT devices. It is not a full-waveform or satellite-channel benchmark. See
 [the SNR/phase report](../../docs/OQ4_SNR_AND_PHASE_TRACKING.md) for assumptions.
+
+
+Generate the README illustration from the production encoders (no audio devices):
+
+```bash
+dotnet run --project tools/Oq4Replay -- --export-waveforms /tmp/oq4-waveforms
+python3 tools/Oq4Replay/plot_comparison.py /tmp/oq4-waveforms screenshots/oq4-vs-ft4.png
+```
+
+The plotting script needs NumPy and Matplotlib. It equalizes average active-packet
+power, centers both spectra at 1500 Hz, and uses common time/frequency axes and a
+common spectral color scale. This is a synthetic timing/waveform illustration,
+not an RF bandwidth or sensitivity measurement.

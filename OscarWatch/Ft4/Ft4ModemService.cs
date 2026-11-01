@@ -205,6 +205,7 @@ public sealed class Ft4ModemService : IDisposable
     private Ft4PounceTarget? _pounceTarget;
     private Ft4DecodedMessage? _pouncedDecode;
     private readonly object _slotGateLock = new();
+    private volatile bool _externalTransmission;
     private volatile bool _slotGateHeld;
     private volatile bool _windowOpen;
     private Task? _txTask;
@@ -385,21 +386,65 @@ public sealed class Ft4ModemService : IDisposable
         SyncSlotGate(IsRunning);
     }
 
-    /// <summary>
-    /// OrbitDeck: hold the CAT dial within each slot while audio corrects within-slot drift.
-    /// Released when FT4 is not in use, so other transponders get continuous Doppler.
-    /// </summary>
+    /// <summary>Keep FT4 receiving while OQ4 temporarily owns TX and CAT timing.</summary>
+    internal IDisposable BeginExternalTransmission()
+    {
+        lock (_slotGateLock)
+        {
+            if (_externalTransmission || IsTransmissionActive || _ptt.IsKeyed
+                || _txTask is { IsCompleted: false } || _tuneTask is { IsCompleted: false })
+                throw new InvalidOperationException("Halt FT4 transmission before transmitting OQ4. FT4 may remain open for receive.");
+            _externalTransmission = true;
+            try
+            {
+                _ptt.ReleasePort();
+                if (_slotGateHeld)
+                {
+                    _rig.SetFt4SlotGatedDoppler(false);
+                    _slotGateHeld = false;
+                }
+            }
+            catch { _externalTransmission = false; throw; }
+        }
+        return new ExternalTransmission(this);
+    }
+
+    private sealed class ExternalTransmission(Ft4ModemService modem) : IDisposable
+    {
+        private Ft4ModemService? _modem = modem;
+        public void Dispose()
+        {
+            var service = Interlocked.Exchange(ref _modem, null);
+            if (service is null) return;
+            lock (service._slotGateLock)
+            {
+                service._externalTransmission = false;
+                service.SyncSlotGate(service.IsRunning);
+            }
+        }
+    }
+
+    private void StepFt4Doppler()
+    {
+        lock (_slotGateLock)
+        {
+            if (!_externalTransmission) _rig.ForceFt4DopplerStep();
+        }
+    }
+
     private void SyncSlotGate(bool sessionRunning)
     {
         var hold = Ft4SlotGate.ShouldHold(sessionRunning, _windowOpen, _frequencies.SelectedMode);
         lock (_slotGateLock)
         {
+            // OQ4 owns the rig hold until it has unkeyed and released it.
+            if (_externalTransmission) return;
             if (hold == _slotGateHeld)
                 return;
             _slotGateHeld = hold;
             _rig.SetFt4SlotGatedDoppler(hold);
             if (hold)
-                _rig.ForceFt4DopplerStep();
+                StepFt4Doppler();
         }
 
         Log.Information("FT4 slot gate {State}", hold ? "held" : "released");
@@ -409,7 +454,7 @@ public sealed class Ft4ModemService : IDisposable
     // Doppler it would correct the drift twice.
     private bool UseAudioDopplerTx => _settings.Current.Ft4.AudioDopplerTx && _slotGateHeld;
 
-    private bool UseAudioDopplerRx => _settings.Current.Ft4.AudioDopplerRx && _slotGateHeld;
+    private bool UseAudioDopplerRx => _settings.Current.Ft4.AudioDopplerRx && _slotGateHeld && !_externalTransmission;
 
     private async Task SeedHashedCallsignsAsync()
     {
@@ -526,7 +571,7 @@ public sealed class Ft4ModemService : IDisposable
     {
         answeredText = "";
         var seq = _sequencer;
-        if (seq is null || !seq.PrepareAutoReply())
+        if (_externalTransmission || seq is null || !seq.PrepareAutoReply())
             return false;
 
         var cutoff = DateTime.UtcNow.AddSeconds(-22);
@@ -878,9 +923,15 @@ public sealed class Ft4ModemService : IDisposable
         Changed?.Invoke();
     }
 
-    /// <summary>Satellite and mode eligibility only (no CAT I/O), halting TX when it fails.</summary>
+    /// <summary>Check radio ownership and satellite eligibility without CAT I/O.</summary>
     private bool EnsureSatelliteAllowed()
     {
+        if (_externalTransmission)
+        {
+            Status = "OQ4 owns the transmitter; FT4 remains receive-only until its burst finishes.";
+            Changed?.Invoke();
+            return false;
+        }
         var reason = EvaluateTransmitBlock();
         if (reason == Ft4SatelliteEligibility.BlockReason.None)
             return true;
@@ -1069,7 +1120,7 @@ public sealed class Ft4ModemService : IDisposable
                         KickTransmit(slotStart, ct);
                     SyncSlotGate(sessionRunning: true);
                     if (!CatTransmitOwnsTheRig(slotStart))
-                        _rig.ForceFt4DopplerStep();
+                        StepFt4Doppler();
                     RefreshClockFromGps();
 
                     if (previousSamples is not null && recordSlot)
@@ -1474,7 +1525,7 @@ public sealed class Ft4ModemService : IDisposable
 
     private void WaitAndKickTransmit(DateTime slot, CancellationToken ct, CancellationToken loopCt)
     {
-        if (CatPttSharesRig())
+        if (!_externalTransmission && CatPttSharesRig())
         {
             var dopplerAt = slot - Ft4SlotClock.PreTransmitCatLead;
             Ft4SlotWait.UntilUtc(dopplerAt, ct);
@@ -1508,7 +1559,7 @@ public sealed class Ft4ModemService : IDisposable
 
         KickTransmit(slot, loopCt);
         if (!CatPttSharesRig())
-            _rig.ForceFt4DopplerStep();
+            StepFt4Doppler();
     }
 
     /// <summary>
@@ -2279,7 +2330,7 @@ public sealed class Ft4ModemService : IDisposable
                     Decodes.RemoveAt(Decodes.Count - 1);
             });
 
-            if (_sequencer is not null && !isOwn && !guessed)
+            if (_sequencer is not null && !isOwn && !guessed && !_externalTransmission)
             {
                 var wasCallingCq = _sequencer.Phase == Ft4QsoPhase.CallingCq;
                 var finished = _sequencer.OnDecoded(msg);

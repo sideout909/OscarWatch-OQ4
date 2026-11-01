@@ -1,4 +1,5 @@
 using System.IO.Ports;
+using System.Runtime.CompilerServices;
 using OscarWatch.Core.Hardware;
 using OscarWatch.Core.Services;
 using Serilog;
@@ -13,6 +14,9 @@ public sealed class PttKeyer : IDisposable
 {
     private static readonly ILogger Log = Serilog.Log.ForContext<PttKeyer>();
 
+    private sealed class RadioOwner { public PttKeyer? Keyer; }
+    private static readonly ConditionalWeakTable<IRigController, RadioOwner> Owners = new();
+    private readonly RadioOwner _owner;
     private readonly IRigController _rig;
     private readonly Func<PttOptions> _options;
     private readonly string _label;
@@ -34,6 +38,7 @@ public sealed class PttKeyer : IDisposable
         PttSessionMarker? marker = null)
     {
         _rig = rig;
+        _owner = Owners.GetValue(rig, _ => new RadioOwner());
         _options = options;
         _label = label;
         _describePortConflict = describePortConflict;
@@ -56,6 +61,23 @@ public sealed class PttKeyer : IDisposable
     /// <summary>Open a separate PTT adapter while preparing, leaving its line idle.
     /// This moves USB/serial open latency out of the timed key operation.</summary>
     public void Prepare()
+    {
+        lock (_owner)
+        {
+            ReserveRadio();
+            try { PrepareCore(); }
+            catch { if (!_keyed) _owner.Keyer = null; throw; }
+        }
+    }
+
+    private void ReserveRadio()
+    {
+        if (_owner.Keyer is { } other && other != this)
+            throw new InvalidOperationException($"{other._label} owns PTT. Stop its transmission before enabling {_label}.");
+        _owner.Keyer = this;
+    }
+
+    private void PrepareCore()
     {
         var options = _options();
         if (options.Method != PttMethod.SeparateComPort) return;
@@ -80,6 +102,17 @@ public sealed class PttKeyer : IDisposable
 
     /// <summary>Returns false when PTT was already asserted, or when VOX needs no lead wait.</summary>
     private bool TryAssert()
+    {
+        lock (_owner)
+        {
+            if (_keyed) return false;
+            ReserveRadio();
+            try { return TryAssertCore(); }
+            catch { _owner.Keyer = null; throw; }
+        }
+    }
+
+    private bool TryAssertCore()
     {
         if (_keyed)
             return false;
@@ -122,7 +155,10 @@ public sealed class PttKeyer : IDisposable
     public async Task UnkeyAsync(CancellationToken cancellationToken = default)
     {
         if (!_keyed)
+        {
+            DropPtt(); // Also release a preparation reservation cancelled before keying.
             return;
+        }
 
         var tail = _options().ClampedTailMs;
         if (tail > 0)
@@ -149,6 +185,17 @@ public sealed class PttKeyer : IDisposable
     /// have nothing to send.
     /// </summary>
     public void ForceOff()
+    {
+        lock (_owner)
+        {
+            // A passive window must not unkey the other modem's active burst.
+            if (_owner.Keyer is { } other && other != this) return;
+            try { ForceOffCore(); }
+            finally { _owner.Keyer = null; }
+        }
+    }
+
+    private void ForceOffCore()
     {
         var options = _options();
         try
@@ -182,6 +229,16 @@ public sealed class PttKeyer : IDisposable
     }
 
     private void DropPtt()
+    {
+        lock (_owner)
+        {
+            if (_owner.Keyer is { } other && other != this) return;
+            try { DropPttCore(); }
+            finally { if (_owner.Keyer == this) _owner.Keyer = null; }
+        }
+    }
+
+    private void DropPttCore()
     {
         if (!_keyed)
             return;

@@ -339,8 +339,8 @@ public partial class Oq4Window : Window
         if (!audioOnly && !StationReady())
             throw new InvalidOperationException("Enter your callsign and grid in station settings.");
         var ft4 = App.Services.GetRequiredService<Ft4ModemService>();
-        if ((!audioOnly && ft4.IsRunning) || (audioOnly && ft4.IsTransmissionActive))
-            throw new InvalidOperationException(audioOnly ? "Stop FT4 transmission before an audio test." : "Close FT4 before transmitting OQ4.");
+        if (ft4.IsTransmissionActive)
+            throw new InvalidOperationException("Halt FT4 transmission first. FT4 can remain open for receive.");
         if (!audioOnly && _main is { } main
             && !Ft4SatelliteEligibility.IsAllowed(main.Frequencies.SatelliteName, main.FocusedNoradId, main.Frequencies.SelectedMode))
             throw new InvalidOperationException("The selected satellite or FM transponder blocks digital transmission.");
@@ -361,9 +361,12 @@ public partial class Oq4Window : Window
         _tonePlaying = tune;
         _lastTxFailed = false;
         UpdateButtons();
+        IDisposable? radioSession = null;
         try
         {
             ValidateTransmission(audioOnly);
+            if (!audioOnly)
+                radioSession = App.Services.GetRequiredService<Ft4ModemService>().BeginExternalTransmission();
             var outcome = await Task.Factory.StartNew(() => _transmitter.Run(request, cancellation.Token),
                 CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
             if (!_closed && !tune && outcome == Oq4TransmitOutcome.Sent)
@@ -392,6 +395,8 @@ public partial class Oq4Window : Window
         }
         finally
         {
+            try { radioSession?.Dispose(); }
+            catch (Exception ex) { Log.Warning(ex, "Could not restore FT4 CAT timing after OQ4 transmission"); }
             _tx = null; _activeRequest = null; _tuning = false; _tonePlaying = false;
             cancellation.Dispose();
             if (_closed) DisposeHardware();

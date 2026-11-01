@@ -2505,11 +2505,6 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanOpenFt4))]
     private void OpenFt4()
     {
-        if (_openOq4Window is { IsTransmissionActive: true })
-        {
-            _openOq4Window.Activate();
-            return;
-        }
         _trackerSnapshot.FocusedNoradId = FocusedNoradId;
         if (_openFt4Window is { IsVisible: true })
         {

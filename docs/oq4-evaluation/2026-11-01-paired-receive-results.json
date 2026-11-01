@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-01",
+  "capture": {
+    "passed": true,
+    "input": "pulse",
+    "seconds": 3.0086672,
+    "ft4": {
+      "samples": 132608,
+      "rate": 44100
+    },
+    "oq4": {
+      "samples": 132608,
+      "rate": 44100
+    },
+    "afterClosingFt4": {
+      "samples": 45056,
+      "seconds": 1.0156697
+    },
+    "scope": "Capture services only; not a GUI, decode or RF test. No routing changes or audio saved."
+  },
+  "capture_source": "alsa_input.pci-0000_00_1f.3.analog-stereo",
+  "process_environment_override": "PULSE_SOURCE set for this probe only; no default-source or routing mutation",
+  "offline_concurrent_decode_tests": {
+    "passed": 2,
+    "audio": "One 7.5-second buffer containing separate simultaneous FT4 and OQ4 messages plus noise",
+    "frequency_pairs_hz": [
+      [
+        800,
+        2200
+      ],
+      [
+        2200,
+        800
+      ]
+    ],
+    "input_unmodified": true
+  },
+  "scope": "Production capture services and native/managed decoders tested without GUI, RF/PTT, output playback or saving captured audio. Window integration inspected in source."
+}

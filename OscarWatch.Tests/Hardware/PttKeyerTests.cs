@@ -43,6 +43,57 @@ public sealed class PttKeyerTests : IDisposable
         Assert.False(keyer.IsKeyed);
     }
 
+    [Theory]
+    [InlineData(PttMethod.Cat)]
+    [InlineData(PttMethod.CatPortHandshake)]
+    [InlineData(PttMethod.Vox)]
+    [InlineData(PttMethod.Manual)]
+    public void Passive_ft4_allows_oq4_but_cannot_key_or_unkey_its_burst(PttMethod method)
+    {
+        var rig = new RecordingRigController();
+        using var ft4 = new PttKeyer(rig, () => Options(method), "FT4");
+        using var oq4 = new PttKeyer(rig, () => Options(method), "OQ4");
+        oq4.Prepare();
+        Assert.Throws<InvalidOperationException>(ft4.Prepare);
+        oq4.KeyNow();
+        var keyedCalls = rig.Calls.ToArray();
+        Assert.Throws<InvalidOperationException>(ft4.KeyNow);
+        ft4.UnkeyNow(); ft4.ForceOff(); ft4.ReleasePort();
+        Assert.Equal(keyedCalls,rig.Calls);
+        Assert.True(oq4.IsKeyed);
+        oq4.UnkeyNow();
+        ft4.KeyNow();
+        Assert.True(ft4.IsKeyed);
+    }
+
+    [Fact]
+    public void Preparation_error_does_not_release_an_already_keyed_owner()
+    {
+        var rig = new RecordingRigController();
+        var options = Options(PttMethod.Cat);
+        using var oq4 = new PttKeyer(rig, () => options, "OQ4");
+        using var ft4 = new PttKeyer(rig, () => Options(PttMethod.Cat), "FT4");
+        oq4.KeyNow();
+        options = Options(PttMethod.SeparateComPort);
+        Assert.Throws<InvalidOperationException>(oq4.Prepare);
+        Assert.Throws<InvalidOperationException>(ft4.KeyNow);
+        options = Options(PttMethod.Cat);
+        oq4.UnkeyNow();
+        ft4.KeyNow();
+        Assert.True(ft4.IsKeyed);
+    }
+
+    [Fact]
+    public void Failed_preparation_releases_radio_for_the_other_mode()
+    {
+        var rig = new RecordingRigController();
+        using var broken = new PttKeyer(rig, () => Options(PttMethod.SeparateComPort), "OQ4");
+        using var ft4 = new PttKeyer(rig, () => Options(PttMethod.Cat), "FT4");
+        Assert.Throws<InvalidOperationException>(broken.Prepare);
+        ft4.KeyNow();
+        Assert.True(ft4.IsKeyed);
+    }
+
     [Fact]
     public async Task Cat_keying_writes_the_marker_until_unkeyed()
     {

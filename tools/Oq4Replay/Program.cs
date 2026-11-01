@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System.Text.Json;
 using OscarWatch.Ft4;
 
+if (args.Length == 2 && args[0] == "--export-waveforms") return ComparisonWaveforms.Export(args[1]);
+
 if (args.Length == 1 && args[0] == "--phase-benchmark") return PhaseTrackingBenchmark.Run();
 
 // Offline only: compile the production receiver sources, with no UI/audio/PTT.

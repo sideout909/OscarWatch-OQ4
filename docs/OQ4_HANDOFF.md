@@ -1,5 +1,33 @@
 # OQ4 continuation handoff — 2026-10-31
 
+## Latest continuation — fork presentation and paired operation, 2026-11-01
+
+The fork is renamed **OscarWatch-OQ4** (`sideout909/OscarWatch-OQ4`); origin now
+points there and upstream push remains disabled. The root README focuses on OQ4,
+links the approved extended abstract and includes an actual-encoder waveform/
+spectrogram comparison. O means OSCAR, Q means QPSK, 4 means four phase states
+(two bits per symbol). The original local review draft in Documents is untouched.
+The original upstream README is preserved at `docs/UPSTREAM_README.md`.
+
+Read [paired evaluation](OQ4_PAIRED_EVALUATION.md). Both receive components were
+verified live through a shareable `pulse` source and both production decoders
+passed concurrent mixed-audio tests. The audio probe exposed a missing saved
+Decoder Lab default source; a per-process explicit source worked. No global audio
+routing/default changes, loopback creation, RF transmission or captured audio save.
+
+OQ4 can now RF-transmit with FT4 left open **receive-only**. FT4 TX/Tune must be off;
+a temporary external-radio lease suppresses its CAT steps/hold and TX arming during
+OQ4 transmission, leaving capture and decode running. Its idle PTT adapter is freed,
+then CAT timing resumes after OQ4 cleanup. A shared per-radio `PttKeyer` ownership
+guard prevents cross-key/unkey races. MainViewModel now permits opening FT4 while
+OQ4 is active. The application builds and all **155 targeted tests pass**. Fake-radio tests cover ownership, cancellation/failure and passive
+window cleanup; real PTT/GUI operation still needs operator verification.
+
+Publishing source requires commit/push, not a GitHub build. Existing CI targets
+`main`; no release packages are created here. The experiment branch is intended as
+the fork landing page, leaving main as the upstream baseline. Unrelated terminal,
+AX.25 and theme changes remain local and excluded from commits.
+
 ## Latest continuation — SNR and phase feedback, 2026-11-01
 
 Read [OQ4_SNR_AND_PHASE_TRACKING.md](OQ4_SNR_AND_PHASE_TRACKING.md) for implementation,

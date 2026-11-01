@@ -1,5 +1,12 @@
 # OQ4 operating window and PTT review — 2026-11-01
 
+Update 2026-11-01: [paired-operation changes](OQ4_PAIRED_EVALUATION.md) supersede the
+older requirement below to close FT4 before OQ4 RF transmission. FT4 may now stay
+open receive-only, with a temporary CAT/TX lease and shared PTT ownership guard.
+[SNR/phase work](OQ4_SNR_AND_PHASE_TRACKING.md) also supersedes the preamble-only
+SNR description below. Historical verification counts refer to that earlier pass.
+
+
 ## Findings
 
 The FT4 window is a view over `Ft4ViewModel`, `Ft4ModemService`, the shared
