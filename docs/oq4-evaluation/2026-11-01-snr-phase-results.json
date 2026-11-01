@@ -1,0 +1,235 @@
+{
+  "date": "2026-11-01",
+  "comparison": {
+    "manifest": "testdata/oq4/research-20261101/manifest.json",
+    "results": {
+      "completed": 144,
+      "correct": 92,
+      "valid_outputs": 92,
+      "groups": {
+        "discovery/stationary/-12.5dB": {
+          "tested": 9,
+          "correct": 9,
+          "valid_outputs": 9
+        },
+        "holdout/stationary/-12.5dB": {
+          "tested": 9,
+          "correct": 8,
+          "valid_outputs": 8
+        },
+        "discovery/stationary/-14.5dB": {
+          "tested": 9,
+          "correct": 5,
+          "valid_outputs": 5
+        },
+        "holdout/stationary/-14.5dB": {
+          "tested": 9,
+          "correct": 1,
+          "valid_outputs": 1
+        },
+        "discovery/curved/-12.5dB": {
+          "tested": 9,
+          "correct": 8,
+          "valid_outputs": 8
+        },
+        "holdout/curved/-12.5dB": {
+          "tested": 9,
+          "correct": 9,
+          "valid_outputs": 9
+        },
+        "discovery/curved/-14.5dB": {
+          "tested": 9,
+          "correct": 5,
+          "valid_outputs": 5
+        },
+        "holdout/curved/-14.5dB": {
+          "tested": 9,
+          "correct": 2,
+          "valid_outputs": 2
+        },
+        "discovery/linear/-12.5dB": {
+          "tested": 9,
+          "correct": 9,
+          "valid_outputs": 9
+        },
+        "holdout/linear/-12.5dB": {
+          "tested": 9,
+          "correct": 8,
+          "valid_outputs": 8
+        },
+        "discovery/linear/-14.5dB": {
+          "tested": 9,
+          "correct": 3,
+          "valid_outputs": 3
+        },
+        "holdout/linear/-14.5dB": {
+          "tested": 9,
+          "correct": 3,
+          "valid_outputs": 3
+        },
+        "discovery/fast/-12.5dB": {
+          "tested": 9,
+          "correct": 8,
+          "valid_outputs": 8
+        },
+        "holdout/fast/-12.5dB": {
+          "tested": 9,
+          "correct": 9,
+          "valid_outputs": 9
+        },
+        "discovery/fast/-14.5dB": {
+          "tested": 9,
+          "correct": 2,
+          "valid_outputs": 2
+        },
+        "holdout/fast/-14.5dB": {
+          "tested": 9,
+          "correct": 3,
+          "valid_outputs": 3
+        }
+      },
+      "unexpected": []
+    },
+    "baseline": {
+      "completed": 144,
+      "correct": 92,
+      "valid_outputs": 92,
+      "groups": {
+        "discovery/stationary/-12.5dB": {
+          "tested": 9,
+          "correct": 9,
+          "valid_outputs": 9
+        },
+        "holdout/stationary/-12.5dB": {
+          "tested": 9,
+          "correct": 8,
+          "valid_outputs": 8
+        },
+        "discovery/stationary/-14.5dB": {
+          "tested": 9,
+          "correct": 5,
+          "valid_outputs": 5
+        },
+        "holdout/stationary/-14.5dB": {
+          "tested": 9,
+          "correct": 1,
+          "valid_outputs": 1
+        },
+        "discovery/curved/-12.5dB": {
+          "tested": 9,
+          "correct": 8,
+          "valid_outputs": 8
+        },
+        "holdout/curved/-12.5dB": {
+          "tested": 9,
+          "correct": 9,
+          "valid_outputs": 9
+        },
+        "discovery/curved/-14.5dB": {
+          "tested": 9,
+          "correct": 5,
+          "valid_outputs": 5
+        },
+        "holdout/curved/-14.5dB": {
+          "tested": 9,
+          "correct": 2,
+          "valid_outputs": 2
+        },
+        "discovery/linear/-12.5dB": {
+          "tested": 9,
+          "correct": 9,
+          "valid_outputs": 9
+        },
+        "holdout/linear/-12.5dB": {
+          "tested": 9,
+          "correct": 8,
+          "valid_outputs": 8
+        },
+        "discovery/linear/-14.5dB": {
+          "tested": 9,
+          "correct": 3,
+          "valid_outputs": 3
+        },
+        "holdout/linear/-14.5dB": {
+          "tested": 9,
+          "correct": 3,
+          "valid_outputs": 3
+        },
+        "discovery/fast/-12.5dB": {
+          "tested": 9,
+          "correct": 8,
+          "valid_outputs": 8
+        },
+        "holdout/fast/-12.5dB": {
+          "tested": 9,
+          "correct": 9,
+          "valid_outputs": 9
+        },
+        "discovery/fast/-14.5dB": {
+          "tested": 9,
+          "correct": 2,
+          "valid_outputs": 2
+        },
+        "holdout/fast/-14.5dB": {
+          "tested": 9,
+          "correct": 3,
+          "valid_outputs": 3
+        }
+      },
+      "unexpected": []
+    },
+    "gained": [],
+    "lost": []
+  },
+  "symbol_domain_phase_benchmark": {
+    "domain": "matched-filter symbols; AWGN; sinusoidal phase error within pilot intervals",
+    "rows": [
+      {
+        "phaseAmplitudeRadians": 0,
+        "sigma": 0.65,
+        "firstSeed": 8000,
+        "trials": 300,
+        "baselineCorrect": 300,
+        "feedbackCorrect": 300,
+        "wrongOutputs": 0
+      },
+      {
+        "phaseAmplitudeRadians": 0.5,
+        "sigma": 0.65,
+        "firstSeed": 8000,
+        "trials": 300,
+        "baselineCorrect": 254,
+        "feedbackCorrect": 287,
+        "wrongOutputs": 0
+      },
+      {
+        "phaseAmplitudeRadians": -0.5,
+        "sigma": 0.65,
+        "firstSeed": 8000,
+        "trials": 300,
+        "baselineCorrect": 254,
+        "feedbackCorrect": 278,
+        "wrongOutputs": 0
+      }
+    ]
+  },
+  "negative_windows": 160,
+  "negative_outputs": 0,
+  "recorded_clips": 13,
+  "recorded_outputs": 19,
+  "snr_vs_packet_average_db": {
+    "count": 92,
+    "mean_error": -0.8212592608695652,
+    "median_error": -0.8960435000000002,
+    "min_error": -2.359496,
+    "max_error": 1.0704100000000007,
+    "note": "Reported data SNR excludes the stronger reference tones; benchmark ground truth is packet-average SNR. This difference is not a receiver calibration offset."
+  },
+  "source_sha256": {
+    "OscarWatch/Ft4/Oq4Decoder.cs": "1e9d9d7202293012cb81e8a7e468524cb6307e027b1668ae95529a6a5c9c9e51",
+    "OscarWatch/Ft4/Ft8Native.cs": "a6cf35740ae8a4fd6ff2279059481211c4978a2de985bbae1fc859b163ca25d7",
+    "native/ft8_lib/ft8/ldpc.c": "ee8aa505eef9eb9a55734f95e743d2258c283d3cd804c491a72f705d158e083b",
+    "native/oscarwatch_ft8/oscarwatch_ft8.c": "88f6986bfdb228bbe5d694832c1a0073fed3d049ab118aaab614541fcc9b8727",
+    "tools/Oq4Replay/PhaseTrackingBenchmark.cs": "6fac1074d27609f86288e0567eeff4cda700c0d49f6c161f7bdf7fc3f6e11327"
+  }
+}

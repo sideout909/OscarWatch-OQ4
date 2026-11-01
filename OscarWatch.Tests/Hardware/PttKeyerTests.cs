@@ -19,6 +19,30 @@ public sealed class PttKeyerTests : IDisposable
     private static PttOptions Options(PttMethod method, PttLine line = PttLine.Rts, bool invert = false) =>
         new(method, line, invert, "", 0, 0);
 
+    [Theory]
+    [InlineData(PttMethod.Cat)]
+    [InlineData(PttMethod.CatPortHandshake)]
+    [InlineData(PttMethod.Vox)]
+    [InlineData(PttMethod.Manual)]
+    public void Preparing_ptt_does_not_assert_cat_or_handshake(PttMethod method)
+    {
+        var rig = new RecordingRigController();
+        using var keyer = new PttKeyer(rig, () => Options(method), "OQ4");
+        keyer.Prepare();
+        Assert.False(keyer.IsKeyed);
+        Assert.Empty(rig.Calls);
+    }
+
+    [Fact]
+    public void Separate_adapter_conflict_is_reported_during_preparation_before_keying()
+    {
+        var rig = new RecordingRigController();
+        var options = Options(PttMethod.SeparateComPort) with { SeparatePort = "test-port" };
+        using var keyer = new PttKeyer(rig, () => options, "OQ4", _ => "in use");
+        Assert.Equal("in use", Assert.Throws<InvalidOperationException>(keyer.Prepare).Message);
+        Assert.False(keyer.IsKeyed);
+    }
+
     [Fact]
     public async Task Cat_keying_writes_the_marker_until_unkeyed()
     {

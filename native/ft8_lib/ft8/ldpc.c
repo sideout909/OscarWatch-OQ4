@@ -359,3 +359,93 @@ static float fast_atanh(float x)
     float b = (945.0f + x2 * (-1050.0f + x2 * 225.0f));
     return a / b;
 }
+
+// Best-syndrome extrinsic information, excluding the channel observation.
+void bp_decode_soft(const float codeword[], int max_iters, float extrinsic[], int* ok)
+{
+    uint8_t plain[FTX_LDPC_N];
+    for (int n = 0; n < FTX_LDPC_N; ++n) extrinsic[n] = 0;
+    float tov[FTX_LDPC_N][3];
+    float toc[FTX_LDPC_M][7];
+
+    int min_errors = FTX_LDPC_M;
+
+    // initialize message data
+    for (int n = 0; n < FTX_LDPC_N; ++n)
+    {
+        tov[n][0] = tov[n][1] = tov[n][2] = 0;
+    }
+
+    for (int iter = 0; iter < max_iters; ++iter)
+    {
+        // Do a hard decision guess (tov=0 in iter 0)
+        int plain_sum = 0;
+        for (int n = 0; n < FTX_LDPC_N; ++n)
+        {
+            plain[n] = ((codeword[n] + tov[n][0] + tov[n][1] + tov[n][2]) > 0) ? 1 : 0;
+            plain_sum += plain[n];
+        }
+
+        if (plain_sum == 0)
+        {
+            // message converged to all-zeros, which is prohibited
+            break;
+        }
+
+        // Check to see if we have a codeword (check before we do any iter)
+        int errors = ldpc_check(plain);
+
+        if (errors < min_errors)
+        {
+            // we have a better guess - update the result
+            min_errors = errors;
+            for (int n = 0; n < FTX_LDPC_N; ++n)
+                extrinsic[n] = tov[n][0] + tov[n][1] + tov[n][2];
+
+            if (errors == 0)
+            {
+                break; // Found a perfect answer
+            }
+        }
+
+        // Send messages from bits to check nodes
+        for (int m = 0; m < FTX_LDPC_M; ++m)
+        {
+            for (int n_idx = 0; n_idx < kFTX_LDPC_Num_rows[m]; ++n_idx)
+            {
+                int n = kFTX_LDPC_Nm[m][n_idx] - 1;
+                // for each (n, m)
+                float Tnm = codeword[n];
+                for (int m_idx = 0; m_idx < 3; ++m_idx)
+                {
+                    if ((kFTX_LDPC_Mn[n][m_idx] - 1) != m)
+                    {
+                        Tnm += tov[n][m_idx];
+                    }
+                }
+                toc[m][n_idx] = fast_tanh(-Tnm / 2);
+            }
+        }
+
+        // send messages from check nodes to variable nodes
+        for (int n = 0; n < FTX_LDPC_N; ++n)
+        {
+            for (int m_idx = 0; m_idx < 3; ++m_idx)
+            {
+                int m = kFTX_LDPC_Mn[n][m_idx] - 1;
+                // for each (n, m)
+                float Tmn = 1.0f;
+                for (int n_idx = 0; n_idx < kFTX_LDPC_Num_rows[m]; ++n_idx)
+                {
+                    if ((kFTX_LDPC_Nm[m][n_idx] - 1) != n)
+                    {
+                        Tmn *= toc[m][n_idx];
+                    }
+                }
+                tov[n][m_idx] = -2 * fast_atanh(Tmn);
+            }
+        }
+    }
+
+    *ok = min_errors;
+}

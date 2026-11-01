@@ -20,6 +20,13 @@ extern "C" {
 #define OW_FT8_MAX_MESSAGE_LEN 48
 #define OW_FT8_MAX_DECODES 50
 
+/// Pack an FT4-format message and return its 174 FT4 LDPC codeword bits (one bit per byte).
+OW_FT8_API int ow_oq4_encode_bits(const char* message_text, uint8_t* bits, int capacity);
+
+/// Decode OQ4 codeword log-likelihoods (positive means bit 1), requiring LDPC and CRC success.
+OW_FT8_API int ow_oq4_soft_bits(const float* likelihoods, float* extrinsic);
+OW_FT8_API int ow_oq4_decode_bits(const float* likelihoods, char* text, int capacity);
+
 typedef struct
 {
     float freq_hz;

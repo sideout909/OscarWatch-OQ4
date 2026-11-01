@@ -1,0 +1,5162 @@
+{
+  "date": "2026-11-01",
+  "comparison": "OQ4 BP-only vs bounded BP+OSD, not FT4",
+  "waveform_source": "/home/lschaar/Documents/OscarWatch Decoder Lab/decoder_lab.py",
+  "waveform_sha256": "93a02b144dd955d292a79880d41664aba93e60a11d7aa01e7edb18252eef47e3",
+  "python_version": "3.14.8",
+  "numpy_version": "2.5.4",
+  "baseline_decoder_sha256": "85e39362219dcb1ac7cdd5da4eca0e76bc64978601622d657c4714482beaa4c7",
+  "updated_decoder_sha256": "c4f7c86696b1ba3c2038b04cf0671f18f75cb502993bea137b07ef7bc9980261",
+  "ordered_statistics_sha256": "73ac1ecb49eba45a883594a1804331fc001777086c7ba02b2566d5d51aea1977",
+  "baseline_correct": 87,
+  "updated_correct": 92,
+  "signal_trials": 144,
+  "discovery_before": 46,
+  "discovery_after": 49,
+  "holdout_before": 41,
+  "holdout_after": 43,
+  "each_split_trials": 72,
+  "noise_trials": 160,
+  "noise_decodes_before": 0,
+  "noise_decodes_after": 0,
+  "discarded_experiments": {
+    "noise_calibrated_llr": {
+      "correct": 87,
+      "trials": 144
+    },
+    "longer_preamble_template": {
+      "correct": 87,
+      "trials": 144
+    }
+  },
+  "source_notes": "Expected messages are only used after decoding. Independent Python waveform shares native message coding. Uncommitted experimental tree; no waveform changes. CPU timings are not controlled latency measurements.",
+  "signal_cases": [
+    {
+      "file": "signal-0000.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 500.44434839882086,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031000,
+      "jitter_samples": -823,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 500.40874579342653,
+          "TimeSeconds": 0.332,
+          "SnrDb": -12.620893
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 500.40874579342653,
+          "TimeSeconds": 0.332,
+          "SnrDb": -12.620893
+        }
+      ]
+    },
+    {
+      "file": "signal-0001.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 500.3207651104309,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031001,
+      "jitter_samples": -163,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 500.5690677426082,
+          "TimeSeconds": 0.388,
+          "SnrDb": -13.1554985
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 500.5690677426082,
+          "TimeSeconds": 0.388,
+          "SnrDb": -13.1554985
+        }
+      ]
+    },
+    {
+      "file": "signal-0002.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 501.3367076180062,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031002,
+      "jitter_samples": -97,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 501.208436947221,
+          "TimeSeconds": 0.392,
+          "SnrDb": -11.759421
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 501.208436947221,
+          "TimeSeconds": 0.392,
+          "SnrDb": -11.759421
+        }
+      ]
+    },
+    {
+      "file": "signal-0003.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 500.2118313137753,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031003,
+      "jitter_samples": -812,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.81400358606874,
+          "TimeSeconds": 0.334,
+          "SnrDb": -13.274334
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.81400358606874,
+          "TimeSeconds": 0.334,
+          "SnrDb": -13.274334
+        }
+      ]
+    },
+    {
+      "file": "signal-0004.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 498.9150052375343,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 4,
+      "noise_seed": 1031004,
+      "jitter_samples": 977,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0005.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 500.1642261119302,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031005,
+      "jitter_samples": -560,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 500.06463818992455,
+          "TimeSeconds": 0.354,
+          "SnrDb": -12.706688
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 500.06463818992455,
+          "TimeSeconds": 0.354,
+          "SnrDb": -12.706688
+        }
+      ]
+    },
+    {
+      "file": "signal-0006.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 501.26041445242106,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031006,
+      "jitter_samples": -779,
+      "split": "discovery",
+      "before": [],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 502.63510297940724,
+          "TimeSeconds": 0.332,
+          "SnrDb": -18.51505
+        }
+      ]
+    },
+    {
+      "file": "signal-0007.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 501.3648381880149,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031007,
+      "jitter_samples": -169,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0008.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 500.2186192798081,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031008,
+      "jitter_samples": 690,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 500.33345011154523,
+          "TimeSeconds": 0.456,
+          "SnrDb": -14.421015
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 500.33345011154523,
+          "TimeSeconds": 0.456,
+          "SnrDb": -14.421015
+        }
+      ]
+    },
+    {
+      "file": "signal-0009.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 500.86221420500925,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031009,
+      "jitter_samples": -1051,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0010.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 498.379442652871,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031010,
+      "jitter_samples": -268,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0011.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 501.07561973740013,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 5,
+      "noise_seed": 1031011,
+      "jitter_samples": 655,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0012.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 499.6268419780625,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031012,
+      "jitter_samples": -574,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.3594597006464,
+          "TimeSeconds": 0.352,
+          "SnrDb": -13.45315
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.3594597006464,
+          "TimeSeconds": 0.352,
+          "SnrDb": -13.45315
+        }
+      ]
+    },
+    {
+      "file": "signal-0013.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 500.12187000633605,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031013,
+      "jitter_samples": -487,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 500.0021479883798,
+          "TimeSeconds": 0.36,
+          "SnrDb": -13.2121315
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 500.0021479883798,
+          "TimeSeconds": 0.36,
+          "SnrDb": -13.2121315
+        }
+      ]
+    },
+    {
+      "file": "signal-0014.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 498.52242368981746,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 2,
+      "noise_seed": 1031014,
+      "jitter_samples": 292,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 498.62138693880013,
+          "TimeSeconds": 0.424,
+          "SnrDb": -11.68874
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 498.62138693880013,
+          "TimeSeconds": 0.424,
+          "SnrDb": -11.68874
+        }
+      ]
+    },
+    {
+      "file": "signal-0015.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 499.8154298183814,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031015,
+      "jitter_samples": -908,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.74332811129483,
+          "TimeSeconds": 0.324,
+          "SnrDb": -13.889795
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.74332811129483,
+          "TimeSeconds": 0.324,
+          "SnrDb": -13.889795
+        }
+      ]
+    },
+    {
+      "file": "signal-0016.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 499.6516194191603,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031016,
+      "jitter_samples": -109,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 499.30622878148057,
+          "TimeSeconds": 0.392,
+          "SnrDb": -13.076603
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 499.30622878148057,
+          "TimeSeconds": 0.392,
+          "SnrDb": -13.076603
+        }
+      ]
+    },
+    {
+      "file": "signal-0017.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 501.58931014386496,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031017,
+      "jitter_samples": 897,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 501.4922650633012,
+          "TimeSeconds": 0.476,
+          "SnrDb": -13.359845
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 501.4922650633012,
+          "TimeSeconds": 0.476,
+          "SnrDb": -13.359845
+        }
+      ]
+    },
+    {
+      "file": "signal-0018.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 499.79611151965116,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031018,
+      "jitter_samples": -716,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0019.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 499.5922293440421,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031019,
+      "jitter_samples": 583,
+      "split": "discovery",
+      "before": [],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 499.233579728632,
+          "TimeSeconds": 0.448,
+          "SnrDb": -14.567176
+        }
+      ]
+    },
+    {
+      "file": "signal-0020.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 499.15134723820773,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031020,
+      "jitter_samples": -1040,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 498.9840682199993,
+          "TimeSeconds": 0.312,
+          "SnrDb": -13.175301
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 498.9840682199993,
+          "TimeSeconds": 0.312,
+          "SnrDb": -13.175301
+        }
+      ]
+    },
+    {
+      "file": "signal-0021.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 499.1997901215595,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031021,
+      "jitter_samples": -1177,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0022.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 499.50659114904033,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 4,
+      "noise_seed": 1031022,
+      "jitter_samples": -1040,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0023.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 500.02086802255985,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031023,
+      "jitter_samples": -1119,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0024.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 499.3818077857611,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031024,
+      "jitter_samples": 361,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.55437165934035,
+          "TimeSeconds": 0.432,
+          "SnrDb": -13.411202
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.55437165934035,
+          "TimeSeconds": 0.432,
+          "SnrDb": -13.411202
+        }
+      ]
+    },
+    {
+      "file": "signal-0025.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 500.898564131878,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 1,
+      "noise_seed": 1031025,
+      "jitter_samples": 325,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 501.1971705055825,
+          "TimeSeconds": 0.428,
+          "SnrDb": -13.396448
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 501.1971705055825,
+          "TimeSeconds": 0.428,
+          "SnrDb": -13.396448
+        }
+      ]
+    },
+    {
+      "file": "signal-0026.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 498.70157413242885,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 2,
+      "noise_seed": 1031026,
+      "jitter_samples": -118,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 498.57648380932255,
+          "TimeSeconds": 0.388,
+          "SnrDb": -12.685182
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 498.57648380932255,
+          "TimeSeconds": 0.388,
+          "SnrDb": -12.685182
+        }
+      ]
+    },
+    {
+      "file": "signal-0027.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 499.66827535021196,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031027,
+      "jitter_samples": -697,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 500.0097527657166,
+          "TimeSeconds": 0.34,
+          "SnrDb": -11.977621
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 500.0097527657166,
+          "TimeSeconds": 0.34,
+          "SnrDb": -11.977621
+        }
+      ]
+    },
+    {
+      "file": "signal-0028.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 499.8335189935255,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031028,
+      "jitter_samples": -1021,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 500.30558068035765,
+          "TimeSeconds": 0.316,
+          "SnrDb": -12.759898
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 500.30558068035765,
+          "TimeSeconds": 0.316,
+          "SnrDb": -12.759898
+        }
+      ]
+    },
+    {
+      "file": "signal-0029.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 501.4553091309803,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031029,
+      "jitter_samples": 222,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 501.5110365948729,
+          "TimeSeconds": 0.416,
+          "SnrDb": -13.059362
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 501.5110365948729,
+          "TimeSeconds": 0.416,
+          "SnrDb": -13.059362
+        }
+      ]
+    },
+    {
+      "file": "signal-0030.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 501.19142491171044,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031030,
+      "jitter_samples": 605,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 501.4820160057517,
+          "TimeSeconds": 0.45,
+          "SnrDb": -15.132949
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 501.4820160057517,
+          "TimeSeconds": 0.45,
+          "SnrDb": -15.132949
+        }
+      ]
+    },
+    {
+      "file": "signal-0031.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 500.3667856051384,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031031,
+      "jitter_samples": 470,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0032.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 499.2691504540116,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031032,
+      "jitter_samples": 95,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 499.1600551804887,
+          "TimeSeconds": 0.408,
+          "SnrDb": -14.022069
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 499.1600551804887,
+          "TimeSeconds": 0.408,
+          "SnrDb": -14.022069
+        }
+      ]
+    },
+    {
+      "file": "signal-0033.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 498.7632143317781,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031033,
+      "jitter_samples": -337,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0034.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 498.35491208431904,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031034,
+      "jitter_samples": 848,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 499.3502126182799,
+          "TimeSeconds": 0.472,
+          "SnrDb": -15.931514
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 499.3502126182799,
+          "TimeSeconds": 0.472,
+          "SnrDb": -15.931514
+        }
+      ]
+    },
+    {
+      "file": "signal-0035.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 498.5853087213918,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031035,
+      "jitter_samples": -754,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0036.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 498.7052974783963,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 0,
+      "noise_seed": 1031036,
+      "jitter_samples": 544,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 498.59667496067203,
+          "TimeSeconds": 0.444,
+          "SnrDb": -12.3965225
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 498.59667496067203,
+          "TimeSeconds": 0.444,
+          "SnrDb": -12.3965225
+        }
+      ]
+    },
+    {
+      "file": "signal-0037.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 501.58848718946484,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031037,
+      "jitter_samples": 1152,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 500.31313244937803,
+          "TimeSeconds": 0.496,
+          "SnrDb": -15.475886
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 500.31313244937803,
+          "TimeSeconds": 0.496,
+          "SnrDb": -15.475886
+        }
+      ]
+    },
+    {
+      "file": "signal-0038.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 499.8953045438839,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 2,
+      "noise_seed": 1031038,
+      "jitter_samples": 631,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0039.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 498.6519676869515,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031039,
+      "jitter_samples": -8,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.50233830540793,
+          "TimeSeconds": 0.396,
+          "SnrDb": -18.338816
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 499.50233830540793,
+          "TimeSeconds": 0.396,
+          "SnrDb": -18.338816
+        }
+      ]
+    },
+    {
+      "file": "signal-0040.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 501.67239085448983,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 4,
+      "noise_seed": 1031040,
+      "jitter_samples": -1053,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 502.1040218774197,
+          "TimeSeconds": 0.312,
+          "SnrDb": -13.108709
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 502.1040218774197,
+          "TimeSeconds": 0.312,
+          "SnrDb": -13.108709
+        }
+      ]
+    },
+    {
+      "file": "signal-0041.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 501.76515745745036,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031041,
+      "jitter_samples": -63,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 502.06022515081384,
+          "TimeSeconds": 0.396,
+          "SnrDb": -14.090478
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 502.06022515081384,
+          "TimeSeconds": 0.396,
+          "SnrDb": -14.090478
+        }
+      ]
+    },
+    {
+      "file": "signal-0042.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 500.5390740987859,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031042,
+      "jitter_samples": 29,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0043.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 501.72861707245175,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031043,
+      "jitter_samples": -124,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0044.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 500.40774165227236,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031044,
+      "jitter_samples": 983,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0045.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 499.02161677254117,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031045,
+      "jitter_samples": 1093,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 498.2028646822503,
+          "TimeSeconds": 0.49,
+          "SnrDb": -16.393003
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 498.2028646822503,
+          "TimeSeconds": 0.49,
+          "SnrDb": -16.393003
+        }
+      ]
+    },
+    {
+      "file": "signal-0046.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 500.6874571810189,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 4,
+      "noise_seed": 1031046,
+      "jitter_samples": 814,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 501.4481680870015,
+          "TimeSeconds": 0.468,
+          "SnrDb": -15.082109
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 501.4481680870015,
+          "TimeSeconds": 0.468,
+          "SnrDb": -15.082109
+        }
+      ]
+    },
+    {
+      "file": "signal-0047.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 500.43390350551385,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031047,
+      "jitter_samples": -1051,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0048.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1501.7377812641407,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031048,
+      "jitter_samples": 641,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1501.931255546834,
+          "TimeSeconds": 0.452,
+          "SnrDb": -14.571964
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1501.931255546834,
+          "TimeSeconds": 0.452,
+          "SnrDb": -14.571964
+        }
+      ]
+    },
+    {
+      "file": "signal-0049.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1500.4283168748293,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031049,
+      "jitter_samples": -1141,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1500.5418811854004,
+          "TimeSeconds": 0.304,
+          "SnrDb": -12.156942
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1500.5418811854004,
+          "TimeSeconds": 0.304,
+          "SnrDb": -12.156942
+        }
+      ]
+    },
+    {
+      "file": "signal-0050.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1500.8987671845148,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 2,
+      "noise_seed": 1031050,
+      "jitter_samples": -536,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1501.3171930458045,
+          "TimeSeconds": 0.356,
+          "SnrDb": -11.432902
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1501.3171930458045,
+          "TimeSeconds": 0.356,
+          "SnrDb": -11.432902
+        }
+      ]
+    },
+    {
+      "file": "signal-0051.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1499.74808730045,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031051,
+      "jitter_samples": 385,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1500.132190443665,
+          "TimeSeconds": 0.432,
+          "SnrDb": -14.037969
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1500.132190443665,
+          "TimeSeconds": 0.432,
+          "SnrDb": -14.037969
+        }
+      ]
+    },
+    {
+      "file": "signal-0052.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1500.9932308150221,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031052,
+      "jitter_samples": -8,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.011895934964,
+          "TimeSeconds": 0.4,
+          "SnrDb": -11.523627
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.011895934964,
+          "TimeSeconds": 0.4,
+          "SnrDb": -11.523627
+        }
+      ]
+    },
+    {
+      "file": "signal-0053.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1500.648636563583,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031053,
+      "jitter_samples": 801,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1500.85684345845,
+          "TimeSeconds": 0.466,
+          "SnrDb": -11.453336
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1500.85684345845,
+          "TimeSeconds": 0.466,
+          "SnrDb": -11.453336
+        }
+      ]
+    },
+    {
+      "file": "signal-0054.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1500.896964953442,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 0,
+      "noise_seed": 1031054,
+      "jitter_samples": -316,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0055.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1499.2816690506697,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031055,
+      "jitter_samples": 1133,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0056.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1500.6440561034453,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031056,
+      "jitter_samples": -52,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1500.1379709220023,
+          "TimeSeconds": 0.396,
+          "SnrDb": -14.4172325
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1500.1379709220023,
+          "TimeSeconds": 0.396,
+          "SnrDb": -14.4172325
+        }
+      ]
+    },
+    {
+      "file": "signal-0057.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1500.3226479735224,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031057,
+      "jitter_samples": -286,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1499.5307698632053,
+          "TimeSeconds": 0.376,
+          "SnrDb": -14.775688
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1499.5307698632053,
+          "TimeSeconds": 0.376,
+          "SnrDb": -14.775688
+        }
+      ]
+    },
+    {
+      "file": "signal-0058.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1499.3574775289076,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031058,
+      "jitter_samples": -819,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0059.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1498.3272684185822,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 5,
+      "noise_seed": 1031059,
+      "jitter_samples": -373,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0060.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1498.6157379350334,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031060,
+      "jitter_samples": -701,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1498.4866195953466,
+          "TimeSeconds": 0.34,
+          "SnrDb": -13.514239
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1498.4866195953466,
+          "TimeSeconds": 0.34,
+          "SnrDb": -13.514239
+        }
+      ]
+    },
+    {
+      "file": "signal-0061.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1501.7868206176963,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031061,
+      "jitter_samples": 602,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.6937128922934,
+          "TimeSeconds": 0.448,
+          "SnrDb": -13.8621
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.6937128922934,
+          "TimeSeconds": 0.448,
+          "SnrDb": -13.8621
+        }
+      ]
+    },
+    {
+      "file": "signal-0062.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1500.4709930467127,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031062,
+      "jitter_samples": 657,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1500.3305287172104,
+          "TimeSeconds": 0.456,
+          "SnrDb": -12.921092
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1500.3305287172104,
+          "TimeSeconds": 0.456,
+          "SnrDb": -12.921092
+        }
+      ]
+    },
+    {
+      "file": "signal-0063.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1498.223099760757,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031063,
+      "jitter_samples": -996,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1497.7900163976558,
+          "TimeSeconds": 0.316,
+          "SnrDb": -11.773927
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1497.7900163976558,
+          "TimeSeconds": 0.316,
+          "SnrDb": -11.773927
+        }
+      ]
+    },
+    {
+      "file": "signal-0064.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1501.4882966282423,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 4,
+      "noise_seed": 1031064,
+      "jitter_samples": -480,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.3327387343718,
+          "TimeSeconds": 0.36,
+          "SnrDb": -11.712115
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.3327387343718,
+          "TimeSeconds": 0.36,
+          "SnrDb": -11.712115
+        }
+      ]
+    },
+    {
+      "file": "signal-0065.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1500.4038932595797,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031065,
+      "jitter_samples": -833,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1500.4785396285192,
+          "TimeSeconds": 0.328,
+          "SnrDb": -11.708206
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1500.4785396285192,
+          "TimeSeconds": 0.328,
+          "SnrDb": -11.708206
+        }
+      ]
+    },
+    {
+      "file": "signal-0066.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1499.544322814894,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031066,
+      "jitter_samples": 684,
+      "split": "discovery",
+      "before": [],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1499.639842897034,
+          "TimeSeconds": 0.454,
+          "SnrDb": -14.336232
+        }
+      ]
+    },
+    {
+      "file": "signal-0067.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1500.8335824451447,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031067,
+      "jitter_samples": 1021,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1500.235378349359,
+          "TimeSeconds": 0.486,
+          "SnrDb": -16.41962
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1500.235378349359,
+          "TimeSeconds": 0.486,
+          "SnrDb": -16.41962
+        }
+      ]
+    },
+    {
+      "file": "signal-0068.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1499.7637713749193,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031068,
+      "jitter_samples": 141,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0069.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1498.7957850325363,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031069,
+      "jitter_samples": 70,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1497.7668853405928,
+          "TimeSeconds": 0.406,
+          "SnrDb": -20.20804
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1497.7668853405928,
+          "TimeSeconds": 0.406,
+          "SnrDb": -20.20804
+        }
+      ]
+    },
+    {
+      "file": "signal-0070.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1499.69364809656,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 4,
+      "noise_seed": 1031070,
+      "jitter_samples": 14,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0071.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1498.9147883218116,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 5,
+      "noise_seed": 1031071,
+      "jitter_samples": 744,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0072.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1500.266562740003,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031072,
+      "jitter_samples": -496,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1500.4944223869459,
+          "TimeSeconds": 0.358,
+          "SnrDb": -11.627692
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1500.4944223869459,
+          "TimeSeconds": 0.358,
+          "SnrDb": -11.627692
+        }
+      ]
+    },
+    {
+      "file": "signal-0073.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1500.8838585882963,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 1,
+      "noise_seed": 1031073,
+      "jitter_samples": -162,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1500.7473398199115,
+          "TimeSeconds": 0.388,
+          "SnrDb": -12.161394
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1500.7473398199115,
+          "TimeSeconds": 0.388,
+          "SnrDb": -12.161394
+        }
+      ]
+    },
+    {
+      "file": "signal-0074.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1499.2527005464585,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031074,
+      "jitter_samples": -866,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1499.0655926404536,
+          "TimeSeconds": 0.328,
+          "SnrDb": -12.7543335
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1499.0655926404536,
+          "TimeSeconds": 0.328,
+          "SnrDb": -12.7543335
+        }
+      ]
+    },
+    {
+      "file": "signal-0075.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1501.039024883428,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031075,
+      "jitter_samples": -272,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1501.3053589974943,
+          "TimeSeconds": 0.38,
+          "SnrDb": -11.81645
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1501.3053589974943,
+          "TimeSeconds": 0.38,
+          "SnrDb": -11.81645
+        }
+      ]
+    },
+    {
+      "file": "signal-0076.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1501.7653357798326,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031076,
+      "jitter_samples": 326,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.6033298207035,
+          "TimeSeconds": 0.428,
+          "SnrDb": -12.31861
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.6033298207035,
+          "TimeSeconds": 0.428,
+          "SnrDb": -12.31861
+        }
+      ]
+    },
+    {
+      "file": "signal-0077.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1498.2503516905736,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031077,
+      "jitter_samples": 217,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1497.810476266007,
+          "TimeSeconds": 0.416,
+          "SnrDb": -12.59575
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1497.810476266007,
+          "TimeSeconds": 0.416,
+          "SnrDb": -12.59575
+        }
+      ]
+    },
+    {
+      "file": "signal-0078.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1499.0944218308375,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 0,
+      "noise_seed": 1031078,
+      "jitter_samples": -1150,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0079.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1500.1309102084385,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031079,
+      "jitter_samples": 1061,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0080.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1500.5091444684842,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 2,
+      "noise_seed": 1031080,
+      "jitter_samples": -744,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0081.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1500.6323115437283,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031081,
+      "jitter_samples": 702,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0082.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1499.000206503181,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031082,
+      "jitter_samples": -552,
+      "split": "holdout",
+      "before": [],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1499.4752862402165,
+          "TimeSeconds": 0.354,
+          "SnrDb": -17.165482
+        }
+      ]
+    },
+    {
+      "file": "signal-0083.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1500.0464454664132,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031083,
+      "jitter_samples": 399,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0084.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1500.31732946898,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031084,
+      "jitter_samples": 889,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1500.4295074364752,
+          "TimeSeconds": 0.472,
+          "SnrDb": -12.439173
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1500.4295074364752,
+          "TimeSeconds": 0.472,
+          "SnrDb": -12.439173
+        }
+      ]
+    },
+    {
+      "file": "signal-0085.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1500.402835328136,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031085,
+      "jitter_samples": -927,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1500.0240686561744,
+          "TimeSeconds": 0.324,
+          "SnrDb": -11.846846
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1500.0240686561744,
+          "TimeSeconds": 0.324,
+          "SnrDb": -11.846846
+        }
+      ]
+    },
+    {
+      "file": "signal-0086.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1501.133860567567,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031086,
+      "jitter_samples": -1061,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1501.7972768697894,
+          "TimeSeconds": 0.312,
+          "SnrDb": -12.570696
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1501.7972768697894,
+          "TimeSeconds": 0.312,
+          "SnrDb": -12.570696
+        }
+      ]
+    },
+    {
+      "file": "signal-0087.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1499.311415086465,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 3,
+      "noise_seed": 1031087,
+      "jitter_samples": 854,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1499.713616941119,
+          "TimeSeconds": 0.472,
+          "SnrDb": -13.287495
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1499.713616941119,
+          "TimeSeconds": 0.472,
+          "SnrDb": -13.287495
+        }
+      ]
+    },
+    {
+      "file": "signal-0088.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1501.485573300805,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 4,
+      "noise_seed": 1031088,
+      "jitter_samples": -880,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.2703753389744,
+          "TimeSeconds": 0.328,
+          "SnrDb": -12.76241
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 1501.2703753389744,
+          "TimeSeconds": 0.328,
+          "SnrDb": -12.76241
+        }
+      ]
+    },
+    {
+      "file": "signal-0089.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1499.453968281531,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031089,
+      "jitter_samples": 517,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1499.0433646754543,
+          "TimeSeconds": 0.444,
+          "SnrDb": -13.670404
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 1499.0433646754543,
+          "TimeSeconds": 0.444,
+          "SnrDb": -13.670404
+        }
+      ]
+    },
+    {
+      "file": "signal-0090.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1501.2773543193432,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 0,
+      "noise_seed": 1031090,
+      "jitter_samples": -812,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1503.3493169164956,
+          "TimeSeconds": 0.332,
+          "SnrDb": -12.186379
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1503.3493169164956,
+          "TimeSeconds": 0.332,
+          "SnrDb": -12.186379
+        }
+      ]
+    },
+    {
+      "file": "signal-0091.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1501.6296613880174,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031091,
+      "jitter_samples": -839,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0092.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1500.733618805966,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031092,
+      "jitter_samples": 324,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0093.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 1501.6943443477815,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 3,
+      "noise_seed": 1031093,
+      "jitter_samples": 1004,
+      "split": "holdout",
+      "before": [],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 1501.40346000055,
+          "TimeSeconds": 0.482,
+          "SnrDb": -14.563927
+        }
+      ]
+    },
+    {
+      "file": "signal-0094.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 1500.331484349669,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031094,
+      "jitter_samples": -171,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0095.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 1499.0338029529573,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031095,
+      "jitter_samples": 1056,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0096.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2298.47449817093,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031096,
+      "jitter_samples": 966,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.1895849641987,
+          "TimeSeconds": 0.48,
+          "SnrDb": -12.029136
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.1895849641987,
+          "TimeSeconds": 0.48,
+          "SnrDb": -12.029136
+        }
+      ]
+    },
+    {
+      "file": "signal-0097.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.536594061207,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 1,
+      "noise_seed": 1031097,
+      "jitter_samples": 158,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.4162299761038,
+          "TimeSeconds": 0.412,
+          "SnrDb": -12.973483
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.4162299761038,
+          "TimeSeconds": 0.412,
+          "SnrDb": -12.973483
+        }
+      ]
+    },
+    {
+      "file": "signal-0098.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2300.35446966239,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031098,
+      "jitter_samples": 224,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2300.251787071027,
+          "TimeSeconds": 0.42,
+          "SnrDb": -13.610569
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2300.251787071027,
+          "TimeSeconds": 0.42,
+          "SnrDb": -13.610569
+        }
+      ]
+    },
+    {
+      "file": "signal-0099.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2301.311924550308,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 3,
+      "noise_seed": 1031099,
+      "jitter_samples": 216,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2301.313997251206,
+          "TimeSeconds": 0.42,
+          "SnrDb": -13.622646
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2301.313997251206,
+          "TimeSeconds": 0.42,
+          "SnrDb": -13.622646
+        }
+      ]
+    },
+    {
+      "file": "signal-0100.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2299.8717479183765,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031100,
+      "jitter_samples": 403,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2299.7890498207653,
+          "TimeSeconds": 0.432,
+          "SnrDb": -14.6644335
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2299.7890498207653,
+          "TimeSeconds": 0.432,
+          "SnrDb": -14.6644335
+        }
+      ]
+    },
+    {
+      "file": "signal-0101.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2299.090124924385,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031101,
+      "jitter_samples": 316,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2299.2569729629345,
+          "TimeSeconds": 0.428,
+          "SnrDb": -12.057941
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2299.2569729629345,
+          "TimeSeconds": 0.428,
+          "SnrDb": -12.057941
+        }
+      ]
+    },
+    {
+      "file": "signal-0102.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2301.6092890644627,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031102,
+      "jitter_samples": 25,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0103.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.2728966771,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031103,
+      "jitter_samples": 251,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.479675598239,
+          "TimeSeconds": 0.42,
+          "SnrDb": -15.524073
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.479675598239,
+          "TimeSeconds": 0.42,
+          "SnrDb": -15.524073
+        }
+      ]
+    },
+    {
+      "file": "signal-0104.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2299.5353257939673,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 2,
+      "noise_seed": 1031104,
+      "jitter_samples": 145,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2299.4043884340063,
+          "TimeSeconds": 0.412,
+          "SnrDb": -14.519227
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2299.4043884340063,
+          "TimeSeconds": 0.412,
+          "SnrDb": -14.519227
+        }
+      ]
+    },
+    {
+      "file": "signal-0105.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2300.5305492092275,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 3,
+      "noise_seed": 1031105,
+      "jitter_samples": -187,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0106.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.4508524038138,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031106,
+      "jitter_samples": 1043,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0107.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2301.1387536741936,
+      "profile": "stationary",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": 0,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 5,
+      "noise_seed": 1031107,
+      "jitter_samples": -902,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0108.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2299.648361366736,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031108,
+      "jitter_samples": 980,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0109.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2301.3503403361365,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031109,
+      "jitter_samples": 755,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2301.019930201282,
+          "TimeSeconds": 0.464,
+          "SnrDb": -15.136616
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2301.019930201282,
+          "TimeSeconds": 0.464,
+          "SnrDb": -15.136616
+        }
+      ]
+    },
+    {
+      "file": "signal-0110.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2301.4142270859816,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031110,
+      "jitter_samples": -946,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2301.184246458062,
+          "TimeSeconds": 0.32,
+          "SnrDb": -12.923729
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2301.184246458062,
+          "TimeSeconds": 0.32,
+          "SnrDb": -12.923729
+        }
+      ]
+    },
+    {
+      "file": "signal-0111.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2298.4247076300553,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031111,
+      "jitter_samples": 1058,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.201755900208,
+          "TimeSeconds": 0.488,
+          "SnrDb": -14.7422085
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.201755900208,
+          "TimeSeconds": 0.488,
+          "SnrDb": -14.7422085
+        }
+      ]
+    },
+    {
+      "file": "signal-0112.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.217826549817,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031112,
+      "jitter_samples": 580,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.267642232231,
+          "TimeSeconds": 0.448,
+          "SnrDb": -13.500011
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.267642232231,
+          "TimeSeconds": 0.448,
+          "SnrDb": -13.500011
+        }
+      ]
+    },
+    {
+      "file": "signal-0113.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2298.465570062031,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031113,
+      "jitter_samples": -706,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2297.875667818578,
+          "TimeSeconds": 0.34,
+          "SnrDb": -12.211178
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2297.875667818578,
+          "TimeSeconds": 0.34,
+          "SnrDb": -12.211178
+        }
+      ]
+    },
+    {
+      "file": "signal-0114.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2299.297771066481,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031114,
+      "jitter_samples": 819,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0115.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2299.153327989594,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 1,
+      "noise_seed": 1031115,
+      "jitter_samples": -1024,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2298.958613719134,
+          "TimeSeconds": 0.312,
+          "SnrDb": -15.099784
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2298.958613719134,
+          "TimeSeconds": 0.312,
+          "SnrDb": -15.099784
+        }
+      ]
+    },
+    {
+      "file": "signal-0116.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2301.7245162712557,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 2,
+      "noise_seed": 1031116,
+      "jitter_samples": 251,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0117.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2298.559998574004,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 3,
+      "noise_seed": 1031117,
+      "jitter_samples": 1031,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0118.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.2702795723026,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031118,
+      "jitter_samples": -447,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.0446799924475,
+          "TimeSeconds": 0.364,
+          "SnrDb": -13.86182
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.0446799924475,
+          "TimeSeconds": 0.364,
+          "SnrDb": -13.86182
+        }
+      ]
+    },
+    {
+      "file": "signal-0119.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2299.1342622598827,
+      "profile": "curved",
+      "start_rate_hz_s": 0,
+      "end_rate_hz_s": -14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 5,
+      "noise_seed": 1031119,
+      "jitter_samples": 78,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0120.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2298.7254245296403,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031120,
+      "jitter_samples": 943,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.5412551186496,
+          "TimeSeconds": 0.48,
+          "SnrDb": -13.056472
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.5412551186496,
+          "TimeSeconds": 0.48,
+          "SnrDb": -13.056472
+        }
+      ]
+    },
+    {
+      "file": "signal-0121.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2299.1948930139315,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031121,
+      "jitter_samples": -58,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2299.471296404979,
+          "TimeSeconds": 0.396,
+          "SnrDb": -12.503987
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2299.471296404979,
+          "TimeSeconds": 0.396,
+          "SnrDb": -12.503987
+        }
+      ]
+    },
+    {
+      "file": "signal-0122.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2299.587072975227,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031122,
+      "jitter_samples": 554,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2299.6730690632853,
+          "TimeSeconds": 0.446,
+          "SnrDb": -13.046027
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2299.6730690632853,
+          "TimeSeconds": 0.446,
+          "SnrDb": -13.046027
+        }
+      ]
+    },
+    {
+      "file": "signal-0123.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2298.251211101228,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031123,
+      "jitter_samples": 653,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.0412194488617,
+          "TimeSeconds": 0.456,
+          "SnrDb": -12.100066
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.0412194488617,
+          "TimeSeconds": 0.456,
+          "SnrDb": -12.100066
+        }
+      ]
+    },
+    {
+      "file": "signal-0124.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.475784702611,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031124,
+      "jitter_samples": -62,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.898809495142,
+          "TimeSeconds": 0.396,
+          "SnrDb": -12.434107
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.898809495142,
+          "TimeSeconds": 0.396,
+          "SnrDb": -12.434107
+        }
+      ]
+    },
+    {
+      "file": "signal-0125.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2299.170301250074,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031125,
+      "jitter_samples": -385,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0126.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2298.624923881926,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031126,
+      "jitter_samples": 598,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.075208914827,
+          "TimeSeconds": 0.45,
+          "SnrDb": -16.293892
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.075208914827,
+          "TimeSeconds": 0.45,
+          "SnrDb": -16.293892
+        }
+      ]
+    },
+    {
+      "file": "signal-0127.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.5413853938376,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 1,
+      "noise_seed": 1031127,
+      "jitter_samples": 364,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0128.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2300.6860018325356,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031128,
+      "jitter_samples": -1010,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0129.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2300.425525351536,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031129,
+      "jitter_samples": 625,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2300.674467651824,
+          "TimeSeconds": 0.452,
+          "SnrDb": -16.225489
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2300.674467651824,
+          "TimeSeconds": 0.452,
+          "SnrDb": -16.225489
+        }
+      ]
+    },
+    {
+      "file": "signal-0130.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2301.1418535986063,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.5229166666666667,
+      "seed": 4,
+      "noise_seed": 1031130,
+      "jitter_samples": -352,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0131.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2301.087557584821,
+      "profile": "linear",
+      "start_rate_hz_s": 14,
+      "end_rate_hz_s": 14,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031131,
+      "jitter_samples": 901,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0132.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2298.3867708711814,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031132,
+      "jitter_samples": -613,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.3887026052744,
+          "TimeSeconds": 0.348,
+          "SnrDb": -12.966444
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2298.3887026052744,
+          "TimeSeconds": 0.348,
+          "SnrDb": -12.966444
+        }
+      ]
+    },
+    {
+      "file": "signal-0133.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.6359013254073,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031133,
+      "jitter_samples": -948,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.542736588854,
+          "TimeSeconds": 0.32,
+          "SnrDb": -11.777692
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2300.542736588854,
+          "TimeSeconds": 0.32,
+          "SnrDb": -11.777692
+        }
+      ]
+    },
+    {
+      "file": "signal-0134.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2298.2562576997957,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031134,
+      "jitter_samples": -444,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2298.455233666857,
+          "TimeSeconds": 0.362,
+          "SnrDb": -13.035693
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2298.455233666857,
+          "TimeSeconds": 0.362,
+          "SnrDb": -13.035693
+        }
+      ]
+    },
+    {
+      "file": "signal-0135.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2301.676251129723,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031135,
+      "jitter_samples": -75,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2302.553142709025,
+          "TimeSeconds": 0.394,
+          "SnrDb": -11.574853
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2302.553142709025,
+          "TimeSeconds": 0.394,
+          "SnrDb": -11.574853
+        }
+      ]
+    },
+    {
+      "file": "signal-0136.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2300.901931043478,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031136,
+      "jitter_samples": 296,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2302.1149655761774,
+          "TimeSeconds": 0.424,
+          "SnrDb": -13.46716
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2302.1149655761774,
+          "TimeSeconds": 0.424,
+          "SnrDb": -13.46716
+        }
+      ]
+    },
+    {
+      "file": "signal-0137.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2300.987508531803,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -12.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1161731113664792,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031137,
+      "jitter_samples": -176,
+      "split": "holdout",
+      "before": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2302.0326163299114,
+          "TimeSeconds": 0.384,
+          "SnrDb": -13.298721
+        }
+      ],
+      "after": [
+        {
+          "Message": "K8OTY K1ABC -12",
+          "FrequencyHz": 2302.0326163299114,
+          "TimeSeconds": 0.384,
+          "SnrDb": -13.298721
+        }
+      ]
+    },
+    {
+      "file": "signal-0138.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2300.0983584043347,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 0,
+      "noise_seed": 1031138,
+      "jitter_samples": -265,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0139.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2301.0075497610574,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 1,
+      "noise_seed": 1031139,
+      "jitter_samples": 877,
+      "split": "discovery",
+      "before": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2301.117879051309,
+          "TimeSeconds": 0.47,
+          "SnrDb": -15.225612
+        }
+      ],
+      "after": [
+        {
+          "Message": "CQ K1ABC FN42",
+          "FrequencyHz": 2301.117879051309,
+          "TimeSeconds": 0.47,
+          "SnrDb": -15.225612
+        }
+      ]
+    },
+    {
+      "file": "signal-0140.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2299.806143930524,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 2,
+      "noise_seed": 1031140,
+      "jitter_samples": -1041,
+      "split": "discovery",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0141.f32",
+      "expected_message": "CQ K8OTY EN73",
+      "frequency_hz": 2299.845650604809,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 3,
+      "noise_seed": 1031141,
+      "jitter_samples": 547,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0142.f32",
+      "expected_message": "CQ K1ABC FN42",
+      "frequency_hz": 2301.019420088669,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 4,
+      "noise_seed": 1031142,
+      "jitter_samples": -322,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    },
+    {
+      "file": "signal-0143.f32",
+      "expected_message": "K8OTY K1ABC -12",
+      "frequency_hz": 2298.635587011832,
+      "profile": "fast",
+      "start_rate_hz_s": 68,
+      "end_rate_hz_s": 68,
+      "snr_2500_db": -14.5,
+      "active_signal_dbfs": -35.0,
+      "noise_sigma": 0.1462532820664545,
+      "duration_seconds": 2.523,
+      "seed": 5,
+      "noise_seed": 1031143,
+      "jitter_samples": 507,
+      "split": "holdout",
+      "before": [],
+      "after": []
+    }
+  ],
+  "noise_cases": [
+    {
+      "file": "noise-0000.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031000,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0001.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031001,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0002.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031002,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0003.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031003,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0004.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031004,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0005.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031005,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0006.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031006,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0007.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031007,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0008.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031008,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0009.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031009,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0010.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031010,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0011.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031011,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0012.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031012,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0013.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031013,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0014.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031014,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0015.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031015,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0016.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031016,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0017.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031017,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0018.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031018,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0019.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031019,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0020.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031020,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0021.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031021,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0022.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031022,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0023.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031023,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0024.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031024,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0025.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031025,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0026.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031026,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0027.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031027,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0028.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031028,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0029.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031029,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0030.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031030,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0031.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031031,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0032.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031032,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0033.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031033,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0034.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031034,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0035.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031035,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0036.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031036,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0037.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031037,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0038.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031038,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0039.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031039,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0040.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031040,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0041.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031041,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0042.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031042,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0043.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031043,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0044.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031044,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0045.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031045,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0046.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031046,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0047.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031047,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0048.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031048,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0049.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031049,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0050.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031050,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0051.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031051,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0052.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031052,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0053.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031053,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0054.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031054,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0055.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031055,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0056.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031056,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0057.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031057,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0058.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031058,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0059.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031059,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0060.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031060,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0061.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031061,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0062.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031062,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0063.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031063,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0064.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031064,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0065.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031065,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0066.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031066,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0067.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031067,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0068.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031068,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0069.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031069,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0070.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031070,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0071.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031071,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0072.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031072,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0073.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031073,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0074.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031074,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0075.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031075,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0076.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031076,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0077.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031077,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0078.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031078,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0079.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031079,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0080.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031080,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0081.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031081,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0082.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031082,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0083.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031083,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0084.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031084,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0085.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031085,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0086.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031086,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0087.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031087,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0088.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031088,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0089.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031089,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0090.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031090,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0091.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031091,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0092.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031092,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0093.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031093,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0094.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031094,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0095.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031095,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0096.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031096,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0097.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031097,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0098.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031098,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0099.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031099,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0100.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031100,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0101.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031101,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0102.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031102,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0103.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031103,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0104.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031104,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0105.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031105,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0106.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031106,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0107.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031107,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0108.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031108,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0109.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031109,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0110.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031110,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0111.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031111,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0112.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031112,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0113.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031113,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0114.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031114,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0115.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031115,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0116.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031116,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0117.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031117,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0118.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031118,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0119.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031119,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0120.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031120,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0121.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031121,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0122.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031122,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0123.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031123,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0124.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031124,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0125.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031125,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0126.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031126,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0127.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031127,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0128.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031128,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0129.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031129,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0130.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031130,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0131.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031131,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0132.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031132,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0133.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031133,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0134.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031134,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0135.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031135,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0136.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031136,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0137.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031137,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0138.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031138,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0139.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031139,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0140.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031140,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0141.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031141,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0142.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031142,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0143.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031143,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0144.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031144,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0145.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031145,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0146.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031146,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0147.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031147,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0148.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031148,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0149.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031149,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0150.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031150,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0151.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031151,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0152.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031152,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0153.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031153,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0154.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031154,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0155.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031155,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0156.f32",
+      "expected_message": null,
+      "noise_model": "white",
+      "noise_seed": 2031156,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0157.f32",
+      "expected_message": null,
+      "noise_model": "colored",
+      "noise_seed": 2031157,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0158.f32",
+      "expected_message": null,
+      "noise_model": "tone",
+      "noise_seed": 2031158,
+      "split": "noise",
+      "results": []
+    },
+    {
+      "file": "noise-0159.f32",
+      "expected_message": null,
+      "noise_model": "impulsive",
+      "noise_seed": 2031159,
+      "split": "noise",
+      "results": []
+    }
+  ]
+}

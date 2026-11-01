@@ -2480,6 +2480,7 @@ public partial class MainViewModel : ViewModelBase
 
     private static QsoLogbookWindow? _openLogbookWindow;
     private static Ft4Window? _openFt4Window;
+    private static Oq4Window? _openOq4Window;
 
     [RelayCommand]
     private void OpenQsoLogbook()
@@ -2504,6 +2505,11 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanOpenFt4))]
     private void OpenFt4()
     {
+        if (_openOq4Window is { IsTransmissionActive: true })
+        {
+            _openOq4Window.Activate();
+            return;
+        }
         _trackerSnapshot.FocusedNoradId = FocusedNoradId;
         if (_openFt4Window is { IsVisible: true })
         {
@@ -2518,6 +2524,24 @@ public partial class MainViewModel : ViewModelBase
         if (App.MainWindow is null)
             return;
 
+        window.Show(App.MainWindow);
+    }
+
+    [RelayCommand]
+    private void OpenOq4()
+    {
+        if (_openOq4Window is { IsVisible: true })
+        {
+            _openOq4Window.Activate();
+            return;
+        }
+
+        if (App.MainWindow is null)
+            return;
+
+        var window = new Oq4Window();
+        window.Closed += (_, _) => _openOq4Window = null;
+        _openOq4Window = window;
         window.Show(App.MainWindow);
     }
 

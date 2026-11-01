@@ -1,0 +1,1124 @@
+{
+  "recording": "RS44-OQ4-20261031-070511-UTC.wav",
+  "comparison_before": [
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-655.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1169.8102,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2558.9988783451636,
+          "EndHz": 2518.963699958089,
+          "Score": 81.99751663208008
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2763.369581407703,
+          "EndHz": 2556.568862975428,
+          "Score": 24.79621982574463
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1764.7679052200651,
+          "EndHz": 1925.5242898618224,
+          "Score": 23.18464183807373
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2296.5889436500615,
+          "EndHz": 2497.894072965071,
+          "Score": 22.956886291503906
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2560.3541844757647,
+          "TimeSeconds": 0.528
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-663.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1775.7958,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2559.2423977947783,
+          "EndHz": 2520.019696062787,
+          "Score": 81.15757369995117
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1764.2939119774453,
+          "EndHz": 1921.5751540268584,
+          "Score": 25.990731239318848
+        },
+        {
+          "StartSeconds": 0.68,
+          "StartHz": 2759.6189826126165,
+          "EndHz": 2554.232213785164,
+          "Score": 22.642080307006836
+        },
+        {
+          "StartSeconds": 0,
+          "StartHz": 2289.7588174242287,
+          "EndHz": 2497.6987447698743,
+          "Score": 21.985108375549316
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2560.5701992498425,
+          "TimeSeconds": 0.552
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-678.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1055.8739,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2559.252435654699,
+          "EndHz": 2521.6811270710114,
+          "Score": 81.68424034118652
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1763.3658828219163,
+          "EndHz": 1912.811387722326,
+          "Score": 25.846729278564453
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2765.3279007128613,
+          "EndHz": 2559.205020920502,
+          "Score": 25.51701545715332
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2300.569261458963,
+          "EndHz": 2500.97087797247,
+          "Score": 23.545665740966797
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2560.5243326939944,
+          "TimeSeconds": 0.544
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-753.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1044.9416,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2529.496899187681,
+          "EndHz": 2505.3260008306365,
+          "Score": 81.29730987548828
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2730.7117717617716,
+          "EndHz": 2526.3698363937165,
+          "Score": 27.502934455871582
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1883.2633387564103,
+          "EndHz": 1980.9382667174507,
+          "Score": 24.8545560836792
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2280.4061493614868,
+          "EndHz": 2484.574364594104,
+          "Score": 23.581379890441895
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2530.315153733938,
+          "TimeSeconds": 0.54
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-760.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1836.1513,
+      "candidates": [
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2529.416861990051,
+          "EndHz": 2506.5649766070096,
+          "Score": 80.20271301269531
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 1884.0275357785695,
+          "EndHz": 1973.8914730101437,
+          "Score": 22.9307918548584
+        },
+        {
+          "StartSeconds": 0.64,
+          "StartHz": 208.6651721895942,
+          "EndHz": 214.47911395262707,
+          "Score": 22.82758903503418
+        },
+        {
+          "StartSeconds": 0.6,
+          "StartHz": 2729.5543424242073,
+          "EndHz": 2524.0585774058577,
+          "Score": 22.427745819091797
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2530.1904641470337,
+          "TimeSeconds": 0.5
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-865.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1037.0901,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2599.919697986626,
+          "EndHz": 2590.1288114353697,
+          "Score": 81.6912956237793
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1601.5627392925112,
+          "EndHz": 1641.1805599289712,
+          "Score": 24.276339530944824
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2811.7467777366587,
+          "EndHz": 2612.6957370084638,
+          "Score": 22.964635848999023
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2371.0378924988204,
+          "EndHz": 2567.701120702437,
+          "Score": 22.264360427856445
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2600.251147704138,
+          "TimeSeconds": 0.548
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-873.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1047.4436,
+      "candidates": [
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2599.7670614016906,
+          "EndHz": 2590.608561386433,
+          "Score": 84.94757843017578
+        },
+        {
+          "StartSeconds": 0.6,
+          "StartHz": 2819.157643895485,
+          "EndHz": 2611.9246861924685,
+          "Score": 28.368242263793945
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 1600.6679508256484,
+          "EndHz": 1636.8802199101247,
+          "Score": 26.881474494934082
+        },
+        {
+          "StartSeconds": 0.6,
+          "StartHz": 2360.9300986004873,
+          "EndHz": 2567.991631799163,
+          "Score": 26.31383228302002
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2600.07710301304,
+          "TimeSeconds": 0.492
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-880.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1049.5186,
+      "candidates": [
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2599.943052699732,
+          "EndHz": 2591.405759889754,
+          "Score": 83.35868453979492
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 1601.8277865348898,
+          "EndHz": 1635.5224304408391,
+          "Score": 22.909347534179688
+        },
+        {
+          "StartSeconds": 0.6,
+          "StartHz": 2360.9839727300573,
+          "EndHz": 2567.991631799163,
+          "Score": 22.832138061523438
+        },
+        {
+          "StartSeconds": 0.6,
+          "StartHz": 2819.214287307508,
+          "EndHz": 2611.9246861924685,
+          "Score": 22.62836265563965
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2600.2320646574717,
+          "TimeSeconds": 0.496
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-723.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2762.7968,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 909.5461650343767,
+          "EndHz": 879.8009190928908,
+          "Score": 74.57742691040039
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1818.2922618767232,
+          "EndHz": 1759.2370636304047,
+          "Score": 46.020957946777344
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2727.631465109023,
+          "EndHz": 2638.5021810657513,
+          "Score": 35.69977855682373
+        },
+        {
+          "StartSeconds": 0.7200000000000001,
+          "StartHz": 209.19622695033462,
+          "EndHz": 253.34373402479568,
+          "Score": 21.950971603393555
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 910.5531273061811,
+          "TimeSeconds": 0.56
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-738.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1857.8391,
+      "candidates": [
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 429.0255959779105,
+          "EndHz": 402.15400245450843,
+          "Score": 78.85072708129883
+        },
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 858.0192778851911,
+          "EndHz": 804.0691288030556,
+          "Score": 51.140560150146484
+        },
+        {
+          "StartSeconds": 0.36,
+          "StartHz": 633.8861085245001,
+          "EndHz": 427.6814582929962,
+          "Score": 26.069753646850586
+        },
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 1285.9480736983137,
+          "EndHz": 1204.7448884819855,
+          "Score": 24.45221710205078
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 429.935276836309,
+          "TimeSeconds": 0.556
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-828.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1059.5194,
+      "candidates": [
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2769.7005303610035,
+          "EndHz": 2756.4033305864095,
+          "Score": 84.04343795776367
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 922.2425746808963,
+          "EndHz": 974.3679942987364,
+          "Score": 27.954378128051758
+        },
+        {
+          "StartSeconds": 0.6,
+          "StartHz": 2534.815627047555,
+          "EndHz": 2740.794979079498,
+          "Score": 25.085448265075684
+        },
+        {
+          "StartSeconds": 0.6,
+          "StartHz": 2982.9658738227467,
+          "EndHz": 2789.76519956395,
+          "Score": 24.44465732574463
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2770.1506788828883,
+          "TimeSeconds": 0.512
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-835.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1788.6859,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2769.970687794239,
+          "EndHz": 2757.4892574892083,
+          "Score": 84.09967803955078
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 921.7624530160487,
+          "EndHz": 970.4166540589356,
+          "Score": 26.97373390197754
+        },
+        {
+          "StartSeconds": 0.64,
+          "StartHz": 2980.1109400389637,
+          "EndHz": 2773.0125523012553,
+          "Score": 25.59072780609131
+        },
+        {
+          "StartSeconds": 0,
+          "StartHz": 2549.880063604894,
+          "EndHz": 2733.3399736259603,
+          "Score": 25.005990028381348
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2770.39322016933,
+          "TimeSeconds": 0.536
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-843.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1057.6573,
+      "candidates": [
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2770.0052215211017,
+          "EndHz": 2758.215805171971,
+          "Score": 82.20431518554688
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2985.114229326939,
+          "EndHz": 2778.8702928870293,
+          "Score": 28.203659057617188
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 921.9342609107372,
+          "EndHz": 967.8642994948342,
+          "Score": 27.23371696472168
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2535.1922145416297,
+          "EndHz": 2738.0157798240643,
+          "Score": 25.811100006103516
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2770.4043272300787,
+          "TimeSeconds": 0.54
+        }
+      ]
+    }
+  ],
+  "comparison_after": [
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-655.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2597.9561,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2558.9945666926983,
+          "EndHz": 2518.9867610175534,
+          "Score": 99.72801971435547
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1763.947077751434,
+          "EndHz": 1923.427986564177,
+          "Score": 42.13767051696777
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 422.1755753569442,
+          "EndHz": 596.2940151067396,
+          "Score": 31.090105056762695
+        },
+        {
+          "StartSeconds": 1.1200000000000003,
+          "StartHz": 206.05615546167027,
+          "EndHz": 253.51202516606006,
+          "Score": 23.35125160217285
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2560.3489461781396,
+          "TimeSeconds": 0.528
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-663.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2468.7261,
+      "candidates": [
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 2558.6537611930407,
+          "EndHz": 2519.4749701750193,
+          "Score": 98.74678421020508
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1763.2156659001155,
+          "EndHz": 1919.6426125230448,
+          "Score": 42.58838653564453
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 421.2059809213879,
+          "EndHz": 600.9464137962823,
+          "Score": 29.876020431518555
+        },
+        {
+          "StartSeconds": 0.04,
+          "StartHz": 2771.702395648649,
+          "EndHz": 2565.062761506276,
+          "Score": 24.087727546691895
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2559.980076143929,
+          "TimeSeconds": 0.552
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-678.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2567.7534,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2559.312589172638,
+          "EndHz": 2521.7628606333647,
+          "Score": 98.08084106445312
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1763.4045688250708,
+          "EndHz": 1912.6907812283519,
+          "Score": 42.6716194152832
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 423.74449981859516,
+          "EndHz": 609.4201729400612,
+          "Score": 32.37133979797363
+        },
+        {
+          "StartSeconds": 0.2,
+          "StartHz": 2350.386816542722,
+          "EndHz": 2537.803126187065,
+          "Score": 23.808788299560547
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2560.5837556652577,
+          "TimeSeconds": 0.544
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-723.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2601.2644,
+      "candidates": [
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 909.1342325582918,
+          "EndHz": 879.3420319357178,
+          "Score": 85.96371650695801
+        },
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 1818.0043509940049,
+          "EndHz": 1758.6024678874971,
+          "Score": 57.68739318847656
+        },
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 2727.054416900221,
+          "EndHz": 2637.9828925804045,
+          "Score": 47.80423164367676
+        },
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 262.0968773565632,
+          "EndHz": 237.41140549853324,
+          "Score": 23.263126373291016
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 910.1427843813284,
+          "TimeSeconds": 0.56
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-738.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2568.4364,
+      "candidates": [
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 429.04848557270486,
+          "EndHz": 402.1696897667001,
+          "Score": 81.65039253234863
+        },
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 858.017867309126,
+          "EndHz": 804.3566516692986,
+          "Score": 54.68001174926758
+        },
+        {
+          "StartSeconds": 0.04,
+          "StartHz": 207.92608111494192,
+          "EndHz": 385.2810183752615,
+          "Score": 28.79835319519043
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1285.402120490049,
+          "EndHz": 1207.1587071344989,
+          "Score": 26.99534797668457
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 429.9584102491194,
+          "TimeSeconds": 0.556
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-753.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2440.8965,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2529.532129025001,
+          "EndHz": 2505.3527979833307,
+          "Score": 97.99440383911133
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1882.122003974839,
+          "EndHz": 1978.8907888955184,
+          "Score": 42.004682540893555
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 648.051002508363,
+          "EndHz": 527.0903550673595,
+          "Score": 28.15644645690918
+        },
+        {
+          "StartSeconds": 0.04,
+          "StartHz": 2273.314013380292,
+          "EndHz": 2480.125523012552,
+          "Score": 25.383639335632324
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2530.350669041927,
+          "TimeSeconds": 0.54
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-760.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2578.61,
+      "candidates": [
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 2529.4437464746616,
+          "EndHz": 2506.6135373435295,
+          "Score": 98.65250015258789
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 1881.9608253749725,
+          "EndHz": 1973.049970755789,
+          "Score": 42.41946601867676
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 648.9686775723328,
+          "EndHz": 578.3909275706992,
+          "Score": 28.011810302734375
+        },
+        {
+          "StartSeconds": 0.12,
+          "StartHz": 2313.25833133317,
+          "EndHz": 2480.3851066999027,
+          "Score": 23.416621208190918
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2530.2166148280676,
+          "TimeSeconds": 0.5
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-828.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2057.4853,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2769.5098800287924,
+          "EndHz": 2756.234611604094,
+          "Score": 98.24825286865234
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 921.6974423750488,
+          "EndHz": 974.0824988221573,
+          "Score": 42.58828163146973
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 594.2776305898494,
+          "EndHz": 551.2583678050828,
+          "Score": 31.673206329345703
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 1849.4893010546664,
+          "EndHz": 1783.8610546499756,
+          "Score": 27.277067184448242
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2769.9592861112988,
+          "TimeSeconds": 0.512
+        },
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 595.2339565745231,
+          "TimeSeconds": 0.532
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-835.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2041.8073,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2769.9764250033136,
+          "EndHz": 2757.524594022363,
+          "Score": 97.29810333251953
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 921.5459091862532,
+          "EndHz": 970.8318347369641,
+          "Score": 40.898658752441406
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 586.9906818174187,
+          "EndHz": 547.0702964348551,
+          "Score": 29.433238983154297
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1849.0647534127177,
+          "EndHz": 1787.4236928881153,
+          "Score": 28.115581512451172
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2769.897955356008,
+          "TimeSeconds": 0.536
+        },
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 588.8421018740962,
+          "TimeSeconds": 0.556
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-843.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1284.4558,
+      "candidates": [
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 2769.6158794560874,
+          "EndHz": 2757.9360885992282,
+          "Score": 98.6001091003418
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 921.2369181723942,
+          "EndHz": 968.015029615082,
+          "Score": 41.68381690979004
+        },
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 581.4434387853071,
+          "EndHz": 543.2038788752213,
+          "Score": 31.866247177124023
+        },
+        {
+          "StartSeconds": 0.32,
+          "StartHz": 2986.168098031788,
+          "EndHz": 2780.350159504806,
+          "Score": 22.372532844543457
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2770.0112740263176,
+          "TimeSeconds": 0.54
+        },
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 582.2379580572474,
+          "TimeSeconds": 0.56
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-865.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2043.3529,
+      "candidates": [
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 2599.7177400467194,
+          "EndHz": 2590.0111348371665,
+          "Score": 99.0328254699707
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1600.6431886913097,
+          "EndHz": 1639.6482660688087,
+          "Score": 43.06339073181152
+        },
+        {
+          "StartSeconds": 0.5599999999999999,
+          "StartHz": 395.48237095817706,
+          "EndHz": 365.1456781576968,
+          "Score": 35.878061294555664
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 1002.8446025245115,
+          "EndHz": 952.865160821985,
+          "Score": 26.06599998474121
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2600.0463365979986,
+          "TimeSeconds": 0.548
+        },
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 397.0093554101293,
+          "TimeSeconds": 0.568
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-873.000s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 1278.2485,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2599.606739458035,
+          "EndHz": 2590.4623396230904,
+          "Score": 99.33241271972656
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 1601.0086278453182,
+          "EndHz": 1637.1247775881493,
+          "Score": 39.882638931274414
+        },
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 392.7243430919766,
+          "EndHz": 364.6069572632549,
+          "Score": 34.39404296875
+        },
+        {
+          "StartSeconds": 0.32,
+          "StartHz": 2803.021834079126,
+          "EndHz": 2616.8337906079464,
+          "Score": 22.425625801086426
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2599.916303737658,
+          "TimeSeconds": 0.492
+        },
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 394.6761976090643,
+          "TimeSeconds": 0.516
+        }
+      ]
+    },
+    {
+      "file": "RS44-OQ4-20261031-070511-UTC-880.500s.f32",
+      "durationSeconds": 4,
+      "elapsedMilliseconds": 2034.796,
+      "candidates": [
+        {
+          "StartSeconds": 0.5199999999999999,
+          "StartHz": 2599.894224233673,
+          "EndHz": 2591.2421771178992,
+          "Score": 98.47834014892578
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 1600.6034623139483,
+          "EndHz": 1634.7912624197959,
+          "Score": 39.55615997314453
+        },
+        {
+          "StartSeconds": 0.4799999999999999,
+          "StartHz": 387.72946556950154,
+          "EndHz": 360.69708802113075,
+          "Score": 35.54786491394043
+        },
+        {
+          "StartSeconds": 0.2,
+          "StartHz": 2823.97344433669,
+          "EndHz": 2617.7824267782426,
+          "Score": 24.90346908569336
+        }
+      ],
+      "results": [
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 2601.4899330747417,
+          "TimeSeconds": 0.496
+        },
+        {
+          "Message": "CQ K8OTY EN73",
+          "FrequencyHz": 389.6445894303675,
+          "TimeSeconds": 0.516
+        }
+      ]
+    }
+  ],
+  "scan_windows": 61,
+  "scan_decodes": 38,
+  "low_band_decodes": [
+    {
+      "clip": "RS44-OQ4-20261031-070511-UTC-723.000s.f32",
+      "Message": "CQ K8OTY EN73",
+      "FrequencyHz": 910.1427843813284,
+      "TimeSeconds": 0.56
+    },
+    {
+      "clip": "RS44-OQ4-20261031-070511-UTC-738.000s.f32",
+      "Message": "CQ K8OTY EN73",
+      "FrequencyHz": 429.9584102491194,
+      "TimeSeconds": 0.556
+    },
+    {
+      "clip": "RS44-OQ4-20261031-070511-UTC-828.000s.f32",
+      "Message": "CQ K8OTY EN73",
+      "FrequencyHz": 595.2339565745231,
+      "TimeSeconds": 0.532
+    },
+    {
+      "clip": "RS44-OQ4-20261031-070511-UTC-835.500s.f32",
+      "Message": "CQ K8OTY EN73",
+      "FrequencyHz": 588.8421018740962,
+      "TimeSeconds": 0.556
+    },
+    {
+      "clip": "RS44-OQ4-20261031-070511-UTC-843.000s.f32",
+      "Message": "CQ K8OTY EN73",
+      "FrequencyHz": 582.2379580572474,
+      "TimeSeconds": 0.56
+    },
+    {
+      "clip": "RS44-OQ4-20261031-070511-UTC-865.500s.f32",
+      "Message": "CQ K8OTY EN73",
+      "FrequencyHz": 397.0093554101293,
+      "TimeSeconds": 0.568
+    },
+    {
+      "clip": "RS44-OQ4-20261031-070511-UTC-873.000s.f32",
+      "Message": "CQ K8OTY EN73",
+      "FrequencyHz": 394.6761976090643,
+      "TimeSeconds": 0.516
+    },
+    {
+      "clip": "RS44-OQ4-20261031-070511-UTC-880.500s.f32",
+      "Message": "CQ K8OTY EN73",
+      "FrequencyHz": 389.6445894303675,
+      "TimeSeconds": 0.516
+    }
+  ],
+  "raw_48k_tone_relationship": [
+    {
+      "start_seconds": 656.02,
+      "opening": {
+        "strong_hz": 2558.993,
+        "marked_hz": 1763.943,
+        "fourth_harmonic_hz": 10235.901,
+        "marked_plus_four_times_strong_hz": 11999.916
+      },
+      "closing": {
+        "strong_hz": 2518.992,
+        "marked_hz": 1923.444,
+        "fourth_harmonic_hz": 10075.964,
+        "marked_plus_four_times_strong_hz": 11999.41
+      }
+    },
+    {
+      "start_seconds": 753.52,
+      "opening": {
+        "strong_hz": 2529.529,
+        "marked_hz": 1882.118,
+        "fourth_harmonic_hz": 10118.116,
+        "marked_plus_four_times_strong_hz": 12000.233
+      },
+      "closing": {
+        "strong_hz": 2505.352,
+        "marked_hz": 1978.894,
+        "fourth_harmonic_hz": 10021.696,
+        "marked_plus_four_times_strong_hz": 12000.301
+      }
+    },
+    {
+      "start_seconds": 866.02,
+      "opening": {
+        "strong_hz": 2599.948,
+        "marked_hz": 1600.648,
+        "fourth_harmonic_hz": 10399.64,
+        "marked_plus_four_times_strong_hz": 12000.438
+      },
+      "closing": {
+        "strong_hz": 2590.146,
+        "marked_hz": 1639.672,
+        "fourth_harmonic_hz": 10360.715,
+        "marked_plus_four_times_strong_hz": 12000.256
+      }
+    }
+  ]
+}

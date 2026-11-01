@@ -48,6 +48,7 @@
       <MenuItem Header="{loc:Localize Key=Menu.Tools}">
         <MenuItem Header="{loc:Localize Key=Menu.Tools.QsoLogbook}" Command="{Binding OpenQsoLogbookCommand}" />
         <MenuItem Header="{loc:Localize Key=Menu.Tools.Ft4}" Command="{Binding OpenFt4Command}" />
+        <MenuItem Header="OscarWatch _OQ4" Command="{Binding OpenOq4Command}" />
         <MenuItem Header="{loc:Localize Key=Menu.Tools.Sstv}" Command="{Binding OpenSstvCommand}" />
         <MenuItem Header="{loc:Localize Key=Menu.Tools.Terminal}" Command="{Binding OpenTerminalCommand}" />
       </MenuItem>

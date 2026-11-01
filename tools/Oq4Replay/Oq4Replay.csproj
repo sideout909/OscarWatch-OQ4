@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../OscarWatch.Core/OscarWatch.Core.csproj" />
+    <Compile Include="../../OscarWatch/Ft4/Oq4Decoder.cs" Link="Oq4Decoder.cs" />
+    <Compile Include="../../OscarWatch/Ft4/Oq4OrderedStatisticsDecoder.cs" Link="Oq4OrderedStatisticsDecoder.cs" />
+    <Compile Include="../../OscarWatch/Ft4/Oq4Search.cs" Link="Oq4Search.cs" />
+    <Compile Include="../../OscarWatch/Ft4/Ft8Native.cs" Link="Ft8Native.cs" />
+    <None Include="../../OscarWatch/runtimes/linux-x64/native/oscarwatch_ft8.so" Link="oscarwatch_ft8.so" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

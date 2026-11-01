@@ -284,6 +284,19 @@ public sealed class Ft4AudioService : IDisposable
     /// <summary>Linear output gain for the operator's TX level setting.</summary>
     public static float OutputGain(double level) => (float)Math.Clamp(level, 0.01, 1.0);
 
+    /// <summary>Open output and resample/scale before a scheduled burst, as FT4 does.</summary>
+    public (float[] Samples, int SampleRate) PreparePcm(float[] samples12k, double level,
+        string? deviceId, string? deviceDisplayName = null)
+    {
+        lock (_gate)
+        {
+            if (!PortAudioRuntime.EnsureInitialized())
+                throw new InvalidOperationException("PortAudio is not available.");
+            EnsureOutputUnlocked(deviceId, deviceDisplayName);
+            return (ScaleForOutput(samples12k, level), _playbackSampleRate);
+        }
+    }
+
     public void PlayPcm(float[] samples12k, double level, string? deviceId, string? deviceDisplayName = null)
     {
         lock (_gate)

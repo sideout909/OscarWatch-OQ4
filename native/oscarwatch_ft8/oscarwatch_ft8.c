@@ -17,6 +17,7 @@
 #include <ft8/constants.h>
 #include <ft8/decode.h>
 #include <ft8/encode.h>
+#include <ft8/ldpc.h>
 #include <ft8/message.h>
 
 #define FT8_SYMBOL_BT 2.0f
@@ -446,6 +447,33 @@ OW_FT8_API void ow_ft8_clear_callsigns(void)
     hashtable_init();
     hashtable_ready = 1;
     hash_unlock();
+}
+
+OW_FT8_API int ow_oq4_encode_bits(const char* message_text, uint8_t* bits, int capacity)
+{
+    if (!message_text || !bits || capacity < FTX_LDPC_N)
+        return -1;
+    ensure_hashtable();
+    ftx_message_t msg = {0};
+    if (ftx_message_encode(&msg, &hash_if, message_text) != FTX_MESSAGE_RC_OK)
+        return -2;
+    uint8_t padded[FTX_LDPC_K_BYTES] = {0};
+    memcpy(padded, msg.payload, FTX_PAYLOAD_LENGTH_BYTES);
+    return ftx_codeword_bits(1, padded, bits);
+}
+
+OW_FT8_API int ow_oq4_decode_bits(const float* likelihoods, char* text, int capacity)
+{
+    if (!likelihoods || !text || capacity < FTX_MAX_MESSAGE_LENGTH) return -1;
+    ensure_hashtable();
+    ftx_waterfall_t wf = {0};
+    wf.protocol = FTX_PROTOCOL_FT4;
+    ftx_message_t msg = {0};
+    ftx_decode_status_t status = {0};
+    if (!ftx_decode_candidate_llr(&wf, likelihoods, 40, &msg, &status)) return 0;
+    ftx_message_offsets_t offsets;
+    if (ftx_message_decode(&msg, &hash_if, text, &offsets) != FTX_MESSAGE_RC_OK) return 0;
+    return 1;
 }
 
 OW_FT8_API int ow_ft8_encode_pcm(
@@ -1531,4 +1559,14 @@ OW_FT8_API int ow_ft8_decode_pcm_drift(
     cfg.dt_max_sec = isfinite(dt_max_sec) ? dt_max_sec : 0.0f;
     return decode_slot(samples, num_samples, sample_rate, is_ft4, f_min_hz, f_max_hz,
         out_decodes, out_capacity, deep, hints_nl, hint_hz, hint_half_hz, &cfg, 1, NULL, 0);
+}
+
+// Optional receiver-only API. Existing transmitters and native decoders remain compatible.
+OW_FT8_API int ow_oq4_soft_bits(const float* likelihoods, float* extrinsic)
+{
+    if (!likelihoods || !extrinsic) return -1;
+    for (int n = 0; n < 174; ++n) if (!isfinite(likelihoods[n])) return -1;
+    int errors;
+    bp_decode_soft(likelihoods, 12, extrinsic, &errors);
+    return errors;
 }

@@ -188,6 +188,87 @@ internal static class Ft8Native
     [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
     private static extern void ow_ft8_clear_callsigns();
 
+    // These ft8_lib exports are available in the Linux development library. Other
+    // builds may hide them; report that cleanly instead of transmitting FT4.
+    [StructLayout(LayoutKind.Sequential)]
+    private struct PackedMessage
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)] public byte[] Payload;
+        public ushort Hash;
+    }
+
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int ftx_message_encode(
+        ref PackedMessage message, IntPtr hashInterface,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string text);
+
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int ftx_codeword_bits(int isFt4, byte[] payload, [Out] byte[] bits);
+
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int ow_oq4_encode_bits(
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string text, [Out] byte[] bits, int capacity);
+
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int ow_oq4_decode_bits(float[] likelihoods, StringBuilder text, int capacity);
+
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    private static extern int ow_oq4_soft_bits(float[] likelihoods, [Out] float[] extrinsic);
+
+    internal static float[]? Oq4Extrinsic(float[] likelihoods)
+    {
+        if (likelihoods.Length != 174 || likelihoods.Any(x => !float.IsFinite(x))) return null;
+        try
+        {
+            var result = new float[174];
+            return ow_oq4_soft_bits(likelihoods, result) >= 0 && result.All(float.IsFinite) ? result : null;
+        }
+        catch (EntryPointNotFoundException) { return null; } // Older native library: ordinary decoding still works.
+    }
+
+    internal static string? DecodeOq4Codeword(float[] likelihoods)
+    {
+        if (likelihoods.Length != 174) throw new ArgumentException("OQ4 requires 174 bit likelihoods.");
+        var text = new StringBuilder(64);
+        return ow_oq4_decode_bits(likelihoods, text, text.Capacity) == 1 ? text.ToString() : null;
+    }
+
+    public static byte[] EncodeOq4Codeword(string message)
+    {
+        var text = NormalizeMessageForPack(message);
+        if (text.Length == 0)
+            throw new ArgumentException("Enter an FT4-format message.");
+        var packed = new PackedMessage { Payload = new byte[10] };
+        try
+        {
+            var bits = new byte[174];
+            try
+            {
+                var rc = ow_oq4_encode_bits(text, bits, bits.Length);
+                if (rc != 0) throw new ArgumentException("Could not pack the message; check callsign and grid format.");
+                return bits;
+            }
+            catch (EntryPointNotFoundException)
+            {
+                // Older Linux development builds exported the underlying ft8_lib functions.
+            }
+            if (ftx_message_encode(ref packed, IntPtr.Zero, text) != 0)
+                throw new ArgumentException("Could not pack the message; check callsign and grid format.");
+            // ftx_codeword_bits reads a 12-byte source buffer even though the
+            // packed message carries only ten payload bytes.
+            var paddedPayload = new byte[12];
+            Array.Copy(packed.Payload, paddedPayload, packed.Payload.Length);
+            if (ftx_codeword_bits(1, paddedPayload, bits) != 0)
+                throw new InvalidOperationException("Could not create the LDPC codeword.");
+            return bits;
+        }
+        catch (EntryPointNotFoundException ex)
+        {
+            throw new InvalidOperationException("This native FT4 library does not expose the OQ4 encoder; rebuild the native library for this platform.", ex);
+        }
+    }
+
+
     public static void RememberCallsign(string callsign)
     {
         var call = Ft4MessageCodec.NormalizeCall(callsign);

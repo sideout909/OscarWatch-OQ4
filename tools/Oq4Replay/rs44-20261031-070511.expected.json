@@ -1,0 +1,116 @@
+[
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-655.500s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2550.3489461781396,
+    "MaxFrequencyHz": 2570.3489461781396
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-663.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2549.980076143929,
+    "MaxFrequencyHz": 2569.980076143929
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-678.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2550.5837556652577,
+    "MaxFrequencyHz": 2570.5837556652577
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-723.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 900.1427843813284,
+    "MaxFrequencyHz": 920.1427843813284
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-738.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 419.9584102491194,
+    "MaxFrequencyHz": 439.9584102491194
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-753.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2520.350669041927,
+    "MaxFrequencyHz": 2540.350669041927
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-760.500s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2520.2166148280676,
+    "MaxFrequencyHz": 2540.2166148280676
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-828.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2759.9592861112988,
+    "MaxFrequencyHz": 2779.9592861112988
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-828.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 585.2339565745231,
+    "MaxFrequencyHz": 605.2339565745231
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-835.500s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2759.897955356008,
+    "MaxFrequencyHz": 2779.897955356008
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-835.500s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 578.8421018740962,
+    "MaxFrequencyHz": 598.8421018740962
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-843.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2760.0112740263176,
+    "MaxFrequencyHz": 2780.0112740263176
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-843.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 572.2379580572474,
+    "MaxFrequencyHz": 592.2379580572474
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-865.500s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2590.0463365979986,
+    "MaxFrequencyHz": 2610.0463365979986
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-865.500s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 387.0093554101293,
+    "MaxFrequencyHz": 407.0093554101293
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-873.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2589.916303737658,
+    "MaxFrequencyHz": 2609.916303737658
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-873.000s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 384.6761976090643,
+    "MaxFrequencyHz": 404.6761976090643
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-880.500s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2591.4899330747417,
+    "MaxFrequencyHz": 2611.4899330747417
+  },
+  {
+    "File": "RS44-OQ4-20261031-070511-UTC-880.500s.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 379.6445894303675,
+    "MaxFrequencyHz": 399.6445894303675
+  }
+]

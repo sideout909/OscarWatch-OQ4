@@ -53,6 +53,19 @@ public sealed class PttKeyer : IDisposable
     /// </summary>
     public void KeyNow() => TryAssert();
 
+    /// <summary>Open a separate PTT adapter while preparing, leaving its line idle.
+    /// This moves USB/serial open latency out of the timed key operation.</summary>
+    public void Prepare()
+    {
+        var options = _options();
+        if (options.Method != PttMethod.SeparateComPort) return;
+        lock (_portGate)
+        {
+            EnsureSeparatePort(options);
+            if (!_keyed) SetLine(_separatePort!, options.Line, options.Invert);
+        }
+    }
+
     public async Task KeyAsync(CancellationToken cancellationToken = default)
     {
         if (!TryAssert())
@@ -226,8 +239,8 @@ public sealed class PttKeyer : IDisposable
         _separatePort = new SerialPort(portName, 9600, Parity.None, 8, StopBits.One)
         {
             Handshake = Handshake.None,
-            DtrEnable = false,
-            RtsEnable = false
+            DtrEnable = options.Line == PttLine.Dtr && options.Invert,
+            RtsEnable = options.Line == PttLine.Rts && options.Invert
         };
         try
         {
