@@ -1,5 +1,13 @@
 # OQ4 continuation handoff — 2026-10-31
 
+## Build version — 2026-11-01
+
+The operator requested **1.1.5-OQ4** and a GitHub package build. Project Version
+is now 1.1.5-OQ4, with numeric assembly/file version 1.1.5.0. Manual Publish runs
+use the project version rather than 0.0.0-ci; tagged prereleases also strip the
+suffix for numeric assembly metadata. A manual workflow run builds artifacts
+without creating a public GitHub Release. No release tag is required.
+
 ## Latest continuation — receive-slot PTT blip, 2026-11-01
 
 The operator reports a short PTT reassertion after OQ4 TX, near the start of RX.

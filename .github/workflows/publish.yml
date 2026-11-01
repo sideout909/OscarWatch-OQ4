@@ -81,16 +81,20 @@ jobs:
         id: version
         shell: bash
         run: |
+          set -euo pipefail
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             ver="${GITHUB_REF_NAME#v}"
-            echo "version=${ver}" >> "$GITHUB_OUTPUT"
-            echo "assembly_version=${ver}" >> "$GITHUB_OUTPUT"
           else
-            short="${GITHUB_SHA::7}"
-            echo "version=0.0.0-ci.${short}" >> "$GITHUB_OUTPUT"
-            # AssemblyVersion/FileVersion must be numeric (major.minor.build.revision).
-            echo "assembly_version=0.0.0.0" >> "$GITHUB_OUTPUT"
+            ver="$(dotnet msbuild "$PROJECT" -nologo -getProperty:Version | tr -d '\r')"
           fi
+          numeric="${ver%%[-+]*}"
+          if [[ ! "$numeric" =~ ^[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+            echo "Invalid numeric assembly version: $numeric" >&2
+            exit 1
+          fi
+          IFS=. read -r major minor patch revision <<< "$numeric"
+          echo "version=${ver}" >> "$GITHUB_OUTPUT"
+          echo "assembly_version=${major}.${minor}.${patch}.${revision:-0}" >> "$GITHUB_OUTPUT"
 
       - name: Build oscarwatch_ft8 (Windows)
         if: runner.os == 'Windows'
