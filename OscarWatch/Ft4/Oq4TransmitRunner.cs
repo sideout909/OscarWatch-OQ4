@@ -3,7 +3,7 @@ using OscarWatch.Core.Ft4;
 namespace OscarWatch.Ft4;
 
 internal sealed record Oq4TransmitRequest(string Message, double FrequencyHz, DateTime? SlotStart,
-    int LeadMs, int TailMs, bool AudioOnly = false, bool Tune = false);
+    int LeadMs, int TailMs, bool AudioOnly = false, bool Tune = false, bool KeepPttPortOpen = false);
 internal sealed record Oq4PreparedAudio(float[] Samples, int SampleRate);
 internal enum Oq4TransmitOutcome { Sent, Skipped }
 
@@ -69,12 +69,13 @@ internal sealed class Oq4TransmitRunner
     public Oq4TransmitOutcome Run(Oq4TransmitRequest request, CancellationToken token)
     {
         lock (_keyGate) { token.ThrowIfCancellationRequested(); _stopped = false; }
+        var keepPort = false;
         try
         {
             _status("Preparing OQ4 audio and PTT…");
             var prepared = _hardware.Prepare(request, token);
             token.ThrowIfCancellationRequested();
-            if (!request.AudioOnly) _hardware.PreparePtt();
+            if (!request.AudioOnly) WithKeyGate(token, _hardware.PreparePtt);
             token.ThrowIfCancellationRequested();
             if (request.SlotStart is { } slot)
             {
@@ -129,12 +130,12 @@ internal sealed class Oq4TransmitRunner
                 _delay(TimeSpan.FromMilliseconds(20), token);
             }
             if (!request.AudioOnly) _delay(TimeSpan.FromMilliseconds(request.TailMs), token);
+            keepPort = request.KeepPttPortOpen && !request.AudioOnly && !request.Tune;
             return Oq4TransmitOutcome.Sent;
         }
         finally
         {
-            Stop();
-            try { _hardware.ReleasePtt(); }
+            try { StopCore(keepPort && !token.IsCancellationRequested); }
             finally { _hardware.ReleaseDoppler(); }
         }
     }
@@ -149,13 +150,25 @@ internal sealed class Oq4TransmitRunner
         }
     }
 
-    public void Stop()
+    // Explicit Halt/retarget/close always releases the adapter. Successful
+    // repeated bursts may leave it open at idle: USB serial open/close can pulse
+    // RTS/DTR even when the application's requested line state is deasserted.
+    public void Stop() => StopCore(keepPort: false);
+
+    private void StopCore(bool keepPort)
     {
         lock (_keyGate)
         {
+            keepPort &= !_stopped;
             _stopped = true;
-            try { _hardware.StopAudio(); }
-            finally { _hardware.UnkeyNow(); }
+            var audioStopped = false;
+            try { _hardware.StopAudio(); audioStopped = true; }
+            finally
+            {
+                var unkeyed = false;
+                try { _hardware.UnkeyNow(); unkeyed = true; }
+                finally { if (!keepPort || !audioStopped || !unkeyed) _hardware.ReleasePtt(); }
+            }
         }
     }
 }

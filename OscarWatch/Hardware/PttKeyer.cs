@@ -271,6 +271,9 @@ public sealed class PttKeyer : IDisposable
         catch (Exception ex)
         {
             Log.Warning(ex, "{Label} PTT unkey failed", _label);
+            // An idle-port reuse policy must not retain a failed asserted line.
+            if (options.Method == PttMethod.SeparateComPort)
+                lock (_portGate) ClosePort();
         }
         finally
         {

@@ -1,5 +1,34 @@
 # OQ4 continuation handoff — 2026-10-31
 
+## Latest continuation — receive-slot PTT blip, 2026-11-01
+
+The operator reports a short PTT reassertion after OQ4 TX, near the start of RX.
+The 16:40 UTC log has one scheduled OQ4 key event at :22.500, then adapter close
+at :25.541 and another adapter preparation at :26.007. There is no second logged
+OQ4 key command during that interval. A USB-serial open/close line transient is a
+plausible cause, not yet electrically measured.
+
+Scheduled repeated OQ4 requests now keep the separate PTT adapter **open at idle**
+after successful bursts. PTT still deasserts at each burst end. Halt, close,
+retarget, cancelled/failed/missed transmissions and nonrepeating operations release
+the adapter. Serial preparation is protected by the same stop/key gate; cleanup
+always releases Doppler, even when stopping audio/unkeying throws. A serial unkey
+failure forces the port closed rather than retaining a potentially asserted line.
+No RF timing, waveform, decoder or global audio settings changed.
+
+Tests cover consecutive bursts sharing one adapter open with exactly one key each,
+Halt release, next-burst failure, cancellation and cleanup failure. The app builds and **153 targeted tests pass**. Hardware RTS/DTR
+behavior still needs an operator check after restarting this build. Do not describe
+the physical glitch as proven eliminated until that check.
+
+The prior JO-97 capture review is saved locally in Documents as
+`JO97-OQ4-20261101-1604-review.md`, with graphic and analysis JSON. Three CRC-valid
+lower copies near 980 Hz were independently reproduced, 16 ms after upper copies,
+with downlink-like drift; the source filename misleadingly starts RS44. Replay
+fixtures remain ignored under `testdata/oq4/jo97-20261101-1604/`. The separate FT4
+live RX/TX report is not conclusively diagnosed; native replay recovers W9SV and
+logs show two FT4 playback starts. Keep that issue distinct from this adapter fix.
+
 ## Latest continuation — fork presentation and paired operation, 2026-11-01
 
 The fork is renamed **OscarWatch-OQ4** (`sideout909/OscarWatch-OQ4`); origin now

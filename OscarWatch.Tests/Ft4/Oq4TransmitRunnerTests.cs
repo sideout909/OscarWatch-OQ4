@@ -153,6 +153,57 @@ public sealed class Oq4TransmitRunnerTests
     }
 
     [Fact]
+    public void Repeated_bursts_keep_idle_adapter_open_until_halt_without_extra_keys()
+    {
+        var hardware = new Hardware();
+        var runner = Runner(hardware);
+        var request = Request() with { KeepPttPortOpen = true };
+        Assert.Equal(Oq4TransmitOutcome.Sent, runner.Run(request, default));
+        Assert.True(hardware.PortOpen);
+        Assert.Equal(Oq4TransmitOutcome.Sent, runner.Run(request with { SlotStart = request.SlotStart!.Value.AddSeconds(7.5) }, default));
+        Assert.Equal(1,hardware.PortOpenCount);
+        Assert.Equal(2,hardware.Events.Count(x => x == "key"));
+        Assert.DoesNotContain("release-ptt",hardware.Events);
+        runner.Stop();
+        Assert.False(hardware.PortOpen);
+        Assert.Contains("release-ptt",hardware.Events);
+    }
+
+    [Fact]
+    public void Failed_next_burst_closes_a_retained_adapter()
+    {
+        var hardware = new Hardware();
+        var runner = Runner(hardware);
+        var request = Request() with { KeepPttPortOpen = true };
+        runner.Run(request,default);
+        hardware.PlaySucceeded = false;
+        Assert.Throws<InvalidOperationException>(() => runner.Run(request with { SlotStart=request.SlotStart!.Value.AddSeconds(7.5) },default));
+        Assert.False(hardware.PortOpen);
+        Assert.Contains("release-doppler",hardware.Events);
+    }
+
+    [Fact]
+    public void Cancellation_closes_adapter_even_when_repeat_reuse_was_requested()
+    {
+        using var cancel = new CancellationTokenSource();
+        var hardware = new Hardware { DuringKey = cancel.Cancel };
+        Assert.ThrowsAny<OperationCanceledException>(() => Runner(hardware).Run(Request() with { KeepPttPortOpen=true },cancel.Token));
+        Assert.False(hardware.PortOpen);
+        Assert.DoesNotContain("play",hardware.Events);
+        Assert.Contains("release-ptt",hardware.Events);
+    }
+
+    [Fact]
+    public void Cleanup_failure_never_retains_adapter_or_doppler_hold()
+    {
+        var hardware = new Hardware { UnkeyFails = true };
+        Assert.Throws<IOException>(() => Runner(hardware).Run(Request() with { KeepPttPortOpen=true },default));
+        Assert.False(hardware.PortOpen);
+        Assert.Contains("release-ptt",hardware.Events);
+        Assert.Contains("release-doppler",hardware.Events);
+    }
+
+    [Fact]
     public void Estimated_snr_uses_signal_to_noise_ratio_and_not_absolute_audio_gain()
     {
         var bits = Enumerable.Range(0, 174).Select(i => (byte)(i % 2)).ToArray();
@@ -202,6 +253,8 @@ public sealed class Oq4TransmitRunnerTests
         public Action? DuringPrepare, DuringTune, DuringKey;
         public Exception? KeyError;
         public bool StepSucceeded = true, PlaySucceeded = true;
+        public bool PortOpen, UnkeyFails;
+        public int PortOpenCount;
         private DateTime _playingUntil;
         private bool _tuning;
         public Oq4PreparedAudio Prepare(Oq4TransmitRequest request, CancellationToken cancellation)
@@ -209,15 +262,15 @@ public sealed class Oq4TransmitRunnerTests
             Events.Add("prepare"); Now += PrepareDelay; DuringPrepare?.Invoke();
             return new(new float[35078], 12000);
         }
-        public void PreparePtt() { Events.Add("prepare-ptt"); Now += PreparePttDelay; }
+        public void PreparePtt() { Events.Add("prepare-ptt"); if (!PortOpen) { PortOpen = true; PortOpenCount++; Now += PreparePttDelay; } }
         public bool StepDoppler(Oq4TransmitRequest request, TimeSpan budget) { Events.Add("doppler"); return StepSucceeded; }
         public void KeyNow() { Events.Add("key"); KeyAt = Now; Now += KeyDelay; DuringKey?.Invoke(); if (KeyError is not null) throw KeyError; }
         public bool PlayPrepared(Oq4PreparedAudio audio) { Events.Add("play"); PlayAt = Now; _playingUntil = Now.AddSeconds(2.93); return PlaySucceeded; }
         public void StartTune(Oq4TransmitRequest request) { Events.Add("tune"); _tuning = true; DuringTune?.Invoke(); }
         public bool IsPlaying => _tuning || Now < _playingUntil;
         public void StopAudio() { Events.Add("stop"); _tuning = false; _playingUntil = DateTime.MinValue; }
-        public void UnkeyNow() => Events.Add("unkey");
-        public void ReleasePtt() => Events.Add("release-ptt");
+        public void UnkeyNow() { Events.Add("unkey"); if (UnkeyFails) throw new IOException("unkey failed"); }
+        public void ReleasePtt() { Events.Add("release-ptt"); PortOpen = false; }
         public void ReleaseDoppler() => Events.Add("release-doppler");
     }
 }

@@ -124,3 +124,14 @@ leaving `main` as the upstream baseline. Its existing CI workflow only targets
 Local build/test evidence is recorded separately. Downloadable OQ4 release
 packages require a deliberate publish workflow/tag and native libraries for each
 supported platform; no release packages are created as part of this update.
+
+
+## Adapter lifecycle update — 2026-11-01
+
+Repeated scheduled OQ4 transmissions now retain the serial PTT adapter open at its
+idle line level between successful bursts. This removes routine close/reopen cycles
+near the RX slot, a plausible trigger for brief USB RTS/DTR pulses. It does not hold
+PTT asserted. Halt, close, cancellation/failure and nonrepeating operations release
+the adapter; Halt OQ4 before switching to FT4 TX. Unkey failure forces the adapter
+closed. This supersedes the earlier per-burst adapter-release description above.
+Physical behavior must be checked on the operator's adapter; tests use fake hardware.

@@ -353,7 +353,8 @@ public partial class Oq4Window : Window
         var options = _settings.Current.Ft4.ToPttOptions();
         var request = new Oq4TransmitRequest((MessageBox.Text ?? "").Trim().ToUpperInvariant(),
             (double)(TxFrequency.Value ?? 1500m), burstStart?.AddSeconds(-Oq4SlotClock.BurstOffsetSeconds),
-            options.ClampedLeadMs, options.ClampedTailMs, audioOnly, tune);
+            options.ClampedLeadMs, options.ClampedTailMs, audioOnly, tune,
+            KeepPttPortOpen: _armed && !audioOnly && !tune && burstStart.HasValue);
         var cancellation = new CancellationTokenSource();
         _tx = cancellation;
         _activeRequest = request;
