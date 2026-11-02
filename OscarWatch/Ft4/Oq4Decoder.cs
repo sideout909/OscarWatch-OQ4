@@ -11,6 +11,9 @@ internal static class Oq4Decoder
     private const int Rate = 1000;
     private const int Decimation = 12;
     private const int TemplateLength = 650;
+    private const int FallbackCandidatePool = 96;
+    private const int MaximumFallbackAttempts = 4;
+    private const double MinimumFallbackPreambleScore = .08;
     private static readonly double[] LowPass = MakeLowPass();
     private static readonly Complex[] Template = MakeTemplate();
     private static readonly Complex[] Known = MakeKnown();
@@ -85,25 +88,111 @@ internal static class Oq4Decoder
     {
         var results = new List<Result>();
         var decodedCandidates = new List<Oq4Search.Candidate>();
-        foreach (var candidate in Oq4Search.Find(samples, 4))
+        var initial = Oq4Search.Find(samples, 4);
+        bool AlreadyDecoded(Oq4Search.Candidate candidate) => decodedCandidates.Any(x =>
+            Math.Abs(x.StartSeconds - candidate.StartSeconds) < .25
+            && Math.Abs(x.StartHz - candidate.StartHz) < 35
+            && Math.Abs(x.EndHz - candidate.EndHz) < 35);
+        void TryCandidate(Oq4Search.Candidate candidate)
         {
-            // Below this score the candidate list is typically dominated by
-            // coincidental peaks in white noise. CRC remains the final check.
-            if (candidate.Score < 16.5) continue;
-            // A strong tone's sidelobes can pair with its own closing tone.
-            // Avoid spending the decode budget on those repeated candidates;
-            // keep distant candidates such as a separate satellite return.
-            if (decodedCandidates.Any(x => Math.Abs(x.StartSeconds - candidate.StartSeconds) < .25
-                                           && Math.Abs(x.StartHz - candidate.StartHz) < 350
-                                           && Math.Abs(x.EndHz - candidate.EndHz) < 45)) continue;
+            if (AlreadyDecoded(candidate)) return;
             var result = DecodeCandidate(samples, candidate);
-            if (result is null) continue;
+            if (result is null) return;
             decodedCandidates.Add(candidate);
             if (results.Any(r => Math.Abs(r.TimeSeconds - result.TimeSeconds) < .3
-                              && Math.Abs(r.FrequencyHz - result.FrequencyHz) < 30)) continue;
+                              && Math.Abs(r.FrequencyHz - result.FrequencyHz) < 30)) return;
             results.Add(result);
         }
+        // Keep the original four-candidate pass and its successful decodes.
+        foreach (var candidate in initial)
+        {
+            if (candidate.Score < 16.5) continue;
+            if (decodedCandidates.Any(x => Math.Abs(x.StartSeconds - candidate.StartSeconds) < .25
+                && Math.Abs(x.StartHz - candidate.StartHz) < 350
+                && Math.Abs(x.EndHz - candidate.EndHz) < 45)) continue;
+            TryCandidate(candidate);
+        }
+        if (initial.Length == 0) return results.ToArray();
+        // A decoded packet is a timing anchor for weaker simultaneous returns.
+        // Without a decode, use the strongest reference pair, never a callsign
+        // or a highlighted frequency. No new payload assumptions are introduced.
+        var anchors = decodedCandidates.Count > 0
+            ? decodedCandidates.Select(c => c.StartSeconds).Distinct().Take(2).ToArray()
+            : new[] { initial[0].StartSeconds };
+        bool KnownCarrier(Oq4Search.Candidate candidate) => decodedCandidates.Any(c =>
+            Math.Abs(c.StartSeconds - candidate.StartSeconds) < .25
+            && Math.Abs(c.StartHz - candidate.StartHz) < 50);
+        var ranked = Oq4Search.Find(samples, FallbackCandidatePool, expanded: true, nearTimes: anchors)
+            .Where(c => !KnownCarrier(c))
+            .Select(c => RankPreamble(samples, c))
+            .OrderByDescending(c => c.Score).ToArray();
+        var attempted = new List<Oq4Search.Candidate>();
+        foreach (var trial in ranked)
+        {
+            if (trial.Score < MinimumFallbackPreambleScore) continue;
+            var candidate = trial.Candidate;
+            if (KnownCarrier(candidate) || attempted.Any(c =>
+                Math.Abs(c.StartSeconds - candidate.StartSeconds) < .12
+                && Math.Abs(c.StartHz - candidate.StartHz) < 12
+                && Math.Abs(c.EndHz - candidate.EndHz) < 15)) continue;
+            if (attempted.Count == MaximumFallbackAttempts) break;
+            attempted.Add(candidate);
+            TryCandidate(candidate);
+            // Short/noisy references can bias the measured end frequency by a
+            // few Hz. Explore bounded endpoint uncertainty only for a coherent
+            // preamble, preserving the same CRC/FEC acceptance rule.
+            if (!AlreadyDecoded(candidate) && trial.Score >= .15)
+            {
+                foreach (var delta in new[] { -3.0, 3.0 })
+                {
+                    TryCandidate(candidate with { EndHz = candidate.EndHz + delta });
+                    if (AlreadyDecoded(candidate)) break;
+                }
+            }
+        }
         return results.ToArray();
+    }
+
+    /// <summary>
+    /// Rank reference pairs using only the fixed preamble. Four 100 ms coherent
+    /// sums estimate a residual carrier within ±5 Hz without searching messages.
+    /// This score prioritizes work; only the ordinary CRC/FEC path accepts data.
+    /// </summary>
+    internal static (double Score, Oq4Search.Candidate Candidate) RankPreamble(float[] samples, Oq4Search.Candidate candidate)
+    {
+        const double separation = (Oq4Waveform.PacketSampleCount - Oq4Waveform.ReferenceSamples) / 12000.0;
+        var slope = (candidate.EndHz - candidate.StartHz) / separation;
+        var count = Math.Min(samples.Length, (int)((candidate.StartSeconds + .85) * 12000));
+        if (count < 1200) return (0, candidate);
+        var mixed = MixChirp(samples[..count], candidate.StartHz - slope * .08, slope, candidate.StartSeconds);
+        var initial = (int)Math.Round(candidate.StartSeconds * Rate);
+        double best = 0, bestOffset = 0;
+        var templatePower = Template.Skip(250).Take(400).Sum(v => v.Magnitude * v.Magnitude);
+        foreach (var inverted in new[] { false, true })
+        for (var t = Math.Max(0, initial - 80); t <= Math.Min(mixed.Length - TemplateLength, initial + 80); t += 4)
+        {
+            var sums = new Complex[4];
+            double power = 0;
+            for (var k = 0; k < 4; k++)
+            for (var j = 0; j < 100; j++)
+            {
+                var i = 250 + 100 * k + j;
+                var value = mixed[t + i];
+                if (inverted) value = Complex.Conjugate(value);
+                sums[k] += value * Complex.Conjugate(Template[i]);
+                power += value.Magnitude * value.Magnitude;
+            }
+            Complex advance = 0;
+            for (var k = 0; k < 3; k++) advance += sums[k + 1] * Complex.Conjugate(sums[k]);
+            var phase = advance.Phase;
+            Complex coherent = 0;
+            for (var k = 0; k < 4; k++) coherent += sums[k] * Complex.FromPolarCoordinates(1, -k * phase);
+            var score = coherent.Magnitude * coherent.Magnitude / Math.Max(1e-20, power * templatePower);
+            if (score <= best) continue;
+            best = score;
+            bestOffset = (inverted ? -1 : 1) * phase / (2 * Math.PI * .1);
+        }
+        return (best, candidate with { StartHz = candidate.StartHz + bestOffset, EndHz = candidate.EndHz + bestOffset });
     }
 
     internal static Result? Decode(float[] samples, double centerHz, int searchHz = 30)

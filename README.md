@@ -44,7 +44,7 @@ FT4 parameters: [WSJT-X user guide](https://wsjt.sourceforge.io/wsjtx-main_en.ht
 ## What is implemented?
 
 - An OQ4 transmit/receive window using OscarWatch's FT4 contact sequencer, station settings, activity colors, audio service and PTT infrastructure.
-- Passband acquisition without highlighting a receive frequency, matched filtering, normal/inverted QPSK reception, and linear/curved frequency-trajectory trials.
+- Passband acquisition without highlighting a receive frequency, matched filtering, normal/inverted QPSK reception, and linear/curved frequency-trajectory trials. A bounded preamble-ranked fallback handles alternate closing-reference pairings and larger sweeps while retaining the original search successes.
 - Fast LDPC belief propagation, bounded ordered-statistics recovery and bounded **code-assisted phase tracking** using LDPC extrinsic information.
 - Approximate data SNR reports referenced to 2,500 Hz, measured from the original observations after CRC validation.
 - UTC slot scheduling, prebuilt transmit audio, PTT preparation/cleanup, receive buffering and offline regression tools.
@@ -57,6 +57,8 @@ The release workflow builds the native OQ4 library and application for **Linux, 
 | --- | --- |
 | OQ4 full-waveform corpus, BP → BP + bounded OSD | 87/144 → 92/144 correct; no earlier successes lost |
 | Same corpus after adding phase feedback | 92/144 retained |
+| Same corpus with acquisition fallback | 98/144 correct; all earlier successes retained |
+| JO-97 annotated-capture regression | All 16 previously established separate copies recovered without frequency hints |
 | Isolated symbol-domain phase test, +0.5 rad excursions | 254/300 → 287/300 correct |
 | Isolated symbol-domain phase test, −0.5 rad excursions | 254/300 → 278/300 correct |
 | Existing recorded-pass regression | 19 expected signals in 13 clips retained |
@@ -109,6 +111,7 @@ The OQ4 operating controls and status strip follow FT4. With **Hold TX** checked
 - [Extended abstract](docs/OQ4_ABSTRACT.md): motivation, FT4 comparison and evidence.
 - [Protocol/design](docs/OQ4_PROTOCOL_AND_DESIGN.md): framing, coding, shaping and timing; dated historical sections are superseded by later updates.
 - [SNR and code-assisted phase tracking](docs/OQ4_SNR_AND_PHASE_TRACKING.md).
+- [JO-97 acquisition improvements and replay results](docs/OQ4_ACQUISITION_20261102.md).
 - [Paired FT4/OQ4 evaluation](docs/OQ4_PAIRED_EVALUATION.md).
 - [Window/PTT parity](docs/OQ4_WINDOW_FT4_PARITY.md), [recording analysis](docs/OQ4_RECORDING_ANALYSIS.md), [weak-signal research](docs/OQ4_WEAK_SIGNAL_RESEARCH.md), and [handoff](docs/OQ4_HANDOFF.md).
 - [Offline replay, seeded waveform generation and scoring](tools/Oq4Replay/README.md).

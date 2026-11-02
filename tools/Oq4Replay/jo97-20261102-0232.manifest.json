@@ -1,0 +1,273 @@
+{
+  "source_file": "RS44-OQ4-20261102-023206-UTC.wav",
+  "source_sha256": "6ee339824790b7c673637238b24fbd1cc077b27080ba38342adaccd51c16b42f",
+  "output_sample_rate": 12000,
+  "clips": [
+    {
+      "file": "023407-500.f32",
+      "start_seconds": 121.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:34:07.500000",
+      "tx_audio_hz": 2580.0
+    },
+    {
+      "file": "023415-000.f32",
+      "start_seconds": 128.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:34:15",
+      "tx_audio_hz": 2760.0
+    },
+    {
+      "file": "023422-500.f32",
+      "start_seconds": 136.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:34:22.500000",
+      "tx_audio_hz": 2760.0
+    },
+    {
+      "file": "023437-500.f32",
+      "start_seconds": 151.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:34:37.500000",
+      "tx_audio_hz": 2560.0
+    },
+    {
+      "file": "023500-000.f32",
+      "start_seconds": 173.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:35:00",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023507-500.f32",
+      "start_seconds": 181.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:35:07.500000",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023530-000.f32",
+      "start_seconds": 203.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:35:30",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023545-000.f32",
+      "start_seconds": 218.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:35:45",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023552-500.f32",
+      "start_seconds": 226.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:35:52.500000",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023600-000.f32",
+      "start_seconds": 233.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:36:00",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023622-500.f32",
+      "start_seconds": 256.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:36:22.500000",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023630-000.f32",
+      "start_seconds": 263.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:36:30",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023652-500.f32",
+      "start_seconds": 286.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:36:52.500000",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023700-000.f32",
+      "start_seconds": 293.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:37:00",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023707-500.f32",
+      "start_seconds": 301.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:37:07.500000",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023737-500.f32",
+      "start_seconds": 331.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:37:37.500000",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023745-000.f32",
+      "start_seconds": 338.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:37:45",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023752-500.f32",
+      "start_seconds": 346.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:37:52.500000",
+      "tx_audio_hz": 2600.0
+    },
+    {
+      "file": "023807-500.f32",
+      "start_seconds": 361.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:38:07.500000",
+      "tx_audio_hz": 2860.0
+    },
+    {
+      "file": "023815-000.f32",
+      "start_seconds": 368.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:38:15",
+      "tx_audio_hz": 2860.0
+    },
+    {
+      "file": "023822-500.f32",
+      "start_seconds": 376.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:38:22.500000",
+      "tx_audio_hz": 2860.0
+    },
+    {
+      "file": "023830-000.f32",
+      "start_seconds": 383.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:38:30",
+      "tx_audio_hz": 2860.0
+    },
+    {
+      "file": "023845-000.f32",
+      "start_seconds": 398.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:38:45",
+      "tx_audio_hz": 2860.0
+    },
+    {
+      "file": "023852-500.f32",
+      "start_seconds": 406.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:38:52.500000",
+      "tx_audio_hz": 2860.0
+    },
+    {
+      "file": "023900-000.f32",
+      "start_seconds": 413.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:39:00",
+      "tx_audio_hz": 2040.0
+    },
+    {
+      "file": "023907-500.f32",
+      "start_seconds": 421.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:39:07.500000",
+      "tx_audio_hz": 2040.0
+    },
+    {
+      "file": "023915-000.f32",
+      "start_seconds": 428.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:39:15",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "023922-500.f32",
+      "start_seconds": 436.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:39:22.500000",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "023930-000.f32",
+      "start_seconds": 443.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:39:30",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "023937-500.f32",
+      "start_seconds": 451.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:39:37.500000",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "023945-000.f32",
+      "start_seconds": 458.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:39:45",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "023952-500.f32",
+      "start_seconds": 466.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:39:52.500000",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "024000-000.f32",
+      "start_seconds": 473.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:40:00",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "024007-500.f32",
+      "start_seconds": 481.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:40:07.500000",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "024015-000.f32",
+      "start_seconds": 488.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:40:15",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "024022-500.f32",
+      "start_seconds": 496.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:40:22.500000",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "024045-000.f32",
+      "start_seconds": 518.5,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:40:45",
+      "tx_audio_hz": 2930.0
+    },
+    {
+      "file": "024052-500.f32",
+      "start_seconds": 526.0,
+      "duration_seconds": 4.5,
+      "tx_slot_utc": "2026-11-02T02:40:52.500000",
+      "tx_audio_hz": 2930.0
+    }
+  ]
+}

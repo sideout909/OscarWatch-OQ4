@@ -83,3 +83,12 @@ The plotting script needs NumPy and Matplotlib. It equalizes average active-pack
 power, centers both spectra at 1500 Hz, and uses common time/frequency axes and a
 common spectral color scale. This is a synthetic timing/waveform illustration,
 not an RF bandwidth or sensitivity measurement.
+
+## JO-97 reference-pair/candidate regression
+
+See [the acquisition report](../../docs/OQ4_ACQUISITION_20261102.md) for the
+38-clip manifest, checksum-verified FFmpeg extraction command and 54 expected
+signals. `prepare_manifest.py` needs Python and FFmpeg, but does not need NumPy.
+The `candidates` JSON field reports the initial four-candidate pass; `results`
+also includes the bounded preamble-ranked fallback. No audio or operator
+annotation is distributed with these expectation/manifest files.

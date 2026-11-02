@@ -36,13 +36,14 @@ internal static class Oq4Search
         return bins;
     }
 
-    internal static Candidate[] Find(float[] audio, int maximum = 8)
+    internal static Candidate[] Find(float[] audio, int maximum = 8, bool expanded = false, IReadOnlyList<double>? nearTimes = null)
     {
         var maxTime = audio.Length / 12000.0 - Oq4Waveform.PacketDurationSeconds;
         if (maxTime < 0) return [];
         var candidates = new List<Candidate>();
         for (double t = 0; t <= maxTime; t += .04)
         {
+            if (nearTimes is { Count: > 0 } && nearTimes.All(time => Math.Abs(time - t) > .12)) continue;
             var start = Spectrum(audio, t);
             var end = Spectrum(audio, t + EndOffset);
             if (start.Length == 0 || end.Length == 0) continue;
@@ -57,19 +58,59 @@ internal static class Oq4Search
                 var hi = Math.Min(Bins - 2, i + 70);
                 var best = lo;
                 for (var j = lo + 1; j <= hi; j++) if (end[j] > end[best]) best = j;
-                var b = end[best] - floorB;
-                if (b < 5) continue;
                 double Interpolate(float[] values, int k)
                 {
                     var den = values[k - 1] - 2 * values[k] + values[k + 1];
                     var offset = Math.Abs(den) < 1e-6 ? 0 : .5 * (values[k - 1] - values[k + 1]) / den;
                     return LowHz + (k + Math.Clamp(offset, -.5, .5)) * StepHz;
                 }
-                candidates.Add(new Candidate(t, Interpolate(start, i), Interpolate(end, best), Math.Min(a,b) + .25 * (a+b)));
+                var endings = new List<int> { best };
+                if (expanded)
+                {
+                    // A strong local closing reference can mask the right pairing
+                    // for a weaker station. Keep alternate local peaks, not only
+                    // the single loudest end tone. Also admit larger audio sweeps.
+                    var peaks = Enumerable.Range(Math.Max(1, i - 120),
+                        Math.Min(Bins - 2, i + 120) - Math.Max(1, i - 120) + 1)
+                        .Where(j => end[j] >= end[j - 1] && end[j] >= end[j + 1])
+                        .OrderByDescending(j => end[j]).ToArray();
+                    foreach (var j in peaks.Where(j => Math.Abs(j - i) <= 70))
+                    {
+                        if (endings.All(k => Math.Abs(k - j) > 4)) endings.Add(j);
+                        if (endings.Count >= 4) break;
+                    }
+                    foreach (var j in peaks.Where(j => Math.Abs(j - i) > 70).Take(2))
+                        if (endings.All(k => Math.Abs(k - j) > 4)) endings.Add(j);
+                }
+                foreach (var ending in endings)
+                {
+                    var b = end[ending] - floorB;
+                    if (b < 5) continue;
+                    // In the fallback, penalize badly unbalanced tone pairs;
+                    // unrelated weak openings must not inherit a local TX tone's score.
+                    var score = expanded ? Math.Min(a,b) - .2 * Math.Abs(a-b) : Math.Min(a,b) + .25 * (a+b);
+                    candidates.Add(new Candidate(t, Interpolate(start, i), Interpolate(end, ending), score));
+                }
             }
         }
         candidates.Sort((a,b) => b.Score.CompareTo(a.Score));
         var selected = new List<Candidate>();
+        if (expanded)
+        {
+            foreach (var candidate in candidates)
+            {
+                if (selected.Any(x => Math.Abs(x.StartSeconds - candidate.StartSeconds) < .16
+                    && Math.Abs(x.StartHz - candidate.StartHz) < 12
+                    && Math.Abs(x.EndHz - candidate.EndHz) < 15)) continue;
+                // Reserve room for independent frequency regions, rather than
+                // filling the pool with many pairings of one loud local signal.
+                if (selected.Count(x => Math.Abs(x.StartSeconds - candidate.StartSeconds) < .2
+                    && Math.Abs(x.StartHz - candidate.StartHz) < 60) >= 4) continue;
+                selected.Add(candidate);
+                if (selected.Count == maximum) break;
+            }
+            return selected.ToArray();
+        }
         // Prioritize independent frequency regions before filling nearby ones.
         // This prevents sidelobes of a strong local signal from crowding a
         // weaker simultaneous satellite return out of the candidate budget.

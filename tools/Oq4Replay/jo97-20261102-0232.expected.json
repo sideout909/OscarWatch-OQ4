@@ -1,0 +1,326 @@
+[
+  {
+    "File": "023407-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2560.0,
+    "MaxFrequencyHz": 2600.0
+  },
+  {
+    "File": "023415-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2740.0,
+    "MaxFrequencyHz": 2780.0
+  },
+  {
+    "File": "023422-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2740.0,
+    "MaxFrequencyHz": 2780.0
+  },
+  {
+    "File": "023437-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2540.0,
+    "MaxFrequencyHz": 2580.0
+  },
+  {
+    "File": "023500-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023507-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023530-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023545-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023552-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023600-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023622-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023630-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023652-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023700-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023707-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023737-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023745-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023752-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2580.0,
+    "MaxFrequencyHz": 2620.0
+  },
+  {
+    "File": "023807-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2840.0,
+    "MaxFrequencyHz": 2880.0
+  },
+  {
+    "File": "023815-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2840.0,
+    "MaxFrequencyHz": 2880.0
+  },
+  {
+    "File": "023822-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2840.0,
+    "MaxFrequencyHz": 2880.0
+  },
+  {
+    "File": "023830-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2840.0,
+    "MaxFrequencyHz": 2880.0
+  },
+  {
+    "File": "023845-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2840.0,
+    "MaxFrequencyHz": 2880.0
+  },
+  {
+    "File": "023852-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2840.0,
+    "MaxFrequencyHz": 2880.0
+  },
+  {
+    "File": "023900-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2020.0,
+    "MaxFrequencyHz": 2060.0
+  },
+  {
+    "File": "023907-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2020.0,
+    "MaxFrequencyHz": 2060.0
+  },
+  {
+    "File": "023915-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "023922-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "023930-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "023937-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "023945-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "023952-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "024000-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "024007-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "024015-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "024022-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "024045-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "024052-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2910.0,
+    "MaxFrequencyHz": 2950.0
+  },
+  {
+    "File": "023415-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 841.0966591377312,
+    "MaxFrequencyHz": 871.0966591377312
+  },
+  {
+    "File": "023530-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 702.6921976136784,
+    "MaxFrequencyHz": 732.6921976136784
+  },
+  {
+    "File": "023545-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 1214.6335003564573,
+    "MaxFrequencyHz": 1244.6335003564573
+  },
+  {
+    "File": "023552-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 1225.588043918616,
+    "MaxFrequencyHz": 1255.588043918616
+  },
+  {
+    "File": "023822-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2324.544365182176,
+    "MaxFrequencyHz": 2354.544365182176
+  },
+  {
+    "File": "023852-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2262.7347878176834,
+    "MaxFrequencyHz": 2292.7347878176834
+  },
+  {
+    "File": "023952-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 1971.1538293360416,
+    "MaxFrequencyHz": 2001.1538293360416
+  },
+  {
+    "File": "024000-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 1934.3545388134248,
+    "MaxFrequencyHz": 1964.3545388134248
+  },
+  {
+    "File": "023745-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 1812.5903881568738,
+    "MaxFrequencyHz": 1842.5903881568738
+  },
+  {
+    "File": "023807-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2260.5121598926867,
+    "MaxFrequencyHz": 2290.5121598926867
+  },
+  {
+    "File": "023830-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2348.3416603083188,
+    "MaxFrequencyHz": 2378.3416603083188
+  },
+  {
+    "File": "023845-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2315.549243946627,
+    "MaxFrequencyHz": 2345.549243946627
+  },
+  {
+    "File": "023930-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2102.2214358022634,
+    "MaxFrequencyHz": 2132.2214358022634
+  },
+  {
+    "File": "023937-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2055.123103598355,
+    "MaxFrequencyHz": 2085.123103598355
+  },
+  {
+    "File": "023945-000.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 2010.7728606841745,
+    "MaxFrequencyHz": 2040.7728606841745
+  },
+  {
+    "File": "024007-500.f32",
+    "Message": "CQ K8OTY EN73",
+    "MinFrequencyHz": 1895.9728190034411,
+    "MaxFrequencyHz": 1925.9728190034411
+  }
+]

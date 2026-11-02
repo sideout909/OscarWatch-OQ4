@@ -197,4 +197,45 @@ public sealed class Oq4ReceiveTests
         Assert.Contains(decoded, r => r.Message == "CQ K8OTY EN73");
         Assert.Contains(decoded, r => r.Message == "CQ K1ABC FN42");
     }
+
+    [Theory]
+    [InlineData(-113)]
+    [InlineData(113)]
+    public void Wideband_search_recovers_reference_sweeps_beyond_the_original_pairing_limit(double slope)
+    {
+        if (!OperatingSystem.IsLinux() || !Ft8Native.IsAvailable) return;
+        var audio = new float[48000];
+        var packet = Oq4Waveform.EncodePacket(Ft8Native.EncodeOq4Codeword("CQ K1ABC FN42"), 2500, slope);
+        packet.CopyTo(audio, 6000);
+        var found = Oq4Decoder.DecodeWideband(audio);
+        Assert.Contains(found, r => r.Message == "CQ K1ABC FN42" && Math.Abs(r.FrequencyHz - 2500) < 8);
+    }
+
+    [Fact]
+    public void Alternate_closing_reference_does_not_hide_the_weaker_packet()
+    {
+        if (!OperatingSystem.IsLinux() || !Ft8Native.IsAvailable) return;
+        var audio = new float[48000];
+        var direct = Oq4Waveform.EncodePacket(Ft8Native.EncodeOq4Codeword("CQ K1ABC FN42"), 2700);
+        var weak = Oq4Waveform.EncodePacket(Ft8Native.EncodeOq4Codeword("CQ K8OTY EN73"), 1900, -12);
+        for (var i = 0; i < direct.Length; i++) audio[6000 + i] = .3f * direct[i] + .025f * weak[i];
+        var end = 6000 + Oq4Waveform.PacketSampleCount - Oq4Waveform.ReferenceSamples;
+        for (var i = 0; i < Oq4Waveform.ReferenceSamples; i++)
+            audio[end + i] += (float)(.15 * Math.Sin(2 * Math.PI * 1980 * (end + i) / 12000));
+        var found = Oq4Decoder.DecodeWideband(audio);
+        Assert.Contains(found, r => r.Message == "CQ K1ABC FN42");
+        Assert.Contains(found, r => r.Message == "CQ K8OTY EN73" && Math.Abs(r.FrequencyHz - 1900) < 8);
+    }
+
+    [Fact]
+    public void Reference_tones_alone_do_not_count_as_a_decoded_packet()
+    {
+        if (!OperatingSystem.IsLinux() || !Ft8Native.IsAvailable) return;
+        var audio = new float[48000];
+        var packet = Oq4Waveform.EncodePacket(Ft8Native.EncodeOq4Codeword("CQ K1ABC FN42"), 1700, -110);
+        Array.Copy(packet, 0, audio, 6000, Oq4Waveform.ReferenceSamples);
+        Array.Copy(packet, packet.Length - Oq4Waveform.ReferenceSamples, audio,
+            6000 + packet.Length - Oq4Waveform.ReferenceSamples, Oq4Waveform.ReferenceSamples);
+        Assert.Empty(Oq4Decoder.DecodeWideband(audio));
+    }
 }

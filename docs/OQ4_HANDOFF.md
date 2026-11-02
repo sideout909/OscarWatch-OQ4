@@ -274,3 +274,23 @@ validation: 562 FT4/OQ4 tests, 10 update-service tests, and 13 headless UI check
 The manual build produces six platform packages; wait for the user's completion
 message before the next release-publication step. No installed-binary replacement
 was performed.
+
+
+### Decoder acquisition follow-up / replacement 1.1.6-OQ4 build
+
+User authorized decoder improvements, commit/push and a fresh Publish run after
+the earlier build finished. See `docs/OQ4_ACQUISITION_20261102.md` for algorithm,
+budgets, evidence limitations and reproducible local replay. The decoder keeps
+the original four-candidate successes, then adds signal-timed, preamble-ranked
+alternate tone pairs and ±351 Hz sweeps. All 16 known separate copies now decode
+without annotation hints; raw output grows 37 to 57 copies, including all 38
+near-TX copies. Three extra separate copies have unresolved paths; the ~1869 Hz
+copy may be a mixing product and must not be advertised as an independent return.
+The 144-case synthetic corpus improves 92 to 98 correct, with no earlier success
+lost or wrong payloads; 160 noise windows yield no decodes; all 26 older recording
+expectations pass. 576 related Release tests pass. Waveform, packet timing and
+CRC/FEC acceptance are unchanged. Capture audio/annotations remain local.
+Keep version 1.1.6-OQ4 because it has not been published yet. Start a fresh manual
+Publish run from the new commit; do not publish artifacts from the earlier run.
+Unrelated Terminal edits are excluded. Wait for the user's build-completion
+message before completing release publication.

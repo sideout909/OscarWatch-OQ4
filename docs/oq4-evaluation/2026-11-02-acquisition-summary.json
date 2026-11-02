@@ -1,0 +1,29 @@
+{
+  "version": "1.1.6-OQ4",
+  "newCapture": {
+    "clips": 38,
+    "baselineCopies": 37,
+    "newCopies": 57,
+    "knownSeparateCopiesRecovered": 16,
+    "requiredSignals": 54,
+    "nearTxCopies": 38,
+    "separateCopies": 19
+  },
+  "synthetic": {
+    "cases": 144,
+    "baselineCorrect": 92,
+    "newCorrect": 98,
+    "lostBaselineCases": 0,
+    "wrongPayloads": 0
+  },
+  "noise": {
+    "windows": 160,
+    "decodes": 0
+  },
+  "olderRecordings": {
+    "clips": 17,
+    "requiredSignals": 26,
+    "missingSignals": 0
+  },
+  "unitTestsPassed": 576
+}
