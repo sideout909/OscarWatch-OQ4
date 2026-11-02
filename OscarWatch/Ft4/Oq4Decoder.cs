@@ -281,7 +281,6 @@ internal static class Oq4Decoder
         var trials = new List<(double Score, double Frequency, double Slope, double Acceleration, int Start, Complex[] Mixed)>();
         foreach (var frequencyOffset in new[] { 0.0, -1.0, 1.0, -.5, .5 })
         foreach (var curve in new[] { 0.0, 1.0, -1.0 })
-        foreach (var inverted in new[] { false, true })
         {
             // Preserve the measured total frequency change while exploring
             // linear drift and two smoothly curved trajectories.
@@ -293,15 +292,19 @@ internal static class Oq4Decoder
             var slope = averageSlope - acceleration * (separation / 2 + referenceCenter);
             var frequency = candidate.StartHz - slope * referenceCenter
                             - .5 * acceleration * referenceCenter * referenceCenter + frequencyOffset;
-            var mixed = MixTrajectory(samples, frequency, slope, acceleration, candidate.StartSeconds);
-            if (inverted) for (var i = 0; i < mixed.Length; i++) mixed[i] = Complex.Conjugate(mixed[i]);
-            double best = 0; var bestStart = initialTime;
-            for (var t = Math.Max(0, initialTime - 80); t <= Math.Min(limit, initialTime + 80); t += 4)
+            // Both orientations share the same mixer and low-pass filter.
+            var originalMixed = MixTrajectory(samples, frequency, slope, acceleration, candidate.StartSeconds);
+            foreach (var inverted in new[] { false, true })
             {
-                var score = SyncScore(mixed, t);
-                if (score > best) { best = score; bestStart = t; }
+                var mixed = inverted ? originalMixed.Select(Complex.Conjugate).ToArray() : originalMixed;
+                double best = 0; var bestStart = initialTime;
+                for (var t = Math.Max(0, initialTime - 80); t <= Math.Min(limit, initialTime + 80); t += 4)
+                {
+                    var score = SyncScore(mixed, t);
+                    if (score > best) { best = score; bestStart = t; }
+                }
+                trials.Add((best, frequency, slope, acceleration, bestStart, mixed));
             }
-            trials.Add((best, frequency, slope, acceleration, bestStart, mixed));
         }
         var softTrials = new List<SoftTrial>();
         // The preamble identifies plausible timing and carrier; CRC validates
@@ -491,15 +494,36 @@ internal static class Oq4Decoder
             / Math.Max(noise, 1e-20) * Oq4Waveform.SymbolRate / 2500.0), -50, 49);
     }
 
+    // Symbol centers shift by whole samples with timing, so their filter
+    // offsets and weights can be reused for every timing hypothesis.
+    private static readonly (int Offset, double[] Weights)[] SymbolFilters = MakeSymbolFilters();
+
+    private static (int Offset, double[] Weights)[] MakeSymbolFilters()
+    {
+        var filters = new (int Offset, double[] Weights)[129];
+        for (var k = 0; k < filters.Length; k++)
+        {
+            var c = (0.16 + (6.0 + k) / 64) * Rate;
+            var lo = (int)Math.Ceiling(c - 6.0 * Rate / 64);
+            var hi = (int)Math.Floor(c + 6.0 * Rate / 64);
+            var weights = new double[hi - lo + 1];
+            for (var i = lo; i <= hi; i++) weights[i - lo] = Rrc((i - c) * 64 / Rate);
+            filters[k] = (lo, weights);
+        }
+        return filters;
+    }
+
     private static Complex[] ReadSymbols(Complex[] mixed, int bestStart)
     {
         var symbols = new Complex[129];
         for (var k = 0; k < symbols.Length; k++)
         {
-            var c = bestStart + (0.16 + (6.0 + k) / 64) * Rate;
-            var lo = Math.Max(0, (int)Math.Ceiling(c - 6.0 * Rate / 64));
-            var hi = Math.Min(mixed.Length - 1, (int)Math.Floor(c + 6.0 * Rate / 64));
-            for (var i = lo; i <= hi; i++) symbols[k] += mixed[i] * Rrc((i - c) * 64 / Rate);
+            var (offset, weights) = SymbolFilters[k];
+            for (var j = 0; j < weights.Length; j++)
+            {
+                var i = bestStart + offset + j;
+                if ((uint)i < (uint)mixed.Length) symbols[k] += mixed[i] * weights[j];
+            }
         }
         return symbols;
     }
