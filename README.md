@@ -4,7 +4,7 @@
 
 This is an experimental fork of [OscarWatch by Peter Goodhall, MM9SQL](https://github.com/magicbug/OscarWatch-Tracker), created to develop **OQ4**, a narrowband digital mode for short amateur-satellite contacts and terrestrial use. The tracking application, FT4 mode and upstream attribution remain intact. OQ4 development happens on [`oq4-experiment`](https://github.com/sideout909/OscarWatch-OQ4/tree/oq4-experiment).
 
-**O** stands for **OSCAR**, **Q** for **QPSK**, and **4** for its **four phase states**. Each QPSK symbol carries two bits.
+**O** stands for **OSCAR/Satellite**, **Q** for **QPSK**, and **4** for its **four phase states**. Each QPSK symbol carries two bits.
 
 OQ4 sends a complete packet in approximately **2.523 seconds**, using **3.75-second alternating slots**. Its main draw is the opportunity to exchange useful messages more quickly during a short pass, while pursuing the weak-signal decoding ability that makes FT4 useful. Initial local observations are encouraging. Our testing has **not demonstrated a sensitivity disadvantage relative to FT4**, and no fixed sensitivity penalty is assigned to OQ4. A counted, controlled comparison is still needed to establish relative sensitivity and completed-contact performance.
 
