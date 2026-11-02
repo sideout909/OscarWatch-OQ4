@@ -11,6 +11,8 @@ internal enum Oq4TransmitOutcome { Sent, Skipped }
 internal interface IOq4TransmitHardware
 {
     Oq4PreparedAudio Prepare(Oq4TransmitRequest request, CancellationToken cancellation);
+    // Rebuild audio without touching the already prepared PTT adapter.
+    Oq4PreparedAudio PrepareFrequencyChange(Oq4TransmitRequest request, CancellationToken cancellation) => Prepare(request, cancellation);
     void PreparePtt();
     bool StepDoppler(Oq4TransmitRequest request, TimeSpan budget);
     void KeyNow();
@@ -66,7 +68,8 @@ internal sealed class Oq4TransmitRunner
         catch { sequencer.HaltTx(); throw; }
     }
 
-    public Oq4TransmitOutcome Run(Oq4TransmitRequest request, CancellationToken token)
+    public Oq4TransmitOutcome Run(Oq4TransmitRequest request, CancellationToken token,
+        Func<double>? latestFrequency = null, Action<Oq4TransmitRequest>? committed = null)
     {
         lock (_keyGate) { token.ThrowIfCancellationRequested(); _stopped = false; }
         var keepPort = false;
@@ -74,6 +77,24 @@ internal sealed class Oq4TransmitRunner
         {
             _status("Preparing OQ4 audio and PTT…");
             var prepared = _hardware.Prepare(request, token);
+            void RefreshAudioUntil(DateTime until)
+            {
+                if (latestFrequency is null) { _wait(until, token); return; }
+                while (_now() < until)
+                {
+                    token.ThrowIfCancellationRequested();
+                    var hz = latestFrequency();
+                    if (double.IsFinite(hz) && hz >= 200 && hz <= 3000 && Math.Abs(hz - request.FrequencyHz) > .1)
+                    {
+                        var updated = request with { FrequencyHz = hz };
+                        prepared = _hardware.PrepareFrequencyChange(updated, token);
+                        token.ThrowIfCancellationRequested();
+                        request = updated;
+                    }
+                    var next = _now().AddMilliseconds(50);
+                    _wait(next < until ? next : until, token);
+                }
+            }
             token.ThrowIfCancellationRequested();
             if (!request.AudioOnly) WithKeyGate(token, _hardware.PreparePtt);
             token.ThrowIfCancellationRequested();
@@ -85,7 +106,7 @@ internal sealed class Oq4TransmitRunner
                 // remaining silence, rather than freezing the dial for a whole slot.
                 var catLead = Oq4SlotClock.SlotSeconds - Oq4SlotClock.BurstOffsetSeconds
                     - Oq4Waveform.PacketDurationSeconds - .16;
-                _wait(keyAt.AddSeconds(-catLead), token);
+                RefreshAudioUntil(keyAt.AddSeconds(-catLead));
                 var budget = keyAt - _now() - TimeSpan.FromMilliseconds(40);
                 if (!request.AudioOnly && budget > TimeSpan.FromMilliseconds(80))
                 {
@@ -94,13 +115,16 @@ internal sealed class Oq4TransmitRunner
                     if (!_hardware.StepDoppler(request, budget))
                         _status("Doppler preparation is still running; PTT takes priority.");
                 }
+                // Freeze the packet before the PTT lead. Late edits apply to
+                // the next packet rather than interrupting an on-air waveform.
+                if (latestFrequency is not null) RefreshAudioUntil(keyAt.AddMilliseconds(-250));
                 _wait(keyAt, token);
                 if (_now() > slot.AddMilliseconds(150))
                 {
                     _status("Slot missed during preparation; waiting for the next selected slot.");
                     return Oq4TransmitOutcome.Skipped;
                 }
-                WithKeyGate(token, () => { if (!request.AudioOnly) _hardware.KeyNow(); });
+                WithKeyGate(token, () => { committed?.Invoke(request); if (!request.AudioOnly) _hardware.KeyNow(); });
                 _wait(slot, token);
                 if (_now() > slot.AddMilliseconds(150))
                 {
@@ -110,7 +134,7 @@ internal sealed class Oq4TransmitRunner
             }
             else
             {
-                WithKeyGate(token, () => { if (!request.AudioOnly) _hardware.KeyNow(); });
+                WithKeyGate(token, () => { committed?.Invoke(request); if (!request.AudioOnly) _hardware.KeyNow(); });
                 if (!request.AudioOnly) _delay(TimeSpan.FromMilliseconds(request.LeadMs), token);
             }
             WithKeyGate(token, () =>

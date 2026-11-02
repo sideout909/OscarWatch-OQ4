@@ -221,3 +221,56 @@ Match the OQ4 activity/decode window’s color scheme to the existing FT4 window
 The operator marked `/home/lschaar/Documents/RS44-OQ4-20261031-070511-waterfall-notes.png` and identified the weaker traces as signals they heard on the downlink. The associated audio is `/home/lschaar/Documents/RS44-OQ4-20261031-070511-UTC.wav`. At 10:56 elapsed its initial and final references occur near 1764 and 1923 Hz, roughly +67 Hz/s; later marked bursts show roughly +41 and +17 Hz/s. A much stronger simultaneous trace can fill the detector’s candidate list.
 
 The OQ4 search was widened to about ±205 Hz, prioritizes separated candidates, adjusts frequency for the reference-tone midpoint, and attempts spectrally inverted as well as normal QPSK. Generated tests exercise ±68 Hz/s and inverted fast-drifting packets alongside stronger signals. In offline checks the new search found marked weak tone pairs, but **no CRC-valid message was recovered from those marked weaker traces**. `CQ K8OTY EN73` was decoded on the strong trace; do not conflate it with a confirmed downlink decode. More weak-signal and distorted-channel work is needed.
+
+### Local-only fork update checks (2026-11-01)
+
+Update discovery now uses `sideout909/OscarWatch-OQ4/releases?per_page=100`,
+selects the highest parseable non-draft `-OQ4` tag (including prereleases), and
+ignores inherited upstream releases. Version parsing accepts the OQ4 suffix.
+The existing update notification/release-page flow remains; this is not a
+background binary installer. Regression coverage checks the exact fork endpoint,
+prerelease ordering, draft/upstream exclusion and failure without OQ4 releases.
+User requested this change remain local: do not push or publish it yet. The
+installed 1.1.5-OQ4 binary has not been replaced by this source-only change.
+
+### Local OQ4 operating-window parity audit (2026-11-01)
+
+User identified controls/status-strip glitches, especially TX-frequency edits.
+See `docs/OQ4_WINDOW_PARITY.md` for the complete audit and validation. OQ4 now
+matches FT4's visual tree and bottom clock/progress presentation. Control-state,
+Tune/CQ transitions, Hold TX, pounce, context menu, saved activity and header fonts
+were aligned. TX frequency edits are coalesced for 150 ms, retain a safe selected
+slot, and cannot let an old worker's status overwrite a new operation. Halt also
+invalidates pending asynchronous transitions. The codec/decoder are unchanged.
+Changes are LOCAL ONLY; installed 1.1.5-OQ4 was not replaced. Do not publish yet.
+
+
+### Follow-up: waterfall frequency changes while TX stays enabled
+
+Operator confirmed **right-click with Hold TX checked** still felt like it needed
+Halt. Changed frequency-only updates to refresh the waiting packet's PCM inside
+`Oq4TransmitRunner`, without cancellation, PTT port release/reopen, or re-arming.
+UI publishes a settled carrier after 150 ms; the worker polls before keying and
+freezes audio 250 ms before the key deadline. Later edits affect the next packet.
+The actual selected carrier is handed back for activity rows and logged as
+`OQ4 TX buffer selected`; this log is a buffer selection, not proof of RF output.
+RF power is checked initially, not re-queried for every audio-only rebuild.
+Message/parity changes retain their cancellation path. Rebuild failure, Halt and
+missed slots still release hardware. Five added runner tests cover these cases.
+Reference-tone acquisition was also confirmed: both packet references seed drift
+estimation; preamble/pilots refine it and CRC/FEC validates the payload.
+Local only, no push/release/install replacement. For the local framework-dependent
+build launch with `DOTNET_ROOT=/home/lschaar/.dotnet` so the PortAudio probe child
+process can find .NET; the earlier bare `dotnet OscarWatch.dll` command omitted it.
+
+
+### 1.1.6-OQ4 release-build authorization (2026-11-01)
+
+User authorized pushing the OQ4 changes and starting the Publish workflow,
+superseding the earlier local-only restriction. Version 1.1.6-OQ4 / assembly
+1.1.6.0 includes fork-only update discovery and the operating-window/live-frequency
+fixes above. Unrelated Terminal edits remain outside the release commit. Local
+validation: 562 FT4/OQ4 tests, 10 update-service tests, and 13 headless UI checks.
+The manual build produces six platform packages; wait for the user's completion
+message before the next release-publication step. No installed-binary replacement
+was performed.

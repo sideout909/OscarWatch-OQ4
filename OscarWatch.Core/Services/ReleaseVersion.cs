@@ -15,6 +15,10 @@ public static class ReleaseVersion
         if (plus >= 0)
             trimmed = trimmed[..plus];
 
+        var suffix = trimmed.IndexOf('-', StringComparison.Ordinal);
+        if (suffix >= 0)
+            trimmed = trimmed[..suffix];
+
         return Version.TryParse(trimmed, out var version) ? version : null;
     }
 
@@ -27,6 +31,10 @@ public static class ReleaseVersion
         var plus = trimmed.IndexOf('+', StringComparison.Ordinal);
         if (plus >= 0)
             trimmed = trimmed[..plus];
+
+        var suffix = trimmed.IndexOf('-', StringComparison.Ordinal);
+        if (suffix >= 0)
+            trimmed = trimmed[..suffix];
 
         return Version.TryParse(trimmed, out var version) ? version : null;
     }

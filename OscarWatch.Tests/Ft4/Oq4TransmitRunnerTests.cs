@@ -239,6 +239,79 @@ public sealed class Oq4TransmitRunnerTests
         Assert.False(sequence.TransmitEnabled);
     }
 
+    [Fact]
+    public void Waterfall_frequency_change_refreshes_audio_without_releasing_or_reopening_ptt()
+    {
+        var hardware = new Hardware();
+        Oq4TransmitRequest? committed = null;
+        var result = Runner(hardware).Run(Request() with { KeepPttPortOpen = true }, default,
+            latestFrequency: () => hardware.Now >= DateTime.UnixEpoch.AddSeconds(5) ? 900 : 1500,
+            committed: request => committed = request);
+        Assert.Equal(Oq4TransmitOutcome.Sent, result);
+        Assert.Equal(new double[] { 1500, 900 }, hardware.PreparedFrequencies);
+        Assert.Equal(900, committed!.FrequencyHz);
+        Assert.Equal(DateTime.UnixEpoch.AddSeconds(10), hardware.KeyAt);
+        Assert.Equal(DateTime.UnixEpoch.AddSeconds(10), hardware.PlayAt);
+        Assert.Equal(1, hardware.PortOpenCount);
+        Assert.Single(hardware.Events, e => e == "prepare-ptt");
+        Assert.Single(hardware.Events, e => e == "key");
+        Assert.DoesNotContain("release-ptt", hardware.Events);
+    }
+
+    [Fact]
+    public void Multiple_waiting_frequency_changes_keep_one_ptt_preparation_and_the_original_slot()
+    {
+        var hardware = new Hardware();
+        double Frequency() => hardware.Now < DateTime.UnixEpoch.AddSeconds(3) ? 1500
+            : hardware.Now < DateTime.UnixEpoch.AddSeconds(6) ? 1700 : 1900;
+        Runner(hardware).Run(Request() with { KeepPttPortOpen = true }, default, Frequency);
+        Assert.Equal(new double[] { 1500, 1700, 1900 }, hardware.PreparedFrequencies);
+        Assert.Equal(1, hardware.PortOpenCount);
+        Assert.Single(hardware.Events, e => e == "key");
+        Assert.Equal(DateTime.UnixEpoch.AddSeconds(10), hardware.PlayAt);
+    }
+
+    [Fact]
+    public void Frequency_change_after_keying_does_not_rewrite_the_on_air_packet()
+    {
+        var hardware = new Hardware();
+        var desired = 1500d;
+        hardware.DuringKey = () => desired = 900;
+        Oq4TransmitRequest? committed = null;
+        Runner(hardware).Run(Request(), default, () => desired, request => committed = request);
+        Assert.Equal(new double[] { 1500 }, hardware.PreparedFrequencies);
+        Assert.Equal(1500, committed!.FrequencyHz);
+        Runner(hardware).Run(Request() with { FrequencyHz = desired, SlotStart = DateTime.UnixEpoch.AddSeconds(17.5) }, default,
+            () => desired, request => committed = request);
+        Assert.Equal(new double[] { 1500, 900 }, hardware.PreparedFrequencies);
+        Assert.Equal(900, committed!.FrequencyHz);
+    }
+
+    [Fact]
+    public void Halt_during_frequency_refresh_never_keys_and_releases_the_reserved_port()
+    {
+        using var cancellation = new CancellationTokenSource();
+        var hardware = new Hardware();
+        hardware.DuringPrepare = () => { if (hardware.PreparedFrequencies.Count == 2) cancellation.Cancel(); };
+        Assert.Throws<OperationCanceledException>(() => Runner(hardware).Run(
+            Request() with { KeepPttPortOpen = true }, cancellation.Token, () => 900));
+        Assert.DoesNotContain("key", hardware.Events);
+        Assert.Contains("release-ptt", hardware.Events);
+        Assert.False(hardware.PortOpen);
+    }
+
+    [Fact]
+    public void Slow_frequency_rebuild_skips_a_missed_slot_without_keying_late()
+    {
+        var hardware = new Hardware();
+        hardware.DuringPrepare = () => { if (hardware.PreparedFrequencies.Count == 2) hardware.Now += TimeSpan.FromSeconds(2); };
+        var result = Runner(hardware).Run(Request(), default,
+            () => hardware.Now >= DateTime.UnixEpoch.AddSeconds(9) ? 900 : 1500);
+        Assert.Equal(Oq4TransmitOutcome.Skipped, result);
+        Assert.DoesNotContain("key", hardware.Events);
+        Assert.Contains("release-ptt", hardware.Events);
+    }
+
     private static Oq4TransmitRunner Runner(Hardware h, Action<string>? status = null,
         Action<DateTime, CancellationToken>? wait = null) => new(h, status ?? (_ => { }), () => h.Now,
             wait ?? ((at, token) => { token.ThrowIfCancellationRequested(); if (at > h.Now) h.Now = at; }),
@@ -247,6 +320,7 @@ public sealed class Oq4TransmitRunnerTests
     private sealed class Hardware : IOq4TransmitHardware
     {
         public readonly List<string> Events = [];
+        public readonly List<double> PreparedFrequencies = [];
         public DateTime Now = DateTime.UnixEpoch;
         public DateTime KeyAt, PlayAt;
         public TimeSpan PrepareDelay, PreparePttDelay, KeyDelay;
@@ -259,6 +333,7 @@ public sealed class Oq4TransmitRunnerTests
         private bool _tuning;
         public Oq4PreparedAudio Prepare(Oq4TransmitRequest request, CancellationToken cancellation)
         {
+            PreparedFrequencies.Add(request.FrequencyHz);
             Events.Add("prepare"); Now += PrepareDelay; DuringPrepare?.Invoke();
             return new(new float[35078], 12000);
         }

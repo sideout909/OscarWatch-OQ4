@@ -9,7 +9,7 @@ namespace OscarWatch.Core.Services;
 public sealed class GitHubReleaseService : IGitHubReleaseService
 {
     public const string LatestReleaseApiUrl =
-        "https://api.github.com/repos/magicbug/OscarWatch-Tracker/releases/latest";
+        "https://api.github.com/repos/sideout909/OscarWatch-OQ4/releases?per_page=100";
 
     private static readonly TimeSpan CacheTtl = TimeSpan.FromMinutes(5);
 
@@ -75,9 +75,17 @@ public sealed class GitHubReleaseService : IGitHubReleaseService
             .ReadAsStreamAsync(cancellationToken)
             .ConfigureAwait(false);
 
-        var dto = await JsonSerializer
-            .DeserializeAsync<GitHubReleaseDto>(stream, cancellationToken: cancellationToken)
+        var releases = await JsonSerializer
+            .DeserializeAsync<GitHubReleaseDto[]>(stream, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
+
+        // Include this fork's prereleases; /latest excludes them.
+        var dto = releases?
+            .Where(r => !r.Draft && r.TagName is not null
+                && r.TagName.EndsWith("-OQ4", StringComparison.OrdinalIgnoreCase)
+                && ReleaseVersion.TryParseTag(r.TagName) is not null)
+            .OrderByDescending(r => ReleaseVersion.TryParseTag(r.TagName))
+            .FirstOrDefault();
 
         if (dto is null || string.IsNullOrWhiteSpace(dto.TagName) || string.IsNullOrWhiteSpace(dto.HtmlUrl))
             throw new InvalidOperationException("GitHub release response was missing required fields.");
@@ -101,6 +109,9 @@ public sealed class GitHubReleaseService : IGitHubReleaseService
 
     private sealed class GitHubReleaseDto
     {
+        [JsonPropertyName("draft")]
+        public bool Draft { get; set; }
+
         [JsonPropertyName("tag_name")]
         public string? TagName { get; set; }
 

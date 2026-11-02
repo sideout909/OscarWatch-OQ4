@@ -18,4 +18,17 @@ public static class Oq4SlotClock
         if ((BurstStart(slot) - utc.ToUniversalTime()).TotalSeconds < minimumLeadSeconds) slot += 2;
         return slot;
     }
+    /// <summary>Keep an edited preparation in its original slot when it can still key on time.</summary>
+    public static long NextTransmitSlotAfterEdit(DateTime utc, bool even, long? previousSlot, double pttLeadSeconds)
+    {
+        var now = utc.ToUniversalTime();
+        if (previousSlot is { } previous && IsEven(previous) == even)
+        {
+            var slotStart = SlotStart(previous);
+            var leadStart = BurstStart(previous).AddSeconds(-Math.Max(0, pttLeadSeconds));
+            var keyAt = slotStart < leadStart ? slotStart : leadStart;
+            if (keyAt - now >= TimeSpan.FromMilliseconds(250)) return previous;
+        }
+        return NextTransmitSlot(now, even, Math.Max(1.5, pttLeadSeconds + 1));
+    }
 }

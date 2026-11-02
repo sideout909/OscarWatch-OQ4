@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using Avalonia;
+using Avalonia.VisualTree;
 using Avalonia.Input;
 using System.Collections.ObjectModel;
 using OscarWatch.Services;
@@ -35,12 +38,21 @@ public partial class Oq4Window : Window
     private Ft4PounceTarget? _pounceTarget;
     private string? _lastLoggedKey;
     private bool _logging;
+    private string _lastPounceInput = "";
+    private ScrollViewer? _decodeScroll;
+    private bool _changingOperation;
+    private long? _retargetSlot;
+    private long _lastKeyedSlot = long.MinValue;
+    private int _operatorRevision;
+    private DateTime? _frequencyEditAt;
+    private double _nextTransmitFrequency = 1500;
+    private string L(string key, params object[] args) => LocalizationService.Instance.Get(key, args).Replace("FT4", "OQ4", StringComparison.Ordinal);
     private bool _closeConfirmed;
     private Ft4DecodeRowViewModel? _contextRow;
     private bool _syncingMessage;
     private bool _lastTxFailed;
-    private Oq4TransmitRequest? _activeRequest;
-    public bool IsTransmissionActive => _armed || _tx is not null || _tuning;
+    private volatile Oq4TransmitRequest? _activeRequest;
+    public bool IsTransmissionActive => _armed || _tx is not null || _tuning || _changingOperation;
 
     private readonly ISettingsService _settings;
     private readonly PttKeyer _ptt;
@@ -53,8 +65,9 @@ public partial class Oq4Window : Window
     private bool _closed;
     private bool _armed;
     private bool _captureRunning;
+    private bool _waitingForStation;
     private bool _tuning;
-    private bool _tonePlaying;
+    private volatile bool _tonePlaying;
     private long _lastSlot = long.MinValue;
     private DateTime _armedAt;
     private int _waterfallTicks;
@@ -89,13 +102,22 @@ public partial class Oq4Window : Window
         _transmitter = new Oq4TransmitRunner(new TransmitHardware(this), status =>
         {
             Log.Information("OQ4 TX: {Status}", status);
-            Dispatcher.UIThread.Post(() => { if (!_closed && _tx is not null) StatusText.Text = status; });
+            var owner = _tx;
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (_closed || owner is null || !ReferenceEquals(_tx, owner) || owner.IsCancellationRequested) return;
+                if (status == "Preparing OQ4 audio and PTT…") return;
+                StatusText.Text = status == "Tune active. Select Halt TX to stop."
+                    ? L("Ft4.Status.Tuning", ((double)(TxFrequency.Value ?? 1500m)).ToString("0"))
+                    : status;
+            });
         });
         _ptt.SetManualPromptHandler(prompt => Dispatcher.UIThread.Post(() =>
         {
-            if (!_closed) ManualPttPrompt.Text = prompt == "key" ? "Key transmitter now" : "Unkey transmitter";
+            if (!_closed) ManualPttPrompt.Text = L(prompt == "key" ? "Ft4.ManualKey" : "Ft4.ManualUnkey");
         }));
         ActivityList.ItemsSource = _rows;
+        _logbook.QsosChanged += OnLogbookChanged;
         AutoReply.IsChecked = _settings.Current.Ft4.AutoReply;
         SkipRrr.IsChecked = _settings.Current.Ft4.SkipRrr;
         AutoReply.IsCheckedChanged += (_, _) =>
@@ -116,6 +138,7 @@ public partial class Oq4Window : Window
         ActivityList.SelectionChanged += OnDecodeSelected;
         TxFrequency.Value = (decimal)Math.Clamp(_settings.Current.Ft4.TxAudioHz, 200, 3000);
         _sequencer.TxAudioHz = (double)TxFrequency.Value.Value;
+        Volatile.Write(ref _nextTransmitFrequency, _sequencer.TxAudioHz);
         _sequencer.PreferEvenSlot = EvenSlot.IsChecked == true;
         HoldTx.IsChecked = _settings.Current.Ft4.HoldTxFrequency;
         TxFrequency.ValueChanged += (_, _) =>
@@ -124,11 +147,13 @@ public partial class Oq4Window : Window
             _settings.Current.Ft4.TxAudioHz = (double)value;
             _settings.RequestSave();
             _sequencer.TxAudioHz = (double)value;
-            RetargetPendingTransmit();
+            Waterfall.TxAudioHz = (double)value;
+            if (HoldTx.IsChecked != true) Waterfall.RxAudioHz = (double)value;
+            _frequencyEditAt = Ft4Clock.UtcNow;
             if (_tonePlaying)
             {
                 var s = _settings.Current.Ft4;
-                try { _audio.StartContinuousTone((double)value, s.TxLevel, s.OutputDeviceId, s.OutputDeviceDisplayName); }
+                try { _audio.StartContinuousTone((double)value, s.TxLevel, s.OutputDeviceId, s.OutputDeviceDisplayName); StatusText.Text = L("Ft4.Status.Tuning", ((double)value).ToString("0")); }
                 catch (Exception ex) { Disarm(); StatusText.Text = "Tune failed: " + ex.Message; }
             }
         };
@@ -136,16 +161,20 @@ public partial class Oq4Window : Window
         {
             _settings.Current.Ft4.HoldTxFrequency = HoldTx.IsChecked == true;
             _settings.RequestSave();
+            Waterfall.HoldTxFrequency = HoldTx.IsChecked == true;
+            if (HoldTx.IsChecked != true) TxFrequency.Value = (decimal)Waterfall.RxAudioHz;
         };
+        Waterfall.HoldTxFrequency = HoldTx.IsChecked == true;
         Waterfall.RxAudioHz = Waterfall.TxAudioHz = (double)TxFrequency.Value.Value;
         Waterfall.FrequencySelected += (_, _) => TxFrequency.Value = (decimal)Waterfall.TxAudioHz;
         _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
         _timer.Tick += OnTimerTick;
-        Opened += (_, _) => { RefreshStation(); StartMonitor(); _timer.Start(); _ = LoadWorkedAsync(); };
+        Opened += (_, _) => { RefreshStation(); if (StationReady()) StartMonitor(); RefreshHighlights(); UpdateButtons(); _timer.Start(); _ = LoadWorkedAsync(); };
         Closing += OnClosing;
         Closed += (_, _) =>
         {
             _closed = true;
+            _logbook.QsosChanged -= OnLogbookChanged;
             _armed = false;
             _timer.Stop();
             _tx?.Cancel();
@@ -156,6 +185,7 @@ public partial class Oq4Window : Window
 
     private void StartMonitor()
     {
+        if (!StationReady()) { RefreshStation(); return; }
         try
         {
             var settings = _settings.Current.Ft4;
@@ -168,7 +198,7 @@ public partial class Oq4Window : Window
             _receiveGeneration++;
             _captureRunning = true;
             Waterfall.StatusText = null;
-            StatusText.Text = "Monitoring OQ4 across the audio passband.";
+            StatusText.Text = L("Ft4.Status.Listening");
         }
         catch (Exception ex)
         {
@@ -180,6 +210,7 @@ public partial class Oq4Window : Window
 
     private void OnTimerTick(object? sender, EventArgs e)
     {
+        if (_waitingForStation && StationReady()) { RefreshStation(); StartMonitor(); UpdateButtons(); }
         if (++_clockTicks >= 20)
         {
             _clockTicks = 0;
@@ -188,7 +219,14 @@ public partial class Oq4Window : Window
         var now = Ft4Clock.UtcNow;
         var slot = Oq4SlotClock.SlotNumber(now);
         var seconds = (now - Oq4SlotClock.SlotStart(slot)).TotalSeconds;
-        var isOurSlot = Oq4SlotClock.IsEven(slot) == (EvenSlot.IsChecked == true);
+        if (_frequencyEditAt is { } edited && now - edited >= TimeSpan.FromMilliseconds(150))
+        {
+            _frequencyEditAt = null;
+            Volatile.Write(ref _nextTransmitFrequency, (double)(TxFrequency.Value ?? 1500m));
+        }
+        var isOurSlot = Oq4SlotClock.IsEven(slot) == (EvenSlot.IsChecked == true)
+            && (Volatile.Read(ref _lastKeyedSlot) == slot
+                || _activeRequest?.SlotStart == Oq4SlotClock.SlotStart(slot) && seconds < .15);
         SlotLabel.Text = isOurSlot && _armed ? "TX" : "RX";
         SlotLabel.Classes.Set("ft4-slot-tx", isOurSlot && _armed);
         SlotLabel.Classes.Set("ft4-slot-rx", !isOurSlot || !_armed);
@@ -196,9 +234,11 @@ public partial class Oq4Window : Window
         StopButton.Classes.Set("accent", _armed);
         TuneButton.Classes.Set("accent", _tuning);
         SlotProgress.Value = Math.Clamp(seconds * 100 / Oq4SlotClock.SlotSeconds, 0, 100);
-        SlotTime.Text = $"{seconds:0.00} / {Oq4SlotClock.SlotSeconds:0.00}";
-        ClockText.Text = now.ToString("HH:mm:ss.fff");
-        ClockSource.Text = Ft4Clock.UsingGps ? "GPS" : "PC";
+        SlotTime.Text = $"{SlotProgress.Value:0}%";
+        ClockText.Text = $"{Oq4SlotClock.SlotStart(slot):HH:mm:ss.f} UTC  +{seconds:0.0}s  {(Oq4SlotClock.IsEven(slot) ? "even" : "odd")}";
+        ClockSource.Text = Ft4Clock.MeasuredOffset is not { } measured
+            ? L("Ft4.ClockSource.Pc")
+            : Ft4Clock.UsingGps ? L("Ft4.ClockSource.Gps", -measured.TotalSeconds) : L("Ft4.ClockSource.PcGpsAgrees");
         if (_main is { } main)
         {
             UplinkText.Text = string.IsNullOrWhiteSpace(main.Frequencies.RadioTransmitText) ? "-" : main.Frequencies.RadioTransmitText;
@@ -206,7 +246,11 @@ public partial class Oq4Window : Window
         }
         Waterfall.HoldTxFrequency = HoldTx.IsChecked == true;
         Waterfall.TxAudioHz = (double)(TxFrequency.Value ?? 1500m);
-        if (!Waterfall.HoldTxFrequency) Waterfall.RxAudioHz = Waterfall.TxAudioHz;
+        if (!string.IsNullOrWhiteSpace(_sequencer.TheirCall)
+            && Ft4ViewModel.TryPartnerRxHz(_rows.Select(r => r.Message), _sequencer.TheirCall, out var partnerHz))
+            Waterfall.RxAudioHz = partnerHz;
+        else if (!Waterfall.HoldTxFrequency && string.IsNullOrWhiteSpace(_sequencer.TheirCall))
+            Waterfall.RxAudioHz = Waterfall.TxAudioHz;
 
         if (_captureRunning && ++_waterfallTicks >= 2)
         {
@@ -222,7 +266,7 @@ public partial class Oq4Window : Window
             StartReceiveDecode(Ft4Clock.UtcNow);
         }
 
-        if (!_armed || _tx is not null) return;
+        if (!_armed || _tx is not null || _changingOperation) return;
         var watchdog = Ft4TxWatchdog.ClampMinutes(_settings.Current.Ft4.TxWatchdogMinutes);
         if (Ft4TxWatchdog.ShouldHalt(_armed, _tuning, watchdog, now, _armedAt))
         {
@@ -233,7 +277,9 @@ public partial class Oq4Window : Window
         var leadSeconds = _settings.Current.Ft4.ToPttOptions().ClampedLeadMs / 1000.0;
         // Prepare as soon as TX is armed, on a dedicated worker, as FT4 does.
         // The 400 ms silent lead-in is played from the UTC slot boundary.
-        var nextSlot = Oq4SlotClock.NextTransmitSlot(now, EvenSlot.IsChecked == true, Math.Max(1.5, leadSeconds + 1));
+        if (_frequencyEditAt is not null) return;
+        var nextSlot = Oq4SlotClock.NextTransmitSlotAfterEdit(now, EvenSlot.IsChecked == true, _retargetSlot, leadSeconds);
+        _retargetSlot = null;
         if (nextSlot == _lastSlot) return;
         _lastSlot = nextSlot;
         _ = SendAsync(audioOnly: false, Oq4SlotClock.BurstStart(nextSlot));
@@ -301,16 +347,20 @@ public partial class Oq4Window : Window
                         else if (_sequencer.OnDecoded(message)) _ = LogContactAsync(manual: false);
                         SyncSequencer();
                     }
-                    if (!_armed && _tx is null && !_lastTxFailed) StatusText.Text = "OQ4 message decoded; CRC passed.";
+                    // A background decode must not replace the operator's Halt/CQ/pounce status.
                 }
             }));
     }
 
-    private void OnSendClick(object? sender, RoutedEventArgs e)
+    private async void OnSendClick(object? sender, RoutedEventArgs e)
     {
-        if (_tx is not null || _armed) return;
+        if (_armed || _tuning || _changingOperation) return;
+        _changingOperation = true;
         try
         {
+            var revision = _operatorRevision;
+            await WaitForTransmitCleanupAsync();
+            if (_closed || revision != _operatorRevision) return;
             ValidateTransmission(audioOnly: false);
             Oq4TransmitRunner.ArmMessage(_sequencer, MessageBox.Text, EvenSlot.IsChecked == true,
                 (double)(TxFrequency.Value ?? 1500m));
@@ -319,19 +369,11 @@ public partial class Oq4Window : Window
             _armedAt = Ft4Clock.UtcNow;
             _lastSlot = long.MinValue;
             SyncSequencer();
-            StatusText.Text = "Waiting for the next selected UTC slot…";
+            StatusText.Text = L("Ft4.Status.TxEnabled");
+            TryAcceptRecentCaller();
         }
         catch (Exception ex) { ShowTransmitError("Cannot arm OQ4", ex); }
-    }
-
-    private async void OnLoopbackClick(object? sender, RoutedEventArgs e) => await SendAsync(audioOnly: true, null);
-
-    private void OnPrepareAudioClick(object? sender, RoutedEventArgs e)
-    {
-        var s = _settings.Current.Ft4;
-        StatusText.Text = _audio.TryGetOutputSampleRate(s.OutputDeviceId, s.OutputDeviceDisplayName, out _)
-            ? "Audio output open. Route it to the loopback in your system audio settings."
-            : "Could not open the FT4 audio output device.";
+        finally { _changingOperation = false; UpdateButtons(); }
     }
 
     private void ValidateTransmission(bool audioOnly)
@@ -355,11 +397,14 @@ public partial class Oq4Window : Window
             (double)(TxFrequency.Value ?? 1500m), burstStart?.AddSeconds(-Oq4SlotClock.BurstOffsetSeconds),
             options.ClampedLeadMs, options.ClampedTailMs, audioOnly, tune,
             KeepPttPortOpen: _armed && !audioOnly && !tune && burstStart.HasValue);
+        Volatile.Write(ref _nextTransmitFrequency, request.FrequencyHz);
+        var sentRequest = request;
+        var operationRevision = _operatorRevision;
         var cancellation = new CancellationTokenSource();
         _tx = cancellation;
         _activeRequest = request;
         _tuning = tune;
-        _tonePlaying = tune;
+        _tonePlaying = false;
         _lastTxFailed = false;
         UpdateButtons();
         IDisposable? radioSession = null;
@@ -368,10 +413,18 @@ public partial class Oq4Window : Window
             ValidateTransmission(audioOnly);
             if (!audioOnly)
                 radioSession = App.Services.GetRequiredService<Ft4ModemService>().BeginExternalTransmission();
-            var outcome = await Task.Factory.StartNew(() => _transmitter.Run(request, cancellation.Token),
+            var outcome = await Task.Factory.StartNew(() => _transmitter.Run(request, cancellation.Token,
+                latestFrequency: request.SlotStart.HasValue && !tune ? () => Volatile.Read(ref _nextTransmitFrequency) : null,
+                committed: effective =>
+                {
+                    sentRequest = effective; _activeRequest = effective;
+                    Log.Information("OQ4 TX buffer selected: {Message} at {Hz:0.0} Hz for {SlotUtc}",
+                        effective.Message, effective.FrequencyHz, effective.SlotStart);
+                }),
                 CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
             if (!_closed && !tune && outcome == Oq4TransmitOutcome.Sent)
             {
+                request = sentRequest;
                 var at = request.SlotStart ?? Ft4Clock.UtcNow;
                 Ft4MessageCodec.TryParse(request.Message, out var to, out var de, out var extra);
                 AddActivity(new Ft4DecodedMessage(at, request.Message, (float)request.FrequencyHz, 0, 0, to, de, extra,
@@ -379,14 +432,15 @@ public partial class Oq4Window : Window
                 if (!audioOnly && string.Equals(request.Message, _sequencer.CurrentTxMessage, StringComparison.Ordinal)
                     && _sequencer.OnTxCompleted()) await LogContactAsync(manual: false);
                 if (!audioOnly) SyncSequencer();
-                StatusText.Text = _armed ? "Burst sent; waiting for the next selected slot. Halt TX to stop." : "Burst sent. Monitoring OQ4 audio.";
+                if (operationRevision == _operatorRevision && !cancellation.IsCancellationRequested)
+                    StatusText.Text = L("Ft4.Status.TxDone", request.Message);
             }
         }
-        catch (OperationCanceledException) { if (!_closed) StatusText.Text = _armed ? "TX updated; preparing the next selected slot." : "Transmission stopped."; }
+        catch (OperationCanceledException) { /* Preserve the status set by the newer operator action. */ }
         catch (Exception ex) when (cancellation.IsCancellationRequested)
         {
             Log.Debug(ex, "OQ4 cancelled TX preparation finished with an error");
-            if (!_closed) StatusText.Text = _armed ? "TX updated; preparing the next selected slot." : "Transmission stopped.";
+
         }
         catch (Exception ex)
         {
@@ -407,20 +461,23 @@ public partial class Oq4Window : Window
 
     private void UpdateButtons()
     {
-        SendButton.IsEnabled = !_armed && _tx is null;
-        TuneButton.IsEnabled = !_armed && (_tx is null || _tuning);
-        StopButton.IsEnabled = _armed || _tx is not null;
+        SendButton.IsEnabled = !_armed && !_tuning && !_changingOperation;
+        TuneButton.IsEnabled = _captureRunning && !_changingOperation;
+        StopButton.IsEnabled = _armed || _tx is not null || _changingOperation;
         ReportButton.IsEnabled = Send73Button.IsEnabled = !string.IsNullOrWhiteSpace(_sequencer.TheirCall);
-        ManualLogButton.IsEnabled = !string.IsNullOrWhiteSpace(_sequencer.TheirCall);
+        ManualLogButton.IsEnabled = !string.IsNullOrWhiteSpace(_sequencer.TheirCall)
+            && _sequencer.Phase is Ft4QsoPhase.InQso or Ft4QsoPhase.Finished;
+        StopButton.Classes.Set("accent", _armed);
+        TuneButton.Classes.Set("accent", _tuning);
     }
 
     private void RetargetPendingTransmit()
     {
         if (_armed && _tx is not null && _activeRequest is { } pending && !_ptt.IsKeyed && !_audio.IsPlaying
             && (!string.Equals(pending.Message, (MessageBox.Text ?? "").Trim().ToUpperInvariant(), StringComparison.Ordinal)
-                || Math.Abs(pending.FrequencyHz - (double)(TxFrequency.Value ?? 1500m)) > .1
                 || pending.SlotStart is { } slot && Oq4SlotClock.IsEven(Oq4SlotClock.SlotNumber(slot)) != (EvenSlot.IsChecked == true)))
         {
+            _retargetSlot = pending.SlotStart is { } scheduled ? Oq4SlotClock.SlotNumber(scheduled) : null;
             _tx.Cancel();
             _lastSlot = long.MinValue;
         }
@@ -450,7 +507,12 @@ public partial class Oq4Window : Window
                     || !window._rig.TryGetUplinkRfPowerWatts(out watts) || Ft4RfPowerLimit.ExceedsLimit(watts))
                     throw new InvalidOperationException($"Reduce radio power to {Ft4RfPowerLimit.MaxWatts} W or less.");
             }
+            return PrepareFrequencyChange(request, cancellation);
+        }
+        public Oq4PreparedAudio PrepareFrequencyChange(Oq4TransmitRequest request, CancellationToken cancellation)
+        {
             cancellation.ThrowIfCancellationRequested();
+            var settings = window._settings.Current.Ft4;
             var slope = 0.0;
             _stepDoppler = !request.AudioOnly && !request.Tune && settings.AudioDopplerTx
                 && window._rig.GetStatus() is { IsConnected: true, IsTracking: true }
@@ -492,13 +554,16 @@ public partial class Oq4Window : Window
         public void KeyNow()
         {
             window._ptt.KeyNow();
+            if (window._activeRequest?.SlotStart is { } slot)
+                Volatile.Write(ref window._lastKeyedSlot, Oq4SlotClock.SlotNumber(slot));
             Log.Information("OQ4 PTT requested via {Method}; keyed state {Keyed}", window._ptt.Method, window._ptt.IsKeyed);
         }
         public bool PlayPrepared(Oq4PreparedAudio audio) => window._audio.TryPlayPrepared(audio.Samples, audio.SampleRate);
         public void StartTune(Oq4TransmitRequest request)
         {
             var settings = window._settings.Current.Ft4;
-            window._audio.StartContinuousTone(request.FrequencyHz, settings.TxLevel, settings.OutputDeviceId, settings.OutputDeviceDisplayName);
+            window._audio.StartContinuousTone(settings.TxAudioHz, settings.TxLevel, settings.OutputDeviceId, settings.OutputDeviceDisplayName);
+            window._tonePlaying = true;
         }
         public bool IsPlaying => window._audio.IsPlaying;
         public void StopAudio() => window._audio.StopPlayback();
@@ -509,17 +574,26 @@ public partial class Oq4Window : Window
 
     private void Disarm()
     {
+        _operatorRevision++;
         _armed = false;
+        _retargetSlot = null;
+        _frequencyEditAt = null;
         _sequencer.HaltTx();
         _pounceTarget = null; Pounce.IsChecked = false;
         _tonePlaying = false;
         _tx?.Cancel();
         _transmitter.Stop();
+        SyncPounceDisplay();
         UpdateButtons();
     }
 
-    private void OnStopClick(object? sender, RoutedEventArgs e) { Disarm(); StatusText.Text = "TX halted."; }
-    private void OnClearClick(object? sender, RoutedEventArgs e) => _rows.Clear();
+    private void OnStopClick(object? sender, RoutedEventArgs e) { Disarm(); StatusText.Text = L("Ft4.Status.TxHalted"); }
+    private void OnClearClick(object? sender, RoutedEventArgs e)
+    {
+        _rows.Clear();
+        Waterfall.RxAudioHz = Waterfall.TxAudioHz;
+        StatusText.Text = L("Ft4.Status.DecodesCleared");
+    }
 
     private async void OnLogbookClick(object? sender, RoutedEventArgs e) => await LogContactAsync(manual: true);
 
@@ -537,7 +611,7 @@ public partial class Oq4Window : Window
             if (file is null) return;
             await using var stream = await file.OpenWriteAsync();
             await using var writer = new StreamWriter(stream);
-            foreach (var item in _rows) await writer.WriteLineAsync($"{item.Message.SlotUtc:HH:mm:ss.fff} {(item.Message.IsTransmitted ? "TX" : item.Message.IsOwnEcho ? "Echo" : "RX")} {item.Message.Text} {item.Message.FreqHz:0} Hz");
+            await writer.WriteAsync(Ft4ActivityLog.FormatAll(_rows.Select(r => r.Message)).Replace("# OscarWatch FT4 activity", "# OscarWatch OQ4 activity", StringComparison.Ordinal));
             if (!_closed) StatusText.Text = $"Activity saved to {file.Name}.";
         }
         catch (Exception ex) { if (!_closed) StatusText.Text = "Could not save activity: " + ex.Message; }
@@ -545,8 +619,17 @@ public partial class Oq4Window : Window
 
     private async void OnTuneClick(object? sender, RoutedEventArgs e)
     {
-        if (_tuning) { Disarm(); StatusText.Text = "Tune stopped."; return; }
-        if (_tx is not null || _armed) return;
+        if (_tuning) { Disarm(); StatusText.Text = L("Ft4.Status.TuneStopped"); return; }
+        if (_changingOperation || !_captureRunning) return;
+        _changingOperation = true;
+        try
+        {
+            Disarm();
+            var revision = _operatorRevision;
+            await WaitForTransmitCleanupAsync();
+            if (_closed || revision != _operatorRevision) return;
+        }
+        finally { _changingOperation = false; UpdateButtons(); }
         await SendAsync(audioOnly: false, null, tune: true);
     }
 
@@ -554,6 +637,7 @@ public partial class Oq4Window : Window
     {
         if (_tx is not null || _armed) { StatusText.Text = "Halt TX before changing settings."; return; }
         var dialog = new Ft4SettingsWindow { DataContext = App.Services.GetRequiredService<Ft4ViewModel>() };
+        dialog.Title = L("Window.Ft4Settings.Title");
         await dialog.ShowDialog(this);
         if (!_closed)
         {
@@ -563,21 +647,38 @@ public partial class Oq4Window : Window
             SkipRrr.IsChecked = _settings.Current.Ft4.SkipRrr;
             RefreshStation();
             StartMonitor();
-            RefreshHighlights();
+            RefreshHighlights(); UpdateButtons();
         }
     }
 
-    private void OnCqClick(object? sender, RoutedEventArgs e)
+    private async void OnCqClick(object? sender, RoutedEventArgs e)
     {
-        var call = Ft4MessageCodec.NormalizeCall(_settings.Current.GroundStation.Callsign ?? "");
-        var grid = (_settings.Current.GroundStation.GridSquare ?? "").Trim().ToUpperInvariant();
-        if (!StationReady()) { RefreshStation(); StatusText.Text = "Enter your callsign and grid in station settings."; return; }
-        if (_tx is not null) { _tx.Cancel(); _transmitter.Stop(); }
-        _sequencer.StartCq(EvenSlot.IsChecked == true);
-        _lastLoggedKey = null;
-        _armed = true; _armedAt = Ft4Clock.UtcNow; _lastSlot = long.MinValue;
-        SyncSequencer();
-        StatusText.Text = "Calling CQ; preparing the next selected slot.";
+        if (_changingOperation) return;
+        _changingOperation = true;
+        try
+        {
+            ValidateTransmission(audioOnly: false);
+            Disarm();
+            var revision = _operatorRevision;
+            await WaitForTransmitCleanupAsync();
+            if (_closed || revision != _operatorRevision) return;
+            _sequencer.StartCq(EvenSlot.IsChecked == true);
+            _lastLoggedKey = null;
+            _armed = true; _armedAt = Ft4Clock.UtcNow; _lastSlot = long.MinValue;
+            SyncSequencer();
+            TryAcceptRecentCaller();
+            StatusText.Text = _sequencer.Phase == Ft4QsoPhase.InQso
+                ? L("Ft4.Status.Answering", _sequencer.TheirCall ?? "") : L("Ft4.Status.CallingCq");
+        }
+        catch (Exception ex) { ShowTransmitError("Cannot call CQ", ex); }
+        finally { _changingOperation = false; UpdateButtons(); }
+    }
+
+    private async Task WaitForTransmitCleanupAsync()
+    {
+        // Wait for the old worker's finally block before starting another operation.
+        // Otherwise it can clear the new operation's cancellation/PTT state.
+        while (_tx is not null && !_closed) await Task.Delay(10);
     }
 
     private void AddActivity(Ft4DecodedMessage message)
@@ -586,8 +687,16 @@ public partial class Oq4Window : Window
         _rows.Insert(0, row);
         while (_rows.Count > 200) _rows.RemoveAt(_rows.Count - 1);
         RefreshHighlights();
-        ActivityList.ScrollIntoView(row);
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (_closed || ActivityList.ItemCount == 0) return;
+            ActivityList.ScrollIntoView(0);
+            _decodeScroll ??= ActivityList.GetVisualDescendants().OfType<ScrollViewer>().FirstOrDefault();
+            if (_decodeScroll is not null) _decodeScroll.Offset = new Vector(_decodeScroll.Offset.X, 0);
+        }, DispatcherPriority.Background);
     }
+
+    private void OnLogbookChanged(long logbookId) => Dispatcher.UIThread.Post(() => { if (!_closed) _ = LoadWorkedAsync(); });
 
     private async Task LoadWorkedAsync()
     {
@@ -604,6 +713,9 @@ public partial class Oq4Window : Window
     {
         var settings = _settings.Current.Ft4;
         ActivityList.FontSize = settings.DecodeFontSize;
+        foreach (var header in new[] { HeaderTime, HeaderKind, HeaderDt, HeaderSnr, HeaderMessage, HeaderHz })
+            header.FontSize = settings.DecodeFontSize;
+        SyncPounceDisplay();
         Waterfall.DisplayRangeDb = settings.WaterfallRangeDb;
         foreach (var row in _rows)
             row.RefreshHighlight(_settings.Current.GroundStation.Callsign, _sequencer.TheirCall,
@@ -665,6 +777,16 @@ public partial class Oq4Window : Window
         e.Handled = true;
     }
 
+    private void OnDecodeContextOpening(object? sender, CancelEventArgs e)
+    {
+        _contextRow ??= ActivityList.SelectedItem as Ft4DecodeRowViewModel;
+        if (_contextRow?.Message is not { IsReceiveActivity: true } message || string.IsNullOrWhiteSpace(message.CallDe))
+        {
+            _contextRow = null;
+            e.Cancel = true;
+        }
+    }
+
     private void OnDecodeContextClosed(object? sender, RoutedEventArgs e) =>
         Dispatcher.UIThread.Post(() => _contextRow = null);
 
@@ -672,8 +794,7 @@ public partial class Oq4Window : Window
     {
         if (_contextRow?.Message is not { IsReceiveActivity: true, CallDe: { } call }) return;
         if (!Ft4PounceTarget.TryParse(call, out var target)) return;
-        Disarm(); _pounceTarget = target; Pounce.IsChecked = true; RefreshHighlights();
-        StatusText.Text = "Waiting to call " + target.Value;
+        ArmPounce(target);
     }
 
     private void OnDecodeSelected(object? sender, SelectionChangedEventArgs e)
@@ -681,51 +802,98 @@ public partial class Oq4Window : Window
         if (ActivityList.SelectedItem is Ft4DecodeRowViewModel row) AnswerDecode(row.Message);
     }
 
-    private void AnswerDecode(Ft4DecodedMessage message)
+    private async void AnswerDecode(Ft4DecodedMessage message)
     {
-        if (!message.IsReceiveActivity || string.IsNullOrWhiteSpace(message.CallDe)) return;
+        if (!message.IsReceiveActivity || string.IsNullOrWhiteSpace(message.CallDe) || _changingOperation) return;
         try
         {
             ValidateTransmission(audioOnly: false);
+            if (_tuning)
+            {
+                _changingOperation = true;
+                Disarm();
+                var revision = _operatorRevision;
+                await WaitForTransmitCleanupAsync();
+                if (_closed || revision != _operatorRevision) return;
+            }
             _pounceTarget = null; Pounce.IsChecked = false;
             _sequencer.StartAnswer(message, !Oq4SlotClock.IsEven(Oq4SlotClock.SlotNumber(message.SlotUtc)));
             _lastLoggedKey = null; _armedAt = Ft4Clock.UtcNow;
             SyncSequencer();
-            StatusText.Text = "Answering " + message.CallDe;
+            Waterfall.RxAudioHz = Math.Clamp(message.FreqHz, 200, 3000);
+            StatusText.Text = L("Ft4.Status.Answering", message.Text);
         }
         catch (Exception ex) { ShowTransmitError("Cannot answer station", ex); }
+        finally { _changingOperation = false; UpdateButtons(); }
     }
 
-    private void OnReportClick(object? sender, RoutedEventArgs e)
+    private async void OnReportClick(object? sender, RoutedEventArgs e)
     {
+        if (!await PrepareStandardMessageAsync()) return;
         float? snr = _rows.FirstOrDefault(r => r.Message.IsReceiveActivity &&
             string.Equals(r.Message.CallDe, _sequencer.TheirCall, StringComparison.OrdinalIgnoreCase))?.Message.SnrDb;
         if (!_sequencer.ForceReport(snr)) return;
         _armedAt = Ft4Clock.UtcNow; SyncSequencer();
+        StatusText.Text = L("Ft4.Status.SendingReport", _sequencer.TheirCall ?? "");
     }
 
-    private void On73Click(object? sender, RoutedEventArgs e)
+    private async void On73Click(object? sender, RoutedEventArgs e)
     {
-        if (!_sequencer.Force73()) return;
+        if (!await PrepareStandardMessageAsync() || !_sequencer.Force73()) return;
         _armedAt = Ft4Clock.UtcNow; SyncSequencer();
+        StatusText.Text = L("Ft4.Status.Sending73", _sequencer.TheirCall ?? "");
+    }
+
+    private async Task<bool> PrepareStandardMessageAsync()
+    {
+        if (_changingOperation) return false;
+        try
+        {
+            ValidateTransmission(audioOnly: false);
+            if (_tuning)
+            {
+                _changingOperation = true;
+                Disarm();
+                var revision = _operatorRevision;
+                await WaitForTransmitCleanupAsync();
+                if (revision != _operatorRevision) return false;
+            }
+            return !_closed;
+        }
+        catch (Exception ex) { ShowTransmitError("Cannot send message", ex); return false; }
+        finally { _changingOperation = false; UpdateButtons(); }
     }
 
     private async void OnPounceClick(object? sender, RoutedEventArgs e)
     {
         if (_pounceTarget is not null)
         {
-            _pounceTarget = null; Pounce.IsChecked = false; RefreshHighlights(); return;
+            _pounceTarget = null; Pounce.IsChecked = false; RefreshHighlights(); StatusText.Text = L("Ft4.Status.PounceCancelled"); return;
         }
-        var dialog = new Ft4PounceWindow();
+        var dialog = new Ft4PounceWindow(_lastPounceInput);
         var target = await dialog.ShowDialog<Ft4PounceTarget?>(this);
         if (_closed) return;
         if (target is not null)
         {
-            Disarm();
-            _pounceTarget = target;
-            StatusText.Text = "Waiting to call " + target.Value;
+            ArmPounce(target);
         }
         Pounce.IsChecked = _pounceTarget is not null; RefreshHighlights();
+    }
+
+    private void ArmPounce(Ft4PounceTarget target)
+    {
+        _lastPounceInput = target.Value;
+        _pounceTarget = target;
+        SyncPounceDisplay(); RefreshHighlights();
+        StatusText.Text = L("Ft4.Status.PounceWaiting", target.Value);
+    }
+
+    private void SyncPounceDisplay()
+    {
+        Pounce.IsChecked = _pounceTarget is not null;
+        var label = _pounceTarget is null ? L("Ft4.Pounce") : L("Ft4.Pounce.Armed", _pounceTarget.Value);
+        Pounce.Content = label;
+        Avalonia.Automation.AutomationProperties.SetName(Pounce, label);
     }
 
     private async Task LogContactAsync(bool manual)
@@ -755,10 +923,20 @@ public partial class Oq4Window : Window
     private void RefreshStation()
     {
         StationBanner.IsVisible = !StationReady();
+        _waitingForStation = StationBanner.IsVisible;
         Waterfall.ShowTuningBrackets = !StationBanner.IsVisible;
+        var gap = Ft4StationIdentity.Gap(_settings.Current.GroundStation.Callsign, _settings.Current.GroundStation.GridSquare);
+        StationMessage.Text = L(gap switch
+        {
+            Ft4StationGap.Callsign => "Ft4.Station.NeedCallsign",
+            Ft4StationGap.Locator => "Ft4.Station.NeedLocator",
+            _ => "Ft4.Station.NeedBoth"
+        });
+        Avalonia.Automation.AutomationProperties.SetName(StationBanner, StationMessage.Text);
+        if (StationBanner.IsVisible) StatusText.Text = StationMessage.Text;
         var call = Ft4MessageCodec.NormalizeCall(_settings.Current.GroundStation.Callsign ?? "");
         var grid = (_settings.Current.GroundStation.GridSquare ?? "").Trim().ToUpperInvariant();
-        MessageBox.Watermark = StationReady() ? Ft4MessageCodec.BuildCq(call, grid[..4]) : "Enter an OQ4 message";
+        MessageBox.Watermark = StationReady() ? Ft4MessageCodec.BuildCq(call, grid[..4]) : L("Ft4.TxMessage.Watermark");
     }
 
     private async void OnEnterStationDetailsClick(object? sender, RoutedEventArgs e)

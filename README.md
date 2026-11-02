@@ -49,7 +49,7 @@ FT4 parameters: [WSJT-X user guide](https://wsjt.sourceforge.io/wsjtx-main_en.ht
 - Approximate data SNR reports referenced to 2,500 Hz, measured from the original observations after CRC validation.
 - UTC slot scheduling, prebuilt transmit audio, PTT preparation/cleanup, receive buffering and offline regression tools.
 
-The experimental native OQ4 library is rebuilt for **Linux x64**. Other platforms require a native rebuild; upstream release packages do not automatically include OQ4. Some FT4-specific settings, including its AP/depth algorithms and echo calibration, are not OQ4 features.
+The release workflow builds the native OQ4 library and application for **Linux, Windows and macOS, on x64 and ARM64**. Download experimental packages from [our fork’s releases](https://github.com/sideout909/OscarWatch-OQ4/releases); upstream packages do not include OQ4. Some FT4-specific settings, including its AP/depth algorithms and echo calibration, are not OQ4 features.
 
 ## Evidence so far
 
@@ -100,7 +100,9 @@ cmake --build build/oq4-native --parallel
 cp build/oq4-native/oscarwatch_ft8.so OscarWatch/runtimes/linux-x64/native/oscarwatch_ft8.so
 ```
 
-The app remains an experimental source build. [Upstream releases](https://github.com/magicbug/OscarWatch-Tracker/releases) provide the original OscarWatch, not this OQ4 experiment.
+Experimental binary packages are available from [OscarWatch-OQ4 releases](https://github.com/sideout909/OscarWatch-OQ4/releases). Starting with **1.1.6-OQ4**, update checks use this fork’s OQ4 releases, including prereleases, and ignore upstream releases. Update notifications open the download page; they do not automatically install binaries.
+
+The OQ4 operating controls and status strip follow FT4. With **Hold TX** checked, right-click the waterfall to change TX frequency while transmission remains enabled. A waiting packet refreshes its audio without cycling the PTT port; edits after the pre-key cutoff apply to the following packet. See the [window audit](docs/OQ4_WINDOW_PARITY.md).
 
 ## Documentation and tools
 
