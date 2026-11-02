@@ -14,6 +14,10 @@ OQ4 sends a complete packet in approximately **2.523 seconds**, using **3.75-sec
 
 *Generated from the production encoders using the same message and equal average active-packet power. This shows timing and waveform structure, not a measured sensitivity comparison.*
 
+![Six decoded OQ4 returns from the JO-97 recording, with estimated SNR from -14.2 to -3.8 dB, UTC, audio frequency, relative delay and reference-tone annotations](screenshots/oq4-decoded-returns.png)
+
+*Recorded JO-97 returns, from weaker to stronger examples: each decoded `CQ K8OTY EN73` with a valid CRC using the 1.1.6-OQ4 receiver. All panels use unfiltered recorded audio and matching display scales. SNR estimates use a 2500 Hz reference bandwidth; the 12–22 ms delays are relative to the local TX copy. [Figure details and reproduction](docs/OQ4_DECODED_RETURNS_FIGURE.md).*
+
 ## Why develop OQ4?
 
 A satellite pass offers a limited number of opportunities to make contact. Short packets can provide more chances to exchange callsigns, locators, reports and acknowledgments before the path fades, an obstruction intervenes or the satellite sets. The project began with practical FT4 operation through RS-44 in OscarWatch and the question of whether similar useful decoding could be retained with substantially shorter transmissions.

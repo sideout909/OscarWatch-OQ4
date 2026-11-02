@@ -1,0 +1,69 @@
+{
+  "source_manifest": "jo97-20261102-0232.manifest.json",
+  "source_sha256": "6ee339824790b7c673637238b24fbd1cc077b27080ba38342adaccd51c16b42f",
+  "receiver_commit": "cd50549aca046f43446089daf9104ba61fe0a195",
+  "sample_rate": 12000,
+  "packet_duration_seconds": 2.5231667,
+  "examples": [
+    {
+      "file": "023945-000.f32",
+      "utc_slot": "2026-11-02T02:39:45",
+      "message": "CQ K8OTY EN73",
+      "frequency_hz": 2024.8353406097895,
+      "snr_db": -14.213304,
+      "packet_start_seconds": 0.508,
+      "local_packet_start_seconds": 0.492,
+      "delay_ms": 16
+    },
+    {
+      "file": "023415-000.f32",
+      "utc_slot": "2026-11-02T02:34:15",
+      "message": "CQ K8OTY EN73",
+      "frequency_hz": 856.0966591377312,
+      "snr_db": -14.034739,
+      "packet_start_seconds": 0.518,
+      "local_packet_start_seconds": 0.496,
+      "delay_ms": 22
+    },
+    {
+      "file": "023552-500.f32",
+      "utc_slot": "2026-11-02T02:35:52.500000",
+      "message": "CQ K8OTY EN73",
+      "frequency_hz": 1240.588043918616,
+      "snr_db": -13.555575,
+      "packet_start_seconds": 0.512,
+      "local_packet_start_seconds": 0.496,
+      "delay_ms": 16
+    },
+    {
+      "file": "023822-500.f32",
+      "utc_slot": "2026-11-02T02:38:22.500000",
+      "message": "CQ K8OTY EN73",
+      "frequency_hz": 2339.544365182176,
+      "snr_db": -8.914046,
+      "packet_start_seconds": 0.508,
+      "local_packet_start_seconds": 0.492,
+      "delay_ms": 16
+    },
+    {
+      "file": "023952-500.f32",
+      "utc_slot": "2026-11-02T02:39:52.500000",
+      "message": "CQ K8OTY EN73",
+      "frequency_hz": 1986.1538293360416,
+      "snr_db": -7.1442294,
+      "packet_start_seconds": 0.508,
+      "local_packet_start_seconds": 0.492,
+      "delay_ms": 16
+    },
+    {
+      "file": "023830-000.f32",
+      "utc_slot": "2026-11-02T02:38:30",
+      "message": "CQ K8OTY EN73",
+      "frequency_hz": 2363.1937696435184,
+      "snr_db": -3.7945187,
+      "packet_start_seconds": 0.508,
+      "local_packet_start_seconds": 0.496,
+      "delay_ms": 12
+    }
+  ]
+}
