@@ -615,6 +615,108 @@ Continuar?</value>
   <data name="Menu.Window.PassElevationTimeline">
     <value>Linha do tempo de _elevação de passagens</value>
   </data>
+  <data name="Menu.Window.EarthView">
+    <value>_Visão da Terra</value>
+  </data>
+  <data name="Window.EarthView.Title">
+    <value>Visão da Terra</value>
+  </data>
+  <data name="EarthView.ZoomIn">
+    <value>Aproximar</value>
+  </data>
+  <data name="EarthView.ZoomOut">
+    <value>Afastar</value>
+  </data>
+  <data name="EarthView.ResetView">
+    <value>Redefinir zoom</value>
+  </data>
+  <data name="EarthView.Zoom.Tip">
+    <value>Dê zoom com a roda do mouse ou pressione + e − enquanto o globo estiver em foco. Pressione 0 para ajustar o globo inteiro novamente.</value>
+  </data>
+  <data name="EarthView.Label.Station">
+    <value>Estação</value>
+  </data>
+  <data name="EarthView.Empty.NoSatellite">
+    <value>Selecione um satélite na janela principal para ver a Terra a partir dele.</value>
+  </data>
+  <data name="EarthView.Empty.NoPosition">
+    <value>A posição do satélite selecionado ainda não está disponível.</value>
+  </data>
+  <data name="EarthView.Status.Time">
+    <value>{0} UTC</value>
+  </data>
+  <data name="EarthView.Section.Satellite">
+    <value>Satélite</value>
+  </data>
+  <data name="EarthView.Section.Station">
+    <value>Sua estação</value>
+  </data>
+  <data name="EarthView.Section.Coverage">
+    <value>Cobertura</value>
+  </data>
+  <data name="EarthView.Label.Altitude">
+    <value>Altitude</value>
+  </data>
+  <data name="EarthView.Label.Time">
+    <value>Hora</value>
+  </data>
+  <data name="EarthView.Label.Lighting">
+    <value>Iluminação</value>
+  </data>
+  <data name="EarthView.Label.Azimuth">
+    <value>Azimute</value>
+  </data>
+  <data name="EarthView.Label.Elevation">
+    <value>Elevação</value>
+  </data>
+  <data name="EarthView.Label.Range">
+    <value>Distância</value>
+  </data>
+  <data name="EarthView.Label.Footprint">
+    <value>Footprint</value>
+  </data>
+  <data name="EarthView.Label.MinElevation">
+    <value>Elevação mínima</value>
+  </data>
+  <data name="EarthView.Value.Kilometres">
+    <value>{0:F0} km</value>
+  </data>
+  <data name="EarthView.Value.Degrees">
+    <value>{0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.BelowHorizon">
+    <value>Fora: satélite abaixo do horizonte</value>
+  </data>
+  <data name="EarthView.Status.AboveHorizon">
+    <value>Dentro: satélite acima do horizonte</value>
+  </data>
+  <data name="EarthView.Status.InsideMinElevation">
+    <value>Satélite acima de {0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.OutsideMinElevation">
+    <value>Satélite abaixo de {0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.Sunlit">
+    <value>Sob luz solar</value>
+  </data>
+  <data name="EarthView.Status.Eclipse">
+    <value>Na sombra da Terra</value>
+  </data>
+  <data name="EarthView.Accessible.Name">
+    <value>Visão da Terra, {0}</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.Usable">
+    <value>{0} está {1:F0} graus acima do horizonte, no azimute {2:F0} graus, acima da sua elevação mínima de {3:F0} graus.</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.AboveHorizon">
+    <value>{0} está {1:F0} graus acima do horizonte, no azimute {2:F0} graus, abaixo da sua elevação mínima de {3:F0} graus.</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.BelowHorizon">
+    <value>{0} está abaixo do horizonte.</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.NoAngles">
+    <value>{0} está acima do horizonte.</value>
+  </data>
   <data name="Window.PassElevationTimeline.Title">
     <value>Linha do tempo de elevação de passagens</value>
   </data>
@@ -3070,7 +3172,7 @@ Continuar?</value>
     <value>Ativar evitar keyhole</value>
   </data>
   <data name="Settings.Rotator.KeyholeNote">
-    <value>Quando ativado, passagens de alta elevação em que o rotor não acompanha perto do zênite são analisadas, e o rotor pode pré-posicionar-se numa orientação invertida para minimizar perda de sinal. O pré-posicionamento gira o azimute na elevação de início de rastreamento (não abaixo de 0°). Disponível apenas com faixa de elevação 0–180°.</value>
+    <value>Quando ativado, passagens de alta elevação em que o rotor não acompanha perto do zênite são analisadas, e o rotor pode pré-posicionar-se numa orientação invertida para minimizar perda de sinal. Uma passagem invertida mantém azimute +180° e elevação em 180° menos a elevação do satélite, do AOS até o satélite cair abaixo do início do rastreamento. O pré-posicionamento usa essa elevação invertida (180° menos a elevação de início de rastreamento, não abaixo de 0°). Disponível apenas com faixa de elevação 0–180°.</value>
   </data>
   <data name="Settings.Rotator.KeyholeSlewRate">
     <value>Velocidade de rotação (°/s)</value>
@@ -3088,7 +3190,7 @@ Continuar?</value>
     <value>Iniciar rastreamento na elevação (°)</value>
   </data>
   <data name="Settings.Rotator.TrackStartNote">
-    <value>O padrão é -3° (abaixo do horizonte). Faixa de -90° a 90°. O rotor começa a girar quando o satélite rastreado sobe acima desta elevação e estaciona quando cai abaixo (após uma confirmação curta para que uma única falha não interrompa o passe). O pré-posicionamento de keyhole usa esta elevação como piso (não abaixo de 0°).</value>
+    <value>O padrão é -3° (abaixo do horizonte). Faixa de -90° a 90°. O rotor começa a girar quando o satélite rastreado sobe acima desta elevação e estaciona quando cai abaixo (após uma confirmação curta para que uma única falha não interrompa o passe). O pré-posicionamento de keyhole usa esta elevação como piso do ângulo no céu (não abaixo de 0°) e comanda 180° menos esse piso.</value>
   </data>
   <data name="Settings.Rotator.MovementThreshold">
     <value>Limiar de movimento (°)</value>
@@ -4618,10 +4720,10 @@ Mais recente: {1} ({2})</value>
     <value>Linha de controle</value>
   </data>
   <data name="Ft4.EchoCalibration.Note">
-    <value>Quando o eco do seu uplink é decodificado, o OscarWatch ajusta este trim por satélite automaticamente. Você pode editar ou limpar aqui.</value>
+    <value>Quando o eco do seu uplink é decodificado, o OscarWatch ajusta o trim do transponder FT4 em uso, inclusive uma cópia personalizada como FT4 Asia. Um trim antigo de todo o satélite continua valendo até esse transponder ter o seu. Você pode editar ou limpar aqui.</value>
   </data>
   <data name="Ft4.EchoCalibration.Satellite">
-    <value>Satélite</value>
+    <value>Transponder</value>
   </data>
   <data name="Ft4.EchoCalibration.TrimHz">
     <value>Trim de uplink (Hz)</value>

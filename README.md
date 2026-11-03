@@ -52,6 +52,7 @@ FT4 parameters: [WSJT-X user guide](https://wsjt.sourceforge.io/wsjtx-main_en.ht
 - Fast LDPC belief propagation, bounded ordered-statistics recovery and bounded **code-assisted phase tracking** using LDPC extrinsic information.
 - Approximate data SNR reports referenced to 2,500 Hz, measured from the original observations after CRC validation.
 - UTC slot scheduling, prebuilt transmit audio, PTT preparation/cleanup, receive buffering and offline regression tools.
+- Upstream tracking features, including the Earth View globe, remain available alongside OQ4.
 
 The release workflow builds the native OQ4 library and application for **Linux, Windows and macOS, on x64 and ARM64**. Download experimental packages from [our fork’s releases](https://github.com/sideout909/OscarWatch-OQ4/releases); upstream packages do not include OQ4. Some FT4-specific settings, including its AP/depth algorithms and echo calibration, are not OQ4 features.
 
@@ -120,7 +121,7 @@ The OQ4 operating controls and status strip follow FT4. With **Hold TX** checked
 - [Window/PTT parity](docs/OQ4_WINDOW_FT4_PARITY.md), [recording analysis](docs/OQ4_RECORDING_ANALYSIS.md), [weak-signal research](docs/OQ4_WEAK_SIGNAL_RESEARCH.md), and [handoff](docs/OQ4_HANDOFF.md).
 - [Offline replay, seeded waveform generation and scoring](tools/Oq4Replay/README.md).
 - [Receive-only live capture probe](tools/ModemPairProbe/README.md).
-- [Original upstream README](docs/UPSTREAM_README.md): tracking features, hardware support and installation background. Its relative links and branch/build descriptions refer to the upstream root/version.
+- [Upstream README](docs/UPSTREAM_README.md): tracking features, hardware support and installation background. Its relative links and branch/build descriptions refer to the upstream root/version.
 
 ## Upstream credit and license
 

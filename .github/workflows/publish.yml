@@ -59,13 +59,15 @@ jobs:
             display_name: macOS Intel
             archive_ext: tar.gz
             publish_single_file: false
+          # Pinned to Ubuntu 24.04. ubuntu-latest moved to 26.04 and linked this
+          # library against glibc 2.43 (log10f), which Linux Mint and Raspberry Pi OS cannot load.
           - rid: linux-x64
-            os: ubuntu-latest
+            os: ubuntu-24.04
             display_name: Linux x64
             archive_ext: tar.gz
             publish_single_file: false
           - rid: linux-arm64
-            os: ubuntu-latest
+            os: ubuntu-24.04
             display_name: Linux ARM64 (Raspberry Pi 64-bit)
             archive_ext: tar.gz
             publish_single_file: false
@@ -236,6 +238,40 @@ jobs:
           echo "Found $path ($size bytes)"
           if [[ "$size" -lt 10000 ]]; then
             echo "FT4 native library looks too small: $path"
+            exit 1
+          fi
+
+      # glibc 2.35 is Ubuntu 22.04, Linux Mint 21, and Raspberry Pi OS Bookworm.
+      # A newer symbol (glibc 2.43 log10f on Ubuntu 26.04) loads as "library not found".
+      - name: Check FT4 native library glibc is old enough (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${{ runner.temp }}/publish-${{ matrix.rid }}"
+          rid="${{ matrix.rid }}"
+          so="$out/runtimes/$rid/native/oscarwatch_ft8.so"
+          mapfile -t vers < <(readelf -V "$so" | sed -n 's/.*Name: \(GLIBC_[^[:space:]]*\).*/\1/p' | sort -u)
+          if (( ${#vers[@]} == 0 )); then
+            echo "No GLIBC versions found in $so"
+            readelf -V "$so"
+            exit 1
+          fi
+          echo "glibc symbol versions in $so:"
+          printf '  %s\n' "${vers[@]}"
+          bad=0
+          for v in "${vers[@]}"; do
+            num="${v#GLIBC_}"
+            major="${num%%.*}"
+            rest="${num#*.}"
+            minor="${rest%%.*}"
+            if (( major > 2 || (major == 2 && minor > 35) )); then
+              echo "Too new: $v"
+              bad=1
+            fi
+          done
+          if (( bad )); then
+            echo "oscarwatch_ft8.so must not require glibc newer than 2.35."
             exit 1
           fi
 

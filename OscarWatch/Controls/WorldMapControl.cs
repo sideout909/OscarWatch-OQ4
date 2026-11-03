@@ -906,7 +906,7 @@ public class WorldMapControl : ThemeAwareControl
             if (!TrackingPlotAccessibility.IsPlotSatelliteVisible(SoloFocusedSatellite, FocusedNoradId, state.NoradId))
                 continue;
 
-            var color = PlotColors.ForIndex(i);
+            var color = PlotColors.ForIndex(state.PaletteIndex);
             var isFocused = state.NoradId == FocusedNoradId;
 
             if (isFocused)
@@ -943,10 +943,7 @@ public class WorldMapControl : ThemeAwareControl
                     stroke,
                     2);
 
-                var heading = ShowFootprintMotionArrows
-                    ? state.MotionHeadingDeg
-                      ?? GroundTrackHeading.EstimateHeadingDeg(state.Subpoint, state.GroundTrack)
-                    : null;
+                var heading = MotionArrowHeadingDeg(state);
                 if (heading is { } headingDeg)
                 {
                     foreach (var xOffset in GetSubpointWrapOffsets(sx, w))
@@ -990,6 +987,7 @@ public class WorldMapControl : ThemeAwareControl
             var isFocused = string.Equals(state.NoradId, FocusedNoradId, StringComparison.Ordinal);
             var (sx, sy) = EquirectangularProjection.GeoToPixel(
                 state.Subpoint.LatitudeDeg, state.Subpoint.LongitudeDeg, w, h, centreLon);
+            var labelBelow = IsNorthboundHeadingDeg(MotionArrowHeadingDeg(state));
 
             foreach (var xOffset in GetSubpointWrapOffsets(sx, w))
             {
@@ -999,7 +997,8 @@ public class WorldMapControl : ThemeAwareControl
                     sx + xOffset,
                     sy,
                     palette,
-                    isFocused ? 12 : 11);
+                    isFocused ? 12 : 11,
+                    labelBelow);
             }
         }
 
@@ -1102,10 +1101,11 @@ public class WorldMapControl : ThemeAwareControl
             var text = _labelCache.Get(state.Name, isFocused ? 12 : 11, palette);
             var (sx, sy) = EquirectangularProjection.GeoToPixel(
                 state.Subpoint.LatitudeDeg, state.Subpoint.LongitudeDeg, w, h, centreLon);
+            var labelBelow = IsNorthboundHeadingDeg(MotionArrowHeadingDeg(state));
 
             foreach (var xOffset in GetSubpointWrapOffsets(sx, w))
             {
-                var bounds = SatelliteLabelBounds(sx + xOffset, sy, text.Width, text.Height);
+                var bounds = SatelliteLabelBounds(sx + xOffset, sy, text.Width, text.Height, labelBelow);
                 if (!bounds.Contains(pos))
                     continue;
 
@@ -1159,11 +1159,37 @@ public class WorldMapControl : ThemeAwareControl
         return bestId;
     }
 
-    /// <summary>Screen rectangle of the name drawn above a subpoint, including its padding.</summary>
-    internal static Rect SatelliteLabelBounds(double anchorX, double anchorY, double textWidth, double textHeight)
+    /// <summary>
+    /// Heading used for the footprint motion arrow, or null when no arrow is drawn for this
+    /// satellite. Shared by the arrow, the label placement and label hit-testing so they agree.
+    /// </summary>
+    private double? MotionArrowHeadingDeg(SatelliteTrackState state)
+    {
+        if (!ShowFootprintMotionArrows || state.Footprint.Count < 3)
+            return null;
+
+        return state.MotionHeadingDeg
+            ?? GroundTrackHeading.EstimateHeadingDeg(state.Subpoint, state.GroundTrack);
+    }
+
+    /// <summary>
+    /// True when a heading points into the top half of the screen (any northward component), so a
+    /// name drawn above the subpoint would cover the motion arrow and should go below instead.
+    /// Expects a heading in [0, 360) degrees clockwise from north, as produced by
+    /// <see cref="SphericalGeo.InitialBearingDeg"/>.
+    /// </summary>
+    internal static bool IsNorthboundHeadingDeg(double? headingDeg) =>
+        headingDeg is { } heading && (heading < 90.0 || heading > 270.0);
+
+    /// <summary>
+    /// Screen rectangle of the name drawn at a subpoint, including its padding. The label sits
+    /// above the subpoint, or below it when <paramref name="below"/> is set (northbound satellites).
+    /// </summary>
+    internal static Rect SatelliteLabelBounds(
+        double anchorX, double anchorY, double textWidth, double textHeight, bool below = false)
     {
         var tx = anchorX - textWidth / 2;
-        var ty = anchorY - textHeight - 8;
+        var ty = below ? anchorY + 8 : anchorY - textHeight - 8;
         return new Rect(tx - 4, ty - 2, textWidth + 8, textHeight + 4);
     }
 
@@ -1925,10 +1951,11 @@ public class WorldMapControl : ThemeAwareControl
         double x,
         double y,
         UiPalette palette,
-        double fontSize = 12)
+        double fontSize = 12,
+        bool below = false)
     {
         var text = _labelCache.Get(name, fontSize, palette);
-        var bg = SatelliteLabelBounds(x, y, text.Width, text.Height);
+        var bg = SatelliteLabelBounds(x, y, text.Width, text.Height, below);
         context.FillRectangle(_labelCache.GetBackgroundBrush(palette), bg);
         context.DrawText(text, new Point(bg.X + 4, bg.Y + 2));
     }

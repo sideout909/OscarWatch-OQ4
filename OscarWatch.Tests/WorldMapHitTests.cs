@@ -29,6 +29,29 @@ public class WorldMapHitTests
     }
 
     [Fact]
+    public void Label_bounds_sit_below_the_subpoint_when_northbound()
+    {
+        var bounds = WorldMapControl.SatelliteLabelBounds(100, 200, textWidth: 40, textHeight: 12, below: true);
+
+        Assert.True(bounds.Contains(new Avalonia.Point(100, 214)));
+        Assert.False(bounds.Contains(new Avalonia.Point(100, 200)));
+    }
+
+    [Theory]
+    [InlineData(0.0, true)]
+    [InlineData(45.0, true)]
+    [InlineData(350.0, true)]
+    [InlineData(90.0, false)]
+    [InlineData(270.0, false)]
+    [InlineData(180.0, false)]
+    [InlineData(135.0, false)]
+    [InlineData(null, false)]
+    public void Northbound_heading_places_the_label_below(double? headingDeg, bool expected)
+    {
+        Assert.Equal(expected, WorldMapControl.IsNorthboundHeadingDeg(headingDeg));
+    }
+
+    [Fact]
     public void Overlapping_footprints_select_the_smaller_satellite()
     {
         var hit = WorldMapControl.ChooseSmallestFootprintHit(

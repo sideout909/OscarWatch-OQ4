@@ -29,4 +29,4 @@ cp native/oscarwatch_ft8/build-win-x64/oscarwatch_ft8.dll \
   OscarWatch/runtimes/win-x64/native/
 ```
 
-Publish CI builds the library for each RID before `dotnet publish` so release packages include the native binary.
+Publish CI builds the library for each RID before `dotnet publish` so release packages include the native binary. Linux jobs stay on Ubuntu 24.04, and the package check rejects a library that needs glibc newer than 2.35, so Linux Mint and Raspberry Pi OS can load it.

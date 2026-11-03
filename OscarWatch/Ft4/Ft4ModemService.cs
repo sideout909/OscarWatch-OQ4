@@ -58,6 +58,10 @@ public sealed class Ft4ModemService : IDisposable
     private DateTime _currentSlotStart = DateTime.MinValue;
     private bool _txThisSlot;
     private long _txKickedSlotTicks; // slot start of the last KickTransmit, set from the TX timer thread
+    private string _txKickedMessage = "";
+    private int _txRetargetGeneration;
+    private int _retargetRunning;
+    private readonly object _retargetGate = new();
     private long _dopplerPreparedSlotTicks; // TX slot whose CAT Doppler write already finished
     private double _txKickedAudioHz; // TX audio Hz sent in that slot; set before _txKickedSlotTicks
     private DateTime _lastEchoCalibrationSlot = DateTime.MinValue;
@@ -207,7 +211,6 @@ public sealed class Ft4ModemService : IDisposable
     private readonly object _slotGateLock = new();
     private volatile bool _externalTransmission;
     private volatile bool _slotGateHeld;
-    private volatile bool _windowOpen;
     private Task? _txTask;
     private Task? _tuneTask;
 
@@ -379,10 +382,10 @@ public sealed class Ft4ModemService : IDisposable
         Changed?.Invoke();
     }
 
-    /// <summary>Whether the FT4 window is on screen. The session stops when that window closes.</summary>
+    /// <summary>The FT4 window opened or closed. The session stops when that window closes.</summary>
     public void SetWindowOpen(bool open)
     {
-        _windowOpen = open;
+        Log.Information("FT4 window {State}", open ? "open" : "closed");
         SyncSlotGate(IsRunning);
     }
 
@@ -434,7 +437,7 @@ public sealed class Ft4ModemService : IDisposable
 
     private void SyncSlotGate(bool sessionRunning)
     {
-        var hold = Ft4SlotGate.ShouldHold(sessionRunning, _windowOpen, _frequencies.SelectedMode);
+        var hold = Ft4SlotGate.ShouldHold(sessionRunning, _frequencies.SelectedMode);
         lock (_slotGateLock)
         {
             // OQ4 owns the rig hold until it has unkeyed and released it.
@@ -676,7 +679,12 @@ public sealed class Ft4ModemService : IDisposable
         _txCts?.Cancel();
         ClearPrepared();
         Interlocked.Exchange(ref _preparedPlayed, 0);
-        _audio.StopPlayback();
+        lock (_retargetGate)
+        {
+            Interlocked.Increment(ref _txRetargetGeneration);
+            Volatile.Write(ref _txKickedMessage, "");
+            _audio.StopPlayback();
+        }
         _ = _ptt.UnkeyAsync();
         _txThisSlot = false;
         Status = _l.Get("Ft4.Status.TxHalted");
@@ -722,7 +730,12 @@ public sealed class Ft4ModemService : IDisposable
         ClearPrepared();
         Interlocked.Exchange(ref _preparedPlayed, 0);
         Interlocked.Exchange(ref _txRunning, 0);
-        _audio.StopPlayback();
+        lock (_retargetGate)
+        {
+            Interlocked.Increment(ref _txRetargetGeneration);
+            Volatile.Write(ref _txKickedMessage, "");
+            _audio.StopPlayback();
+        }
 
         Volatile.Write(ref _tuning, 1);
         Status = _l.Get("Ft4.Status.Tuning", FormatTuneHz());
@@ -1119,7 +1132,8 @@ public sealed class Ft4ModemService : IDisposable
                     if (!alreadyTx && !IsTuning)
                         KickTransmit(slotStart, ct);
                     SyncSlotGate(sessionRunning: true);
-                    if (!CatTransmitOwnsTheRig(slotStart))
+                    if (!CatTransmitOwnsTheRig(slotStart)
+                        && Ft4SlotGate.IsFt4Transponder(_frequencies.SelectedMode))
                         StepFt4Doppler();
                     RefreshClockFromGps();
 
@@ -1292,6 +1306,12 @@ public sealed class Ft4ModemService : IDisposable
 
         Interlocked.Exchange(ref _txKickedAudioHz, Math.Clamp(seq.TxAudioHz, 200, 3000));
         Interlocked.Exchange(ref _txKickedSlotTicks, slotStart.Ticks);
+        lock (_retargetGate)
+        {
+            Interlocked.Increment(ref _txRetargetGeneration);
+            Volatile.Write(ref _txKickedMessage, seq.CurrentTxMessage);
+        }
+
         _txThisSlot = true;
 
         // Queue CAT PTT before playback and before the caller can enqueue Doppler.
@@ -1306,7 +1326,7 @@ public sealed class Ft4ModemService : IDisposable
         // Start a ready buffer on this thread for every PTT method. Waiting for the TX task
         // (CAT lead, encode) was holding the tone; VOX also needs the tone as soon as the slot opens.
         if (TryTakePrepared(slotStart, seq.CurrentTxMessage, out var ready, out var readyRate)
-            && _audio.TryPlayPrepared(ready, readyRate))
+            && TryPlayAligned(slotStart, ready, readyRate))
         {
             Interlocked.Exchange(ref _preparedPlayed, 1);
             var intoMs = (Ft4Clock.UtcNow - slotStart).TotalMilliseconds;
@@ -1406,7 +1426,7 @@ public sealed class Ft4ModemService : IDisposable
             await _ptt.KeyAsync(ct).ConfigureAwait(false);
             if (!playedEarly)
             {
-                if (ready is not null && _audio.TryPlayPrepared(ready, readyRate))
+                if (ready is not null && TryPlayAligned(slotStart, ready, readyRate))
                 {
                     var intoMs = (Ft4Clock.UtcNow - slotStart).TotalMilliseconds;
                     if (fromPrepared)
@@ -1428,7 +1448,8 @@ public sealed class Ft4ModemService : IDisposable
                         pcm12k!,
                         ft4.TxLevel,
                         ft4.OutputDeviceId,
-                        ft4.OutputDeviceDisplayName);
+                        ft4.OutputDeviceDisplayName,
+                        Ft4SlotClock.PlaybackStartSample(slotStart, Ft4Clock.UtcNow, 12000));
                     var intoMs = (Ft4Clock.UtcNow - slotStart).TotalMilliseconds;
                     Log.Information("FT4 TX audio started {IntoMs:0} ms into the slot after building on the slot", intoMs);
                 }
@@ -1525,7 +1546,8 @@ public sealed class Ft4ModemService : IDisposable
 
     private void WaitAndKickTransmit(DateTime slot, CancellationToken ct, CancellationToken loopCt)
     {
-        if (!_externalTransmission && CatPttSharesRig())
+        if (!_externalTransmission && CatPttSharesRig()
+            && Ft4SlotGate.IsFt4Transponder(_frequencies.SelectedMode))
         {
             var dopplerAt = slot - Ft4SlotClock.PreTransmitCatLead;
             Ft4SlotWait.UntilUtc(dopplerAt, ct);
@@ -1558,8 +1580,101 @@ public sealed class Ft4ModemService : IDisposable
             return;
 
         KickTransmit(slot, loopCt);
-        if (!CatPttSharesRig())
+        if (!CatPttSharesRig() && Ft4SlotGate.IsFt4Transponder(_frequencies.SelectedMode))
             StepFt4Doppler();
+    }
+
+    /// <summary>
+    /// Start the burst at the sample that matches the clock, so a late click stays in step
+    /// with the period instead of playing the beginning late.
+    /// </summary>
+    private bool TryPlayAligned(DateTime slotStart, float[] devicePcm, int sampleRate)
+    {
+        var start = Ft4SlotClock.PlaybackStartSample(slotStart, Ft4Clock.UtcNow, sampleRate);
+        if (start >= devicePcm.Length)
+            return false;
+
+        return _audio.TryPlayPrepared(devicePcm, sampleRate, start);
+    }
+
+    /// <summary>
+    /// The operator changed the message during the first two seconds of a transmission
+    /// that is already on the air. Swap the audio in place. A later change waits for the next period.
+    /// </summary>
+    private void MaybeRetargetLiveTransmit(DateTime slot)
+    {
+        var seq = _sequencer;
+        if (seq is null || string.IsNullOrWhiteSpace(seq.CurrentTxMessage))
+            return;
+
+        var message = seq.CurrentTxMessage;
+        if (string.Equals(message, Volatile.Read(ref _txKickedMessage), StringComparison.Ordinal))
+            return;
+
+        if ((Ft4Clock.UtcNow - slot).TotalSeconds > Ft4SlotClock.LateTransmitStartSeconds)
+            return;
+
+        if (Interlocked.CompareExchange(ref _retargetRunning, 1, 0) != 0)
+            return;
+
+        var generation = Volatile.Read(ref _txRetargetGeneration);
+        var audioHz = (float)Math.Clamp(seq.TxAudioHz, 200, 3000);
+        var ft4 = _settings.Current.Ft4;
+        _ = Task.Run(() =>
+        {
+            try
+            {
+                if (generation != Volatile.Read(ref _txRetargetGeneration) || Volatile.Read(ref _txRunning) != 1)
+                    return;
+
+                if (!TryBuildDevicePcm(
+                        slot,
+                        message,
+                        audioHz,
+                        ft4.TxLevel,
+                        ft4.OutputDeviceId,
+                        ft4.OutputDeviceDisplayName,
+                        out var pcm,
+                        out var rate,
+                        out _)
+                    || pcm is null)
+                    return;
+
+                var nowSeq = _sequencer;
+                if (nowSeq is null
+                    || !string.Equals(nowSeq.CurrentTxMessage, message, StringComparison.Ordinal)
+                    || Volatile.Read(ref _txRunning) != 1)
+                    return;
+
+                var into = Ft4Clock.UtcNow - slot;
+                if (into.TotalSeconds > Ft4SlotClock.LateTransmitStartSeconds)
+                    return;
+
+                lock (_retargetGate)
+                {
+                    if (generation != Volatile.Read(ref _txRetargetGeneration) || Volatile.Read(ref _txRunning) != 1)
+                        return;
+
+                    var start = Ft4SlotClock.PlaybackStartSample(slot, Ft4Clock.UtcNow, rate);
+                    if (start >= pcm.Length || !_audio.TryPlayPrepared(pcm, rate, start))
+                        return;
+
+                    Volatile.Write(ref _txKickedMessage, message);
+                }
+
+                Log.Information(
+                    "FT4 TX switched to the new message {IntoMs:0} ms into the slot",
+                    into.TotalMilliseconds);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "FT4 TX message change failed");
+            }
+            finally
+            {
+                Interlocked.Exchange(ref _retargetRunning, 0);
+            }
+        });
     }
 
     /// <summary>
@@ -1582,7 +1697,10 @@ public sealed class Ft4ModemService : IDisposable
 
         var next = Ft4SlotClock.NextTransmitSlotStart(utcNow, Ft4SlotClock.Ft4SlotSeconds, seq.PreferEvenSlot);
         if (next == _currentSlotStart && Volatile.Read(ref _txRunning) == 1)
+        {
+            MaybeRetargetLiveTransmit(next);
             return;
+        }
 
         if (_scheduledTxSlot == next && _txScheduleCts is { IsCancellationRequested: false })
             return;
@@ -2492,16 +2610,19 @@ public sealed class Ft4ModemService : IDisposable
             return;
 
         var sat = ResolveCalibrationSatellite();
-        if (sat is null)
+        var mode = _frequencies.SelectedMode;
+        if (sat is null || !Ft4SlotGate.IsFt4Transponder(mode))
             return;
 
         // Positive audio error (echo above the marker) needs a higher uplink dial on a
         // reversing LSB-up / USB-down satellite, which brings the echo back down.
         var deltaKHz = errorHz / 1000.0;
-        var current = _settings.Current.Ft4.GetUplinkCalibrationKHz(sat);
-        _settings.Current.Ft4.SetUplinkCalibrationKHz(sat, current + deltaKHz);
+        var current = _settings.Current.Ft4.GetUplinkCalibrationKHz(sat, mode);
+        _settings.Current.Ft4.SetUplinkCalibrationKHz(sat, current + deltaKHz, mode);
         _settings.RequestSave();
-        Status = _l.Get("Ft4.Status.EchoCalibration", deltaKHz * 1000.0, sat);
+        var label = Ft4UplinkCalibration.FormatDisplayLabel(
+            Ft4UplinkCalibration.FormatTransponderKey(sat, mode));
+        Status = _l.Get("Ft4.Status.EchoCalibration", deltaKHz * 1000.0, label);
         Changed?.Invoke();
     }
 
@@ -2597,7 +2718,9 @@ public sealed class Ft4ModemService : IDisposable
 
             var rxOffset = _frequencies.ReceiveOffsetKHz;
             var txOffset = _frequencies.TransmitOffsetKHz
-                + _settings.Current.Ft4.GetUplinkCalibrationKHz(ResolveCalibrationSatellite());
+                + _settings.Current.Ft4.GetUplinkCalibrationKHz(
+                    ResolveCalibrationSatellite(),
+                    _frequencies.SelectedMode);
 
             var s0 = Ft4DopplerShift.ComputeShiftsHz(mode, rr0, rxOffset, txOffset);
             var s1 = Ft4DopplerShift.ComputeShiftsHz(mode, rr1, rxOffset, txOffset);

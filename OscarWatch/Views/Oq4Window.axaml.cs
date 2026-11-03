@@ -524,7 +524,7 @@ public partial class Oq4Window : Window
                 const double duration = Oq4Waveform.PacketDurationSeconds;
                 var rr0 = window._propagator.GetLookAngles(main.FocusedNoradId, window._settings.Current.GroundStation, anchor).RangeRateKmPerSec;
                 var rr1 = window._propagator.GetLookAngles(main.FocusedNoradId, window._settings.Current.GroundStation, anchor.AddSeconds(duration)).RangeRateKmPerSec;
-                var txOffset = main.Frequencies.TransmitOffsetKHz + settings.GetUplinkCalibrationKHz(main.Frequencies.SatelliteName);
+                var txOffset = main.Frequencies.TransmitOffsetKHz + settings.GetUplinkCalibrationKHz(main.Frequencies.SatelliteName, mode);
                 var ul0 = Ft4DopplerShift.ComputeShiftsHz(mode, rr0, main.Frequencies.ReceiveOffsetKHz, txOffset).UplinkHz;
                 var ul1 = Ft4DopplerShift.ComputeShiftsHz(mode, rr1, main.Frequencies.ReceiveOffsetKHz, txOffset).UplinkHz;
                 slope = Ft4AudioDoppler.TxPrecompAudioSlope(Ft4DopplerShift.SlopeHzPerSec(ul0, ul1, duration),

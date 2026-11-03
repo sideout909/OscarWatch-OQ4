@@ -1039,6 +1039,108 @@ LOS: {2}
   <data name="Menu.Window.PassElevationTimeline">
     <value>Шкала _угла места пролётов</value>
   </data>
+  <data name="Menu.Window.EarthView">
+    <value>_Вид Земли</value>
+  </data>
+  <data name="Window.EarthView.Title">
+    <value>Вид Земли</value>
+  </data>
+  <data name="EarthView.ZoomIn">
+    <value>Приблизить</value>
+  </data>
+  <data name="EarthView.ZoomOut">
+    <value>Отдалить</value>
+  </data>
+  <data name="EarthView.ResetView">
+    <value>Сбросить масштаб</value>
+  </data>
+  <data name="EarthView.Zoom.Tip">
+    <value>Меняйте масштаб колесом мыши или клавишами + и −, когда глобус в фокусе. Клавиша 0 снова показывает глобус целиком.</value>
+  </data>
+  <data name="EarthView.Label.Station">
+    <value>Станция</value>
+  </data>
+  <data name="EarthView.Empty.NoSatellite">
+    <value>Выберите спутник в главном окне, чтобы увидеть Землю с него.</value>
+  </data>
+  <data name="EarthView.Empty.NoPosition">
+    <value>Положение выбранного спутника пока недоступно.</value>
+  </data>
+  <data name="EarthView.Status.Time">
+    <value>{0} UTC</value>
+  </data>
+  <data name="EarthView.Section.Satellite">
+    <value>Спутник</value>
+  </data>
+  <data name="EarthView.Section.Station">
+    <value>Ваша станция</value>
+  </data>
+  <data name="EarthView.Section.Coverage">
+    <value>Покрытие</value>
+  </data>
+  <data name="EarthView.Label.Altitude">
+    <value>Высота</value>
+  </data>
+  <data name="EarthView.Label.Time">
+    <value>Время</value>
+  </data>
+  <data name="EarthView.Label.Lighting">
+    <value>Освещение</value>
+  </data>
+  <data name="EarthView.Label.Azimuth">
+    <value>Азимут</value>
+  </data>
+  <data name="EarthView.Label.Elevation">
+    <value>Угол места</value>
+  </data>
+  <data name="EarthView.Label.Range">
+    <value>Расстояние</value>
+  </data>
+  <data name="EarthView.Label.Footprint">
+    <value>Зона покрытия</value>
+  </data>
+  <data name="EarthView.Label.MinElevation">
+    <value>Минимальный угол места</value>
+  </data>
+  <data name="EarthView.Value.Kilometres">
+    <value>{0:F0} км</value>
+  </data>
+  <data name="EarthView.Value.Degrees">
+    <value>{0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.BelowHorizon">
+    <value>Вне зоны: спутник за горизонтом</value>
+  </data>
+  <data name="EarthView.Status.AboveHorizon">
+    <value>В зоне: спутник над горизонтом</value>
+  </data>
+  <data name="EarthView.Status.InsideMinElevation">
+    <value>Спутник выше {0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.OutsideMinElevation">
+    <value>Спутник ниже {0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.Sunlit">
+    <value>Освещён Солнцем</value>
+  </data>
+  <data name="EarthView.Status.Eclipse">
+    <value>В тени Земли</value>
+  </data>
+  <data name="EarthView.Accessible.Name">
+    <value>Вид Земли, {0}</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.Usable">
+    <value>{0}: {1:F0}° над горизонтом, азимут {2:F0}°, выше вашего минимального угла места {3:F0}°.</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.AboveHorizon">
+    <value>{0}: {1:F0}° над горизонтом, азимут {2:F0}°, ниже вашего минимального угла места {3:F0}°.</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.BelowHorizon">
+    <value>{0} за горизонтом.</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.NoAngles">
+    <value>{0} над горизонтом.</value>
+  </data>
   <data name="Window.PassElevationTimeline.Title">
     <value>Шкала угла места пролётов</value>
   </data>
@@ -3074,7 +3176,7 @@ LOS: {2}
     <value>Включить обход «замочной скважины»</value>
   </data>
   <data name="Settings.Rotator.KeyholeNote">
-    <value>Если включено, пролёты с высоким углом места, где ротатор не успевает около зенита, анализируются, и ротатор может заранее встать в перевёрнутой ориентации, чтобы меньше терять сигнал. Предварительный ход крутит азимут на угле начала сопровождения (не ниже 0°). Доступно только при диапазоне угла места 0–180°.</value>
+    <value>Если включено, пролёты с высоким углом места, где ротатор не успевает около зенита, анализируются, и ротатор может заранее встать в перевёрнутой ориентации, чтобы меньше терять сигнал. Перевёрнутый пролёт держит азимут +180° и угол места 180° минус угол спутника от AOS до снижения ниже угла начала сопровождения. Предварительный ход использует этот перевёрнутый угол (180° минус угол начала сопровождения, не ниже 0°). Доступно только при диапазоне угла места 0–180°.</value>
   </data>
   <data name="Settings.Rotator.KeyholeSlewRate">
     <value>Скорость поворота (°/с)</value>
@@ -3092,7 +3194,7 @@ LOS: {2}
     <value>Начинать сопровождение с угла места (°)</value>
   </data>
   <data name="Settings.Rotator.TrackStartNote">
-    <value>По умолчанию −3° (под горизонтом). Диапазон −90° до 90°. Ротатор начинает ход, когда сопровождаемый спутник поднимается выше этого угла, и паркуется, когда опускается ниже (после короткого подтверждения, чтобы один ложный тик не прервал пролёт). Предварительная постановка для «замочной скважины» берёт этот угол как пол (не ниже 0°).</value>
+    <value>По умолчанию −3° (под горизонтом). Диапазон −90° до 90°. Ротатор начинает ход, когда сопровождаемый спутник поднимается выше этого угла, и паркуется, когда опускается ниже (после короткого подтверждения, чтобы один ложный тик не прервал пролёт). Предварительная постановка для «замочной скважины» берёт этот угол как пол угла на небе (не ниже 0°) и командует 180° минус этот пол.</value>
   </data>
   <data name="Settings.Rotator.MovementThreshold">
     <value>Порог движения (°)</value>
@@ -4622,10 +4724,10 @@ LOS: {2}
     <value>Линия управления</value>
   </data>
   <data name="Ft4.EchoCalibration.Note">
-    <value>Когда декодируется ваше собственное эхо аплинка, OscarWatch автоматически подстраивает эту поправку для спутника. Здесь её можно изменить или сбросить.</value>
+    <value>Когда декодируется ваше собственное эхо аплинка, OscarWatch подстраивает поправку аплинка для используемого транспондера FT4, включая свою копию вроде FT4 Asia. Старая поправка на весь спутник используется, пока у этого транспондера нет своей. Здесь её можно изменить или сбросить.</value>
   </data>
   <data name="Ft4.EchoCalibration.Satellite">
-    <value>Спутник</value>
+    <value>Транспондер</value>
   </data>
   <data name="Ft4.EchoCalibration.TrimHz">
     <value>Поправка аплинка (Гц)</value>

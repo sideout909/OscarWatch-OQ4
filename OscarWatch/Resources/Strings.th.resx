@@ -1039,6 +1039,108 @@ LOS: {2}
   <data name="Menu.Window.PassElevationTimeline">
     <value>ไทม์ไลน์มุมเงยของพาส(_E)</value>
   </data>
+  <data name="Menu.Window.EarthView">
+    <value>มุมมองโลก(_V)</value>
+  </data>
+  <data name="Window.EarthView.Title">
+    <value>มุมมองโลก</value>
+  </data>
+  <data name="EarthView.ZoomIn">
+    <value>ขยาย</value>
+  </data>
+  <data name="EarthView.ZoomOut">
+    <value>ย่อ</value>
+  </data>
+  <data name="EarthView.ResetView">
+    <value>รีเซ็ตการซูม</value>
+  </data>
+  <data name="EarthView.Zoom.Tip">
+    <value>ซูมด้วยล้อเมาส์ หรือกด + และ − ขณะที่โฟกัสอยู่ที่ลูกโลก กด 0 เพื่อแสดงลูกโลกทั้งใบอีกครั้ง</value>
+  </data>
+  <data name="EarthView.Label.Station">
+    <value>สถานี</value>
+  </data>
+  <data name="EarthView.Empty.NoSatellite">
+    <value>เลือกดาวเทียมในหน้าต่างหลักเพื่อดูโลกจากมุมมองของดาวเทียมดวงนั้น</value>
+  </data>
+  <data name="EarthView.Empty.NoPosition">
+    <value>ยังไม่มีตำแหน่งของดาวเทียมที่เลือก</value>
+  </data>
+  <data name="EarthView.Status.Time">
+    <value>{0} UTC</value>
+  </data>
+  <data name="EarthView.Section.Satellite">
+    <value>ดาวเทียม</value>
+  </data>
+  <data name="EarthView.Section.Station">
+    <value>สถานีของคุณ</value>
+  </data>
+  <data name="EarthView.Section.Coverage">
+    <value>พื้นที่ครอบคลุม</value>
+  </data>
+  <data name="EarthView.Label.Altitude">
+    <value>ความสูง</value>
+  </data>
+  <data name="EarthView.Label.Time">
+    <value>เวลา</value>
+  </data>
+  <data name="EarthView.Label.Lighting">
+    <value>แสงอาทิตย์</value>
+  </data>
+  <data name="EarthView.Label.Azimuth">
+    <value>มุมอะซิมัท</value>
+  </data>
+  <data name="EarthView.Label.Elevation">
+    <value>มุมเงย</value>
+  </data>
+  <data name="EarthView.Label.Range">
+    <value>ระยะ</value>
+  </data>
+  <data name="EarthView.Label.Footprint">
+    <value>รอยครอบคลุม</value>
+  </data>
+  <data name="EarthView.Label.MinElevation">
+    <value>มุมเงยต่ำสุด</value>
+  </data>
+  <data name="EarthView.Value.Kilometres">
+    <value>{0:F0} กม.</value>
+  </data>
+  <data name="EarthView.Value.Degrees">
+    <value>{0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.BelowHorizon">
+    <value>อยู่นอก: ดาวเทียมอยู่ต่ำกว่าขอบฟ้า</value>
+  </data>
+  <data name="EarthView.Status.AboveHorizon">
+    <value>อยู่ใน: ดาวเทียมอยู่เหนือขอบฟ้า</value>
+  </data>
+  <data name="EarthView.Status.InsideMinElevation">
+    <value>ดาวเทียมอยู่เหนือ {0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.OutsideMinElevation">
+    <value>ดาวเทียมอยู่ต่ำกว่า {0:F0}°</value>
+  </data>
+  <data name="EarthView.Status.Sunlit">
+    <value>ได้รับแสงอาทิตย์</value>
+  </data>
+  <data name="EarthView.Status.Eclipse">
+    <value>อยู่ในเงาของโลก</value>
+  </data>
+  <data name="EarthView.Accessible.Name">
+    <value>มุมมองโลก {0}</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.Usable">
+    <value>{0} อยู่เหนือขอบฟ้า {1:F0} องศา ที่มุมอะซิมัท {2:F0} องศา เหนือมุมเงยต่ำสุดของคุณที่ {3:F0} องศา</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.AboveHorizon">
+    <value>{0} อยู่เหนือขอบฟ้า {1:F0} องศา ที่มุมอะซิมัท {2:F0} องศา ต่ำกว่ามุมเงยต่ำสุดของคุณที่ {3:F0} องศา</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.BelowHorizon">
+    <value>{0} อยู่ต่ำกว่าขอบฟ้า</value>
+  </data>
+  <data name="EarthView.Accessible.Summary.NoAngles">
+    <value>{0} อยู่เหนือขอบฟ้า</value>
+  </data>
   <data name="Window.PassElevationTimeline.Title">
     <value>ไทม์ไลน์มุมเงยของพาส</value>
   </data>
@@ -3074,7 +3176,7 @@ LOS: {2}
     <value>เปิดการหลีกเลี่ยงคีย์โฮล</value>
   </data>
   <data name="Settings.Rotator.KeyholeNote">
-    <value>เมื่อเปิด พาสมุมเงยสูงที่โรเตอร์ตามไม่ทันใกล้จุดจอมฟ้าจะถูกวิเคราะห์ และโรเตอร์อาจจัดท่าย้อนล่วงหน้าเพื่อลดการสูญเสียสัญญาณ การหมุนจัดท่าย้อนใช้อะซิมัทที่มุมเงยเริ่มติดตาม (ไม่ต่ำกว่า 0°) ใช้ได้เฉพาะเมื่อช่วงมุมเงยเป็น 0–180°</value>
+    <value>เมื่อเปิด พาสมุมเงยสูงที่โรเตอร์ตามไม่ทันใกล้จุดจอมฟ้าจะถูกวิเคราะห์ และโรเตอร์อาจจัดท่าย้อนล่วงหน้าเพื่อลดการสูญเสียสัญญาณ พาสกลับด้านจะรักษาอะซิมัท +180° และมุมเงยที่ 180° ลบมุมเงยดาวเทียม ตั้งแต่ AOS จนดาวเทียมต่ำกว่ามุมเริ่มติดตาม การจัดท่าย้อนใช้มุมเงยกลับด้านนั้น (180° ลบมุมเงยเริ่มติดตาม ไม่ต่ำกว่า 0°) ใช้ได้เฉพาะเมื่อช่วงมุมเงยเป็น 0–180°</value>
   </data>
   <data name="Settings.Rotator.KeyholeSlewRate">
     <value>อัตราสลู (°/s)</value>
@@ -3092,7 +3194,7 @@ LOS: {2}
     <value>เริ่มติดตามที่มุมเงย (°)</value>
   </data>
   <data name="Settings.Rotator.TrackStartNote">
-    <value>ค่าเริ่มต้นคือ -3° (ต่ำกว่าขอบฟ้า) ช่วง -90° ถึง 90° โรเตอร์เริ่มหมุนเมื่อดาวเทียมที่ติดตามขึ้นเหนือมุมเงยนี้ และจอดเมื่อตกลงต่ำกว่า (หลังยืนยันสั้น ๆ เพื่อไม่ให้ติ๊กผิดพลาดครั้งเดียวตัดพาส) การจัดท่าย้อนคีย์โฮลใช้มุมเงยนี้เป็นพื้น (ไม่ต่ำกว่า 0°)</value>
+    <value>ค่าเริ่มต้นคือ -3° (ต่ำกว่าขอบฟ้า) ช่วง -90° ถึง 90° โรเตอร์เริ่มหมุนเมื่อดาวเทียมที่ติดตามขึ้นเหนือมุมเงยนี้ และจอดเมื่อตกลงต่ำกว่า (หลังยืนยันสั้น ๆ เพื่อไม่ให้ติ๊กผิดพลาดครั้งเดียวตัดพาส) การจัดท่าย้อนคีย์โฮลใช้มุมเงยนี้เป็นพื้นของมุมบนฟ้า (ไม่ต่ำกว่า 0°) และสั่ง 180° ลบพื้นนั้น</value>
   </data>
   <data name="Settings.Rotator.MovementThreshold">
     <value>เกณฑ์การเคลื่อนที่ (°)</value>
@@ -4622,10 +4724,10 @@ LOS: {2}
     <value>สายควบคุม</value>
   </data>
   <data name="Ft4.EchoCalibration.Note">
-    <value>เมื่อถอดรหัสเสียงสะท้อนอัปลิงก์ของคุณ OscarWatch จะปรับค่า trim ตามดาวเทียมโดยอัตโนมัติ คุณสามารถแก้ไขหรือล้างได้ที่นี่</value>
+    <value>เมื่อถอดรหัสเสียงสะท้อนอัปลิงก์ของคุณ OscarWatch จะปรับค่าทริมของทรานสปอนเดอร์ FT4 ที่ใช้อยู่ รวมถึงสำเนาที่ตั้งเองเช่น FT4 Asia ค่าทริมเก่าของทั้งดวงจะยังใช้จนกว่าทรานสปอนเดอร์นั้นจะมีค่าของตัวเอง คุณสามารถแก้ไขหรือล้างได้ที่นี่</value>
   </data>
   <data name="Ft4.EchoCalibration.Satellite">
-    <value>ดาวเทียม</value>
+    <value>ทรานสปอนเดอร์</value>
   </data>
   <data name="Ft4.EchoCalibration.TrimHz">
     <value>ค่า trim อัปลิงก์ (Hz)</value>
