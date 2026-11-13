@@ -1137,11 +1137,17 @@ Continuar?</value>
   <data name="Sstv.RepairBadLines.Tip">
     <value>Redesenhar até três linhas ruidosas seguidas a partir das linhas boas de cada lado. Danos mais longos ficam como recebidos.</value>
   </data>
+  <data name="Sstv.SmoothAcrossLines">
+    <value>Suavizar os pontos de ruído em imagens fracas</value>
+  </data>
+  <data name="Sstv.SmoothAcrossLines.Tip">
+    <value>Ao terminar uma imagem, substituir cada pixel pelo valor central dos vizinhos nas linhas acima e abaixo. Remove a maior parte dos pontos de ruído, mas suaviza detalhes finos e texto pequeno. Deixe desligado com sinais fortes.</value>
+  </data>
   <data name="Sstv.HoldThroughFades">
     <value>Manter as imagens durante desvanecimentos longos</value>
   </data>
   <data name="Sstv.HoldThroughFades.Tip">
-    <value>Quando a imagem está bem travada, continuar desenhando durante um desvanecimento de até 20 segundos em vez de encerrá-la. Pode juntar dois fragmentos de uma mesma imagem.</value>
+    <value>Quando a imagem está bem travada, continuar desenhando durante um desvanecimento de até 45 segundos em vez de encerrá-la. Pode juntar dois fragmentos de uma mesma imagem.</value>
   </data>
   <data name="Sstv.AdaptiveBandwidth">
     <value>Ajustar o filtro ao modo</value>
@@ -1187,6 +1193,12 @@ Continuar?</value>
   </data>
   <data name="Sstv.AutoStart.Tip">
     <value>Começa a ouvir quando o satélite selecionado na janela principal sobe acima da elevação abaixo, e para quando ele se põe. Use um valor negativo, como −5°, para começar um pouco antes do AOS e dar tempo de o rádio e o áudio se estabilizarem. Só funciona com esta janela aberta. O salvamento automático mantém as imagens se você fechar a janela.</value>
+  </data>
+  <data name="Sstv.KeepAwake">
+    <value>Manter o computador ativo durante a escuta</value>
+  </data>
+  <data name="Sstv.KeepAwake.Tip">
+    <value>Enquanto o SSTV estiver escutando, o computador e a tela permanecem ativos. Você ainda pode bloquear a tela, e fechar a tampa ainda coloca o computador em suspensão.</value>
   </data>
   <data name="Sstv.AutoStart.Elevation">
     <value>Elevação de início (graus)</value>
@@ -1292,6 +1304,12 @@ Continuar?</value>
   </data>
   <data name="Sstv.Settings.Saving">
     <value>Salvamento</value>
+  </data>
+  <data name="Sstv.Settings.General">
+    <value>Geral</value>
+  </data>
+  <data name="Sstv.Settings.FadesAndNoise">
+    <value>Desvanecimentos e ruído</value>
   </data>
   <data name="Window.SstvLibrary.Title">
     <value>Biblioteca de imagens do OscarWatch SSTV</value>
@@ -2307,6 +2325,24 @@ Continuar?</value>
   <data name="Window.Sunlight.Title">
     <value>Previsão de luz solar</value>
   </data>
+  <data name="RotatorManual.Azimuth">
+    <value>Azimute (°)</value>
+  </data>
+  <data name="RotatorManual.Elevation">
+    <value>Elevação (°)</value>
+  </data>
+  <data name="RotatorManual.NotConnected">
+    <value>Não conectado</value>
+  </data>
+  <data name="RotatorManual.PositionUnknown">
+    <value>Posição desconhecida</value>
+  </data>
+  <data name="RotatorManual.PositionAzEl">
+    <value>Az {0} · El {1}</value>
+  </data>
+  <data name="RotatorManual.PositionAzimuth">
+    <value>Az {0}</value>
+  </data>
   <data name="Window.RotatorManual.Title">
     <value>Controle manual do rotor</value>
   </data>
@@ -2713,7 +2749,13 @@ Continuar?</value>
     <value>Janela de previsão de passagens (horas)</value>
   </data>
   <data name="Settings.Tracking.PassWindowNote">
-    <value>Usado para a lista de próximas passagens e como padrão na previsão de passagens.</value>
+    <value>Usado para a lista de próximas passagens e para a linha do tempo de elevação de passagens.</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDuration">
+    <value>Duração mínima das próximas passagens (minutos)</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDurationNote">
+    <value>0 mostra cada passagem acima da elevação mínima e da máscara do horizonte. O planejador de passagens tem a sua própria duração mínima.</value>
   </data>
   <data name="Settings.Tracking.TransponderCheck">
     <value>Verificar atualizações do banco de dados de transmissores/transponders na inicialização</value>
@@ -3039,6 +3081,108 @@ Continuar?</value>
   <data name="Settings.Radio.Ftx1Hint">
     <value>FTX-1 Field / FTX-1optima: Combine o menu CAT-1 RATE com as Configurações (padrão 38400). CAT ASCII 8N2 com RTS de hardware — use a porta Enhanced COM (CAT-1), não CAT-2. Uma COM por perna. FM trava o dial MAIN VFO durante o rastreamento.</value>
   </data>
+  <data name="Settings.Radio.KenwoodConnection">
+    <value>Conexão</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Serial">
+    <value>Porta COM (USB ou serial)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Lan">
+    <value>Rede (LAN)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanHost">
+    <value>Endereço IP ou nome de host do rádio</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPort">
+    <value>Porta TCP</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanUser">
+    <value>Conta (ID de administrador ou de usuário definido no rádio)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPassword">
+    <value>Senha</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanAdministrator">
+    <value>Conta de administrador (desmarque para uma conta de usuário)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTest">
+    <value>Testar conexão LAN</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTesting">
+    <value>Testando conexão…</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanEnterDetails">
+    <value>Informe primeiro o host, a porta, a conta e a senha.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanOk">
+    <value>Conectado ao {0} em {1} MHz.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanWrongRadio">
+    <value>Conectado, mas o rádio não se identificou como {0}. Verifique o modelo selecionado acima.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanDenied">
+    <value>O rádio recusou a conexão. Verifique se o controle LAN está ativado e se nenhum outro aplicativo (como ARCP ou KNS) está conectado à porta 60000.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanLoginRejected">
+    <value>Login recusado. Verifique a conta, a senha e o tipo de conta definidos no rádio.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanFailed">
+    <value>Falha na conexão LAN: {0}</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection">
+    <value>Conexão</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Serial">
+    <value>USB / serial (porta COM)</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Lan">
+    <value>Rede (LAN ou Wi-Fi)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHost">
+    <value>Endereço IP ou nome do host do rádio</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPort">
+    <value>Porta de controle (UDP)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanUser">
+    <value>Nome de usuário de rede (definido nas configurações de rede do rádio)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPassword">
+    <value>Senha de rede</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHint">
+    <value>Ative o controle por rede no rádio e adicione um usuário de rede. O OscarWatch usa apenas controle CI-V (sem áudio pela rede). O rádio aceita um cliente remoto por vez, então feche antes o RS-BA1 ou o wfview.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTest">
+    <value>Testar conexão de rede</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTesting">
+    <value>Testando conexão…</value>
+  </data>
+  <data name="Settings.Radio.IcomLanEnterDetails">
+    <value>Informe primeiro o host, a porta, o nome de usuário e a senha.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanOk">
+    <value>Conectado ao {0} em {1} MHz.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanWrongRadio">
+    <value>Conectado, mas o rádio não se identificou como {0}. Verifique o modelo do rádio e o endereço CI-V.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanLoginRejected">
+    <value>Login rejeitado. Verifique o nome de usuário e a senha de rede definidos no rádio.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanBusy">
+    <value>O rádio já está em uso por outro cliente remoto ({0}). Desconecte-o e tente novamente.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanNoReply">
+    <value>Sem resposta de {0}. Verifique o endereço IP e a porta, e se o controle por rede está ativado.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanFailed">
+    <value>Falha na conexão de rede: {0}</value>
+  </data>
+  <data name="Settings.Radio.KenwoodHfHint">
+    <value>TS-990S / TS-890S / TS-590: um rádio é uma perna. Para 10 m, deixe o modo transverter desligado. Para 2 m ou 70 cm, ligue o modo transverter e defina o offset no rádio; o OscarWatch lê esse valor e sintoniza a FI para você. Combine a taxa de transmissão com o menu COM do rádio. A LAN (somente TS-990S e TS-890S) exige o ID de administrador ou de usuário definido no rádio, e apenas um aplicativo pode usar a porta 60000 por vez.</value>
+  </data>
   <data name="Settings.Radio.CwSideband">
     <value>CW linear: manter recepção em USB/LSB (somente transmissão em CW)</value>
   </data>
@@ -3114,8 +3258,32 @@ Continuar?</value>
   <data name="Settings.Rotator.Type">
     <value>Tipo de rotor</value>
   </data>
-  <data name="Settings.Rotator.TypeNote">
-    <value>GS-232 para Yaesu e clones. SPID para controladores em modo SP (Rot1Prog / Rot2Prog). SPID MD-01 / MD-02 (TCP) para Ethernet nativo (protocolo SPID ROT2, porta 23). EasyComm para modo EC (SPID, M2 e outros controladores de protocolo texto). SAEBRTrack para interfaces clássicas de seguimento por satélite (9600 baud). OZ9AAR URC (TCP) para Ultimate Rotator Controller via Ethernet (porta 1111; modo REM/remoto). Green Heron RT-21 Az-El usa duas portas COM (azimute e elevação), protocolo DCU-1 a 4800 baud; não selecione GS-232. Os protocolos série também podem usar um servidor série TCP (por exemplo ser2net) em vez de uma porta COM local.</value>
+  <data name="Settings.Rotator.TypeNote.Gs232">
+    <value>Yaesu e clones.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Spid">
+    <value>Controladores em modo SP (Rot1Prog / Rot2Prog).</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.SpidMd01">
+    <value>Ethernet nativo, protocolo SPID ROT2, porta padrão 23.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.EasyComm">
+    <value>Protocolo de texto para o modo EC da SPID, M2 e controladores semelhantes.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Saebrt">
+    <value>Interfaces clássicas de seguimento por satélite.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Urc">
+    <value>Ultimate Rotator Controller via Ethernet. Defina o modo remoto (REM).</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.GreenHeron">
+    <value>Duas portas COM, uma por eixo.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.AntRunner">
+    <value>MuseLab AntRunner via USB. Aponte para o norte e nivele antes de ligar.</value>
+  </data>
+  <data name="Settings.Rotator.AzimuthOnly">
+    <value>Somente azimute</value>
   </data>
   <data name="Settings.Rotator.AzimuthPort">
     <value>Porta série de azimute</value>
@@ -4665,11 +4833,56 @@ Mais recente: {1} ({2})</value>
   <data name="Ft4.DecodeFontSize.Note">
     <value>Tamanho da fonte da lista de decodes (10–28). Tamanhos maiores ajudam com visão reduzida.</value>
   </data>
+  <data name="Ft4.DecodeLayout">
+    <value>Layout</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Basic">
+    <value>Básico (uma lista)</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Advanced">
+    <value>Avançado (duas colunas)</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Note">
+    <value>Básico mostra todos os decodes em uma lista. Avançado adiciona uma segunda coluna só com as estações chamando você e as mensagens que você envia, para acompanhar melhor uma passagem movimentada. Essas linhas continuam aparecendo também na lista completa.</value>
+  </data>
+  <data name="Ft4.Decodes.BandActivity">
+    <value>Atividade na banda</value>
+  </data>
+  <data name="Ft4.Decodes.CallingMe">
+    <value>Chamando você</value>
+  </data>
   <data name="Ft4.WaterfallRange">
     <value>Faixa da cascata</value>
   </data>
   <data name="Ft4.WaterfallRange.Note">
     <value>Decibéis acima do piso de ruído automático. Uma faixa menor faz os sinais se destacarem mais. O padrão é 40 dB.</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten">
+    <value>Achatar cascata</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten.Note">
+    <value>Compensa a inclinação do filtro SSB do rádio para que as bordas da banda passante não fiquem mais escuras que o centro, como o Flatten do WSJT-X. Ativado por padrão.</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines">
+    <value>Linhas de slot com horários UTC</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines.Note">
+    <value>Desenha uma linha na cascata no início de cada slot, com o horário UTC de início, como o WSJT-X. Ativado por padrão.</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed">
+    <value>Velocidade da cascata</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Note">
+    <value>A rapidez com que novas linhas são acrescentadas. Uma velocidade mais lenta mantém mais do passe na tela, traços fracos ficam visíveis por mais tempo e o espectro é calculado com menos frequência. Rápida é a velocidade original.</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Slow">
+    <value>Lenta ({0} s)</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Medium">
+    <value>Média ({0} s)</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Fast">
+    <value>Rápida ({0} s)</value>
   </data>
   <data name="Ft4.Decode.CallingMe">
     <value>Me chamando</value>
@@ -4742,6 +4955,12 @@ Mais recente: {1} ({2})</value>
   </data>
   <data name="Ft4.Status.EchoClearedAll">
     <value>Todas as calibrações de eco limpas</value>
+  </data>
+  <data name="Ft4.Status.DecodingAgain">
+    <value>Decodificando novamente o último slot de recepção (profundo, slot inteiro)</value>
+  </data>
+  <data name="Ft4.Status.NothingToDecodeAgain">
+    <value>Nenhum slot de recepção para decodificar novamente. Clique duas vezes durante o slot seguinte ao desejado.</value>
   </data>
   <data name="Ft4.TxLevel">
     <value>Nível de TX</value>
@@ -5408,6 +5627,9 @@ Mais recente: {1} ({2})</value>
   </data>
   <data name="Terminal.Uhm.Status.NoSatellite">
     <value>UHM: selecione um satélite com digipeater</value>
+  </data>
+  <data name="Terminal.Uhm.Status.BelowHorizon">
+    <value>UHM: satélite abaixo do horizonte</value>
   </data>
   <data name="Terminal.Uhm.Status.RateLimited">
     <value>UHM: limite de pedidos, nova tentativa em breve</value>
@@ -6320,5 +6542,350 @@ Mais recente: {1} ({2})</value>
   </data>
   <data name="ComPort.TerminalKissAndFt4Ptt" xml:space="preserve">
     <value>O TNC KISS do Terminal e o PTT separado do FT4 usam ambos {0}. Use portas COM diferentes ou desative um dispositivo.</value>
+  </data>
+  <data name="Logbook.Cw.Wpm">
+    <value>PPM</value>
+  </data>
+  <data name="Logbook.Cw.WpmToolTip">
+    <value>Velocidade do CW em palavras por minuto</value>
+  </data>
+  <data name="Logbook.Cw.Stop">
+    <value>Parar</value>
+  </data>
+  <data name="Logbook.Cw.StopToolTip">
+    <value>Parar o envio (Esc)</value>
+  </data>
+  <data name="Logbook.Cw.ButtonEmpty">
+    <value>{0}: nenhuma mensagem definida. Adicione uma nas configurações do logbook.</value>
+  </data>
+  <data name="Logbook.Cw.ButtonToolTip">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Stopped">
+    <value>CW interrompido.</value>
+  </data>
+  <data name="Logbook.Cw.Status.Empty">
+    <value>{0} não tem nada para enviar.</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sending">
+    <value>Enviando {0}: {1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.SendingUnknown">
+    <value>Enviando {0}: {1}. Macros desconhecidas omitidas: {2}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sent">
+    <value>{0} enviado.</value>
+  </data>
+  <data name="Logbook.Cw.Status.Rejected">
+    <value>O rádio não aceitou o CW. Verifique se está conectado e em modo CW.</value>
+  </data>
+  <data name="Logbook.Cw.Status.RigNotConnected">
+    <value>Manipular CW pelo rádio exige o controle do rádio. Ative-o ou use uma porta COM separada.</value>
+  </data>
+  <data name="Logbook.Cw.Status.KeyLineUnavailable">
+    <value>Esta conexão com o rádio não consegue acionar DTR ou RTS. Escolha uma porta COM separada nas configurações do logbook.</value>
+  </data>
+  <data name="Logbook.Cw.Status.RtsBlocked">
+    <value>O RTS na porta CAT deste rádio é controle de fluxo. Use DTR ou uma porta COM separada.</value>
+  </data>
+  <data name="Logbook.Cw.Status.NoPort">
+    <value>Escolha a porta COM de manipulação CW nas configurações do logbook.</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortConflict">
+    <value>{0} já é usada pelo rádio, rotor, GPS ou uma porta PTT. Escolha outra porta para manipular CW.</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortBusy">
+    <value>{0} está em uso por outro aplicativo.</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortNotFound">
+    <value>{0} não foi encontrada. Verifique o cabo e atualize a lista de portas.</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortFailed">
+    <value>Não foi possível abrir {0} para manipular CW.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tab">
+    <value>Manipulador CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Section">
+    <value>Manipulador CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Intro">
+    <value>Doze botões de mensagem aparecem entre a entrada do QSO e o log quando o uplink é CW. Clique em um botão ou pressione F1 a F12 para enviá-lo. Esc ou Parar interrompe.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Enable">
+    <value>Mostrar o manipulador CW no logbook</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Keying">
+    <value>Manipulação</value>
+  </data>
+  <data name="Logbook.Settings.Cw.NoRig">
+    <value>O controle do rádio está desligado. Só uma porta COM separada pode manipular CW.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Uplink">
+    <value>Rádio de uplink: {0}</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Kenwood">
+    <value>Envia texto com o comando Kenwood KY.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Icom">
+    <value>Envia texto com o comando CI-V Icom 0x17.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.CatLine">
+    <value>Aciona {0} na porta CAT do rádio.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.SeparateLine">
+    <value>Aciona {0} em uma porta COM própria.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KenwoodNote">
+    <value>Rádios Kenwood geram o Morse sozinhos a partir do texto, então nenhuma linha de manipulação é necessária. Coloque o rádio em CW com break-in ligado. Mudanças de velocidade são enviadas com KS.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomNote">
+    <value>Este rádio gera o Morse sozinho a partir do texto enviado por CI-V. Coloque-o em CW com break-in ligado. As velocidades Icom vão de 6 a 48 PPM.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomUseLine">
+    <value>Usar uma linha COM de manipulação em vez de texto CI-V</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KeyLine">
+    <value>Linha de manipulação</value>
+  </data>
+  <data name="Logbook.Settings.Cw.UseSeparatePort">
+    <value>Usar uma porta COM separada para a linha de manipulação</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Port">
+    <value>Porta COM de manipulação CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.RefreshPorts">
+    <value>Atualizar</value>
+  </data>
+  <data name="Logbook.Settings.Cw.LineNote">
+    <value>O OscarWatch temporiza cada ponto e traço na linha. Ligue-a à entrada de manipulador do rádio por meio de uma interface e coloque o rádio em CW com break-in ligado.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Messages">
+    <value>Mensagens</value>
+  </data>
+  <data name="Logbook.Settings.Cw.ButtonName">
+    <value>Nome do botão</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Message">
+    <value>Mensagem</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tokens">
+    <value>{MYCALL} ou * seu indicativo, {CALL} ou ! indicativo do correspondente, {SENTRST} reporte enviado, {SENTRSTCUT} reporte enviado com números cortados (599 como 5NN), {RCVDRST} reporte recebido, {GRID} grid do correspondente, {MYGRID} seu grid, {NAME} nome do correspondente, {SAT} satélite. Prosinais: {AR} {SK} {BT} {KN}.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Help">
+    <value>Ajuda do manipulador CW</value>
+  </data>
+  <data name="Menu.Tools.Cw">
+    <value>_OscarWatch CW</value>
+  </data>
+  <data name="Window.Cw.Title">
+    <value>OscarWatch CW</value>
+  </data>
+  <data name="Window.CwSettings.Title">
+    <value>Configurações do OscarWatch CW</value>
+  </data>
+  <data name="Cw.Start">
+    <value>Iniciar</value>
+  </data>
+  <data name="Cw.Stop">
+    <value>Parar</value>
+  </data>
+  <data name="Cw.Clear">
+    <value>Limpar</value>
+  </data>
+  <data name="Cw.Clear.Tip">
+    <value>Limpa o texto recebido e começa a decodificar de novo.</value>
+  </data>
+  <data name="Cw.SaveCopy">
+    <value>Salvar texto</value>
+  </data>
+  <data name="Cw.SaveCopy.Tip">
+    <value>Salva o texto decodificado em um arquivo de texto, com horários UTC.</value>
+  </data>
+  <data name="Cw.SaveCopy.Picker">
+    <value>Salvar texto CW</value>
+  </data>
+  <data name="Cw.SaveCopy.TextFiles">
+    <value>Arquivos de texto</value>
+  </data>
+  <data name="Cw.Saved">
+    <value>Texto salvo em {0}</value>
+  </data>
+  <data name="Cw.OpenSettings">
+    <value>Configurações</value>
+  </data>
+  <data name="Cw.Help">
+    <value>Ajuda</value>
+  </data>
+  <data name="Cw.Help.Tip">
+    <value>Abre o guia do OscarWatch CW em oscarwatch.org.</value>
+  </data>
+  <data name="Cw.Level">
+    <value>Nível</value>
+  </data>
+  <data name="Cw.Waterfall">
+    <value>Cascata CW</value>
+  </data>
+  <data name="Cw.Waterfall.Tip">
+    <value>Áudio de 0 a 2000 Hz. O decodificador lê a faixa sombreada. Clique em um traço CW para decodificá-lo, ou com o botão direito para devolver a faixa a 400 a 1200 Hz. A linha amarela marca a nota estável mais forte.</value>
+  </data>
+  <data name="Cw.Copy.Hint">
+    <value>Indicativos e localizadores sublinhados vão para o formulário do livro de registro ao clicar, ou com Enter ou Espaço. Nada é registrado até você adicionar o QSO.</value>
+  </data>
+  <data name="Cw.Pending.Tip">
+    <value>As letras mais recentes. O decodificador ainda pode alterá-las.</value>
+  </data>
+  <data name="Cw.Lag">
+    <value>O texto fica cerca de 2 s atrás do sinal.</value>
+  </data>
+  <data name="Cw.Tone">
+    <value>Nota {0:0} Hz</value>
+  </data>
+  <data name="Cw.Tone.None">
+    <value>Sem nota estável</value>
+  </data>
+  <data name="Cw.Tone.OutOfBand">
+    <value>A nota de {0:0} Hz está fora da faixa de decodificação. Clique nela na cascata.</value>
+  </data>
+  <data name="Cw.Doppler">
+    <value>Doppler de descida {0}</value>
+  </data>
+  <data name="Cw.FeedForward">
+    <value>correção do rádio {0:+0;-0;0} Hz</value>
+  </data>
+  <data name="Cw.Logbook.CallTip">
+    <value>Colocar {0} no campo de indicativo do livro de registro</value>
+  </data>
+  <data name="Cw.Logbook.GridTip">
+    <value>Colocar {0} no campo de localizador do livro de registro</value>
+  </data>
+  <data name="Cw.Logbook.FilledCall">
+    <value>{0} está no campo de indicativo do livro de registro.</value>
+  </data>
+  <data name="Cw.Logbook.FilledGrid">
+    <value>{0} está no campo de localizador do livro de registro.</value>
+  </data>
+  <data name="Cw.Logbook.Opening">
+    <value>Abrindo o livro de registro com {0}.</value>
+  </data>
+  <data name="Cw.Logbook.Editing">
+    <value>O livro de registro está editando um QSO salvo. Salve ou cancele a edição primeiro.</value>
+  </data>
+  <data name="Cw.Status.Idle">
+    <value>Parado. Clique em Iniciar para ouvir.</value>
+  </data>
+  <data name="Cw.Status.Listening">
+    <value>Ouvindo</value>
+  </data>
+  <data name="Cw.Status.ListeningSat">
+    <value>Ouvindo {0}</value>
+  </data>
+  <data name="Cw.Status.NoAudio">
+    <value>A entrada de áudio não está disponível neste computador.</value>
+  </data>
+  <data name="Cw.Status.Error">
+    <value>O decodificador CW parou: {0}</value>
+  </data>
+  <data name="Cw.Status.SilentInput">
+    <value>Nenhum áudio está chegando ao OscarWatch de {0}. Escolha a interface de áudio do rádio em Configurações.</value>
+  </data>
+  <data name="Cw.Status.CaptureRetrying">
+    <value>Sem áudio da placa de som. Reconectando…</value>
+  </data>
+  <data name="Cw.Status.WaitingNoSatellite">
+    <value>Pronto. Aguardando um satélite em foco.</value>
+  </data>
+  <data name="Cw.Status.WaitingNotCw">
+    <value>Pronto. Aguardando o painel de frequências ficar em CW para {0}.</value>
+  </data>
+  <data name="Cw.Status.WaitingNextPass">
+    <value>Pronto. Aguardando a próxima passagem de {0}.</value>
+  </data>
+  <data name="Cw.Status.WaitingNoElevation">
+    <value>Pronto. Aguardando a elevação de {0}.</value>
+  </data>
+  <data name="Cw.Status.Waiting">
+    <value>Pronto. Aguardando {0} subir acima de {1}°.</value>
+  </data>
+  <data name="Cw.Settings.Audio">
+    <value>Áudio</value>
+  </data>
+  <data name="Cw.Input">
+    <value>Entrada</value>
+  </data>
+  <data name="Cw.Refresh">
+    <value>Atualizar</value>
+  </data>
+  <data name="Cw.CatFeedForward">
+    <value>Corrigir a nota pelos passos Doppler do controle do rádio</value>
+  </data>
+  <data name="Cw.CatFeedForward.Tip">
+    <value>Quando o controle do rádio sintoniza em passos, a nota CW desliza entre os passos. Isto devolve a nota pela diferença para que ela fique onde você sintonizou. Somente recepção: o rádio não é ressintonizado.</value>
+  </data>
+  <data name="Cw.Settings.AutoStart">
+    <value>Início automático</value>
+  </data>
+  <data name="Cw.AutoStart">
+    <value>Começar a ouvir quando o satélite em foco nascer</value>
+  </data>
+  <data name="Cw.AutoStart.Tip">
+    <value>Somente enquanto esta janela estiver aberta e o painel de frequências estiver em CW. A escuta para quando o satélite se põe.</value>
+  </data>
+  <data name="Cw.AutoStart.Elevation">
+    <value>Elevação inicial (°)</value>
+  </data>
+  <data name="Cw.Settings.Credit">
+    <value>A decodificação usa o modelo DeepCW de e04 (licença MIT) e roda neste computador. Nenhum áudio sai da máquina.</value>
+  </data>
+  <data name="Cw.Speed">
+    <value>{0:0} ppm</value>
+  </data>
+  <data name="Cw.Settings.Decoding">
+    <value>Decodificação</value>
+  </data>
+  <data name="Cw.FollowNote">
+    <value>Acompanhar a nota quando ela se desloca</value>
+  </data>
+  <data name="Cw.FollowNote.Tip">
+    <value>Mantém no centro a nota estável mais próxima do meio da faixa sombreada, para que a deriva Doppler não a tire de lá. Clique em um traço da cascata para decodificar outro sinal; clique com o botão direito para devolver a faixa.</value>
+  </data>
+  <data name="Cw.SquelchNoise">
+    <value>Ocultar letras soltas vindas do ruído</value>
+  </data>
+  <data name="Cw.SquelchNoise.Tip">
+    <value>Descarta palavras de uma ou duas letras de que o modelo não tem certeza. Entre câmbios, quase sempre são ruído. Palavras curtas confiáveis, como K, permanecem.</value>
+  </data>
+  <data name="Cw.Settings.Display">
+    <value>Exibição</value>
+  </data>
+  <data name="Cw.CopyFontSize">
+    <value>Tamanho do texto decodificado</value>
+  </data>
+  <data name="Cw.CopyFontSize.Tip">
+    <value>Na janela CW você também pode segurar Ctrl e girar a roda do mouse sobre o texto, ou pressionar Ctrl com mais ou menos. Ctrl+0 volta ao tamanho padrão.</value>
+  </data>
+  <data name="Cw.Legend.NewCall">
+    <value>Indicativo novo</value>
+  </data>
+  <data name="Cw.Legend.NewGrid">
+    <value>Grid novo</value>
+  </data>
+  <data name="Cw.Legend.Worked">
+    <value>Já trabalhado</value>
+  </data>
+  <data name="Cw.Legend.You">
+    <value>Seu indicativo</value>
+  </data>
+  <data name="Cw.Worked.NewCall">
+    <value>Indicativo novo: não está em nenhum dos seus logbooks.</value>
+  </data>
+  <data name="Cw.Worked.Call">
+    <value>Já trabalhado: este indicativo está no seu logbook.</value>
+  </data>
+  <data name="Cw.Worked.NewGrid">
+    <value>Grid novo: ainda não há QSO neste quadrado de 4 caracteres.</value>
+  </data>
+  <data name="Cw.Worked.Grid">
+    <value>Já trabalhado: você tem um QSO neste quadrado.</value>
   </data>
 </root>

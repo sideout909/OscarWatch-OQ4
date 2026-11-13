@@ -11,8 +11,23 @@ public sealed class AppSettings
     /// <summary>Catalogue IDs (NORAD / Alpha-5) for enabled satellites. Preferred over names when present.</summary>
     public List<string> EnabledSatelliteNoradIds { get; set; } = ["25544", "27607", "43017"];
     public double MinimumElevationDeg { get; set; } = 5.0;
+    /// <summary>Lookahead for the main-window upcoming passes list and the pass elevation timeline.</summary>
     public int PassPredictionHours { get; set; } = 48;
+    /// <summary>
+    /// Minimum length for the main-window upcoming passes list.
+    /// 0 means no extra duration filter beyond elevation and the horizon mask.
+    /// Independent of <see cref="PassFilterMinDurationMinutes"/>.
+    /// </summary>
+    public int UpcomingPassesMinDurationMinutes { get; set; }
+    /// <summary>Minimum pass length saved for the pass planner. Not used by the main-window list.</summary>
     public int PassFilterMinDurationMinutes { get; set; } = 2;
+    /// <summary>Lookahead saved for the pass planner. Not used by the main-window list.</summary>
+    public int PassPlannerPredictionHours { get; set; } = 48;
+    /// <summary>
+    /// Minimum elevation saved for the pass planner.
+    /// When null, the planner opens with <see cref="MinimumElevationDeg"/> until the operator saves planner filters.
+    /// </summary>
+    public double? PassPlannerMinElevationDeg { get; set; }
     /// <summary>When true, main UI times (status clock, sidebar passes, hams.at, sunlight) use UTC; otherwise local time.</summary>
     public bool DisplayTimesInUtc { get; set; }
 
@@ -96,6 +111,7 @@ public sealed class AppSettings
     public PassRecordingSettings PassRecording { get; set; } = new();
     public Ft4Settings Ft4 { get; set; } = new();
     public OscarWatch.Core.Sstv.SstvSettings Sstv { get; set; } = new();
+    public OscarWatch.Core.CwDecode.CwDecodeSettings CwDecoder { get; set; } = new();
     public OscarWatch.Core.Terminal.TerminalSettings Terminal { get; set; } = new();
     public QsoLogbookSettings QsoLogbook { get; set; } = new();
     /// <summary>Transponder conflicts the user confirmed keeping locally instead of the published version.</summary>

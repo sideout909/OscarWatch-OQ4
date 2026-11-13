@@ -129,6 +129,9 @@ public partial class MainViewModel : ViewModelBase
     private string _rotatorElevationText = "—";
 
     [ObservableProperty]
+    private bool _showRotatorElevation = true;
+
+    [ObservableProperty]
     private string _rotatorLinkStatusText = "";
 
     [ObservableProperty]
@@ -1421,6 +1424,7 @@ public partial class MainViewModel : ViewModelBase
         }
 
         ShowRotatorStatus = true;
+        ShowRotatorElevation = !_settings.Current.Rotator.IsAzimuthOnly;
         var status = _rotator.GetPositionStatus();
         RotatorAzimuthText = FormatRotatorAzimuthText(status);
         RotatorElevationText = FormatRotatorElevationText(status);
@@ -2045,12 +2049,13 @@ public partial class MainViewModel : ViewModelBase
             pass.IsScheduled = ScheduledPassReminder.IsScheduled(scheduled, pass.NoradId, pass.AosUtc);
     }
 
-    private void RematchScheduledPasses(IReadOnlyList<PassInfo> upcoming)
+    private void RematchScheduledPasses(IReadOnlyList<PassInfo> upcoming, DateTime coveredUntilUtc)
     {
         var rematched = ScheduledPassReminder.RematchAndPrune(
             _settings.Current.ScheduledPasses ?? [],
             upcoming,
-            DateTime.UtcNow);
+            DateTime.UtcNow,
+            coveredUntilUtc);
         var previous = _settings.Current.ScheduledPasses ?? [];
         if (ScheduledPassListsEqual(previous, rematched))
             return;
@@ -2595,6 +2600,28 @@ public partial class MainViewModel : ViewModelBase
         var window = new SstvWindow { DataContext = vm };
         window.Closed += (_, _) => _openSstvWindow = null;
         _openSstvWindow = window;
+        if (App.MainWindow is null)
+            return;
+
+        window.Show(App.MainWindow);
+    }
+
+    private static CwWindow? _openCwWindow;
+
+    [RelayCommand]
+    private void OpenCw()
+    {
+        _trackerSnapshot.FocusedNoradId = FocusedNoradId;
+        if (_openCwWindow is { IsVisible: true })
+        {
+            _openCwWindow.Activate();
+            return;
+        }
+
+        var vm = App.Services.GetRequiredService<CwViewModel>();
+        var window = new CwWindow { DataContext = vm };
+        window.Closed += (_, _) => _openCwWindow = null;
+        _openCwWindow = window;
         if (App.MainWindow is null)
             return;
 
@@ -3544,7 +3571,19 @@ public partial class MainViewModel : ViewModelBase
             var selectedRow = SelectedListItem as PassRowViewModel;
             var selectedNorad = selectedRow?.NoradId;
             var selectedAos = selectedRow?.AosUtc;
-            var passes = await _tracking.GetUpcomingPassesAsync().ConfigureAwait(false);
+            var refreshUtc = DateTime.UtcNow;
+            var trackingSettings = _settings.Current;
+            var rematchHours = ScheduledPassHorizon.Hours(trackingSettings, refreshUtc);
+            var predicted = await _tracking.GetPassesAsync(
+                trackingSettings.GroundStation,
+                trackingSettings.MinimumElevationDeg,
+                rematchHours,
+                minimumDurationMinutes: 0).ConfigureAwait(false);
+            var passes = PassSidebarMerge.WithinPredictionWindow(
+                predicted,
+                refreshUtc,
+                trackingSettings.PassPredictionHours,
+                trackingSettings.UpcomingPassesMinDurationMinutes);
 
             void Apply()
             {
@@ -3554,6 +3593,9 @@ public partial class MainViewModel : ViewModelBase
                     .Select(p => p.Source)
                     .ToList();
                 var merged = PassSidebarMerge.MergeInProgressPasses(passes, inProgress, utcNow)
+                    .Where(p => PassUtc.Normalize(p.LosUtc) > utcNow)
+                    .ToList();
+                var rematchPasses = PassSidebarMerge.MergeInProgressPasses(predicted, inProgress, utcNow)
                     .Where(p => PassUtc.Normalize(p.LosUtc) > utcNow)
                     .ToList();
 
@@ -3579,7 +3621,7 @@ public partial class MainViewModel : ViewModelBase
                     items.Add(row);
                 }
 
-                RematchScheduledPasses(merged);
+                RematchScheduledPasses(rematchPasses, refreshUtc.AddHours(rematchHours));
                 ApplyPassListHighlights(items);
                 ReplacePassList(items);
                 ApplyScheduledFlagsToPassList();

@@ -44,7 +44,13 @@ public sealed class Ft4SettingsTests
         Assert.False(settings.PskReporterEnabled);
         Assert.False(settings.OscarWatchSpotsEnabled);
         Assert.Equal(12, settings.DecodeFontSize);
+        Assert.Equal(Ft4DecodeLayout.Basic, settings.DecodeLayout);
+        Assert.Equal(Ft4Settings.DefaultDecodeColumnShare, settings.DecodeColumnShare);
+        Assert.False(settings.WindowMaximised);
         Assert.Equal(Ft4Settings.DefaultWaterfallRangeDb, settings.WaterfallRangeDb);
+        Assert.Equal(Ft4Settings.FastWaterfallSpeed, settings.WaterfallSpeed);
+        Assert.True(settings.WaterfallFlatten);
+        Assert.True(settings.WaterfallSlotLines);
         Assert.Equal(Ft4DecodeHighlight.DefaultCallingMeColour, settings.CallingMeColour);
         Assert.Equal(Ft4DecodeHighlight.DefaultReplyingColour, settings.ReplyingColour);
         Assert.Equal(Ft4DecodeHighlight.DefaultNewCallColour, settings.NewCallColour);
@@ -56,6 +62,16 @@ public sealed class Ft4SettingsTests
         Assert.Equal("", settings.NewGridTextColour);
         Assert.Equal("", settings.CqTextColour);
         Assert.Equal(Ft4DecodeHighlight.DefaultTxTextColour, settings.TxTextColour);
+    }
+
+    [Theory]
+    [InlineData(0.5, 0.5)]
+    [InlineData(0.1, Ft4Settings.MinDecodeColumnShare)]
+    [InlineData(0.9, Ft4Settings.MaxDecodeColumnShare)]
+    [InlineData(double.NaN, Ft4Settings.DefaultDecodeColumnShare)]
+    public void Decode_column_share_is_kept_within_range(double stored, double expected)
+    {
+        Assert.Equal(expected, Ft4Settings.ClampDecodeColumnShare(stored));
     }
 
     [Fact]
@@ -120,5 +136,30 @@ public sealed class Ft4SettingsTests
         Assert.Equal(40, Ft4Settings.ClampWaterfallRangeDb(40));
         Assert.Equal(Ft4Settings.MinWaterfallRangeDb, Ft4Settings.ClampWaterfallRangeDb(0));
         Assert.Equal(Ft4Settings.MaxWaterfallRangeDb, Ft4Settings.ClampWaterfallRangeDb(200));
+    }
+
+    [Fact]
+    public void Waterfall_speed_clamps_and_keeps_more_history_when_slower()
+    {
+        Assert.Equal(Ft4Settings.SlowWaterfallSpeed, Ft4Settings.ClampWaterfallSpeed(0));
+        Assert.Equal(Ft4Settings.FastWaterfallSpeed, Ft4Settings.ClampWaterfallSpeed(9));
+        Assert.Equal(4, Ft4Settings.WaterfallTicksPerRow(Ft4Settings.SlowWaterfallSpeed));
+        Assert.Equal(2, Ft4Settings.WaterfallTicksPerRow(Ft4Settings.MediumWaterfallSpeed));
+        Assert.Equal(1, Ft4Settings.WaterfallTicksPerRow(Ft4Settings.FastWaterfallSpeed));
+        Assert.Equal(48, Ft4Settings.WaterfallHistorySeconds(Ft4Settings.SlowWaterfallSpeed, 120));
+        Assert.Equal(24, Ft4Settings.WaterfallHistorySeconds(Ft4Settings.MediumWaterfallSpeed, 120));
+        Assert.Equal(12, Ft4Settings.WaterfallHistorySeconds(Ft4Settings.FastWaterfallSpeed, 120));
+        Assert.Equal(0, Ft4Settings.WaterfallHistorySeconds(Ft4Settings.FastWaterfallSpeed, 0));
+    }
+
+    [Fact]
+    public void Missing_waterfall_speed_keeps_the_original_rate()
+    {
+        var settings = JsonSerializer.Deserialize<Ft4Settings>("{}", new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        })!;
+
+        Assert.Equal(Ft4Settings.DefaultWaterfallSpeed, settings.WaterfallSpeed);
     }
 }

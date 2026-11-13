@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using OscarWatch.Diagnostics;
+using OscarWatch.Core.Cw;
 using OscarWatch.Core.Models;
 using OscarWatch.Core.Radio;
 using Serilog;
@@ -12,6 +13,7 @@ public abstract class IcomCivDriverBase : IRigDriver
     private static readonly ConcurrentDictionary<string, ThrottledLogger> OpenFailureLogs = new(StringComparer.OrdinalIgnoreCase);
     private IIcomCivTransport? _transport;
     private readonly IIcomCivTransport? _injectedTransport;
+    private readonly Func<IIcomCivTransport>? _transportFactory;
     private readonly int _catDelayMs;
     private RigVfo _currentVfo = RigVfo.VfoA;
     private long _lastMainHz;
@@ -33,6 +35,25 @@ public abstract class IcomCivDriverBase : IRigDriver
         _catDelayMs = 50;
         _injectedTransport = injectedTransport;
         _transport = injectedTransport;
+    }
+
+    /// <summary>
+    /// Driver that creates its own transport on each <see cref="Open"/> (network control).
+    /// Connection errors propagate so the caller can report them, and <see cref="Dispose"/> closes the session.
+    /// </summary>
+    internal IcomCivDriverBase(
+        RigType rigType,
+        Func<IIcomCivTransport> transportFactory,
+        string endpointLabel,
+        string civAddressHex,
+        int catDelayMs = 50)
+    {
+        RigType = rigType;
+        Port = endpointLabel;
+        BaudRate = 0;
+        CivAddress = IcomCivCodec.ParseCivAddressHex(civAddressHex);
+        _catDelayMs = Math.Max(catDelayMs, 15);
+        _transportFactory = transportFactory;
     }
 
     private IcomCivDriverBase(
@@ -89,6 +110,25 @@ public abstract class IcomCivDriverBase : IRigDriver
                     .Warning(ex, "Failed to open injected CI-V transport");
             }
 
+            return;
+        }
+
+        if (_transportFactory is not null)
+        {
+            _transport?.Dispose();
+            _transport = null;
+            var owned = _transportFactory();
+            try
+            {
+                owned.Open();
+            }
+            catch
+            {
+                owned.Dispose();
+                throw;
+            }
+
+            _transport = owned;
             return;
         }
 
@@ -369,10 +409,45 @@ public abstract class IcomCivDriverBase : IRigDriver
 
     public bool TrySetHandshakeLine(bool useRts, bool assert)
     {
-        if (_transport is null || !IsConnected)
+        if (_transport is null || !IsConnected || _transportFactory is not null)
             return false;
         _transport.SetHandshakeLine(useRts, assert);
         return true;
+    }
+
+    public bool SupportsCwText => IcomCwCodec.SupportsTextKeying(RigType);
+
+    public bool TrySendCwText(CwMessage piece)
+    {
+        if (!SupportsCwText || _transport is null || !IsConnected || piece.IsEmpty)
+            return false;
+
+        // Sent once: a retry after a lost ACK would key the text twice.
+        var response = _transport.WriteCommand(IcomCwCodec.BuildSendCommand(piece), _catDelayMs);
+        if (IsCivNak(response))
+        {
+            Log.Warning("CI-V CW text rejected (0xFA); is the radio in CW mode?");
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool TryStopCwText()
+    {
+        if (!SupportsCwText || _transport is null || !IsConnected)
+            return false;
+
+        var response = _transport.WriteCommand(IcomCwCodec.BuildStopCommand(), _catDelayMs);
+        return !IsCivNak(response);
+    }
+
+    public bool TrySetCwSpeed(int wpm)
+    {
+        if (!SupportsCwText || _transport is null || !IsConnected)
+            return false;
+
+        return SendWithAckRetry(IcomCwCodec.BuildSpeedCommand(wpm), "set key speed");
     }
 
     protected void WriteWithRetry(ReadOnlySpan<byte> body) =>

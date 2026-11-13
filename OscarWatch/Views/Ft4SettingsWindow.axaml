@@ -319,10 +319,42 @@
             </Grid>
             <TextBlock Classes="ft4-note"
                        Text="{loc:Localize Key=Ft4.WaterfallRange.Note}" />
+            <CheckBox Content="{loc:Localize Key=Ft4.WaterfallFlatten}"
+                      IsChecked="{Binding WaterfallFlatten}" />
+            <TextBlock Classes="ft4-note"
+                       Text="{loc:Localize Key=Ft4.WaterfallFlatten.Note}" />
+            <CheckBox Content="{loc:Localize Key=Ft4.WaterfallSlotLines}"
+                      IsChecked="{Binding WaterfallSlotLines}" />
+            <TextBlock Classes="ft4-note"
+                       Text="{loc:Localize Key=Ft4.WaterfallSlotLines.Note}" />
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+              <TextBlock Grid.Column="0"
+                         Text="{loc:Localize Key=Ft4.WaterfallSpeed}"
+                         VerticalAlignment="Center" />
+              <ComboBox Grid.Column="1"
+                        ItemsSource="{Binding WaterfallSpeedOptions}"
+                        SelectedItem="{Binding SelectedWaterfallSpeed}"
+                        HorizontalAlignment="Stretch"
+                        MinWidth="220" />
+            </Grid>
+            <TextBlock Classes="ft4-note"
+                       Text="{loc:Localize Key=Ft4.WaterfallSpeed.Note}" />
 
             <Separator Classes="ft4-rule" />
             <TextBlock Classes="ft4-section"
                        Text="{loc:Localize Key=Ft4.Settings.Group.DecodeList}" />
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+              <TextBlock Grid.Column="0"
+                         Text="{loc:Localize Key=Ft4.DecodeLayout}"
+                         VerticalAlignment="Center" />
+              <ComboBox Grid.Column="1"
+                        ItemsSource="{Binding DecodeLayoutOptions}"
+                        SelectedItem="{Binding SelectedDecodeLayout}"
+                        HorizontalAlignment="Stretch"
+                        MinWidth="220" />
+            </Grid>
+            <TextBlock Classes="ft4-note"
+                       Text="{loc:Localize Key=Ft4.DecodeLayout.Note}" />
             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
               <TextBlock Grid.Column="0"
                          Text="{loc:Localize Key=Ft4.DecodeFontSize}"

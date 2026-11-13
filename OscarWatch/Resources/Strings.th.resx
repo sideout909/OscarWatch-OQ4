@@ -682,11 +682,17 @@ LOS: {2}
   <data name="Sstv.RepairBadLines.Tip">
     <value>วาดเส้นที่มีสัญญาณรบกวนติดกันไม่เกินสามเส้นใหม่จากเส้นที่ดีทั้งสองข้าง ความเสียหายที่ยาวกว่านั้นจะคงไว้ตามที่รับได้</value>
   </data>
+  <data name="Sstv.SmoothAcrossLines">
+    <value>ลดจุดสัญญาณรบกวนในภาพที่สัญญาณอ่อน</value>
+  </data>
+  <data name="Sstv.SmoothAcrossLines.Tip">
+    <value>เมื่อภาพเสร็จ ให้แทนที่แต่ละพิกเซลด้วยค่ากลางของพิกเซลรอบข้าง รวมถึงเส้นด้านบนและด้านล่าง ช่วยลบจุดสัญญาณรบกวนส่วนใหญ่ แต่ทำให้รายละเอียดเล็กและตัวอักษรขนาดเล็กเบลอลง ควรปิดไว้เมื่อสัญญาณแรง</value>
+  </data>
   <data name="Sstv.HoldThroughFades">
     <value>วาดภาพต่อระหว่างสัญญาณจางหายนาน</value>
   </data>
   <data name="Sstv.HoldThroughFades.Tip">
-    <value>เมื่อภาพล็อกได้ดีแล้ว ให้วาดต่อระหว่างสัญญาณจางหายได้นานถึง 20 วินาทีแทนการจบภาพ อาจรวมสองส่วนของภาพเดียวกันเข้าด้วยกัน</value>
+    <value>เมื่อภาพล็อกได้ดีแล้ว ให้วาดต่อระหว่างสัญญาณจางหายได้นานถึง 45 วินาทีแทนการจบภาพ อาจรวมสองส่วนของภาพเดียวกันเข้าด้วยกัน</value>
   </data>
   <data name="Sstv.AdaptiveBandwidth">
     <value>ปรับตัวกรองให้เข้ากับโหมด</value>
@@ -732,6 +738,12 @@ LOS: {2}
   </data>
   <data name="Sstv.AutoStart.Tip">
     <value>เริ่มรับสัญญาณเมื่อดาวเทียมที่เลือกในหน้าต่างหลักขึ้นสูงเกินมุมเงยด้านล่าง และหยุดเมื่อดาวเทียมตกลับขอบฟ้า ใช้ค่าติดลบ เช่น −5° เพื่อเริ่มก่อน AOS เล็กน้อย ให้วิทยุและเสียงนิ่งก่อน ทำงานเฉพาะขณะที่หน้าต่างนี้เปิดอยู่ หากเปิดการบันทึกอัตโนมัติไว้ ภาพจะถูกเก็บไว้แม้ปิดหน้าต่าง</value>
+  </data>
+  <data name="Sstv.KeepAwake">
+    <value>ไม่ให้คอมพิวเตอร์เข้าสู่โหมดพักขณะรับฟัง</value>
+  </data>
+  <data name="Sstv.KeepAwake.Tip">
+    <value>ขณะที่ SSTV กำลังรับฟัง คอมพิวเตอร์และหน้าจอจะไม่เข้าสู่โหมดพัก คุณยังล็อกหน้าจอได้ และการปิดฝาเครื่องยังทำให้คอมพิวเตอร์เข้าสู่โหมดพัก</value>
   </data>
   <data name="Sstv.AutoStart.Elevation">
     <value>มุมเงยเริ่มต้น (องศา)</value>
@@ -837,6 +849,12 @@ LOS: {2}
   </data>
   <data name="Sstv.Settings.Saving">
     <value>การบันทึก</value>
+  </data>
+  <data name="Sstv.Settings.General">
+    <value>ทั่วไป</value>
+  </data>
+  <data name="Sstv.Settings.FadesAndNoise">
+    <value>การจางหายและสัญญาณรบกวน</value>
   </data>
   <data name="Window.SstvLibrary.Title">
     <value>คลังภาพ OscarWatch SSTV</value>
@@ -2311,6 +2329,24 @@ LOS: {2}
   <data name="DopplerInsights.Phase.Summary">
     <value>คลาดเคลื่อนดาวน์ลิงก์ p95 {0} Hz · การเขียน CAT {1}% · สลูสูงสุด {2} Hz/s · มุมเงยสูงสุด {3}°</value>
   </data>
+  <data name="RotatorManual.Azimuth">
+    <value>อะซิมัท (°)</value>
+  </data>
+  <data name="RotatorManual.Elevation">
+    <value>มุมเงย (°)</value>
+  </data>
+  <data name="RotatorManual.NotConnected">
+    <value>ไม่ได้เชื่อมต่อ</value>
+  </data>
+  <data name="RotatorManual.PositionUnknown">
+    <value>ไม่ทราบตำแหน่ง</value>
+  </data>
+  <data name="RotatorManual.PositionAzEl">
+    <value>Az {0} · El {1}</value>
+  </data>
+  <data name="RotatorManual.PositionAzimuth">
+    <value>Az {0}</value>
+  </data>
   <data name="Window.RotatorManual.Title">
     <value>ควบคุมโรเตอร์ด้วยตนเอง</value>
   </data>
@@ -2717,7 +2753,13 @@ LOS: {2}
     <value>หน้าต่างพยากรณ์พาส (ชั่วโมง)</value>
   </data>
   <data name="Settings.Tracking.PassWindowNote">
-    <value>ใช้สำหรับรายการพาสที่กำลังจะมาถึง และเป็นค่าเริ่มต้นในตัววางแผนพาส</value>
+    <value>ใช้สำหรับรายการพาสที่กำลังจะมาถึง และไทม์ไลน์มุมเงยของพาส</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDuration">
+    <value>ระยะเวลาขั้นต่ำของพาสที่กำลังจะมาถึง (นาที)</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDurationNote">
+    <value>0 แสดงทุกพาสที่สูงกว่ามุมเงยต่ำสุดและมาสก์ขอบฟ้า ตัววางแผนพาสมีระยะเวลาขั้นต่ำของตัวเอง</value>
   </data>
   <data name="Settings.Tracking.TransponderCheck">
     <value>ตรวจการอัปเดตฐานข้อมูลทรานสปอนเดอร์เมื่อเริ่มต้น</value>
@@ -3043,6 +3085,108 @@ LOS: {2}
   <data name="Settings.Radio.Ftx1Hint">
     <value>FTX-1 Field / FTX-1optima: ให้เมนู CAT-1 RATE ตรงกับการตั้งค่า (ค่าเริ่มต้น 38400) CAT ASCII 8N2 พร้อม RTS ฮาร์ดแวร์: ใช้พอร์ต Enhanced COM (CAT-1) ไม่ใช่ CAT-2 หนึ่ง COM ต่อขา FM ล็อกลูกบิด MAIN VFO ขณะติดตาม</value>
   </data>
+  <data name="Settings.Radio.KenwoodConnection">
+    <value>การเชื่อมต่อ</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Serial">
+    <value>พอร์ต COM (USB หรือซีเรียล)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Lan">
+    <value>เครือข่าย (LAN)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanHost">
+    <value>ที่อยู่ IP หรือชื่อโฮสต์ของวิทยุ</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPort">
+    <value>พอร์ต TCP</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanUser">
+    <value>บัญชี (ID ผู้ดูแลหรือผู้ใช้ที่ตั้งไว้ในวิทยุ)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPassword">
+    <value>รหัสผ่าน</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanAdministrator">
+    <value>บัญชีผู้ดูแล (ยกเลิกเลือกสำหรับบัญชีผู้ใช้)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTest">
+    <value>ทดสอบการเชื่อมต่อ LAN</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTesting">
+    <value>กำลังทดสอบการเชื่อมต่อ…</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanEnterDetails">
+    <value>กรอกโฮสต์ พอร์ต บัญชี และรหัสผ่านก่อน</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanOk">
+    <value>เชื่อมต่อกับ {0} ที่ {1} MHz แล้ว</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanWrongRadio">
+    <value>เชื่อมต่อแล้ว แต่วิทยุไม่ได้ระบุตัวเป็น {0} ตรวจสอบรุ่นวิทยุที่เลือกด้านบน</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanDenied">
+    <value>วิทยุปฏิเสธการเชื่อมต่อ ตรวจสอบว่าเปิดการควบคุมผ่าน LAN และไม่มีแอปพลิเคชันอื่น (เช่น ARCP หรือ KNS) เชื่อมต่อกับพอร์ต 60000 อยู่</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanLoginRejected">
+    <value>การเข้าสู่ระบบถูกปฏิเสธ ตรวจสอบบัญชี รหัสผ่าน และประเภทบัญชีที่ตั้งไว้ในวิทยุ</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanFailed">
+    <value>การเชื่อมต่อ LAN ล้มเหลว: {0}</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection">
+    <value>การเชื่อมต่อ</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Serial">
+    <value>USB / ซีเรียล (พอร์ต COM)</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Lan">
+    <value>เครือข่าย (LAN หรือ Wi-Fi)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHost">
+    <value>ที่อยู่ IP หรือชื่อโฮสต์ของวิทยุ</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPort">
+    <value>พอร์ตควบคุม (UDP)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanUser">
+    <value>ชื่อผู้ใช้เครือข่าย (ตั้งค่าในการตั้งค่าเครือข่ายของวิทยุ)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPassword">
+    <value>รหัสผ่านเครือข่าย</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHint">
+    <value>เปิด Network Control บนวิทยุและเพิ่มผู้ใช้เครือข่าย OscarWatch ใช้เฉพาะการควบคุม CI-V (ไม่มีเสียงผ่านเครือข่าย) วิทยุรับไคลเอนต์ระยะไกลได้ครั้งละหนึ่งราย ดังนั้นให้ปิด RS-BA1 หรือ wfview ก่อน</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTest">
+    <value>ทดสอบการเชื่อมต่อเครือข่าย</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTesting">
+    <value>กำลังทดสอบการเชื่อมต่อ…</value>
+  </data>
+  <data name="Settings.Radio.IcomLanEnterDetails">
+    <value>ป้อนโฮสต์ พอร์ต ชื่อผู้ใช้ และรหัสผ่านก่อน</value>
+  </data>
+  <data name="Settings.Radio.IcomLanOk">
+    <value>เชื่อมต่อกับ {0} ที่ {1} MHz แล้ว</value>
+  </data>
+  <data name="Settings.Radio.IcomLanWrongRadio">
+    <value>เชื่อมต่อแล้ว แต่วิทยุไม่ได้ระบุตัวเป็น {0} ตรวจสอบรุ่นวิทยุและที่อยู่ CI-V</value>
+  </data>
+  <data name="Settings.Radio.IcomLanLoginRejected">
+    <value>การเข้าสู่ระบบถูกปฏิเสธ ตรวจสอบชื่อผู้ใช้และรหัสผ่านเครือข่ายที่ตั้งไว้บนวิทยุ</value>
+  </data>
+  <data name="Settings.Radio.IcomLanBusy">
+    <value>วิทยุกำลังถูกใช้งานโดยไคลเอนต์ระยะไกลอื่น ({0}) ตัดการเชื่อมต่อแล้วลองอีกครั้ง</value>
+  </data>
+  <data name="Settings.Radio.IcomLanNoReply">
+    <value>ไม่มีการตอบกลับจาก {0} ตรวจสอบที่อยู่ IP และพอร์ต และตรวจสอบว่าเปิด Network Control แล้ว</value>
+  </data>
+  <data name="Settings.Radio.IcomLanFailed">
+    <value>การเชื่อมต่อเครือข่ายล้มเหลว: {0}</value>
+  </data>
+  <data name="Settings.Radio.KenwoodHfHint">
+    <value>TS-990S / TS-890S / TS-590: วิทยุหนึ่งเครื่องคือหนึ่งขา สำหรับ 10 m ให้ปิดโหมดทรานสเวอร์เตอร์ไว้ สำหรับ 2 m หรือ 70 cm ให้เปิดโหมดทรานสเวอร์เตอร์และตั้งค่าออฟเซ็ตที่วิทยุ OscarWatch จะอ่านค่าและปรับ IF ให้เอง ตั้งอัตราบอดให้ตรงกับเมนู COM ของวิทยุ LAN (เฉพาะ TS-990S และ TS-890S) ต้องใช้ ID ผู้ดูแลหรือผู้ใช้ที่ตั้งไว้ในวิทยุ และใช้พอร์ต 60000 ได้ทีละหนึ่งแอปพลิเคชันเท่านั้น</value>
+  </data>
   <data name="Settings.Radio.CwSideband">
     <value>CW เชิงเส้น: คงการรับเป็น USB/LSB (ส่ง CW เท่านั้น)</value>
   </data>
@@ -3118,8 +3262,32 @@ LOS: {2}
   <data name="Settings.Rotator.Type">
     <value>ชนิดโรเตอร์</value>
   </data>
-  <data name="Settings.Rotator.TypeNote">
-    <value>GS-232 สำหรับ Yaesu และโคลน SPID สำหรับคอนโทรลเลอร์โหมด SP (Rot1Prog / Rot2Prog) SPID MD-01 / MD-02 (TCP) สำหรับอีเทอร์เน็ตโดยตรง (โปรโตคอล SPID ROT2 พอร์ตเริ่มต้น 23) EasyComm สำหรับโหมด EC (SPID, M2 และคอนโทรลเลอร์โปรโตคอลข้อความอื่น) SAEBRTrack สำหรับอินเทอร์เฟซติดตามดาวเทียมคลาสสิก (9600 บอด) OZ9AAR URC (TCP) สำหรับ Ultimate Rotator Controller ผ่านอีเทอร์เน็ต (พอร์ตเริ่มต้น 1111; ตั้ง URC เป็นโหมด REM/remote) Green Heron RT-21 Az-El ใช้สองพอร์ต COM (อะซิมัทและมุมเงย) โปรโตคอล DCU-1 ที่ 4800 บอด; อย่าเลือก GS-232 โปรโตคอลอนุกรมยังใช้เซิร์ฟเวอร์อนุกรม TCP (เช่น ser2net) แทนพอร์ต COM ในเครื่องได้</value>
+  <data name="Settings.Rotator.TypeNote.Gs232">
+    <value>Yaesu และโคลน</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Spid">
+    <value>คอนโทรลเลอร์โหมด SP (Rot1Prog / Rot2Prog)</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.SpidMd01">
+    <value>อีเทอร์เน็ตโดยตรง โปรโตคอล SPID ROT2 พอร์ตเริ่มต้น 23</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.EasyComm">
+    <value>โปรโตคอลข้อความสำหรับโหมด EC ของ SPID, M2 และคอนโทรลเลอร์ที่คล้ายกัน</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Saebrt">
+    <value>อินเทอร์เฟซติดตามดาวเทียมคลาสสิก</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Urc">
+    <value>Ultimate Rotator Controller ผ่านอีเทอร์เน็ต ตั้งเป็นโหมด remote (REM)</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.GreenHeron">
+    <value>สองพอร์ต COM หนึ่งพอร์ตต่อหนึ่งแกน</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.AntRunner">
+    <value>MuseLab AntRunner ผ่าน USB หันไปทางทิศเหนือและปรับให้ได้ระดับก่อนเปิดเครื่อง</value>
+  </data>
+  <data name="Settings.Rotator.AzimuthOnly">
+    <value>อะซิมัทเท่านั้น</value>
   </data>
   <data name="Settings.Rotator.AzimuthPort">
     <value>พอร์ตอนุกรมอะซิมัท</value>
@@ -4669,11 +4837,56 @@ LOS: {2}
   <data name="Ft4.DecodeFontSize.Note">
     <value>ขนาดแบบอักษรรายการถอดรหัส (10–28) ขนาดใหญ่ช่วยเมื่อสายตาไม่ดี</value>
   </data>
+  <data name="Ft4.DecodeLayout">
+    <value>รูปแบบ</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Basic">
+    <value>พื้นฐาน (รายการเดียว)</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Advanced">
+    <value>ขั้นสูง (สองคอลัมน์)</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Note">
+    <value>พื้นฐานแสดงการถอดรหัสทั้งหมดในรายการเดียว ขั้นสูงเพิ่มคอลัมน์ที่สองซึ่งแสดงเฉพาะสถานีที่เรียกคุณและข้อความที่คุณส่ง เพื่อให้ติดตามรอบที่มีคนเรียกมากได้ง่ายขึ้น บรรทัดเหล่านั้นยังคงแสดงในรายการเต็มด้วย</value>
+  </data>
+  <data name="Ft4.Decodes.BandActivity">
+    <value>กิจกรรมบนย่าน</value>
+  </data>
+  <data name="Ft4.Decodes.CallingMe">
+    <value>เรียกฉัน</value>
+  </data>
   <data name="Ft4.WaterfallRange">
     <value>ช่วงวอเตอร์ฟอล</value>
   </data>
   <data name="Ft4.WaterfallRange.Note">
     <value>จำนวนเดซิเบลเหนือพื้นสัญญาณรบกวนที่ติดตามอัตโนมัติ ช่วงที่แคบลงทำให้สัญญาณเด่นขึ้น ค่าเริ่มต้นคือ 40 dB</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten">
+    <value>ปรับวอเตอร์ฟอลล์ให้เรียบ</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten.Note">
+    <value>ชดเชยความลาดของฟิลเตอร์ SSB ของวิทยุ เพื่อให้ขอบของพาสแบนด์ไม่มืดกว่าตรงกลาง เหมือน Flatten ใน WSJT-X เปิดเป็นค่าเริ่มต้น</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines">
+    <value>เส้นแบ่งช่วงพร้อมเวลา UTC</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines.Note">
+    <value>วาดเส้นขวางวอเตอร์ฟอลล์ที่จุดเริ่มต้นของแต่ละช่วง พร้อมเวลาเริ่มต้นแบบ UTC เหมือน WSJT-X เปิดเป็นค่าเริ่มต้น</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed">
+    <value>ความเร็ววอเตอร์ฟอล</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Note">
+    <value>ความเร็วในการเพิ่มแถวใหม่ ความเร็วที่ช้ากว่าจะคงภาพบนจอนานขึ้น ร่องรอยสัญญาณอ่อนจะมองเห็นนานขึ้น และคำนวณสเปกตรัมน้อยลง เร็วคือความเร็วเดิม</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Slow">
+    <value>ช้า ({0} วิ)</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Medium">
+    <value>ปานกลาง ({0} วิ)</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Fast">
+    <value>เร็ว ({0} วิ)</value>
   </data>
   <data name="Ft4.Decode.CallingMe">
     <value>เรียกฉัน</value>
@@ -4746,6 +4959,12 @@ LOS: {2}
   </data>
   <data name="Ft4.Status.EchoClearedAll">
     <value>ล้างการปรับเทียบเสียงสะท้อนทั้งหมดแล้ว</value>
+  </data>
+  <data name="Ft4.Status.DecodingAgain">
+    <value>กำลังถอดรหัสช่วงรับล่าสุดอีกครั้ง (แบบลึก ทั้งช่วง)</value>
+  </data>
+  <data name="Ft4.Status.NothingToDecodeAgain">
+    <value>ไม่มีช่วงรับให้ถอดรหัสอีกครั้ง ดับเบิลคลิกระหว่างช่วงถัดจากช่วงที่ต้องการ</value>
   </data>
   <data name="Ft4.TxLevel">
     <value>ระดับ TX</value>
@@ -5413,6 +5632,9 @@ LOS: {2}
   </data>
   <data name="Terminal.Uhm.Status.NoSatellite">
     <value>UHM: เลือกดาวเทียมที่มีดิจิพีทเตอร์</value>
+  </data>
+  <data name="Terminal.Uhm.Status.BelowHorizon">
+    <value>UHM: ดาวเทียมอยู่ใต้เส้นขอบฟ้า</value>
   </data>
   <data name="Terminal.Uhm.Status.RateLimited">
     <value>UHM: ถูกจำกัดอัตรา จะลองใหม่เร็วๆ นี้</value>
@@ -6325,5 +6547,350 @@ LOS: {2}
   </data>
   <data name="ComPort.TerminalKissAndFt4Ptt" xml:space="preserve">
     <value>TNC KISS ของ Terminal และPTT แยกของ FT4ใช้ {0} เหมือนกัน ให้ใช้พอร์ต COM ต่างกันหรือปิดอุปกรณ์หนึ่ง</value>
+  </data>
+  <data name="Logbook.Cw.Wpm">
+    <value>WPM</value>
+  </data>
+  <data name="Logbook.Cw.WpmToolTip">
+    <value>ความเร็ว CW เป็นคำต่อนาที</value>
+  </data>
+  <data name="Logbook.Cw.Stop">
+    <value>หยุด</value>
+  </data>
+  <data name="Logbook.Cw.StopToolTip">
+    <value>หยุดส่ง (Esc)</value>
+  </data>
+  <data name="Logbook.Cw.ButtonEmpty">
+    <value>{0}: ยังไม่ได้ตั้งข้อความ เพิ่มได้ในการตั้งค่าล็อกบุ๊ก</value>
+  </data>
+  <data name="Logbook.Cw.ButtonToolTip">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Stopped">
+    <value>หยุด CW แล้ว</value>
+  </data>
+  <data name="Logbook.Cw.Status.Empty">
+    <value>{0} ไม่มีข้อความให้ส่ง</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sending">
+    <value>กำลังส่ง {0}: {1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.SendingUnknown">
+    <value>กำลังส่ง {0}: {1} ข้ามแมโครที่ไม่รู้จัก: {2}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sent">
+    <value>ส่ง {0} แล้ว</value>
+  </data>
+  <data name="Logbook.Cw.Status.Rejected">
+    <value>วิทยุไม่รับ CW ตรวจสอบว่าเชื่อมต่ออยู่และอยู่ในโหมด CW</value>
+  </data>
+  <data name="Logbook.Cw.Status.RigNotConnected">
+    <value>การคีย์ CW ผ่านวิทยุต้องเปิดการควบคุมวิทยุ เปิดใช้งาน หรือใช้พอร์ต COM แยก</value>
+  </data>
+  <data name="Logbook.Cw.Status.KeyLineUnavailable">
+    <value>การเชื่อมต่อวิทยุนี้คีย์ DTR หรือ RTS ไม่ได้ เลือกพอร์ต COM แยกในการตั้งค่าล็อกบุ๊ก</value>
+  </data>
+  <data name="Logbook.Cw.Status.RtsBlocked">
+    <value>RTS บนพอร์ต CAT ของวิทยุนี้ใช้ควบคุมการไหลของข้อมูล ให้ใช้ DTR หรือพอร์ต COM แยก</value>
+  </data>
+  <data name="Logbook.Cw.Status.NoPort">
+    <value>เลือกพอร์ต COM สำหรับคีย์ CW ในการตั้งค่าล็อกบุ๊ก</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortConflict">
+    <value>{0} ถูกใช้โดยวิทยุ โรเตเตอร์ GPS หรือพอร์ต PTT อยู่แล้ว เลือกพอร์ตอื่นสำหรับคีย์ CW</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortBusy">
+    <value>{0} ถูกใช้โดยแอปพลิเคชันอื่น</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortNotFound">
+    <value>ไม่พบ {0} ตรวจสอบสายและรีเฟรชรายการพอร์ต</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortFailed">
+    <value>เปิด {0} สำหรับคีย์ CW ไม่ได้</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tab">
+    <value>คีย์เยอร์ CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Section">
+    <value>คีย์เยอร์ CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Intro">
+    <value>ปุ่มข้อความสิบสองปุ่มจะแสดงระหว่างช่องกรอก QSO กับล็อกเมื่ออัปลิงก์เป็น CW คลิกปุ่มหรือกด F1 ถึง F12 เพื่อส่ง กด Esc หรือหยุดเพื่อยกเลิก</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Enable">
+    <value>แสดงคีย์เยอร์ CW ในล็อกบุ๊ก</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Keying">
+    <value>การคีย์</value>
+  </data>
+  <data name="Logbook.Settings.Cw.NoRig">
+    <value>การควบคุมวิทยุปิดอยู่ คีย์ CW ได้เฉพาะผ่านพอร์ต COM แยก</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Uplink">
+    <value>วิทยุอัปลิงก์: {0}</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Kenwood">
+    <value>ส่งข้อความด้วยคำสั่ง KY ของ Kenwood</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Icom">
+    <value>ส่งข้อความด้วยคำสั่ง CI-V 0x17 ของ Icom</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.CatLine">
+    <value>คีย์ {0} บนพอร์ต CAT ของวิทยุ</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.SeparateLine">
+    <value>คีย์ {0} บนพอร์ต COM ของตัวเอง</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KenwoodNote">
+    <value>วิทยุ Kenwood สร้างรหัสมอร์สเองจากข้อความ จึงไม่ต้องใช้สายคีย์ ตั้งวิทยุเป็นโหมด CW และเปิด break-in การเปลี่ยนความเร็วส่งด้วยคำสั่ง KS</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomNote">
+    <value>วิทยุนี้สร้างรหัสมอร์สเองจากข้อความที่ส่งผ่าน CI-V ตั้งเป็นโหมด CW และเปิด break-in ความเร็วของ Icom อยู่ระหว่าง 6 ถึง 48 WPM</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomUseLine">
+    <value>ใช้สายคีย์ COM แทนข้อความ CI-V</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KeyLine">
+    <value>สายคีย์</value>
+  </data>
+  <data name="Logbook.Settings.Cw.UseSeparatePort">
+    <value>ใช้พอร์ต COM แยกสำหรับสายคีย์</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Port">
+    <value>พอร์ต COM สำหรับคีย์ CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.RefreshPorts">
+    <value>รีเฟรช</value>
+  </data>
+  <data name="Logbook.Settings.Cw.LineNote">
+    <value>OscarWatch จับเวลาทุกจุดและขีดบนสาย ต่อสายเข้ากับช่องคีย์ของวิทยุผ่านอินเทอร์เฟซคีย์ แล้วตั้งวิทยุเป็นโหมด CW และเปิด break-in</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Messages">
+    <value>ข้อความ</value>
+  </data>
+  <data name="Logbook.Settings.Cw.ButtonName">
+    <value>ชื่อปุ่ม</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Message">
+    <value>ข้อความ</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tokens">
+    <value>{MYCALL} หรือ * คอลซายน์ของคุณ, {CALL} หรือ ! คอลซายน์คู่สถานี, {SENTRST} รายงานที่ส่ง, {SENTRSTCUT} รายงานที่ส่งแบบตัวเลขย่อ (599 เป็น 5NN), {RCVDRST} รายงานที่รับ, {GRID} กริดคู่สถานี, {MYGRID} กริดของคุณ, {NAME} ชื่อคู่สถานี, {SAT} ดาวเทียม เครื่องหมายพิเศษ: {AR} {SK} {BT} {KN}</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Help">
+    <value>วิธีใช้คีย์เยอร์ CW</value>
+  </data>
+  <data name="Menu.Tools.Cw">
+    <value>_OscarWatch CW</value>
+  </data>
+  <data name="Window.Cw.Title">
+    <value>OscarWatch CW</value>
+  </data>
+  <data name="Window.CwSettings.Title">
+    <value>การตั้งค่า OscarWatch CW</value>
+  </data>
+  <data name="Cw.Start">
+    <value>เริ่ม</value>
+  </data>
+  <data name="Cw.Stop">
+    <value>หยุด</value>
+  </data>
+  <data name="Cw.Clear">
+    <value>ล้าง</value>
+  </data>
+  <data name="Cw.Clear.Tip">
+    <value>ล้างข้อความที่รับได้และเริ่มถอดรหัสใหม่</value>
+  </data>
+  <data name="Cw.SaveCopy">
+    <value>บันทึกข้อความ</value>
+  </data>
+  <data name="Cw.SaveCopy.Tip">
+    <value>บันทึกข้อความที่ถอดรหัสได้เป็นไฟล์ข้อความ พร้อมเวลา UTC</value>
+  </data>
+  <data name="Cw.SaveCopy.Picker">
+    <value>บันทึกข้อความ CW</value>
+  </data>
+  <data name="Cw.SaveCopy.TextFiles">
+    <value>ไฟล์ข้อความ</value>
+  </data>
+  <data name="Cw.Saved">
+    <value>บันทึกข้อความไว้ที่ {0}</value>
+  </data>
+  <data name="Cw.OpenSettings">
+    <value>การตั้งค่า</value>
+  </data>
+  <data name="Cw.Help">
+    <value>ช่วยเหลือ</value>
+  </data>
+  <data name="Cw.Help.Tip">
+    <value>เปิดคู่มือ OscarWatch CW บน oscarwatch.org</value>
+  </data>
+  <data name="Cw.Level">
+    <value>ระดับ</value>
+  </data>
+  <data name="Cw.Waterfall">
+    <value>วอเตอร์ฟอล CW</value>
+  </data>
+  <data name="Cw.Waterfall.Tip">
+    <value>เสียงตั้งแต่ 0 ถึง 2000 Hz ตัวถอดรหัสอ่านแถบที่แรเงา คลิกเส้น CW เพื่อถอดรหัส หรือคลิกขวาเพื่อคืนแถบกลับไปที่ 400 ถึง 1200 Hz เส้นสีเหลืองแสดงโน้ตคงที่ที่แรงที่สุด</value>
+  </data>
+  <data name="Cw.Copy.Hint">
+    <value>สัญญาณเรียกขานและโลเคเตอร์ที่ขีดเส้นใต้จะถูกใส่ลงในแบบฟอร์มของสมุดบันทึกเมื่อคลิก หรือกด Enter หรือ Space จะยังไม่มีการบันทึกจนกว่าคุณจะเพิ่ม QSO</value>
+  </data>
+  <data name="Cw.Pending.Tip">
+    <value>ตัวอักษรล่าสุด ตัวถอดรหัสอาจยังเปลี่ยนแปลงได้</value>
+  </data>
+  <data name="Cw.Lag">
+    <value>ข้อความจะช้ากว่าสัญญาณประมาณ 2 วินาที</value>
+  </data>
+  <data name="Cw.Tone">
+    <value>เสียง {0:0} Hz</value>
+  </data>
+  <data name="Cw.Tone.None">
+    <value>ไม่มีเสียงที่คงที่</value>
+  </data>
+  <data name="Cw.Tone.OutOfBand">
+    <value>โน้ต {0:0} Hz อยู่นอกแถบถอดรหัส คลิกที่มันบนวอเตอร์ฟอล</value>
+  </data>
+  <data name="Cw.Doppler">
+    <value>ดอปเปลอร์ดาวน์ลิงก์ {0}</value>
+  </data>
+  <data name="Cw.FeedForward">
+    <value>การแก้ไขวิทยุ {0:+0;-0;0} Hz</value>
+  </data>
+  <data name="Cw.Logbook.CallTip">
+    <value>ใส่ {0} ในช่องสัญญาณเรียกขานของสมุดบันทึก</value>
+  </data>
+  <data name="Cw.Logbook.GridTip">
+    <value>ใส่ {0} ในช่องโลเคเตอร์ของสมุดบันทึก</value>
+  </data>
+  <data name="Cw.Logbook.FilledCall">
+    <value>{0} อยู่ในช่องสัญญาณเรียกขานของสมุดบันทึกแล้ว</value>
+  </data>
+  <data name="Cw.Logbook.FilledGrid">
+    <value>{0} อยู่ในช่องโลเคเตอร์ของสมุดบันทึกแล้ว</value>
+  </data>
+  <data name="Cw.Logbook.Opening">
+    <value>กำลังเปิดสมุดบันทึกพร้อม {0}</value>
+  </data>
+  <data name="Cw.Logbook.Editing">
+    <value>สมุดบันทึกกำลังแก้ไข QSO ที่บันทึกไว้ โปรดบันทึกหรือยกเลิกการแก้ไขก่อน</value>
+  </data>
+  <data name="Cw.Status.Idle">
+    <value>หยุดอยู่ กด เริ่ม เพื่อฟัง</value>
+  </data>
+  <data name="Cw.Status.Listening">
+    <value>กำลังฟัง</value>
+  </data>
+  <data name="Cw.Status.ListeningSat">
+    <value>กำลังฟัง {0}</value>
+  </data>
+  <data name="Cw.Status.NoAudio">
+    <value>อินพุตเสียงไม่พร้อมใช้งานบนคอมพิวเตอร์เครื่องนี้</value>
+  </data>
+  <data name="Cw.Status.Error">
+    <value>ตัวถอดรหัส CW หยุดทำงาน: {0}</value>
+  </data>
+  <data name="Cw.Status.SilentInput">
+    <value>ไม่มีเสียงจาก {0} มาถึง OscarWatch โปรดเลือกอินเทอร์เฟซเสียงของวิทยุในการตั้งค่า</value>
+  </data>
+  <data name="Cw.Status.CaptureRetrying">
+    <value>ไม่มีเสียงจากการ์ดเสียง กำลังเชื่อมต่อใหม่…</value>
+  </data>
+  <data name="Cw.Status.WaitingNoSatellite">
+    <value>พร้อม กำลังรอให้เลือกดาวเทียม</value>
+  </data>
+  <data name="Cw.Status.WaitingNotCw">
+    <value>พร้อม กำลังรอให้แผงความถี่ของ {0} เป็น CW</value>
+  </data>
+  <data name="Cw.Status.WaitingNextPass">
+    <value>พร้อม กำลังรอการโคจรผ่านครั้งถัดไปของ {0}</value>
+  </data>
+  <data name="Cw.Status.WaitingNoElevation">
+    <value>พร้อม กำลังรอค่ามุมเงยของ {0}</value>
+  </data>
+  <data name="Cw.Status.Waiting">
+    <value>พร้อม กำลังรอให้ {0} ขึ้นสูงกว่า {1}°</value>
+  </data>
+  <data name="Cw.Settings.Audio">
+    <value>เสียง</value>
+  </data>
+  <data name="Cw.Input">
+    <value>อินพุต</value>
+  </data>
+  <data name="Cw.Refresh">
+    <value>รีเฟรช</value>
+  </data>
+  <data name="Cw.CatFeedForward">
+    <value>แก้ไขเสียงตามขั้นดอปเปลอร์ของการควบคุมวิทยุ</value>
+  </data>
+  <data name="Cw.CatFeedForward.Tip">
+    <value>เมื่อการควบคุมวิทยุปรับจูนเป็นขั้น เสียง CW จะเลื่อนระหว่างขั้น ตัวเลือกนี้จะเลื่อนเสียงกลับตามส่วนต่าง เพื่อให้อยู่ที่ตำแหน่งที่คุณจูนไว้ ใช้กับการรับเท่านั้น วิทยุจะไม่ถูกปรับจูนใหม่</value>
+  </data>
+  <data name="Cw.Settings.AutoStart">
+    <value>เริ่มอัตโนมัติ</value>
+  </data>
+  <data name="Cw.AutoStart">
+    <value>เริ่มฟังเมื่อดาวเทียมที่เลือกขึ้นมา</value>
+  </data>
+  <data name="Cw.AutoStart.Tip">
+    <value>ทำงานเฉพาะเมื่อหน้าต่างนี้เปิดอยู่และแผงความถี่เป็น CW การฟังจะหยุดเมื่อดาวเทียมตก</value>
+  </data>
+  <data name="Cw.AutoStart.Elevation">
+    <value>มุมเงยเริ่มต้น (°)</value>
+  </data>
+  <data name="Cw.Settings.Credit">
+    <value>การถอดรหัสใช้โมเดล DeepCW ของ e04 (สัญญาอนุญาต MIT) และทำงานบนคอมพิวเตอร์เครื่องนี้ เสียงจะไม่ถูกส่งออกจากเครื่อง</value>
+  </data>
+  <data name="Cw.Speed">
+    <value>{0:0} คำ/นาที</value>
+  </data>
+  <data name="Cw.Settings.Decoding">
+    <value>การถอดรหัส</value>
+  </data>
+  <data name="Cw.FollowNote">
+    <value>ติดตามโน้ตเมื่อเลื่อนความถี่</value>
+  </data>
+  <data name="Cw.FollowNote.Tip">
+    <value>รักษาโน้ตที่คงที่ซึ่งใกล้กลางแถบแรเงาที่สุดให้อยู่ตรงกลาง เพื่อไม่ให้การเลื่อนดอปเปลอร์พามันออกนอกแถบ คลิกเส้นบนวอเตอร์ฟอลเพื่อถอดรหัสสัญญาณอื่น คลิกขวาเพื่อคืนแถบกลับที่เดิม</value>
+  </data>
+  <data name="Cw.SquelchNoise">
+    <value>ซ่อนตัวอักษรหลงจากสัญญาณรบกวน</value>
+  </data>
+  <data name="Cw.SquelchNoise.Tip">
+    <value>ตัดคำที่มีหนึ่งหรือสองตัวอักษรซึ่งโมเดลไม่มั่นใจออก คำเหล่านี้แทบทั้งหมดคือสัญญาณรบกวนระหว่างการส่ง คำสั้นที่มั่นใจ เช่น K จะยังคงอยู่</value>
+  </data>
+  <data name="Cw.Settings.Display">
+    <value>การแสดงผล</value>
+  </data>
+  <data name="Cw.CopyFontSize">
+    <value>ขนาดข้อความที่ถอดรหัส</value>
+  </data>
+  <data name="Cw.CopyFontSize.Tip">
+    <value>ในหน้าต่าง CW คุณยังกด Ctrl ค้างไว้แล้วหมุนล้อเมาส์เหนือข้อความ หรือกด Ctrl พร้อมบวกหรือลบได้ Ctrl+0 จะกลับไปใช้ขนาดเริ่มต้น</value>
+  </data>
+  <data name="Cw.Legend.NewCall">
+    <value>สัญญาณเรียกขานใหม่</value>
+  </data>
+  <data name="Cw.Legend.NewGrid">
+    <value>กริดใหม่</value>
+  </data>
+  <data name="Cw.Legend.Worked">
+    <value>เคยติดต่อแล้ว</value>
+  </data>
+  <data name="Cw.Legend.You">
+    <value>สัญญาณเรียกขานของคุณ</value>
+  </data>
+  <data name="Cw.Worked.NewCall">
+    <value>สัญญาณเรียกขานใหม่: ไม่มีในสมุดบันทึกใดของคุณ</value>
+  </data>
+  <data name="Cw.Worked.Call">
+    <value>เคยติดต่อแล้ว: สัญญาณเรียกขานนี้อยู่ในสมุดบันทึกของคุณ</value>
+  </data>
+  <data name="Cw.Worked.NewGrid">
+    <value>กริดใหม่: ยังไม่มี QSO ในช่องกริด 4 ตัวอักษรนี้</value>
+  </data>
+  <data name="Cw.Worked.Grid">
+    <value>เคยติดต่อแล้ว: คุณมี QSO ในช่องกริดนี้</value>
   </data>
 </root>

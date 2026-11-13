@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using OscarWatch.Core.Services;
 using OscarWatch.Core.Sstv;
 using OscarWatch.Localization;
+using OscarWatch.Services;
 using OscarWatch.Sstv;
 using Serilog;
 
@@ -30,13 +31,13 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
     private readonly ILocalizationService _l;
     private readonly SstvReceiverService _receiver;
     private readonly SstvPictureUploader _shareQueue;
+    private readonly KeepAwakeHold _keepAwake;
     private readonly SstvRecordingLoader _loader = new();
     private readonly DispatcherTimer _uiTimer;
     private WriteableBitmap? _liveA;
     private WriteableBitmap? _liveB;
     private bool _useA;
     private long _previewVersion;
-    private long _spectrumVersion;
     private bool _loadingDevices;
     private bool _disposed;
     private string? _fileName;
@@ -56,9 +57,11 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
         ILocalizationService localization,
         SstvReceiverService receiver,
         SstvPictureUploader shareQueue,
-        ISatelliteDatabaseService satelliteDatabase)
+        ISatelliteDatabaseService satelliteDatabase,
+        IKeepAwake keepAwake)
     {
         _settings = settings;
+        _keepAwake = new KeepAwakeHold(keepAwake, "OscarWatch SSTV is listening for pictures");
         _satelliteDatabase = satelliteDatabase;
         _frequencyOverlay = frequencyOverlay;
         _tracker = tracker;
@@ -78,6 +81,7 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
         _adaptiveBandwidth = s.AdaptiveBandwidth;
         _alignAosFragments = s.AlignAosFragments;
         _repairBadLines = s.RepairBadLines;
+        _smoothAcrossLines = s.SmoothAcrossLines;
         _combineRepeats = s.CombineRepeats;
         _receiver.CombineRepeats = s.CombineRepeats;
         _autoSavePictures = s.AutoSavePictures;
@@ -93,6 +97,7 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
         }
         _autoStartEnabled = s.AutoStartEnabled;
         _autoStartElevationDeg = SstvSettings.ClampAutoStartElevationDeg(s.AutoStartElevationDeg);
+        _keepAwakeWhileListening = s.KeepAwakeWhileListening;
 
         ModeOptions.Add(new SstvModeOption(null, _l.Get("Sstv.Mode.Auto")));
         foreach (var mode in SstvModeTable.All)
@@ -161,6 +166,9 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
     private bool _repairBadLines;
 
     [ObservableProperty]
+    private bool _smoothAcrossLines;
+
+    [ObservableProperty]
     private bool _combineRepeats;
 
     [ObservableProperty]
@@ -190,6 +198,10 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
 
     [ObservableProperty]
     private double _autoStartElevationDeg;
+
+    /// <summary>Keep the computer and display awake while listening live.</summary>
+    [ObservableProperty]
+    private bool _keepAwakeWhileListening;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanStart), nameof(CanDecodeRecording))]
@@ -646,6 +658,12 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
         OptionsChanged();
     }
 
+    partial void OnSmoothAcrossLinesChanged(bool value)
+    {
+        _settings.Current.Sstv.SmoothAcrossLines = value;
+        OptionsChanged();
+    }
+
     partial void OnCombineRepeatsChanged(bool value)
     {
         _settings.Current.Sstv.CombineRepeats = value;
@@ -748,6 +766,18 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
         _settings.Current.Sstv.AutoStartElevationDeg = SstvSettings.ClampAutoStartElevationDeg(value);
         _settings.RequestSave();
     }
+
+    partial void OnKeepAwakeWhileListeningChanged(bool value)
+    {
+        _settings.Current.Sstv.KeepAwakeWhileListening = value;
+        _settings.RequestSave();
+        UpdateKeepAwake();
+    }
+
+    partial void OnIsRunningChanged(bool value) => UpdateKeepAwake();
+
+    private void UpdateKeepAwake() =>
+        _keepAwake.Set(!_disposed && SstvSettings.ShouldKeepAwake(KeepAwakeWhileListening, IsRunning, _receiver.IsDecodingFile));
 
     partial void OnSelectedGalleryItemChanged(SstvGalleryItem? value)
     {
@@ -856,7 +886,7 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
             return;
         }
 
-        if (_receiver.TryGetSpectrum(ref _spectrumVersion) is { } row)
+        foreach (var row in _receiver.TakeSpectrumRows())
             Spectrum = row;
 
         if (!_receiver.IsDecodingFile)
@@ -959,6 +989,10 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
         }
 
         _receiver.FeedForwardHz = feedForward;
+        _receiver.TimeCompressionPpm = IsRunning && !_receiver.IsDecodingFile
+            && _tracker.GetCurrent().RangeRateKmPerSec is { } rangeRate
+                ? SstvReceiverService.TimeCompressionPpmFromRangeRate(rangeRate)
+                : 0;
         // The pass Doppler says nothing about a recording being decoded.
         if (doppler is not { } kHz || IsDecodingFile)
         {
@@ -1075,6 +1109,7 @@ public partial class SstvViewModel : ViewModelBase, IDisposable
         _receiver.Stopped -= OnReceiverStopped;
         _shareQueue.StatusChanged -= OnShareStatusChanged;
         _receiver.Stop();
+        _keepAwake.Dispose();
     }
 }
 

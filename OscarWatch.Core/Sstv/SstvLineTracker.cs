@@ -20,6 +20,13 @@ public sealed class SstvLineTracker
     private double _anchor;
     private bool _hasAnchor;
 
+    /// <summary>
+    /// Lines at which the line timing stepped (a dropout in the recording, a pause in the sender's audio). A
+    /// line is fitted only from the lines of its own stretch between two steps, so the old timing does not
+    /// pull the new one back, and the new one does not bend the old.
+    /// </summary>
+    private readonly List<int> _stepLines = new();
+
     public SstvLineTracker(double nominalSamplesPerLine)
     {
         _nominal = nominalSamplesPerLine;
@@ -40,6 +47,47 @@ public sealed class SstvLineTracker
     {
         _anchor = line0SyncPosition;
         _hasAnchor = true;
+    }
+
+    /// <summary>
+    /// The line timing stepped at <paramref name="line"/>: lines from here on are fitted from their own stretch
+    /// only. Lines before it keep their own fit.
+    /// </summary>
+    public void StartSegment(int line)
+    {
+        if (_stepLines.Contains(line))
+            return;
+        _stepLines.Add(line);
+        _stepLines.Sort();
+    }
+
+    /// <summary>
+    /// Takes back <see cref="StartSegment"/> for <paramref name="line"/> and drops the sync points from that
+    /// line on, for a step that did not hold up.
+    /// </summary>
+    public void UndoSegment(int line)
+    {
+        _stepLines.Remove(line);
+        _points.RemoveAll(p => p.Line >= line);
+    }
+
+    /// <summary>The lines [first, end) that share a stretch of line timing with <paramref name="line"/>.</summary>
+    private (int First, int End) SegmentOf(int line)
+    {
+        var first = int.MinValue;
+        var end = int.MaxValue;
+        foreach (var start in _stepLines)
+        {
+            if (start <= line)
+                first = start;
+            else
+            {
+                end = start;
+                break;
+            }
+        }
+
+        return (first, end);
     }
 
     /// <summary>
@@ -95,10 +143,12 @@ public sealed class SstvLineTracker
     {
         var lo = centred ? line - FitWindowLines / 2 : line - FitWindowLines;
         var hi = centred ? line + FitWindowLines / 2 : line;
-        var selected = _points.Where(p => p.Line >= lo && p.Line <= hi).ToList();
+        var (first, end) = SegmentOf(line);
+        var selected = _points.Where(p => p.Line >= lo && p.Line <= hi && p.Line >= first && p.Line < end).ToList();
         if (selected.Count < MinFitPoints)
         {
             selected = _points
+                .Where(p => p.Line >= first && p.Line < end)
                 .OrderBy(p => Math.Abs(p.Line - line))
                 .Take(FitWindowLines)
                 .ToList();
@@ -108,7 +158,19 @@ public sealed class SstvLineTracker
             return FixedSlope(ManualPeriod, selected);
 
         if (selected.Count < MinFitPoints || Span(selected) < MinFitPoints)
-            return FixedSlope(_nominal, selected);
+            return FixedSlope(SparseSlope(first), selected);
+
+        // A least squares fit is pulled off by a single false sync (noise as a fade recovers),
+        // so first drop points far from a median based line, which ignores up to ~29% outliers.
+        if (selected.Count >= MinPointsForOutlierCheck && TheilSen(selected) is { } robust
+            && Math.Abs(robust.Slope / _nominal - 1) <= MaxClockError)
+        {
+            var residuals = selected.Select(p => Math.Abs(p.Position - (robust.Intercept + robust.Slope * p.Line))).ToList();
+            var limit = Math.Max(3.0, 3.0 * Median(residuals));
+            var kept = selected.Where((_, i) => residuals[i] <= limit).ToList();
+            if (kept.Count >= MinPointsForOutlierCheck && Span(kept) >= MinFitPoints)
+                selected = kept;
+        }
 
         var fit = WeightedFit(selected);
         // Reject outliers (a noise burst that looked like a sync), then refit.
@@ -127,6 +189,14 @@ public sealed class SstvLineTracker
             return FixedSlope(_nominal, selected);
         return fit;
     }
+
+    /// <summary>
+    /// Line period to use while a stretch has too few points to fit its own. A step in the timing does not change
+    /// the clock, so a stretch after a step keeps the period fitted just before it; the nominal period would lose
+    /// the measured clock error and put the next line's prediction off by that error times the line length.
+    /// </summary>
+    private double SparseSlope(int segmentFirst) =>
+        segmentFirst == int.MinValue ? _nominal : Fit(segmentFirst - 1, centred: false).Slope;
 
     private (double Slope, double Intercept) FixedSlope(double slope, List<(int Line, double Position, double Weight)> points)
     {
@@ -168,6 +238,28 @@ public sealed class SstvLineTracker
         return (slope, my - slope * mx);
     }
 
+    /// <summary>Median of the pairwise slopes, and the median intercept for that slope.</summary>
+    private static (double Slope, double Intercept)? TheilSen(List<(int Line, double Position, double Weight)> points)
+    {
+        var slopes = new List<double>(points.Count * (points.Count - 1) / 2);
+        for (var i = 0; i < points.Count; i++)
+        {
+            for (var j = i + 1; j < points.Count; j++)
+            {
+                var dx = points[j].Line - points[i].Line;
+                if (dx != 0)
+                    slopes.Add((points[j].Position - points[i].Position) / dx);
+            }
+        }
+
+        if (slopes.Count == 0)
+            return null;
+
+        var slope = Median(slopes);
+        var intercept = Median(points.Select(p => p.Position - slope * p.Line).ToList());
+        return (slope, intercept);
+    }
+
     private static int Span(List<(int Line, double Position, double Weight)> points) =>
         points.Max(p => p.Line) - points.Min(p => p.Line);
 
@@ -175,7 +267,8 @@ public sealed class SstvLineTracker
     {
         if (values.Count == 0)
             return 0;
-        var sorted = values.OrderBy(v => v).ToList();
-        return sorted[sorted.Count / 2];
+        var sorted = values.ToArray();
+        Array.Sort(sorted);
+        return sorted[sorted.Length / 2];
     }
 }

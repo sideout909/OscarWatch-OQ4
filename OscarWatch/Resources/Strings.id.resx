@@ -682,11 +682,17 @@ Lanjutkan?</value>
   <data name="Sstv.RepairBadLines.Tip">
     <value>Gambar ulang hingga tiga baris berderau berturut-turut dari baris baik di kedua sisinya. Kerusakan yang lebih panjang dibiarkan seperti diterima.</value>
   </data>
+  <data name="Sstv.SmoothAcrossLines">
+    <value>Haluskan bintik derau pada gambar lemah</value>
+  </data>
+  <data name="Sstv.SmoothAcrossLines.Tip">
+    <value>Saat gambar selesai, ganti setiap piksel dengan nilai tengah dari tetangganya pada baris di atas dan di bawah. Menghapus sebagian besar bintik derau, tetapi melembutkan detail halus dan teks kecil. Biarkan mati untuk sinyal kuat.</value>
+  </data>
   <data name="Sstv.HoldThroughFades">
     <value>Lanjutkan gambar melewati fading panjang</value>
   </data>
   <data name="Sstv.HoldThroughFades.Tip">
-    <value>Setelah gambar terkunci dengan baik, terus menggambar selama fading hingga 20 detik alih-alih mengakhirinya. Ini dapat menyatukan dua potongan dari satu gambar.</value>
+    <value>Setelah gambar terkunci dengan baik, terus menggambar selama fading hingga 45 detik alih-alih mengakhirinya. Ini dapat menyatukan dua potongan dari satu gambar.</value>
   </data>
   <data name="Sstv.AdaptiveBandwidth">
     <value>Sesuaikan filter dengan mode</value>
@@ -732,6 +738,12 @@ Lanjutkan?</value>
   </data>
   <data name="Sstv.AutoStart.Tip">
     <value>Mulai mendengarkan saat satelit yang dipilih di jendela utama naik di atas elevasi di bawah, dan berhenti saat satelit terbenam. Gunakan nilai negatif, misalnya −5°, agar mulai sedikit sebelum AOS sehingga radio dan audio sempat stabil. Hanya berfungsi saat jendela ini terbuka. Simpan otomatis menjaga gambar jika Anda menutup jendela.</value>
+  </data>
+  <data name="Sstv.KeepAwake">
+    <value>Jaga komputer tetap aktif saat mendengarkan</value>
+  </data>
+  <data name="Sstv.KeepAwake.Tip">
+    <value>Selama SSTV mendengarkan, komputer dan layar tetap aktif. Anda tetap dapat mengunci layar, dan menutup laptop tetap membuat komputer tidur.</value>
   </data>
   <data name="Sstv.AutoStart.Elevation">
     <value>Elevasi mulai (derajat)</value>
@@ -837,6 +849,12 @@ Lanjutkan?</value>
   </data>
   <data name="Sstv.Settings.Saving">
     <value>Penyimpanan</value>
+  </data>
+  <data name="Sstv.Settings.General">
+    <value>Umum</value>
+  </data>
+  <data name="Sstv.Settings.FadesAndNoise">
+    <value>Fading dan derau</value>
   </data>
   <data name="Window.SstvLibrary.Title">
     <value>Pustaka gambar OscarWatch SSTV</value>
@@ -2311,6 +2329,24 @@ Lanjutkan?</value>
   <data name="DopplerInsights.Phase.Summary">
     <value>Galat downlink p95 {0} Hz · tulis CAT {1}% · peak slew {2} Hz/s · elevasi maks {3}°</value>
   </data>
+  <data name="RotatorManual.Azimuth">
+    <value>Azimut (°)</value>
+  </data>
+  <data name="RotatorManual.Elevation">
+    <value>Elevasi (°)</value>
+  </data>
+  <data name="RotatorManual.NotConnected">
+    <value>Tidak terhubung</value>
+  </data>
+  <data name="RotatorManual.PositionUnknown">
+    <value>Posisi tidak diketahui</value>
+  </data>
+  <data name="RotatorManual.PositionAzEl">
+    <value>Az {0} · El {1}</value>
+  </data>
+  <data name="RotatorManual.PositionAzimuth">
+    <value>Az {0}</value>
+  </data>
   <data name="Window.RotatorManual.Title">
     <value>Kontrol rotator manual</value>
   </data>
@@ -2717,7 +2753,13 @@ Lanjutkan?</value>
     <value>Jendela prediksi lintasan (jam)</value>
   </data>
   <data name="Settings.Tracking.PassWindowNote">
-    <value>Dipakai untuk daftar lintasan mendatang dan sebagai bawaan di perencana lintasan.</value>
+    <value>Dipakai untuk daftar lintasan mendatang dan timeline elevasi lintasan.</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDuration">
+    <value>Durasi minimum lintasan mendatang (menit)</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDurationNote">
+    <value>0 menampilkan setiap lintasan di atas elevasi minimum dan masker horizon. Perencana lintasan punya durasi minimum sendiri.</value>
   </data>
   <data name="Settings.Tracking.TransponderCheck">
     <value>Periksa pembaruan basis data transponder saat mulai</value>
@@ -3043,6 +3085,108 @@ Lanjutkan?</value>
   <data name="Settings.Radio.Ftx1Hint">
     <value>FTX-1 Field / FTX-1optima: Samakan menu CAT-1 RATE dengan Pengaturan (bawaan 38400). CAT ASCII 8N2 dengan RTS perangkat keras: pakai port Enhanced COM (CAT-1), bukan CAT-2. Satu COM per kaki. FM mengunci dial MAIN VFO saat pelacakan.</value>
   </data>
+  <data name="Settings.Radio.KenwoodConnection">
+    <value>Koneksi</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Serial">
+    <value>Port COM (USB atau serial)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Lan">
+    <value>Jaringan (LAN)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanHost">
+    <value>Alamat IP atau nama host radio</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPort">
+    <value>Port TCP</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanUser">
+    <value>Akun (ID administrator atau pengguna yang diatur di radio)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPassword">
+    <value>Kata sandi</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanAdministrator">
+    <value>Akun administrator (kosongkan untuk akun pengguna)</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTest">
+    <value>Uji koneksi LAN</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTesting">
+    <value>Menguji koneksi…</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanEnterDetails">
+    <value>Isi host, port, akun, dan kata sandi terlebih dahulu.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanOk">
+    <value>Terhubung ke {0} pada {1} MHz.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanWrongRadio">
+    <value>Terhubung, tetapi radio tidak teridentifikasi sebagai {0}. Periksa model radio yang dipilih di atas.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanDenied">
+    <value>Radio menolak koneksi. Pastikan kontrol LAN aktif dan tidak ada aplikasi lain (seperti ARCP atau KNS) yang terhubung ke port 60000.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanLoginRejected">
+    <value>Login ditolak. Periksa akun, kata sandi, dan jenis akun yang diatur di radio.</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanFailed">
+    <value>Koneksi LAN gagal: {0}</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection">
+    <value>Koneksi</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Serial">
+    <value>USB / serial (port COM)</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Lan">
+    <value>Jaringan (LAN atau Wi-Fi)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHost">
+    <value>Alamat IP atau nama host radio</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPort">
+    <value>Port kontrol (UDP)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanUser">
+    <value>Nama pengguna jaringan (diatur di pengaturan jaringan radio)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPassword">
+    <value>Kata sandi jaringan</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHint">
+    <value>Aktifkan Network Control di radio dan tambahkan pengguna jaringan. OscarWatch hanya menggunakan kontrol CI-V (tanpa audio jaringan). Radio hanya menerima satu klien jarak jauh pada satu waktu, jadi tutup RS-BA1 atau wfview terlebih dahulu.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTest">
+    <value>Uji koneksi jaringan</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTesting">
+    <value>Menguji koneksi…</value>
+  </data>
+  <data name="Settings.Radio.IcomLanEnterDetails">
+    <value>Masukkan host, port, nama pengguna, dan kata sandi terlebih dahulu.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanOk">
+    <value>Terhubung ke {0} pada {1} MHz.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanWrongRadio">
+    <value>Terhubung, tetapi radio tidak teridentifikasi sebagai {0}. Periksa model radio dan alamat CI-V.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanLoginRejected">
+    <value>Login ditolak. Periksa nama pengguna dan kata sandi jaringan yang diatur di radio.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanBusy">
+    <value>Radio sedang digunakan oleh klien jarak jauh lain ({0}). Putuskan koneksinya lalu coba lagi.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanNoReply">
+    <value>Tidak ada balasan dari {0}. Periksa alamat IP dan port, serta pastikan Network Control aktif.</value>
+  </data>
+  <data name="Settings.Radio.IcomLanFailed">
+    <value>Koneksi jaringan gagal: {0}</value>
+  </data>
+  <data name="Settings.Radio.KenwoodHfHint">
+    <value>TS-990S / TS-890S / TS-590: satu radio adalah satu kaki. Untuk 10 m, biarkan mode transverter mati. Untuk 2 m atau 70 cm, nyalakan mode transverter dan atur offset di radio; OscarWatch membacanya dan menala IF untuk Anda. Samakan baud rate dengan menu COM radio. LAN (hanya TS-990S dan TS-890S) memerlukan ID administrator atau pengguna yang diatur di radio, dan hanya satu aplikasi yang dapat memakai port 60000 pada satu waktu.</value>
+  </data>
   <data name="Settings.Radio.CwSideband">
     <value>CW linear: tetap terima di USB/LSB (kirim CW saja)</value>
   </data>
@@ -3118,8 +3262,32 @@ Lanjutkan?</value>
   <data name="Settings.Rotator.Type">
     <value>Jenis rotator</value>
   </data>
-  <data name="Settings.Rotator.TypeNote">
-    <value>GS-232 untuk Yaesu dan klon. SPID untuk pengontrol mode SP (Rot1Prog / Rot2Prog). SPID MD-01 / MD-02 (TCP) untuk Ethernet bawaan (protokol SPID ROT2, port bawaan 23). EasyComm untuk mode EC (SPID, M2, dan pengontrol protokol teks lain). SAEBRTrack untuk antarmuka pelacak satelit klasik (9600 baud). OZ9AAR URC (TCP) untuk Ultimate Rotator Controller lewat Ethernet (port bawaan 1111; setel URC ke mode REM/remote). Green Heron RT-21 Az-El memakai dua port COM (azimut dan elevasi), protokol DCU-1 pada 4800 baud; jangan pilih GS-232. Protokol serial juga bisa memakai server serial TCP (mis. ser2net) alih-alih port COM lokal.</value>
+  <data name="Settings.Rotator.TypeNote.Gs232">
+    <value>Yaesu dan klon.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Spid">
+    <value>Pengontrol mode SP (Rot1Prog / Rot2Prog).</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.SpidMd01">
+    <value>Ethernet bawaan, protokol SPID ROT2, port bawaan 23.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.EasyComm">
+    <value>Protokol teks untuk mode EC SPID, M2, dan pengontrol serupa.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Saebrt">
+    <value>Antarmuka pelacak satelit klasik.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Urc">
+    <value>Ultimate Rotator Controller lewat Ethernet. Setel ke mode remote (REM).</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.GreenHeron">
+    <value>Dua port COM, satu per sumbu.</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.AntRunner">
+    <value>MuseLab AntRunner lewat USB. Arahkan ke utara dan datarkan sebelum dinyalakan.</value>
+  </data>
+  <data name="Settings.Rotator.AzimuthOnly">
+    <value>Hanya azimut</value>
   </data>
   <data name="Settings.Rotator.AzimuthPort">
     <value>Port serial azimut</value>
@@ -4669,11 +4837,56 @@ Terbaru: {1} ({2})</value>
   <data name="Ft4.DecodeFontSize.Note">
     <value>Ukuran font daftar decode (10–28). Ukuran lebih besar membantu penglihatan lemah.</value>
   </data>
+  <data name="Ft4.DecodeLayout">
+    <value>Tata letak</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Basic">
+    <value>Dasar (satu daftar)</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Advanced">
+    <value>Lanjutan (dua kolom)</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Note">
+    <value>Dasar menampilkan semua decode dalam satu daftar. Lanjutan menambahkan kolom kedua yang hanya berisi stasiun yang memanggil Anda dan pesan yang Anda kirim, sehingga lintasan yang ramai lebih mudah diikuti. Baris tersebut tetap muncul di daftar lengkap.</value>
+  </data>
+  <data name="Ft4.Decodes.BandActivity">
+    <value>Aktivitas band</value>
+  </data>
+  <data name="Ft4.Decodes.CallingMe">
+    <value>Memanggil saya</value>
+  </data>
   <data name="Ft4.WaterfallRange">
     <value>Rentang waterfall</value>
   </data>
   <data name="Ft4.WaterfallRange.Note">
     <value>Desibel di atas lantai derau otomatis. Rentang yang lebih kecil membuat sinyal lebih menonjol. Bawaan adalah 40 dB.</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten">
+    <value>Ratakan waterfall</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten.Note">
+    <value>Meratakan kemiringan filter SSB radio Anda sehingga tepi passband tidak lebih gelap daripada bagian tengah, seperti Flatten di WSJT-X. Aktif secara bawaan.</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines">
+    <value>Garis slot dengan waktu UTC</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines.Note">
+    <value>Menggambar garis melintasi waterfall pada awal setiap slot, dengan waktu mulai UTC, seperti WSJT-X. Aktif secara bawaan.</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed">
+    <value>Kecepatan waterfall</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Note">
+    <value>Seberapa cepat baris baru ditambahkan. Kecepatan lebih lambat menampilkan lebih banyak lintasan di layar, jejak lemah tetap terlihat lebih lama, dan spektrum dihitung lebih jarang. Cepat adalah kecepatan semula.</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Slow">
+    <value>Lambat ({0} dtk)</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Medium">
+    <value>Sedang ({0} dtk)</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Fast">
+    <value>Cepat ({0} dtk)</value>
   </data>
   <data name="Ft4.Decode.CallingMe">
     <value>Memanggil saya</value>
@@ -4746,6 +4959,12 @@ Terbaru: {1} ({2})</value>
   </data>
   <data name="Ft4.Status.EchoClearedAll">
     <value>Semua kalibrasi gema dihapus</value>
+  </data>
+  <data name="Ft4.Status.DecodingAgain">
+    <value>Mendekode ulang slot terima terakhir (mendalam, seluruh slot)</value>
+  </data>
+  <data name="Ft4.Status.NothingToDecodeAgain">
+    <value>Tidak ada slot terima untuk didekode ulang. Klik ganda selama slot setelah slot yang Anda inginkan.</value>
   </data>
   <data name="Ft4.TxLevel">
     <value>Level TX</value>
@@ -5413,6 +5632,9 @@ Terbaru: {1} ({2})</value>
   </data>
   <data name="Terminal.Uhm.Status.NoSatellite">
     <value>UHM: pilih satelit yang memiliki digipeater</value>
+  </data>
+  <data name="Terminal.Uhm.Status.BelowHorizon">
+    <value>UHM: satelit di bawah horizon</value>
   </data>
   <data name="Terminal.Uhm.Status.RateLimited">
     <value>UHM: batas permintaan, mencoba lagi sebentar</value>
@@ -6325,5 +6547,350 @@ Terbaru: {1} ({2})</value>
   </data>
   <data name="ComPort.TerminalKissAndFt4Ptt" xml:space="preserve">
     <value>TNC KISS Terminal dan PTT terpisah FT4 sama-sama memakai {0}. Gunakan port COM berbeda atau nonaktifkan salah satu perangkat.</value>
+  </data>
+  <data name="Logbook.Cw.Wpm">
+    <value>WPM</value>
+  </data>
+  <data name="Logbook.Cw.WpmToolTip">
+    <value>Kecepatan CW dalam kata per menit</value>
+  </data>
+  <data name="Logbook.Cw.Stop">
+    <value>Berhenti</value>
+  </data>
+  <data name="Logbook.Cw.StopToolTip">
+    <value>Hentikan pengiriman (Esc)</value>
+  </data>
+  <data name="Logbook.Cw.ButtonEmpty">
+    <value>{0}: belum ada pesan. Tambahkan di pengaturan logbook.</value>
+  </data>
+  <data name="Logbook.Cw.ButtonToolTip">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Stopped">
+    <value>CW dihentikan.</value>
+  </data>
+  <data name="Logbook.Cw.Status.Empty">
+    <value>{0} tidak punya isi untuk dikirim.</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sending">
+    <value>Mengirim {0}: {1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.SendingUnknown">
+    <value>Mengirim {0}: {1}. Makro tak dikenal dilewati: {2}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sent">
+    <value>{0} terkirim.</value>
+  </data>
+  <data name="Logbook.Cw.Status.Rejected">
+    <value>Radio tidak menerima CW. Periksa radio terhubung dan dalam mode CW.</value>
+  </data>
+  <data name="Logbook.Cw.Status.RigNotConnected">
+    <value>Keying CW melalui radio memerlukan kontrol rig. Aktifkan, atau gunakan port COM terpisah.</value>
+  </data>
+  <data name="Logbook.Cw.Status.KeyLineUnavailable">
+    <value>Koneksi radio ini tidak dapat mengendalikan DTR atau RTS. Pilih port COM terpisah di pengaturan logbook.</value>
+  </data>
+  <data name="Logbook.Cw.Status.RtsBlocked">
+    <value>RTS pada port CAT radio ini adalah kontrol aliran. Gunakan DTR atau port COM terpisah.</value>
+  </data>
+  <data name="Logbook.Cw.Status.NoPort">
+    <value>Pilih port COM keying CW di pengaturan logbook.</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortConflict">
+    <value>{0} sudah dipakai radio, rotator, GPS, atau port PTT. Pilih port lain untuk keying CW.</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortBusy">
+    <value>{0} sedang dipakai aplikasi lain.</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortNotFound">
+    <value>{0} tidak ditemukan. Periksa kabel dan segarkan daftar port.</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortFailed">
+    <value>Tidak dapat membuka {0} untuk keying CW.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tab">
+    <value>Keyer CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Section">
+    <value>Keyer CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Intro">
+    <value>Dua belas tombol pesan muncul di antara isian QSO dan log saat uplink dalam CW. Klik tombol atau tekan F1 sampai F12 untuk mengirim. Esc atau Berhenti membatalkan.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Enable">
+    <value>Tampilkan keyer CW di logbook</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Keying">
+    <value>Keying</value>
+  </data>
+  <data name="Logbook.Settings.Cw.NoRig">
+    <value>Kontrol rig mati. Hanya port COM terpisah yang dapat melakukan keying CW.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Uplink">
+    <value>Radio uplink: {0}</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Kenwood">
+    <value>Mengirim teks dengan perintah Kenwood KY.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Icom">
+    <value>Mengirim teks dengan perintah CI-V Icom 0x17.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.CatLine">
+    <value>Keying {0} pada port CAT radio.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.SeparateLine">
+    <value>Keying {0} pada port COM tersendiri.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KenwoodNote">
+    <value>Radio Kenwood membentuk Morse sendiri dari teks, jadi tidak perlu jalur keying. Atur radio ke mode CW dengan break-in aktif. Perubahan kecepatan dikirim dengan KS.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomNote">
+    <value>Radio ini membentuk Morse sendiri dari teks yang dikirim lewat CI-V. Atur ke mode CW dengan break-in aktif. Kecepatan Icom dari 6 sampai 48 WPM.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomUseLine">
+    <value>Gunakan jalur keying COM, bukan teks CI-V</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KeyLine">
+    <value>Jalur keying</value>
+  </data>
+  <data name="Logbook.Settings.Cw.UseSeparatePort">
+    <value>Gunakan port COM terpisah untuk jalur keying</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Port">
+    <value>Port COM keying CW</value>
+  </data>
+  <data name="Logbook.Settings.Cw.RefreshPorts">
+    <value>Segarkan</value>
+  </data>
+  <data name="Logbook.Settings.Cw.LineNote">
+    <value>OscarWatch mengatur waktu setiap titik dan garis pada jalur. Hubungkan ke input key radio melalui antarmuka keying, dan atur radio ke mode CW dengan break-in aktif.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Messages">
+    <value>Pesan</value>
+  </data>
+  <data name="Logbook.Settings.Cw.ButtonName">
+    <value>Nama tombol</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Message">
+    <value>Pesan</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tokens">
+    <value>{MYCALL} atau * callsign Anda, {CALL} atau ! callsign lawan, {SENTRST} laporan terkirim, {SENTRSTCUT} laporan terkirim dengan angka singkat (599 menjadi 5NN), {RCVDRST} laporan diterima, {GRID} grid lawan, {MYGRID} grid Anda, {NAME} nama lawan, {SAT} satelit. Prosign: {AR} {SK} {BT} {KN}.</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Help">
+    <value>Bantuan keyer CW</value>
+  </data>
+  <data name="Menu.Tools.Cw">
+    <value>_OscarWatch CW</value>
+  </data>
+  <data name="Window.Cw.Title">
+    <value>OscarWatch CW</value>
+  </data>
+  <data name="Window.CwSettings.Title">
+    <value>Pengaturan OscarWatch CW</value>
+  </data>
+  <data name="Cw.Start">
+    <value>Mulai</value>
+  </data>
+  <data name="Cw.Stop">
+    <value>Berhenti</value>
+  </data>
+  <data name="Cw.Clear">
+    <value>Bersihkan</value>
+  </data>
+  <data name="Cw.Clear.Tip">
+    <value>Bersihkan salinan dan mulai mendekode dari awal.</value>
+  </data>
+  <data name="Cw.SaveCopy">
+    <value>Simpan salinan</value>
+  </data>
+  <data name="Cw.SaveCopy.Tip">
+    <value>Simpan salinan hasil dekode sebagai berkas teks, dengan waktu UTC.</value>
+  </data>
+  <data name="Cw.SaveCopy.Picker">
+    <value>Simpan salinan CW</value>
+  </data>
+  <data name="Cw.SaveCopy.TextFiles">
+    <value>Berkas teks</value>
+  </data>
+  <data name="Cw.Saved">
+    <value>Salinan disimpan ke {0}</value>
+  </data>
+  <data name="Cw.OpenSettings">
+    <value>Pengaturan</value>
+  </data>
+  <data name="Cw.Help">
+    <value>Bantuan</value>
+  </data>
+  <data name="Cw.Help.Tip">
+    <value>Buka panduan OscarWatch CW di oscarwatch.org.</value>
+  </data>
+  <data name="Cw.Level">
+    <value>Level</value>
+  </data>
+  <data name="Cw.Waterfall">
+    <value>Waterfall CW</value>
+  </data>
+  <data name="Cw.Waterfall.Tip">
+    <value>Audio dari 0 hingga 2000 Hz. Dekoder membaca pita berarsir. Klik jejak CW untuk mendekodenya, atau klik kanan untuk mengembalikan pita ke 400 hingga 1200 Hz. Garis kuning menandai nada stabil terkuat.</value>
+  </data>
+  <data name="Cw.Copy.Hint">
+    <value>Tanda panggil dan lokator yang bergaris bawah masuk ke formulir isian logbook saat diklik, atau dengan Enter atau Spasi. Tidak ada yang dicatat sampai Anda menambahkan QSO.</value>
+  </data>
+  <data name="Cw.Pending.Tip">
+    <value>Huruf terbaru. Dekoder masih bisa mengubahnya.</value>
+  </data>
+  <data name="Cw.Lag">
+    <value>Salinan tertinggal sekitar 2 detik dari sinyal.</value>
+  </data>
+  <data name="Cw.Tone">
+    <value>Nada {0:0} Hz</value>
+  </data>
+  <data name="Cw.Tone.None">
+    <value>Tidak ada nada stabil</value>
+  </data>
+  <data name="Cw.Tone.OutOfBand">
+    <value>Nada {0:0} Hz berada di luar pita dekode. Klik di waterfall.</value>
+  </data>
+  <data name="Cw.Doppler">
+    <value>Doppler downlink {0}</value>
+  </data>
+  <data name="Cw.FeedForward">
+    <value>koreksi radio {0:+0;-0;0} Hz</value>
+  </data>
+  <data name="Cw.Logbook.CallTip">
+    <value>Masukkan {0} ke kotak tanda panggil logbook</value>
+  </data>
+  <data name="Cw.Logbook.GridTip">
+    <value>Masukkan {0} ke kotak lokator logbook</value>
+  </data>
+  <data name="Cw.Logbook.FilledCall">
+    <value>{0} sudah ada di kotak tanda panggil logbook.</value>
+  </data>
+  <data name="Cw.Logbook.FilledGrid">
+    <value>{0} sudah ada di kotak lokator logbook.</value>
+  </data>
+  <data name="Cw.Logbook.Opening">
+    <value>Membuka logbook dengan {0}.</value>
+  </data>
+  <data name="Cw.Logbook.Editing">
+    <value>Logbook sedang menyunting QSO yang tersimpan. Simpan atau batalkan suntingan terlebih dahulu.</value>
+  </data>
+  <data name="Cw.Status.Idle">
+    <value>Berhenti. Tekan Mulai untuk mendengarkan.</value>
+  </data>
+  <data name="Cw.Status.Listening">
+    <value>Mendengarkan</value>
+  </data>
+  <data name="Cw.Status.ListeningSat">
+    <value>Mendengarkan {0}</value>
+  </data>
+  <data name="Cw.Status.NoAudio">
+    <value>Input audio tidak tersedia di komputer ini.</value>
+  </data>
+  <data name="Cw.Status.Error">
+    <value>Dekoder CW berhenti: {0}</value>
+  </data>
+  <data name="Cw.Status.SilentInput">
+    <value>Tidak ada audio dari {0} yang sampai ke OscarWatch. Pilih antarmuka audio radio Anda di Pengaturan.</value>
+  </data>
+  <data name="Cw.Status.CaptureRetrying">
+    <value>Tidak ada audio dari kartu suara. Menyambung ulang…</value>
+  </data>
+  <data name="Cw.Status.WaitingNoSatellite">
+    <value>Siap. Menunggu satelit dipilih.</value>
+  </data>
+  <data name="Cw.Status.WaitingNotCw">
+    <value>Siap. Menunggu panel frekuensi diatur ke CW untuk {0}.</value>
+  </data>
+  <data name="Cw.Status.WaitingNextPass">
+    <value>Siap. Menunggu lintasan berikutnya dari {0}.</value>
+  </data>
+  <data name="Cw.Status.WaitingNoElevation">
+    <value>Siap. Menunggu elevasi untuk {0}.</value>
+  </data>
+  <data name="Cw.Status.Waiting">
+    <value>Siap. Menunggu {0} naik di atas {1}°.</value>
+  </data>
+  <data name="Cw.Settings.Audio">
+    <value>Audio</value>
+  </data>
+  <data name="Cw.Input">
+    <value>Input</value>
+  </data>
+  <data name="Cw.Refresh">
+    <value>Segarkan</value>
+  </data>
+  <data name="Cw.CatFeedForward">
+    <value>Koreksi nada untuk langkah Doppler dari kontrol radio</value>
+  </data>
+  <data name="Cw.CatFeedForward.Tip">
+    <value>Saat kontrol radio menyetel secara bertahap, nada CW bergeser di antara langkah. Opsi ini mengembalikan nada sebesar selisihnya agar tetap di tempat Anda menyetelnya. Hanya penerimaan: radio tidak disetel ulang.</value>
+  </data>
+  <data name="Cw.Settings.AutoStart">
+    <value>Mulai otomatis</value>
+  </data>
+  <data name="Cw.AutoStart">
+    <value>Mulai mendengarkan saat satelit yang dipilih terbit</value>
+  </data>
+  <data name="Cw.AutoStart.Tip">
+    <value>Hanya selama jendela ini terbuka dan panel frekuensi diatur ke CW. Mendengarkan berhenti saat satelit terbenam.</value>
+  </data>
+  <data name="Cw.AutoStart.Elevation">
+    <value>Elevasi mulai (°)</value>
+  </data>
+  <data name="Cw.Settings.Credit">
+    <value>Dekode memakai model DeepCW oleh e04 (lisensi MIT) dan berjalan di komputer ini. Tidak ada audio yang keluar dari perangkat.</value>
+  </data>
+  <data name="Cw.Speed">
+    <value>{0:0} wpm</value>
+  </data>
+  <data name="Cw.Settings.Decoding">
+    <value>Dekode</value>
+  </data>
+  <data name="Cw.FollowNote">
+    <value>Ikuti nada saat bergeser</value>
+  </data>
+  <data name="Cw.FollowNote.Tip">
+    <value>Menjaga nada stabil yang paling dekat dengan tengah pita berarsir tetap di tengah, agar pergeseran Doppler tidak membawanya keluar. Klik jejak di waterfall untuk mendekode sinyal lain; klik kanan untuk mengembalikan pita.</value>
+  </data>
+  <data name="Cw.SquelchNoise">
+    <value>Sembunyikan huruf liar dari derau</value>
+  </data>
+  <data name="Cw.SquelchNoise.Tip">
+    <value>Membuang kata satu atau dua huruf yang tidak diyakini model. Ini hampir selalu derau di antara giliran. Kata pendek yang yakin seperti K tetap ada.</value>
+  </data>
+  <data name="Cw.Settings.Display">
+    <value>Tampilan</value>
+  </data>
+  <data name="Cw.CopyFontSize">
+    <value>Ukuran teks hasil dekode</value>
+  </data>
+  <data name="Cw.CopyFontSize.Tip">
+    <value>Di jendela CW Anda juga dapat menahan Ctrl dan memutar roda tetikus di atas salinan, atau menekan Ctrl dengan plus atau minus. Ctrl+0 kembali ke ukuran bawaan.</value>
+  </data>
+  <data name="Cw.Legend.NewCall">
+    <value>Callsign baru</value>
+  </data>
+  <data name="Cw.Legend.NewGrid">
+    <value>Grid baru</value>
+  </data>
+  <data name="Cw.Legend.Worked">
+    <value>Pernah dikontak</value>
+  </data>
+  <data name="Cw.Legend.You">
+    <value>Callsign Anda</value>
+  </data>
+  <data name="Cw.Worked.NewCall">
+    <value>Callsign baru: tidak ada di logbook mana pun.</value>
+  </data>
+  <data name="Cw.Worked.Call">
+    <value>Pernah dikontak: callsign ini ada di logbook Anda.</value>
+  </data>
+  <data name="Cw.Worked.NewGrid">
+    <value>Grid baru: belum ada QSO di kotak 4 karakter ini.</value>
+  </data>
+  <data name="Cw.Worked.Grid">
+    <value>Pernah dikontak: Anda punya QSO di kotak grid ini.</value>
   </data>
 </root>

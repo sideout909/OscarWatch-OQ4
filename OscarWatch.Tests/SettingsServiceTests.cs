@@ -546,6 +546,74 @@ public sealed class SettingsServiceTests
         }
     }
 
+    [Fact]
+    public void TryParse_copies_prediction_hours_into_the_planner_when_that_field_is_absent()
+    {
+        const string json = """
+            {
+              "passPredictionHours": 72,
+              "minimumElevationDeg": 12,
+              "passFilterMinDurationMinutes": 4
+            }
+            """;
+
+        Assert.True(SettingsService.TryParse(json, out var parsed, out var error));
+        Assert.Null(error);
+        Assert.Equal(72, parsed.PassPredictionHours);
+        Assert.Equal(72, parsed.PassPlannerPredictionHours);
+        Assert.Equal(12, parsed.MinimumElevationDeg);
+        Assert.Null(parsed.PassPlannerMinElevationDeg);
+        Assert.Equal(0, parsed.UpcomingPassesMinDurationMinutes);
+        Assert.Equal(4, parsed.PassFilterMinDurationMinutes);
+    }
+
+    [Fact]
+    public void TryParse_turns_on_sstv_fade_defences_saved_under_the_old_defaults()
+    {
+        const string json = """
+            {
+              "sstv": { "holdThroughFades": false, "adaptiveBandwidth": false }
+            }
+            """;
+
+        Assert.True(SettingsService.TryParse(json, out var parsed, out var error));
+        Assert.Null(error);
+        Assert.True(parsed.Sstv.HoldThroughFades);
+        Assert.True(parsed.Sstv.AdaptiveBandwidth);
+        Assert.Equal(OscarWatch.Core.Sstv.SstvSettings.CurrentFadeDefaultsVersion, parsed.Sstv.FadeDefaultsVersion);
+    }
+
+    [Fact]
+    public void TryParse_keeps_sstv_fade_defences_turned_off_after_the_new_defaults()
+    {
+        const string json = """
+            {
+              "sstv": { "holdThroughFades": false, "adaptiveBandwidth": false, "fadeDefaultsVersion": 1 }
+            }
+            """;
+
+        Assert.True(SettingsService.TryParse(json, out var parsed, out var error));
+        Assert.Null(error);
+        Assert.False(parsed.Sstv.HoldThroughFades);
+        Assert.False(parsed.Sstv.AdaptiveBandwidth);
+    }
+
+    [Fact]
+    public void TryParse_keeps_an_explicit_planner_prediction_window()
+    {
+        const string json = """
+            {
+              "passPredictionHours": 36,
+              "passPlannerPredictionHours": 96
+            }
+            """;
+
+        Assert.True(SettingsService.TryParse(json, out var parsed, out var error));
+        Assert.Null(error);
+        Assert.Equal(36, parsed.PassPredictionHours);
+        Assert.Equal(96, parsed.PassPlannerPredictionHours);
+    }
+
     /// <summary>
     /// Parent path is an ordinary file, so <see cref="SettingsService"/> cannot create the settings directory.
     /// Reliable on Windows and Linux (unlike exclusive file locks or read-only targets).

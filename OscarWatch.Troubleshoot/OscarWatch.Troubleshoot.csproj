@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Version>1.1.6</Version>
+    <Nullable>enable</Nullable>
+    <AssemblyName>OscarWatch.Troubleshoot</AssemblyName>
+    <RootNamespace>OscarWatch.Troubleshoot</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\OscarWatch\icons\OscarWatch.ico</ApplicationIcon>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <!-- Windows packages are single-file: a compressed bundle keeps this second exe small. -->
+    <EnableCompressionInSingleFile Condition="'$(PublishSingleFile)' == 'true'">true</EnableCompressionInSingleFile>
+    <DefineConstants>$(DefineConstants);OSCARWATCH_TROUBLESHOOT</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Release packages publish this beside OscarWatch in one folder. Keep these versions identical to
+       OscarWatch.csproj so neither app overwrites the other's shared assemblies with a different version. -->
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Diagnostics.NETCore.Client" Version="0.2.750501" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\OscarWatch\Rotator\Gs232PositionParser.cs" Link="Rotator\Gs232PositionParser.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="..\OscarWatch\icons\OscarWatch-Icon.png" Link="Assets\OscarWatch-Icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="OscarWatch.Tests" />
+  </ItemGroup>
+</Project>

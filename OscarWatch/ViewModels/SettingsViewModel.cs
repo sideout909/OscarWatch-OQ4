@@ -80,6 +80,9 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
     private int _passPredictionHours = 48;
 
     [ObservableProperty]
+    private int _upcomingPassesMinDurationMinutes;
+
+    [ObservableProperty]
     private AppThemePreference _themePreference = AppThemePreference.System;
 
     [ObservableProperty]
@@ -282,7 +285,7 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
 
     public IReadOnlyList<TleAutoUpdateOption> TleAutoUpdateOptions { get; }
 
-    public int[] RotatorBaudRateOptions { get; } = [600, 1200, 2400, 4800, 9600, 19200];
+    public int[] RotatorBaudRateOptions { get; } = [600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200];
 
     public int[] RigBaudRateOptions { get; } = [1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200];
 
@@ -312,8 +315,31 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
     public bool IsRotatorSmartAzimuth450Enabled =>
         SelectedAzimuthRangeChoice?.Value == RotatorAzimuthRange.Deg450;
 
+    [ObservableProperty]
+    private bool _rotatorAzimuthOnly;
+
+    public bool ShowRotatorAzimuthOnlyOption =>
+        SelectedRotatorTypeChoice?.Value == RotatorType.YaesuGs232;
+
+    public string RotatorTypeNote => SelectedRotatorTypeChoice?.Value switch
+    {
+        RotatorType.Spid => _l.Get("Settings.Rotator.TypeNote.Spid"),
+        RotatorType.SpidMd01 => _l.Get("Settings.Rotator.TypeNote.SpidMd01"),
+        RotatorType.EasyComm => _l.Get("Settings.Rotator.TypeNote.EasyComm"),
+        RotatorType.Saebrt => _l.Get("Settings.Rotator.TypeNote.Saebrt"),
+        RotatorType.UrcTcp => _l.Get("Settings.Rotator.TypeNote.Urc"),
+        RotatorType.GreenHeronRt21 => _l.Get("Settings.Rotator.TypeNote.GreenHeron"),
+        RotatorType.AntRunner => _l.Get("Settings.Rotator.TypeNote.AntRunner"),
+        _ => _l.Get("Settings.Rotator.TypeNote.Gs232")
+    };
+
+    public bool IsRotatorAzimuthOnlyActive => ShowRotatorAzimuthOnlyOption && RotatorAzimuthOnly;
+
+    public bool ShowRotatorElevationSettings => !IsRotatorAzimuthOnlyActive;
+
     public bool IsRotatorKeyholeSettingsVisible =>
-        SelectedElevationRangeChoice?.Value == RotatorElevationRange.Deg180;
+        SelectedElevationRangeChoice?.Value == RotatorElevationRange.Deg180
+        && !IsRotatorAzimuthOnlyActive;
 
     public bool ShowRotatorTransportFields =>
         SelectedRotatorTypeChoice?.Value is not (
@@ -668,17 +694,43 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
 
     public IReadOnlyList<RigTypeOption> RigDualUplinkTypeChoices { get; }
 
+    public KenwoodHfLegSettingsViewModel DownlinkKenwood { get; }
+
+    public KenwoodHfLegSettingsViewModel UplinkKenwood { get; }
+
+    /// <summary>IC-9700 serial or network control (single radio).</summary>
+    public IcomLanSettingsViewModel RigIcomLan { get; }
+
+    /// <summary>IC-705, IC-905 or IC-7300 serial or network control (downlink leg).</summary>
+    public IcomLanSettingsViewModel DownlinkIcomLan { get; }
+
+    /// <summary>IC-705, IC-905 or IC-7300 serial or network control (uplink leg).</summary>
+    public IcomLanSettingsViewModel UplinkIcomLan { get; }
+
     public bool ShowDownlinkSerialFields =>
         DualRadioEnabled
-        && SelectedDownlinkRigTypeChoice?.Value != RigType.SdrRigCtlTcp;
+        && SelectedDownlinkRigTypeChoice?.Value != RigType.SdrRigCtlTcp
+        && DownlinkKenwood?.UsesLan != true
+        && DownlinkIcomLan?.UsesLan != true;
 
     public bool ShowDownlinkSdrFields =>
         DualRadioEnabled
         && SelectedDownlinkRigTypeChoice?.Value == RigType.SdrRigCtlTcp;
 
+    public bool ShowDownlinkRegion =>
+        DualRadioEnabled
+        && SelectedDownlinkRigTypeChoice?.Value != RigType.SdrRigCtlTcp;
+
     public bool ShowUplinkSerialFields =>
         DualRadioEnabled
-        && SelectedUplinkRigTypeChoice?.Value != RigType.Dummy;
+        && SelectedUplinkRigTypeChoice?.Value != RigType.Dummy
+        && UplinkKenwood?.UsesLan != true
+        && UplinkIcomLan?.UsesLan != true;
+
+    public bool ShowRigKenwoodHfHint =>
+        DualRadioEnabled
+        && (RigSettings.IsKenwoodHfEndpoint(SelectedDownlinkRigTypeChoice?.Value ?? RigType.None)
+            || RigSettings.IsKenwoodHfEndpoint(SelectedUplinkRigTypeChoice?.Value ?? RigType.None));
 
     public bool ShowRigSingleConfig => !DualRadioEnabled;
 
@@ -686,14 +738,16 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
 
     public bool ShowRigSerialFields =>
         !DualRadioEnabled
-        && SelectedRigTypeChoice?.Value is not (RigType.FlexSmartSdr or RigType.Dummy);
+        && SelectedRigTypeChoice?.Value is not (RigType.FlexSmartSdr or RigType.Dummy)
+        && RigIcomLan?.UsesLan != true;
 
     public bool ShowRigFlexFields =>
         !DualRadioEnabled
         && SelectedRigTypeChoice?.Value == RigType.FlexSmartSdr;
 
     public bool ShowRigCivAddress =>
-        SelectedRigTypeChoice?.Value is RigType.IcomIc910 or RigType.IcomIc9100 or RigType.IcomIc9700
+        !DualRadioEnabled
+        && SelectedRigTypeChoice?.Value is RigType.IcomIc910 or RigType.IcomIc9100 or RigType.IcomIc9700
             or RigType.IcomIc821h;
 
     public bool ShowIc910PowerClass =>
@@ -849,6 +903,54 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
         OscarWatch.Core.Recording.FfmpegLocator? ffmpegLocator = null)
     {
         _l = localization;
+        DownlinkKenwood = new KenwoodHfLegSettingsViewModel(localization, () => DualRadioEnabled);
+        UplinkKenwood = new KenwoodHfLegSettingsViewModel(localization, () => DualRadioEnabled);
+        DownlinkKenwood.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(KenwoodHfLegSettingsViewModel.UsesLan))
+            {
+                OnPropertyChanged(nameof(ShowDownlinkSerialFields));
+                RefreshComPortConflictIfReady();
+            }
+        };
+        UplinkKenwood.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(KenwoodHfLegSettingsViewModel.UsesLan))
+            {
+                OnPropertyChanged(nameof(ShowUplinkSerialFields));
+                RefreshComPortConflictIfReady();
+            }
+        };
+        RigIcomLan = new IcomLanSettingsViewModel(
+            localization, () => !DualRadioEnabled, RigSettings.IsIcomLanSingleRadio, () => RigCivAddress);
+        DownlinkIcomLan = new IcomLanSettingsViewModel(
+            localization, () => DualRadioEnabled, RigSettings.IsIcomLanEndpoint, () => DownlinkCivAddress);
+        UplinkIcomLan = new IcomLanSettingsViewModel(
+            localization, () => DualRadioEnabled, RigSettings.IsIcomLanEndpoint, () => UplinkCivAddress);
+        RigIcomLan.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(IcomLanSettingsViewModel.UsesLan))
+            {
+                OnPropertyChanged(nameof(ShowRigSerialFields));
+                RefreshComPortConflictIfReady();
+            }
+        };
+        DownlinkIcomLan.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(IcomLanSettingsViewModel.UsesLan))
+            {
+                OnPropertyChanged(nameof(ShowDownlinkSerialFields));
+                RefreshComPortConflictIfReady();
+            }
+        };
+        UplinkIcomLan.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(IcomLanSettingsViewModel.UsesLan))
+            {
+                OnPropertyChanged(nameof(ShowUplinkSerialFields));
+                RefreshComPortConflictIfReady();
+            }
+        };
         _cloudlogLookup = cloudlogLookup;
         _qrzCallbook = qrzCallbook;
         _hamQthCallbook = hamQthCallbook;
@@ -913,7 +1015,8 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
             new(RotatorType.EasyComm, "EasyComm"),
             new(RotatorType.Saebrt, "SAEBRTrack"),
             new(RotatorType.UrcTcp, "OZ9AAR URC (TCP)"),
-            new(RotatorType.GreenHeronRt21, "Green Heron RT-21 Az-El")
+            new(RotatorType.GreenHeronRt21, "Green Heron RT-21 Az-El"),
+            new(RotatorType.AntRunner, "AntRunner (GRBL)")
         ];
         RotatorTransportChoices =
         [
@@ -957,7 +1060,11 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
             new(RigType.IcomIc706Mkii, "ICOM IC-706MKII"),
             new(RigType.IcomIc706MkiiG, "ICOM IC-706MKIIG"),
             new(RigType.KenwoodThD74, "Kenwood TH-D74"),
-            new(RigType.KenwoodThD75, "Kenwood TH-D75")
+            new(RigType.KenwoodThD75, "Kenwood TH-D75"),
+            new(RigType.KenwoodTs990s, "Kenwood TS-990S"),
+            new(RigType.KenwoodTs890s, "Kenwood TS-890S"),
+            new(RigType.KenwoodTs590s, "Kenwood TS-590S"),
+            new(RigType.KenwoodTs590sg, "Kenwood TS-590SG")
         ];
         RigDualDownlinkTypeChoices =
         [
@@ -1219,6 +1326,7 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
         };
         _settings.Current.MinimumElevationDeg = MinimumElevationDeg;
         _settings.Current.PassPredictionHours = PassPredictionHours;
+        _settings.Current.UpcomingPassesMinDurationMinutes = UpcomingPassesMinDurationMinutes;
         _settings.Current.Theme = ThemePreference;
         _settings.Current.UiLanguage = newLanguage;
         _settings.Current.ShowFootprintMotionArrows = ShowFootprintMotionArrows;
@@ -1288,8 +1396,10 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
             AzimuthOffsetDeg = RotatorAzimuthOffsetDeg,
             ElevationOffsetDeg = RotatorElevationOffsetDeg,
             SmartAzimuth450 = RotatorSmartAzimuth450,
+            AzimuthOnly = RotatorAzimuthOnly,
             KeyholeAvoidanceEnabled = RotatorKeyholeAvoidanceEnabled
-                && SelectedElevationRangeChoice?.Value == RotatorElevationRange.Deg180,
+                && SelectedElevationRangeChoice?.Value == RotatorElevationRange.Deg180
+                && !IsRotatorAzimuthOnlyActive,
             SlewRateDegPerSec = RotatorSlewRateDegPerSec,
             KeyholeThresholdDeg = RotatorKeyholeThresholdDeg,
             MovementThresholdDeg = RotatorMovementThresholdDeg
@@ -1350,6 +1460,11 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
             CwKeepSidebandDownlink = RigCwKeepSidebandDownlink,
             ExitSatelliteModeOnClose = RigExitSatelliteModeOnClose
         };
+        DownlinkKenwood.ApplyTo(_settings.Current.Rig.Downlink);
+        UplinkKenwood.ApplyTo(_settings.Current.Rig.Uplink);
+        DownlinkIcomLan.ApplyTo(_settings.Current.Rig.Downlink);
+        UplinkIcomLan.ApplyTo(_settings.Current.Rig.Uplink);
+        RigIcomLan.ApplyTo(_settings.Current.Rig);
         _settings.Current.Cloudlog = new CloudlogSettings
         {
             Enabled = CloudlogEnabled,
@@ -1453,6 +1568,7 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
                 HorizonMaskPoints.Add(new HorizonMaskPoint(p.AzimuthDeg, p.ElevationDeg));
             MinimumElevationDeg = _settings.Current.MinimumElevationDeg;
             PassPredictionHours = _settings.Current.PassPredictionHours;
+            UpcomingPassesMinDurationMinutes = _settings.Current.UpcomingPassesMinDurationMinutes;
             ThemePreference = _settings.Current.Theme;
             SelectedThemeOption = ThemeOptions.FirstOrDefault(o => o.Value == ThemePreference)
                 ?? ThemeOptions[0];
@@ -1533,6 +1649,7 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
             RotatorAzimuthOffsetDeg = rotator.AzimuthOffsetDeg;
             RotatorElevationOffsetDeg = rotator.ElevationOffsetDeg;
             RotatorSmartAzimuth450 = rotator.SmartAzimuth450;
+            RotatorAzimuthOnly = rotator.AzimuthOnly;
             RotatorKeyholeAvoidanceEnabled = rotator.KeyholeAvoidanceEnabled;
             RotatorSlewRateDegPerSec = rotator.SlewRateDegPerSec;
             RotatorKeyholeThresholdDeg = rotator.KeyholeThresholdDeg;
@@ -1551,8 +1668,10 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
             SelectedRigComPort = string.IsNullOrWhiteSpace(rig.Port) ? null : rig.Port;
             RigBaudRate = rig.BaudRate;
             RigCivAddress = rig.CivAddress;
-            RigNetworkHost = rig.NetworkHost ?? "";
-            RigNetworkPort = rig.NetworkPort > 0 ? rig.NetworkPort : RigSettings.FlexSmartSdrDefaultPort;
+            var singleIcomLan = RigSettings.IsIcomLanSingleRadio(rig.Type);
+            RigNetworkHost = singleIcomLan ? "" : rig.NetworkHost ?? "";
+            RigNetworkPort = rig.NetworkPort > 0 && !singleIcomLan ? rig.NetworkPort : RigSettings.FlexSmartSdrDefaultPort;
+            RigIcomLan.Load(rig);
             RigFlexRadioSerial = rig.FlexRadioSerial ?? "";
             RigFlexTestStatus = "";
             SelectedFlexVhfRxAnt = SelectFlexAntennaPortChoice(rig.FlexVhfRxAnt);
@@ -1575,10 +1694,18 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
                 ?? RigDualUplinkTypeChoices[1];
             SelectedDownlinkComPort = string.IsNullOrWhiteSpace(down.Port) ? null : down.Port;
             SelectedUplinkComPort = string.IsNullOrWhiteSpace(up.Port) ? null : up.Port;
-            DownlinkNetworkHost = string.IsNullOrWhiteSpace(down.NetworkHost)
+            DownlinkKenwood.Load(down);
+            UplinkKenwood.Load(up);
+            DownlinkIcomLan.Load(down);
+            UplinkIcomLan.Load(up);
+            var downOwnsNetworkFields = RigSettings.IsKenwoodLanCapable(down.Type)
+                || RigSettings.IsIcomLanEndpoint(down.Type);
+            DownlinkNetworkHost = downOwnsNetworkFields
+                ? RigEndpointSettings.SdrRigCtlDefaultHost
+                : string.IsNullOrWhiteSpace(down.NetworkHost)
                 ? RigEndpointSettings.SdrRigCtlDefaultHost
                 : down.NetworkHost;
-            DownlinkNetworkPort = down.NetworkPort > 0
+            DownlinkNetworkPort = down.NetworkPort > 0 && !downOwnsNetworkFields
                 ? down.NetworkPort
                 : RigEndpointSettings.SdrRigCtlDefaultPort;
             DownlinkSdrTestStatus = "";
@@ -2291,6 +2418,14 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
             SelectedElevationRangeChoice = ElevationRangeChoices.FirstOrDefault(
                 o => o.Value == RotatorElevationRange.Deg90) ?? ElevationRangeChoices[0];
         }
+        else if (value.Value == RotatorType.AntRunner)
+        {
+            RotatorBaudRate = 115200;
+            SelectedAzimuthRangeChoice = AzimuthRangeChoices.FirstOrDefault(
+                o => o.Value == RotatorAzimuthRange.Deg360) ?? AzimuthRangeChoices[0];
+            SelectedElevationRangeChoice = ElevationRangeChoices.FirstOrDefault(
+                o => o.Value == RotatorElevationRange.Deg180) ?? ElevationRangeChoices[0];
+        }
         else if (value.Value == RotatorType.SpidMd01)
         {
             if (RotatorNetworkPort == RotatorSettings.DefaultNetworkPort || RotatorNetworkPort <= 0)
@@ -2321,7 +2456,19 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(ShowRotatorUrcNetworkNote));
         OnPropertyChanged(nameof(ShowRotatorSpidMd01NetworkNote));
         OnPropertyChanged(nameof(ShowRotatorTcpSerialNetworkNote));
+        OnPropertyChanged(nameof(RotatorTypeNote));
+        NotifyRotatorAzimuthOnlyVisibility();
     }
+
+    private void NotifyRotatorAzimuthOnlyVisibility()
+    {
+        OnPropertyChanged(nameof(ShowRotatorAzimuthOnlyOption));
+        OnPropertyChanged(nameof(IsRotatorAzimuthOnlyActive));
+        OnPropertyChanged(nameof(ShowRotatorElevationSettings));
+        OnPropertyChanged(nameof(IsRotatorKeyholeSettingsVisible));
+    }
+
+    partial void OnRotatorAzimuthOnlyChanged(bool value) => NotifyRotatorAzimuthOnlyVisibility();
 
     private static int ResolveRotatorNetworkPortForSave(RotatorType type, int port)
     {
@@ -2377,6 +2524,7 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(ShowRigDualConfig));
         OnPropertyChanged(nameof(ShowIc910PowerClass));
         OnPropertyChanged(nameof(ShowIc9700PowerClass));
+        OnPropertyChanged(nameof(ShowRigCivAddress));
         OnPropertyChanged(nameof(ShowRigFt817CatHint));
         OnPropertyChanged(nameof(ShowDownlinkCivAddress));
         OnPropertyChanged(nameof(ShowDownlinkSerialFields));
@@ -2396,6 +2544,13 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(ShowRigFt857CatHint));
         OnPropertyChanged(nameof(ShowRigFt991CatHint));
         OnPropertyChanged(nameof(ShowRigFtx1CatHint));
+        OnPropertyChanged(nameof(ShowRigKenwoodHfHint));
+        OnPropertyChanged(nameof(ShowDownlinkRegion));
+        DownlinkKenwood.NotifyDualRadioChanged();
+        UplinkKenwood.NotifyDualRadioChanged();
+        RigIcomLan.NotifyContextChanged();
+        DownlinkIcomLan.NotifyContextChanged();
+        UplinkIcomLan.NotifyContextChanged();
         RefreshComPortConflictIfReady();
     }
 
@@ -2428,6 +2583,7 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
 
     partial void OnSelectedRigTypeChoiceChanged(RigTypeOption? value)
     {
+        RigIcomLan.RigType = value?.Value ?? RigType.None;
         OnPropertyChanged(nameof(ShowRigCivAddress));
         OnPropertyChanged(nameof(ShowIc910PowerClass));
         OnPropertyChanged(nameof(ShowIc9700PowerClass));
@@ -2493,8 +2649,16 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(ShowRigFt857CatHint));
         OnPropertyChanged(nameof(ShowRigFt991CatHint));
         OnPropertyChanged(nameof(ShowRigFtx1CatHint));
+        DownlinkKenwood.RigType = value?.Value ?? RigType.None;
+        DownlinkIcomLan.RigType = value?.Value ?? RigType.None;
+        OnPropertyChanged(nameof(ShowDownlinkSerialFields));
+        OnPropertyChanged(nameof(ShowDownlinkRegion));
+        OnPropertyChanged(nameof(ShowRigKenwoodHfHint));
         if (_isSynchronizing || value is null)
             return;
+
+        if (RigSettings.IsKenwoodHfEndpoint(value.Value))
+            DownlinkBaudRate = RigSettings.KenwoodHfDefaultBaudRate;
 
         if (value.Value is RigType.YaesuFt817 or RigType.YaesuFt818)
             DownlinkBaudRate = RigSettings.Ft817818DefaultBaudRate;
@@ -2568,6 +2732,10 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(ShowRigFt857CatHint));
         OnPropertyChanged(nameof(ShowRigFt991CatHint));
         OnPropertyChanged(nameof(ShowRigFtx1CatHint));
+        UplinkKenwood.RigType = value?.Value ?? RigType.None;
+        UplinkIcomLan.RigType = value?.Value ?? RigType.None;
+        OnPropertyChanged(nameof(ShowUplinkSerialFields));
+        OnPropertyChanged(nameof(ShowRigKenwoodHfHint));
         if (_isSynchronizing || value is null)
             return;
 
@@ -2615,6 +2783,9 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
 
         if (RigSettings.IsIc706SeriesEndpoint(value.Value))
             ApplyIc706SeriesDefaults(value.Value, v => UplinkBaudRate = v, v => UplinkCivAddress = v, UplinkCivAddress);
+
+        if (RigSettings.IsKenwoodHfEndpoint(value.Value))
+            UplinkBaudRate = RigSettings.KenwoodHfDefaultBaudRate;
     }
 
     private static bool ShouldSuggestCivAddress(string? address) =>
@@ -2651,19 +2822,26 @@ public partial class SettingsViewModel : ViewModelBase, IDisposable
         DualRadioEnabled = DualRadioEnabled,
         Type = SelectedRigTypeChoice?.Value ?? RigType.None,
         Port = SelectedRigComPort ?? "",
+        Connection = RigIcomLan.Connection,
         Downlink = new RigEndpointSettings
         {
             Type = SelectedDownlinkRigTypeChoice?.Value ?? RigType.YaesuFt817,
             Port = SelectedDownlinkComPort ?? "",
             NetworkHost = DownlinkNetworkHost.Trim(),
-            NetworkPort = DownlinkNetworkPort
+            NetworkPort = DownlinkNetworkPort,
+            Connection = LegConnection(SelectedDownlinkRigTypeChoice?.Value, DownlinkKenwood, DownlinkIcomLan)
         },
         Uplink = new RigEndpointSettings
         {
             Type = SelectedUplinkRigTypeChoice?.Value ?? RigType.YaesuFt818,
-            Port = SelectedUplinkComPort ?? ""
+            Port = SelectedUplinkComPort ?? "",
+            Connection = LegConnection(SelectedUplinkRigTypeChoice?.Value, UplinkKenwood, UplinkIcomLan)
         }
     };
+
+    private static RigConnectionKind LegConnection(
+        RigType? type, KenwoodHfLegSettingsViewModel kenwood, IcomLanSettingsViewModel icom) =>
+        RigSettings.IsIcomLanEndpoint(type ?? RigType.None) ? icom.Connection : kenwood.Connection;
 
     private void RefreshComPortConflictIfReady()
     {

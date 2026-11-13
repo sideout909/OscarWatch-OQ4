@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using OscarWatch.Diagnostics;
+using OscarWatch.Core.Cw;
 using OscarWatch.Core.Hardware;
 using OscarWatch.Core.Models;
 using OscarWatch.Core.Orbit;
@@ -333,6 +334,48 @@ public sealed class RigController : IRigController, IDisposable
         return command.Succeeded;
     }
 
+    public bool TrySendCwText(CwMessage piece, TimeSpan timeout) =>
+        RunCwCommand(new RigCommand(RigCommandKind.SendCwText) { CwPiece = piece }, timeout);
+
+    public bool TryStopCwText() =>
+        RunCwCommand(new RigCommand(RigCommandKind.StopCwText), TimeSpan.FromSeconds(2));
+
+    public bool TrySetCwSpeed(int wpm) =>
+        RunCwCommand(new RigCommand(RigCommandKind.SetCwSpeed) { CwWpm = wpm }, TimeSpan.FromSeconds(2));
+
+    /// <summary>
+    /// Runs on the keyer thread so an element edge does not wait behind a Doppler write.
+    /// The serial transports change RTS and DTR without taking their command lock.
+    /// </summary>
+    public bool TrySetCwKeyLine(bool useRts, bool assert)
+    {
+        try
+        {
+            var driver = TxDriver();
+            return driver is { IsConnected: true } && driver.TrySetHandshakeLine(useRts, assert);
+        }
+        catch (Exception ex)
+        {
+            Log.Debug(ex, "CW key line change failed");
+            return false;
+        }
+    }
+
+    private bool RunCwCommand(RigCommand command, TimeSpan timeout)
+    {
+        try
+        {
+            EnqueueAndWait(command, timeout);
+        }
+        catch (Exception ex) when (ex is TimeoutException or ObjectDisposedException)
+        {
+            Log.Debug(ex, "CW {Kind} did not finish in time", command.Kind);
+            return false;
+        }
+
+        return command.Succeeded;
+    }
+
     public void RequireIdentityRecheck()
     {
         _forceIdentityRecheck = true;
@@ -542,6 +585,12 @@ public sealed class RigController : IRigController, IDisposable
                 case RigCommandKind.SetUplinkRfPower:
                     command.Succeeded = command.RfPowerWatts is { } target
                         && TrySetUplinkRfPowerWattsOnWorker(target);
+                    break;
+
+                case RigCommandKind.SendCwText:
+                case RigCommandKind.StopCwText:
+                case RigCommandKind.SetCwSpeed:
+                    command.Succeeded = ApplyCwTextCommandOnWorker(command);
                     break;
 
                 case RigCommandKind.Disconnect:
@@ -1578,13 +1627,15 @@ public sealed class RigController : IRigController, IDisposable
 
         var key = RigSettings.IsFlexNetworkRadio(settings.Type)
             ? $"{settings.Type}|{settings.NetworkHost}|{settings.NetworkPort}|{settings.FlexRadioSerial}|{settings.CatDelayMs}"
-            : $"{settings.Type}|{settings.Port}|{settings.BaudRate}|{settings.CivAddress}";
+            : settings.UsesIcomLan
+                ? $"{settings.Type}|lan|{settings.NetworkHost}|{settings.NetworkPort}|{settings.NetworkUser}|{settings.NetworkPassword.GetHashCode()}|{settings.CivAddress}|{settings.CatDelayMs}"
+                : $"{settings.Type}|{settings.Port}|{settings.BaudRate}|{settings.CivAddress}";
         if (_forceIdentityRecheck)
         {
             _forceIdentityRecheck = false;
             if (_driver is not null && _connectedKey == key && _driver.IsConnected)
             {
-                if (ConfirmDriver(_driver, settings.Port, endpointLabel: null, settings.Type))
+                if (ConfirmDriver(_driver, FormatSingleEndpoint(settings), endpointLabel: null, settings.Type))
                     return true;
 
                 TearDownRig();
@@ -1602,7 +1653,7 @@ public sealed class RigController : IRigController, IDisposable
             _driver.Open();
             _connectedKey = key;
             ConfigureFlexPassInitCancellation(_driver);
-            if (ConfirmDriver(_driver, settings.Port, endpointLabel: null, settings.Type))
+            if (ConfirmDriver(_driver, FormatSingleEndpoint(settings), endpointLabel: null, settings.Type))
             {
                 Log.Information("Rig connected: type={RigType}, endpoint={Endpoint}", settings.Type, FormatSingleEndpoint(settings));
                 _connectFailureLog.Reset();
@@ -1623,7 +1674,7 @@ public sealed class RigController : IRigController, IDisposable
             var endpoint = FormatSingleEndpoint(settings);
             _lastConnectError = RigSettings.IsFlexNetworkRadio(settings.Type)
                 ? $"Opened {endpoint} but SmartSDR is not responding"
-                : $"Opened {settings.Port} but CI-V is not responding";
+                : $"Opened {endpoint} but CI-V is not responding";
             Log.Warning("Rig opened {Endpoint} for {RigType} but link is not active", endpoint, settings.Type);
             TearDownRig();
             RecordConnectFailure(
@@ -1669,12 +1720,12 @@ public sealed class RigController : IRigController, IDisposable
             {
                 if (ConfirmDriver(
                         _downlinkDriver!,
-                        settings.Downlink.Port,
+                        FormatEndpointLabel(settings.Downlink),
                         SerialPortConnectErrorHelper.EndpointDownlink,
                         settings.Downlink.Type)
                     && ConfirmDriver(
                         _uplinkDriver!,
-                        settings.Uplink.Port,
+                        FormatEndpointLabel(settings.Uplink),
                         SerialPortConnectErrorHelper.EndpointUplink,
                         settings.Uplink.Type))
                 {
@@ -1690,8 +1741,9 @@ public sealed class RigController : IRigController, IDisposable
         if (downOk && upOk)
             return true;
 
-        var upPort = settings.Uplink.Type == RigType.Dummy ? "" : settings.Uplink.Port;
-        if (SerialPortConnectErrorHelper.TryDescribeDualSamePort(settings.Downlink.Port, upPort, out var sharedPort))
+        var downPort = settings.Downlink.UsesNetwork ? "" : settings.Downlink.Port;
+        var upPort = settings.Uplink.Type == RigType.Dummy || settings.Uplink.UsesNetwork ? "" : settings.Uplink.Port;
+        if (SerialPortConnectErrorHelper.TryDescribeDualSamePort(downPort, upPort, out var sharedPort))
         {
             RecordConnectFailure(SerialPortConnectErrorKind.DualSamePort, sharedPort, endpointLabel: null);
             TearDownRig();
@@ -1707,7 +1759,7 @@ public sealed class RigController : IRigController, IDisposable
             _downlinkConnectedKey = downKey;
             if (!ConfirmDriver(
                     _downlinkDriver,
-                    settings.Downlink.Port,
+                    FormatEndpointLabel(settings.Downlink),
                     SerialPortConnectErrorHelper.EndpointDownlink,
                     settings.Downlink.Type))
             {
@@ -1715,7 +1767,7 @@ public sealed class RigController : IRigController, IDisposable
                 {
                     RecordConnectFailure(
                         SerialPortConnectErrorKind.Generic,
-                        settings.Downlink.Port,
+                        FormatEndpointLabel(settings.Downlink),
                         SerialPortConnectErrorHelper.EndpointDownlink,
                         $"Opened {FormatEndpointLabel(settings.Downlink)} but the link is not active");
                 }
@@ -1729,7 +1781,7 @@ public sealed class RigController : IRigController, IDisposable
             _uplinkConnectedKey = upKey;
             if (!ConfirmDriver(
                     _uplinkDriver,
-                    settings.Uplink.Port,
+                    FormatEndpointLabel(settings.Uplink),
                     SerialPortConnectErrorHelper.EndpointUplink,
                     settings.Uplink.Type))
             {
@@ -1737,7 +1789,7 @@ public sealed class RigController : IRigController, IDisposable
                 {
                     RecordConnectFailure(
                         SerialPortConnectErrorKind.Generic,
-                        settings.Uplink.Port,
+                        FormatEndpointLabel(settings.Uplink),
                         SerialPortConnectErrorHelper.EndpointUplink,
                         $"Opened {FormatEndpointLabel(settings.Uplink)} but the link is not active");
                 }
@@ -1756,11 +1808,11 @@ public sealed class RigController : IRigController, IDisposable
         }
         catch (Exception ex)
         {
-            var failedPort = settings.Downlink.Port;
+            var failedPort = FormatEndpointLabel(settings.Downlink);
             var failedEndpoint = SerialPortConnectErrorHelper.EndpointDownlink;
             if (_uplinkDriver is not null)
             {
-                failedPort = settings.Uplink.Port;
+                failedPort = FormatEndpointLabel(settings.Uplink);
                 failedEndpoint = SerialPortConnectErrorHelper.EndpointUplink;
             }
 
@@ -1827,7 +1879,11 @@ public sealed class RigController : IRigController, IDisposable
             ? "Dummy"
             : RigSettings.IsSdrDownlinkEndpoint(endpoint.Type)
                 ? $"{endpoint.Type}|{endpoint.NetworkHost}|{endpoint.NetworkPort}|{endpoint.CatDelayMs}"
-                : $"{endpoint.Type}|{endpoint.Port}|{endpoint.BaudRate}|{endpoint.CatDelayMs}|{endpoint.CivAddress}";
+                : endpoint.UsesKenwoodLan
+                    ? $"{endpoint.Type}|lan|{endpoint.NetworkHost}|{endpoint.NetworkPort}|{endpoint.NetworkUser}|{endpoint.NetworkPassword.GetHashCode()}|{endpoint.NetworkUserIsAdministrator}|{endpoint.CatDelayMs}"
+                    : endpoint.UsesIcomLan
+                        ? $"{endpoint.Type}|lan|{endpoint.NetworkHost}|{endpoint.NetworkPort}|{endpoint.NetworkUser}|{endpoint.NetworkPassword.GetHashCode()}|{endpoint.CivAddress}|{endpoint.CatDelayMs}"
+                        : $"{endpoint.Type}|{endpoint.Port}|{endpoint.BaudRate}|{endpoint.CatDelayMs}|{endpoint.CivAddress}|{endpoint.KenwoodHardwareRtsEnabled}";
 
     private void RunPassInit(RigSettings settings, RigTrackingContext context)
     {
@@ -3135,12 +3191,12 @@ public sealed class RigController : IRigController, IDisposable
     private static long ToHz(double kHz) => (long)Math.Round(kHz * 1000.0);
 
     private static string FormatEndpointLabel(RigEndpointSettings endpoint) =>
-        RigSettings.IsSdrDownlinkEndpoint(endpoint.Type)
+        endpoint.UsesNetwork
             ? $"{endpoint.NetworkHost}:{endpoint.NetworkPort}"
             : endpoint.Port;
 
     private static string FormatSingleEndpoint(RigSettings settings) =>
-        RigSettings.IsFlexNetworkRadio(settings.Type)
+        settings.UsesNetwork
             ? $"{settings.NetworkHost}:{settings.NetworkPort}"
             : settings.Port;
 
@@ -3154,6 +3210,9 @@ public sealed class RigController : IRigController, IDisposable
 
         if (RigSettings.IsFlexNetworkRadio(settings.Type))
             return settings.IsFlexNetworkConfigured;
+
+        if (settings.UsesIcomLan)
+            return settings.IsIcomLanConfigured;
 
         return !string.IsNullOrWhiteSpace(settings.Port) || settings.Type == RigType.Dummy;
     }
@@ -3259,6 +3318,29 @@ public sealed class RigController : IRigController, IDisposable
         catch (Exception ex)
         {
             Log.Warning(ex, "Handshake PTT failed");
+        }
+    }
+
+    private bool ApplyCwTextCommandOnWorker(RigCommand command)
+    {
+        try
+        {
+            var driver = TxDriver();
+            if (driver is null || !driver.IsConnected || !driver.SupportsCwText)
+                return false;
+
+            return command.Kind switch
+            {
+                RigCommandKind.SendCwText => command.CwPiece is { } piece && driver.TrySendCwText(piece),
+                RigCommandKind.StopCwText => driver.TryStopCwText(),
+                RigCommandKind.SetCwSpeed => driver.TrySetCwSpeed(command.CwWpm),
+                _ => false
+            };
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "CW {Kind} failed", command.Kind);
+            return false;
         }
     }
 
@@ -3383,7 +3465,7 @@ public sealed class RigController : IRigController, IDisposable
         if (settings.DualRadioEnabled)
             return (RigStatusKind.DualNotConnected, null, _lastConnectError);
 
-        if (RigSettings.IsFlexNetworkRadio(settings.Type))
+        if (settings.UsesNetwork)
         {
             var endpoint = FormatSingleEndpoint(settings);
             return string.IsNullOrWhiteSpace(settings.NetworkHost)
@@ -3410,6 +3492,9 @@ public sealed class RigController : IRigController, IDisposable
         HoldSameBandTransmit,
         ReadUplinkRfPower,
         SetUplinkRfPower,
+        SendCwText,
+        StopCwText,
+        SetCwSpeed,
         Disconnect,
         Drain,
         Shutdown
@@ -3452,6 +3537,8 @@ public sealed class RigController : IRigController, IDisposable
         public DateTime? DopplerAtUtc { get; set; }
         public double? RfPowerWatts { get; set; }
         public TimeSpan Hold { get; set; }
+        public CwMessage? CwPiece { get; set; }
+        public int CwWpm { get; set; }
         public bool Succeeded { get; set; }
         public ManualResetEventSlim? Completed { get; set; }
     }

@@ -158,6 +158,9 @@ public sealed class Ft4Settings
     /// <summary>Font size for the decode / activity list (points). Default 12.</summary>
     public double DecodeFontSize { get; set; } = 12;
 
+    /// <summary>Basic is one decode list. Advanced adds a column for calls to this station.</summary>
+    public Ft4DecodeLayout DecodeLayout { get; set; } = Ft4DecodeLayout.Basic;
+
     /// <summary>dB span above the automatic waterfall noise floor. Default 40.</summary>
     public const double DefaultWaterfallRangeDb = 40;
 
@@ -173,6 +176,63 @@ public sealed class Ft4Settings
 
     public static double ClampWaterfallRangeDb(double value) =>
         Math.Clamp(value, MinWaterfallRangeDb, MaxWaterfallRangeDb);
+
+    /// <summary>
+    /// Even out the slope of the radio's SSB filter so the passband edges are not darker
+    /// than the middle (like WSJT-X Flatten). On by default.
+    /// </summary>
+    public bool WaterfallFlatten { get; set; } = true;
+
+    /// <summary>Draw a line at the start of each slot with its UTC start time (like WSJT-X). On by default.</summary>
+    public bool WaterfallSlotLines { get; set; } = true;
+
+    /// <summary>Slowest waterfall scroll. About 48 seconds stay on screen.</summary>
+    public const int SlowWaterfallSpeed = 1;
+
+    /// <summary>Middle waterfall scroll. About 24 seconds stay on screen.</summary>
+    public const int MediumWaterfallSpeed = 2;
+
+    /// <summary>Original waterfall scroll. About 12 seconds stay on screen.</summary>
+    public const int FastWaterfallSpeed = 3;
+
+    public const int DefaultWaterfallSpeed = FastWaterfallSpeed;
+
+    public const int MinWaterfallSpeed = SlowWaterfallSpeed;
+
+    public const int MaxWaterfallSpeed = FastWaterfallSpeed;
+
+    /// <summary>
+    /// FT4 window refresh, in milliseconds. Waterfall speed counts these ticks.
+    /// The slot clock uses the same timer.
+    /// </summary>
+    public const int WaterfallUiTickMs = 100;
+
+    /// <summary>
+    /// How fast the waterfall scrolls. <see cref="SlowWaterfallSpeed"/> draws a new
+    /// line every four refreshes, <see cref="MediumWaterfallSpeed"/> every two,
+    /// and <see cref="FastWaterfallSpeed"/> (the default) every refresh.
+    /// Slower speeds keep more of the pass on screen and build the spectrum less often.
+    /// </summary>
+    public int WaterfallSpeed { get; set; } = DefaultWaterfallSpeed;
+
+    public static int ClampWaterfallSpeed(int value) =>
+        Math.Clamp(value, MinWaterfallSpeed, MaxWaterfallSpeed);
+
+    /// <summary>How many <see cref="WaterfallUiTickMs"/> refreshes pass before a new waterfall line.</summary>
+    public static int WaterfallTicksPerRow(int speed) =>
+        ClampWaterfallSpeed(speed) switch
+        {
+            SlowWaterfallSpeed => 4,
+            MediumWaterfallSpeed => 2,
+            _ => 1,
+        };
+
+    /// <summary>
+    /// Approximate seconds kept on screen for <paramref name="historyRows"/> at this speed.
+    /// The row count stays fixed, so a slower speed covers more time.
+    /// </summary>
+    public static int WaterfallHistorySeconds(int speed, int historyRows) =>
+        historyRows < 1 ? 0 : historyRows * WaterfallTicksPerRow(speed) * WaterfallUiTickMs / 1000;
 
     /// <summary>Row background for a decode addressed to this station. #RRGGBB or #AARRGGBB.</summary>
     public string CallingMeColour { get; set; } = Ft4DecodeHighlight.DefaultCallingMeColour;
@@ -207,11 +267,26 @@ public sealed class Ft4Settings
     /// <summary>Text colour for a message this station transmitted.</summary>
     public string TxTextColour { get; set; } = Ft4DecodeHighlight.DefaultTxTextColour;
 
-    /// <summary>Window size/position.</summary>
+    /// <summary>Window size/position. Size and position are the last normal (not maximised) bounds.</summary>
     public int? WindowWidth { get; set; }
     public int? WindowHeight { get; set; }
     public int? WindowX { get; set; }
     public int? WindowY { get; set; }
+    public bool WindowMaximised { get; set; }
+
+    public const double DefaultDecodeColumnShare = 0.5;
+
+    public const double MinDecodeColumnShare = 0.25;
+
+    public const double MaxDecodeColumnShare = 0.75;
+
+    /// <summary>Share of the decode area given to Band activity in the advanced layout. The rest is Calling me.</summary>
+    public double DecodeColumnShare { get; set; } = DefaultDecodeColumnShare;
+
+    public static double ClampDecodeColumnShare(double value) =>
+        double.IsFinite(value)
+            ? Math.Clamp(value, MinDecodeColumnShare, MaxDecodeColumnShare)
+            : DefaultDecodeColumnShare;
 
     /// <summary>
     /// Uplink echo calibration in kHz. Keys are either a legacy satellite name (RS-44)

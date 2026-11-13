@@ -1137,11 +1137,17 @@
   <data name="Sstv.RepairBadLines.Tip">
     <value>用两侧良好的行重画最多连续三行噪声行。更长的损坏保持接收原样。</value>
   </data>
+  <data name="Sstv.SmoothAcrossLines">
+    <value>平滑弱信号图片中的噪点</value>
+  </data>
+  <data name="Sstv.SmoothAcrossLines.Tip">
+    <value>图片完成后，用每个像素及其周围像素（包括上下行）的中值替换该像素。可去除大部分噪点，但会使细节和小字变模糊。信号较强时请保持关闭。</value>
+  </data>
   <data name="Sstv.HoldThroughFades">
     <value>在长时间衰落中继续图片</value>
   </data>
   <data name="Sstv.HoldThroughFades.Tip">
-    <value>图片锁定良好后，在最长 20 秒的衰落期间继续绘制，而不是结束图片。这可以把同一张图片的两个片段连接起来。</value>
+    <value>图片锁定良好后，在最长 45 秒的衰落期间继续绘制，而不是结束图片。这可以把同一张图片的两个片段连接起来。</value>
   </data>
   <data name="Sstv.AdaptiveBandwidth">
     <value>使滤波器匹配模式</value>
@@ -1187,6 +1193,12 @@
   </data>
   <data name="Sstv.AutoStart.Tip">
     <value>当主窗口中选定的卫星升到下方仰角以上时开始接收，卫星落下时停止。可设为负值（例如 −5°），在 AOS 稍前开始，以便电台和音频稳定。仅在此窗口打开时工作。开启自动保存后，关闭窗口也会保留图片。</value>
+  </data>
+  <data name="Sstv.KeepAwake">
+    <value>收听时保持电脑唤醒</value>
+  </data>
+  <data name="Sstv.KeepAwake.Tip">
+    <value>SSTV 收听期间，电脑和显示器不会进入睡眠。您仍可锁定屏幕，合上盖子仍会使电脑睡眠。</value>
   </data>
   <data name="Sstv.AutoStart.Elevation">
     <value>开始仰角（度）</value>
@@ -1292,6 +1304,12 @@
   </data>
   <data name="Sstv.Settings.Saving">
     <value>保存</value>
+  </data>
+  <data name="Sstv.Settings.General">
+    <value>常规</value>
+  </data>
+  <data name="Sstv.Settings.FadesAndNoise">
+    <value>衰落与噪声</value>
   </data>
   <data name="Window.SstvLibrary.Title">
     <value>OscarWatch SSTV 图像库</value>
@@ -2307,6 +2325,24 @@
   <data name="Window.Sunlight.Title">
     <value>日照预测</value>
   </data>
+  <data name="RotatorManual.Azimuth">
+    <value>方位角 (°)</value>
+  </data>
+  <data name="RotatorManual.Elevation">
+    <value>仰角 (°)</value>
+  </data>
+  <data name="RotatorManual.NotConnected">
+    <value>未连接</value>
+  </data>
+  <data name="RotatorManual.PositionUnknown">
+    <value>位置未知</value>
+  </data>
+  <data name="RotatorManual.PositionAzEl">
+    <value>Az {0} · El {1}</value>
+  </data>
+  <data name="RotatorManual.PositionAzimuth">
+    <value>Az {0}</value>
+  </data>
   <data name="Window.RotatorManual.Title">
     <value>手动旋转器控制</value>
   </data>
@@ -2713,7 +2749,13 @@
     <value>过境预测窗口（小时）</value>
   </data>
   <data name="Settings.Tracking.PassWindowNote">
-    <value>用于即将过境列表，并作为过境规划中的默认值。</value>
+    <value>用于即将过境列表和过境仰角时间线。</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDuration">
+    <value>即将过境的最短时长（分钟）</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDurationNote">
+    <value>0 表示显示高于最低仰角和地平线遮挡的每一次过境。过境规划有自己的最短时长。</value>
   </data>
   <data name="Settings.Tracking.TransponderCheck">
     <value>启动时检查转发器数据库更新</value>
@@ -3039,6 +3081,108 @@
   <data name="Settings.Radio.Ftx1Hint">
     <value>FTX-1 Field / FTX-1optima：将菜单 CAT-1 RATE 与设置中的值匹配（默认 38400）。8N2 ASCII CAT，硬件 RTS 控制 — 使用 Enhanced COM 口（CAT-1），不要用 CAT-2。每台链路一个 COM 口。FM 模式下跟踪时锁定 MAIN VFO 旋钮。</value>
   </data>
+  <data name="Settings.Radio.KenwoodConnection">
+    <value>连接</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Serial">
+    <value>COM 口（USB 或串口）</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Lan">
+    <value>网络（LAN）</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanHost">
+    <value>电台 IP 地址或主机名</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPort">
+    <value>TCP 端口</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanUser">
+    <value>账户（电台中设置的管理员 ID 或用户 ID）</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPassword">
+    <value>密码</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanAdministrator">
+    <value>管理员账户（用户账户请取消勾选）</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTest">
+    <value>测试 LAN 连接</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTesting">
+    <value>正在测试连接…</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanEnterDetails">
+    <value>请先输入主机、端口、账户和密码。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanOk">
+    <value>已连接到 {0}，频率 {1} MHz。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanWrongRadio">
+    <value>已连接，但电台未识别为 {0}。请检查上方选择的型号。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanDenied">
+    <value>电台拒绝了连接。请确认已开启 LAN 控制，且没有其他应用程序（如 ARCP 或 KNS）连接到端口 60000。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanLoginRejected">
+    <value>登录被拒绝。请检查电台中设置的账户、密码和账户类型。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanFailed">
+    <value>LAN 连接失败：{0}</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection">
+    <value>连接方式</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Serial">
+    <value>USB / 串口（COM 端口）</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Lan">
+    <value>网络（LAN 或 Wi-Fi）</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHost">
+    <value>电台 IP 地址或主机名</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPort">
+    <value>控制端口（UDP）</value>
+  </data>
+  <data name="Settings.Radio.IcomLanUser">
+    <value>网络用户名（在电台的网络设置中配置）</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPassword">
+    <value>网络密码</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHint">
+    <value>请在电台上开启网络控制并添加网络用户。OscarWatch 仅使用 CI-V 控制（不传输网络音频）。电台同一时间只接受一个远程客户端，请先关闭 RS-BA1 或 wfview。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTest">
+    <value>测试网络连接</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTesting">
+    <value>正在测试连接…</value>
+  </data>
+  <data name="Settings.Radio.IcomLanEnterDetails">
+    <value>请先输入主机、端口、用户名和密码。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanOk">
+    <value>已连接到 {0}，频率 {1} MHz。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanWrongRadio">
+    <value>已连接，但电台未识别为 {0}。请检查电台型号和 CI-V 地址。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanLoginRejected">
+    <value>登录被拒绝。请检查电台上设置的网络用户名和密码。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanBusy">
+    <value>电台正被另一个远程客户端（{0}）使用。请断开后重试。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanNoReply">
+    <value>{0} 无响应。请检查 IP 地址和端口，并确认已开启网络控制。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanFailed">
+    <value>网络连接失败：{0}</value>
+  </data>
+  <data name="Settings.Radio.KenwoodHfHint">
+    <value>TS-990S / TS-890S / TS-590：一台电台对应一条链路。10 m 时请保持变频器（Transverter）模式关闭。2 m 或 70 cm 时请开启变频器模式，并在电台上设置偏移量；OscarWatch 会读取该值并自动调谐中频。波特率需与电台 COM 菜单一致。LAN（仅 TS-990S 和 TS-890S）需要电台中设置的管理员 ID 或用户 ID，且同一时间只能有一个应用程序使用端口 60000。</value>
+  </data>
   <data name="Settings.Radio.CwSideband">
     <value>线性 CW：接收保持 USB/LSB（仅发射 CW）</value>
   </data>
@@ -3114,8 +3258,32 @@
   <data name="Settings.Rotator.Type">
     <value>旋转器类型</value>
   </data>
-  <data name="Settings.Rotator.TypeNote">
-    <value>GS-232 用于 Yaesu 及兼容型号。SPID 用于 SP 模式控制器（Rot1Prog / Rot2Prog）。SPID MD-01 / MD-02 (TCP) 用于原生以太网（协议 SPID ROT2，默认端口 23）。EasyComm 用于 EC 模式（SPID、M2 及其他文本协议控制器）。SAEBRTrack 用于经典卫星跟踪接口（9600 波特）。OZ9AAR URC (TCP) 用于 Ultimate Rotator Controller（以太网，默认端口 1111；请将 URC 设为 REM/远程模式）。Green Heron RT-21 Az-El 使用两个 COM 端口（方位角与仰角），DCU-1 协议、4800 波特；请勿选择 GS-232。串口协议也可通过 TCP 串口服务器（例如 ser2net）连接，而无需本地 COM 口。</value>
+  <data name="Settings.Rotator.TypeNote.Gs232">
+    <value>用于 Yaesu 及兼容型号。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Spid">
+    <value>用于 SP 模式控制器（Rot1Prog / Rot2Prog）。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.SpidMd01">
+    <value>原生以太网，协议 SPID ROT2，默认端口 23。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.EasyComm">
+    <value>用于 SPID EC 模式、M2 及类似控制器的文本协议。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Saebrt">
+    <value>经典卫星跟踪接口。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Urc">
+    <value>通过以太网连接 Ultimate Rotator Controller。请设为远程（REM）模式。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.GreenHeron">
+    <value>两个 COM 端口，每轴一个。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.AntRunner">
+    <value>MuseLab AntRunner，通过 USB 连接。通电前请指向正北并调平。</value>
+  </data>
+  <data name="Settings.Rotator.AzimuthOnly">
+    <value>仅方位角</value>
   </data>
   <data name="Settings.Rotator.AzimuthPort">
     <value>方位角串口</value>
@@ -4665,11 +4833,56 @@
   <data name="Ft4.DecodeFontSize.Note">
     <value>解码列表字体大小（10–28）。较大字号便于视力较弱时阅读。</value>
   </data>
+  <data name="Ft4.DecodeLayout">
+    <value>布局</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Basic">
+    <value>基本（单列表）</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Advanced">
+    <value>高级（两栏）</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Note">
+    <value>基本模式在一个列表中显示所有解码。高级模式增加第二栏，只显示呼叫您的电台和您发送的消息，便于在繁忙的过境中跟踪通联。这些行仍会出现在完整列表中。</value>
+  </data>
+  <data name="Ft4.Decodes.BandActivity">
+    <value>频段活动</value>
+  </data>
+  <data name="Ft4.Decodes.CallingMe">
+    <value>呼叫我</value>
+  </data>
   <data name="Ft4.WaterfallRange">
     <value>瀑布图范围</value>
   </data>
   <data name="Ft4.WaterfallRange.Note">
     <value>自动噪声底之上显示的分贝数。范围越小，信号越突出。默认值为 40 dB。</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten">
+    <value>平坦化瀑布图</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten.Note">
+    <value>补偿电台 SSB 滤波器的斜率，使通带边缘不会比中间更暗，与 WSJT-X 的 Flatten 相同。默认开启。</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines">
+    <value>时隙分隔线和 UTC 时间</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines.Note">
+    <value>在每个时隙开始处横跨瀑布图画一条线，并显示其 UTC 开始时间，与 WSJT-X 相同。默认开启。</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed">
+    <value>瀑布图速度</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Note">
+    <value>新行加入的快慢。较慢时屏幕上保留更长的过境时间，弱信号痕迹停留更久，频谱计算也更少。快是原来的速度。</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Slow">
+    <value>慢（{0} 秒）</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Medium">
+    <value>中（{0} 秒）</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Fast">
+    <value>快（{0} 秒）</value>
   </data>
   <data name="Ft4.Decode.CallingMe">
     <value>呼叫我</value>
@@ -4742,6 +4955,12 @@
   </data>
   <data name="Ft4.Status.EchoClearedAll">
     <value>已清除全部回波校准</value>
+  </data>
+  <data name="Ft4.Status.DecodingAgain">
+    <value>正在重新解码上一个接收时隙（深度，整个时隙）</value>
+  </data>
+  <data name="Ft4.Status.NothingToDecodeAgain">
+    <value>没有可重新解码的接收时隙。请在目标时隙的下一个时隙内双击。</value>
   </data>
   <data name="Ft4.TxLevel">
     <value>TX 电平</value>
@@ -5409,6 +5628,9 @@
   </data>
   <data name="Terminal.Uhm.Status.NoSatellite">
     <value>UHM:请选择带转发器的卫星</value>
+  </data>
+  <data name="Terminal.Uhm.Status.BelowHorizon">
+    <value>UHM: 卫星在地平线以下</value>
   </data>
   <data name="Terminal.Uhm.Status.RateLimited">
     <value>UHM:请求受限,稍后重试</value>
@@ -6321,5 +6543,350 @@
   </data>
   <data name="ComPort.TerminalKissAndFt4Ptt" xml:space="preserve">
     <value>Terminal KISS TNC 与FT4 独立 PTT都使用 {0}。请使用不同的 COM 端口或停用其中一个设备。</value>
+  </data>
+  <data name="Logbook.Cw.Wpm">
+    <value>WPM</value>
+  </data>
+  <data name="Logbook.Cw.WpmToolTip">
+    <value>CW 速度（每分钟字数）</value>
+  </data>
+  <data name="Logbook.Cw.Stop">
+    <value>停止</value>
+  </data>
+  <data name="Logbook.Cw.StopToolTip">
+    <value>停止发送（Esc）</value>
+  </data>
+  <data name="Logbook.Cw.ButtonEmpty">
+    <value>{0}：未设置消息。请在日志设置中添加。</value>
+  </data>
+  <data name="Logbook.Cw.ButtonToolTip">
+    <value>{0}：{1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Stopped">
+    <value>已停止 CW。</value>
+  </data>
+  <data name="Logbook.Cw.Status.Empty">
+    <value>{0} 没有可发送的内容。</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sending">
+    <value>正在发送 {0}：{1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.SendingUnknown">
+    <value>正在发送 {0}：{1}。已略过未知宏：{2}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sent">
+    <value>已发送 {0}。</value>
+  </data>
+  <data name="Logbook.Cw.Status.Rejected">
+    <value>电台未接受 CW。请检查电台已连接并处于 CW 模式。</value>
+  </data>
+  <data name="Logbook.Cw.Status.RigNotConnected">
+    <value>通过电台键控 CW 需要电台控制。请启用它，或使用独立的 COM 端口。</value>
+  </data>
+  <data name="Logbook.Cw.Status.KeyLineUnavailable">
+    <value>此电台连接无法控制 DTR 或 RTS。请在日志设置中选择独立的 COM 端口。</value>
+  </data>
+  <data name="Logbook.Cw.Status.RtsBlocked">
+    <value>此电台 CAT 端口上的 RTS 用于流控。请使用 DTR 或独立的 COM 端口。</value>
+  </data>
+  <data name="Logbook.Cw.Status.NoPort">
+    <value>请在日志设置中选择 CW 键控 COM 端口。</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortConflict">
+    <value>{0} 已被电台、转台、GPS 或 PTT 端口占用。请选择其他 CW 键控端口。</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortBusy">
+    <value>{0} 正被其他应用程序使用。</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortNotFound">
+    <value>未找到 {0}。请检查线缆并刷新端口列表。</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortFailed">
+    <value>无法打开 {0} 用于 CW 键控。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tab">
+    <value>CW 键控器</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Section">
+    <value>CW 键控器</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Intro">
+    <value>上行为 CW 时，QSO 输入区和日志之间会显示十二个消息按钮。点击按钮或按 F1 至 F12 发送。按 Esc 或“停止”中止。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Enable">
+    <value>在日志中显示 CW 键控器</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Keying">
+    <value>键控</value>
+  </data>
+  <data name="Logbook.Settings.Cw.NoRig">
+    <value>电台控制已关闭。只有独立的 COM 端口能键控 CW。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Uplink">
+    <value>上行电台：{0}</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Kenwood">
+    <value>使用 Kenwood KY 命令发送文本。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Icom">
+    <value>使用 Icom CI-V 命令 0x17 发送文本。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.CatLine">
+    <value>在电台 CAT 端口上键控 {0}。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.SeparateLine">
+    <value>在独立的 COM 端口上键控 {0}。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KenwoodNote">
+    <value>Kenwood 电台会根据文本自行生成莫尔斯码，因此不需要键控线。请将电台设为 CW 模式并打开插入（break-in）。速度变化通过 KS 发送。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomNote">
+    <value>此电台会根据通过 CI-V 发送的文本自行生成莫尔斯码。请设为 CW 模式并打开插入（break-in）。Icom 速度范围为 6 至 48 WPM。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomUseLine">
+    <value>使用 COM 键控线代替 CI-V 文本</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KeyLine">
+    <value>键控线</value>
+  </data>
+  <data name="Logbook.Settings.Cw.UseSeparatePort">
+    <value>为键控线使用独立的 COM 端口</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Port">
+    <value>CW 键控 COM 端口</value>
+  </data>
+  <data name="Logbook.Settings.Cw.RefreshPorts">
+    <value>刷新</value>
+  </data>
+  <data name="Logbook.Settings.Cw.LineNote">
+    <value>OscarWatch 会在线上为每个点和划计时。请通过键控接口将其连接到电台的电键输入，并将电台设为 CW 模式且打开插入（break-in）。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Messages">
+    <value>消息</value>
+  </data>
+  <data name="Logbook.Settings.Cw.ButtonName">
+    <value>按钮名称</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Message">
+    <value>消息</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tokens">
+    <value>{MYCALL} 或 * 本台呼号，{CALL} 或 ! 对方呼号，{SENTRST} 发出的报告，{SENTRSTCUT} 使用缩写数字发出的报告（599 写作 5NN），{RCVDRST} 收到的报告，{GRID} 对方网格，{MYGRID} 本台网格，{NAME} 对方姓名，{SAT} 卫星。程序信号：{AR} {SK} {BT} {KN}。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Help">
+    <value>CW 键控器帮助</value>
+  </data>
+  <data name="Menu.Tools.Cw">
+    <value>_OscarWatch CW</value>
+  </data>
+  <data name="Window.Cw.Title">
+    <value>OscarWatch CW</value>
+  </data>
+  <data name="Window.CwSettings.Title">
+    <value>OscarWatch CW 设置</value>
+  </data>
+  <data name="Cw.Start">
+    <value>开始</value>
+  </data>
+  <data name="Cw.Stop">
+    <value>停止</value>
+  </data>
+  <data name="Cw.Clear">
+    <value>清除</value>
+  </data>
+  <data name="Cw.Clear.Tip">
+    <value>清除已抄收的文本，重新开始解码。</value>
+  </data>
+  <data name="Cw.SaveCopy">
+    <value>保存抄收</value>
+  </data>
+  <data name="Cw.SaveCopy.Tip">
+    <value>将解码文本保存为文本文件，附带 UTC 时间。</value>
+  </data>
+  <data name="Cw.SaveCopy.Picker">
+    <value>保存 CW 抄收</value>
+  </data>
+  <data name="Cw.SaveCopy.TextFiles">
+    <value>文本文件</value>
+  </data>
+  <data name="Cw.Saved">
+    <value>抄收已保存到 {0}</value>
+  </data>
+  <data name="Cw.OpenSettings">
+    <value>设置</value>
+  </data>
+  <data name="Cw.Help">
+    <value>帮助</value>
+  </data>
+  <data name="Cw.Help.Tip">
+    <value>打开 oscarwatch.org 上的 OscarWatch CW 指南。</value>
+  </data>
+  <data name="Cw.Level">
+    <value>电平</value>
+  </data>
+  <data name="Cw.Waterfall">
+    <value>CW 瀑布图</value>
+  </data>
+  <data name="Cw.Waterfall.Tip">
+    <value>0 至 2000 Hz 的音频。解码器读取阴影频带。点击 CW 轨迹即可解码，右键单击可将频带复位到 400 至 1200 Hz。黄线标出最强的稳定音调。</value>
+  </data>
+  <data name="Cw.Copy.Hint">
+    <value>单击带下划线的呼号或网格定位，或按 Enter 或空格键，即可填入日志的录入表单。添加 QSO 之前不会记录任何内容。</value>
+  </data>
+  <data name="Cw.Pending.Tip">
+    <value>最新的字符，解码器仍可能修改。</value>
+  </data>
+  <data name="Cw.Lag">
+    <value>抄收文本比信号滞后约 2 秒。</value>
+  </data>
+  <data name="Cw.Tone">
+    <value>音调 {0:0} Hz</value>
+  </data>
+  <data name="Cw.Tone.None">
+    <value>无稳定音调</value>
+  </data>
+  <data name="Cw.Tone.OutOfBand">
+    <value>{0:0} Hz 音调在解码频带之外。请在瀑布图上点击它。</value>
+  </data>
+  <data name="Cw.Doppler">
+    <value>下行多普勒 {0}</value>
+  </data>
+  <data name="Cw.FeedForward">
+    <value>电台校正 {0:+0;-0;0} Hz</value>
+  </data>
+  <data name="Cw.Logbook.CallTip">
+    <value>将 {0} 填入日志的呼号框</value>
+  </data>
+  <data name="Cw.Logbook.GridTip">
+    <value>将 {0} 填入日志的网格定位框</value>
+  </data>
+  <data name="Cw.Logbook.FilledCall">
+    <value>{0} 已填入日志的呼号框。</value>
+  </data>
+  <data name="Cw.Logbook.FilledGrid">
+    <value>{0} 已填入日志的网格定位框。</value>
+  </data>
+  <data name="Cw.Logbook.Opening">
+    <value>正在打开日志并填入 {0}。</value>
+  </data>
+  <data name="Cw.Logbook.Editing">
+    <value>日志正在编辑已保存的 QSO，请先保存或取消编辑。</value>
+  </data>
+  <data name="Cw.Status.Idle">
+    <value>已停止。按“开始”收听。</value>
+  </data>
+  <data name="Cw.Status.Listening">
+    <value>正在收听</value>
+  </data>
+  <data name="Cw.Status.ListeningSat">
+    <value>正在收听 {0}</value>
+  </data>
+  <data name="Cw.Status.NoAudio">
+    <value>此计算机上没有可用的音频输入。</value>
+  </data>
+  <data name="Cw.Status.Error">
+    <value>CW 解码器已停止：{0}</value>
+  </data>
+  <data name="Cw.Status.SilentInput">
+    <value>OscarWatch 没有收到来自 {0} 的音频。请在设置中选择电台的音频接口。</value>
+  </data>
+  <data name="Cw.Status.CaptureRetrying">
+    <value>声卡没有音频，正在重新连接…</value>
+  </data>
+  <data name="Cw.Status.WaitingNoSatellite">
+    <value>就绪。等待选择卫星。</value>
+  </data>
+  <data name="Cw.Status.WaitingNotCw">
+    <value>就绪。等待 {0} 的频率面板切换到 CW。</value>
+  </data>
+  <data name="Cw.Status.WaitingNextPass">
+    <value>就绪。等待 {0} 的下一次过境。</value>
+  </data>
+  <data name="Cw.Status.WaitingNoElevation">
+    <value>就绪。等待 {0} 的仰角数据。</value>
+  </data>
+  <data name="Cw.Status.Waiting">
+    <value>就绪。等待 {0} 升至 {1}° 以上。</value>
+  </data>
+  <data name="Cw.Settings.Audio">
+    <value>音频</value>
+  </data>
+  <data name="Cw.Input">
+    <value>输入</value>
+  </data>
+  <data name="Cw.Refresh">
+    <value>刷新</value>
+  </data>
+  <data name="Cw.CatFeedForward">
+    <value>按电台控制的多普勒步进校正音调</value>
+  </data>
+  <data name="Cw.CatFeedForward.Tip">
+    <value>当电台控制按步进调谐时，CW 音调会在步进之间漂移。此选项按差值将音调移回，使其保持在您调谐的位置。仅用于接收，不会重新调谐电台。</value>
+  </data>
+  <data name="Cw.Settings.AutoStart">
+    <value>自动开始</value>
+  </data>
+  <data name="Cw.AutoStart">
+    <value>所选卫星升起时开始收听</value>
+  </data>
+  <data name="Cw.AutoStart.Tip">
+    <value>仅在此窗口打开且频率面板为 CW 时生效。卫星落下后停止收听。</value>
+  </data>
+  <data name="Cw.AutoStart.Elevation">
+    <value>开始仰角（°）</value>
+  </data>
+  <data name="Cw.Settings.Credit">
+    <value>解码使用 e04 的 DeepCW 模型（MIT 许可），在本机运行，音频不会离开本机。</value>
+  </data>
+  <data name="Cw.Speed">
+    <value>{0:0} WPM</value>
+  </data>
+  <data name="Cw.Settings.Decoding">
+    <value>解码</value>
+  </data>
+  <data name="Cw.FollowNote">
+    <value>跟随音调漂移</value>
+  </data>
+  <data name="Cw.FollowNote.Tip">
+    <value>将最靠近阴影频带中心的稳定音调保持在中央，避免多普勒漂移把它带出频带。点击瀑布图上的轨迹可解码其他信号，右键单击可将频带复位。</value>
+  </data>
+  <data name="Cw.SquelchNoise">
+    <value>隐藏噪声产生的零散字母</value>
+  </data>
+  <data name="Cw.SquelchNoise.Tip">
+    <value>丢弃模型不确定的一两个字母的单词。这些在通联间隙几乎都是噪声。像 K 这样有把握的短词会保留。</value>
+  </data>
+  <data name="Cw.Settings.Display">
+    <value>显示</value>
+  </data>
+  <data name="Cw.CopyFontSize">
+    <value>解码文本大小</value>
+  </data>
+  <data name="Cw.CopyFontSize.Tip">
+    <value>在 CW 窗口中，也可以在文本上按住 Ctrl 并滚动鼠标滚轮，或按 Ctrl 加上加号或减号。Ctrl+0 恢复默认大小。</value>
+  </data>
+  <data name="Cw.Legend.NewCall">
+    <value>新呼号</value>
+  </data>
+  <data name="Cw.Legend.NewGrid">
+    <value>新网格</value>
+  </data>
+  <data name="Cw.Legend.Worked">
+    <value>已通联</value>
+  </data>
+  <data name="Cw.Legend.You">
+    <value>你的呼号</value>
+  </data>
+  <data name="Cw.Worked.NewCall">
+    <value>新呼号：不在你的任何日志中。</value>
+  </data>
+  <data name="Cw.Worked.Call">
+    <value>已通联：此呼号在你的日志中。</value>
+  </data>
+  <data name="Cw.Worked.NewGrid">
+    <value>新网格：此 4 字符网格尚无通联。</value>
+  </data>
+  <data name="Cw.Worked.Grid">
+    <value>已通联：你在此网格有通联记录。</value>
   </data>
 </root>

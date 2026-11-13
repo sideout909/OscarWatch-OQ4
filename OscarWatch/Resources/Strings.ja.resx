@@ -1420,7 +1420,13 @@
     <value>パス予測ウィンドウ (時間)</value>
   </data>
   <data name="Settings.Tracking.PassWindowNote">
-    <value>今後のパス一覧とパスプランナーの既定値に使用されます。</value>
+    <value>今後のパス一覧とパス仰角タイムラインに使用します。</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDuration">
+    <value>今後のパスの最短時間（分）</value>
+  </data>
+  <data name="Settings.Tracking.UpcomingPassesMinDurationNote">
+    <value>0 は最低仰角と地平マスクを超えるすべてのパスを表示します。パスプランナーには別の最短時間があります。</value>
   </data>
   <data name="Settings.Tracking.TransponderCheck">
     <value>起動時にトランスポンダーDBの更新を確認</value>
@@ -1749,6 +1755,108 @@
   <data name="Settings.Radio.Ftx1Hint">
     <value>FTX-1 Field / FTX-1optima: メニューCAT-1 RATEを設定と一致（既定38400）。RTS付き8N2 ASCII CAT — Enhanced COM（CAT-1）を使用（CAT-2不可）。レッグごとに1 COM。FMは追跡中MAIN VFOダイヤル固定。</value>
   </data>
+  <data name="Settings.Radio.KenwoodConnection">
+    <value>接続</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Serial">
+    <value>COMポート（USBまたはシリアル）</value>
+  </data>
+  <data name="Settings.Radio.KenwoodConnection.Lan">
+    <value>ネットワーク（LAN）</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanHost">
+    <value>無線機のIPアドレスまたはホスト名</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPort">
+    <value>TCPポート</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanUser">
+    <value>アカウント（無線機で設定した管理者IDまたはユーザーID）</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanPassword">
+    <value>パスワード</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanAdministrator">
+    <value>管理者アカウント（ユーザーアカウントの場合はオフ）</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTest">
+    <value>LAN接続をテスト</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanTesting">
+    <value>接続をテスト中…</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanEnterDetails">
+    <value>先にホスト、ポート、アカウント、パスワードを入力してください。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanOk">
+    <value>{0} に接続しました（{1} MHz）。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanWrongRadio">
+    <value>接続しましたが、無線機が {0} として応答しませんでした。上で選択した機種を確認してください。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanDenied">
+    <value>無線機が接続を拒否しました。LANコントロールがオンで、他のアプリケーション（ARCPやKNSなど）がポート60000に接続していないことを確認してください。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanLoginRejected">
+    <value>ログインが拒否されました。無線機で設定したアカウント、パスワード、アカウント種別を確認してください。</value>
+  </data>
+  <data name="Settings.Radio.KenwoodLanFailed">
+    <value>LAN接続に失敗しました: {0}</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection">
+    <value>接続方法</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Serial">
+    <value>USB / シリアル (COM ポート)</value>
+  </data>
+  <data name="Settings.Radio.IcomConnection.Lan">
+    <value>ネットワーク (LAN または Wi-Fi)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHost">
+    <value>無線機の IP アドレスまたはホスト名</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPort">
+    <value>コントロールポート (UDP)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanUser">
+    <value>ネットワークユーザー名 (無線機のネットワーク設定で登録)</value>
+  </data>
+  <data name="Settings.Radio.IcomLanPassword">
+    <value>ネットワークパスワード</value>
+  </data>
+  <data name="Settings.Radio.IcomLanHint">
+    <value>無線機でネットワークコントロールをオンにし、ネットワークユーザーを登録してください。OscarWatch は CI-V 制御のみを使用します (ネットワーク音声なし)。無線機は同時に 1 つのリモートクライアントしか受け付けないため、先に RS-BA1 や wfview を閉じてください。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTest">
+    <value>ネットワーク接続をテスト</value>
+  </data>
+  <data name="Settings.Radio.IcomLanTesting">
+    <value>接続をテスト中…</value>
+  </data>
+  <data name="Settings.Radio.IcomLanEnterDetails">
+    <value>先にホスト、ポート、ユーザー名、パスワードを入力してください。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanOk">
+    <value>{0} に接続しました ({1} MHz)。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanWrongRadio">
+    <value>接続しましたが、無線機が {0} として応答しませんでした。無線機の機種と CI-V アドレスを確認してください。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanLoginRejected">
+    <value>ログインが拒否されました。無線機に設定したネットワークユーザー名とパスワードを確認してください。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanBusy">
+    <value>無線機は別のリモートクライアント ({0}) が使用中です。切断してから再試行してください。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanNoReply">
+    <value>{0} から応答がありません。IP アドレスとポート、ネットワークコントロールがオンになっているか確認してください。</value>
+  </data>
+  <data name="Settings.Radio.IcomLanFailed">
+    <value>ネットワーク接続に失敗しました: {0}</value>
+  </data>
+  <data name="Settings.Radio.KenwoodHfHint">
+    <value>TS-990S / TS-890S / TS-590: 1台の無線機が1レッグです。10 mではトランスバーターモードをオフのままにします。2 mまたは70 cmではトランスバーターモードをオンにし、オフセットを無線機で設定してください。OscarWatchがそれを読み取り、IFを自動で合わせます。ボーレートは無線機のCOMメニューに合わせてください。LAN（TS-990SとTS-890Sのみ）には無線機で設定した管理者IDまたはユーザーIDが必要で、ポート60000を同時に使えるアプリケーションは1つだけです。</value>
+  </data>
   <data name="Settings.Radio.CwSideband">
     <value>リニアCW: 受信はUSB/LSBのまま（送信のみCW）</value>
   </data>
@@ -1824,8 +1932,32 @@
   <data name="Settings.Rotator.Type">
     <value>ローテータータイプ</value>
   </data>
-  <data name="Settings.Rotator.TypeNote">
-    <value>GS-232はYaesuおよび互換機。SPIDはSPモード（Rot1Prog / Rot2Prog）。SPID MD-01 / MD-02 (TCP) はネイティブEthernet（プロトコル SPID ROT2、既定ポート23）。EasyCommはECモード（SPID、M2などのテキストプロトコルコントローラ）。SAEBRTrackは古典的な衛星トラッカーインターフェース（9600ボー）。OZ9AAR URC (TCP) は Ultimate Rotator Controller（Ethernet、既定ポート1111、URCをREM/リモートモードに設定）。Green Heron RT-21 Az-ElはCOMポートが2つ（アジマスとエレベーション）、DCU-1プロトコル4800ボー。GS-232は選ばないでください。シリアルプロトコルはローカルCOMの代わりにTCPシリアルサーバー（例: ser2net）も利用できます。</value>
+  <data name="Settings.Rotator.TypeNote.Gs232">
+    <value>Yaesuおよび互換機。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Spid">
+    <value>SPモードのコントローラー（Rot1Prog / Rot2Prog）。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.SpidMd01">
+    <value>ネイティブEthernet。プロトコルは SPID ROT2、既定ポートは 23。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.EasyComm">
+    <value>SPIDのECモード、M2などのテキストプロトコル。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Saebrt">
+    <value>古典的な衛星トラッカーインターフェース。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.Urc">
+    <value>Ultimate Rotator Controller（Ethernet）。リモート（REM）モードに設定してください。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.GreenHeron">
+    <value>COMポートが2つ（軸ごとに1つ）。</value>
+  </data>
+  <data name="Settings.Rotator.TypeNote.AntRunner">
+    <value>MuseLab AntRunner（USB）。電源投入前に北へ向けて水平にしてください。</value>
+  </data>
+  <data name="Settings.Rotator.AzimuthOnly">
+    <value>アジマスのみ</value>
   </data>
   <data name="Settings.Rotator.AzimuthPort">
     <value>アジマスのシリアルポート</value>
@@ -2475,11 +2607,17 @@
   <data name="Sstv.RepairBadLines.Tip">
     <value>連続する最大 3 行のノイズの多い行を、両側の良好な行から描き直します。それより長い損傷は受信したままにします。</value>
   </data>
+  <data name="Sstv.SmoothAcrossLines">
+    <value>弱い画像のノイズの点を滑らかにする</value>
+  </data>
+  <data name="Sstv.SmoothAcrossLines.Tip">
+    <value>画像の受信が終わったら、各ピクセルを上下の行を含む周囲のピクセルの中央値に置き換えます。ノイズの点の大部分が消えますが、細部や小さな文字がぼやけます。強い信号ではオフのままにしてください。</value>
+  </data>
   <data name="Sstv.HoldThroughFades">
     <value>長いフェードの間も画像を続ける</value>
   </data>
   <data name="Sstv.HoldThroughFades.Tip">
-    <value>画像がしっかりロックされた後は、最大 20 秒のフェードの間も画像を終了せずに描画を続けます。1 枚の画像の 2 つの断片をつなげることがあります。</value>
+    <value>画像がしっかりロックされた後は、最大 45 秒のフェードの間も画像を終了せずに描画を続けます。1 枚の画像の 2 つの断片をつなげることがあります。</value>
   </data>
   <data name="Sstv.AdaptiveBandwidth">
     <value>フィルターをモードに合わせる</value>
@@ -2525,6 +2663,12 @@
   </data>
   <data name="Sstv.AutoStart.Tip">
     <value>メインウィンドウで選択中の衛星が下の仰角を超えると受信を開始し、沈むと停止します。−5° のような負の値にすると、AOS の少し前から開始し、無線機と音声が安定する時間を確保できます。この画面を開いているときだけ動作します。ウィンドウを閉じても、自動保存がオンであればピクチャは保存されます。</value>
+  </data>
+  <data name="Sstv.KeepAwake">
+    <value>受信中はコンピューターをスリープさせない</value>
+  </data>
+  <data name="Sstv.KeepAwake.Tip">
+    <value>SSTV の受信中は、コンピューターとディスプレイがスリープしません。画面のロックは引き続き可能で、ふたを閉じるとコンピューターはスリープします。</value>
   </data>
   <data name="Sstv.AutoStart.Elevation">
     <value>開始する仰角（度）</value>
@@ -2630,6 +2774,12 @@
   </data>
   <data name="Sstv.Settings.Saving">
     <value>保存</value>
+  </data>
+  <data name="Sstv.Settings.General">
+    <value>全般</value>
+  </data>
+  <data name="Sstv.Settings.FadesAndNoise">
+    <value>フェードとノイズ</value>
   </data>
   <data name="Window.SstvLibrary.Title">
     <value>OscarWatch SSTV 画像ライブラリ</value>
@@ -3641,6 +3791,24 @@
   </data>
   <data name="DopplerInsights.Phase.Summary">
     <value>ダウンリンク誤差 p95 {0} Hz · CAT書き込み {1}% · ピークスルー {2} Hz/s · 最大仰角 {3}°</value>
+  </data>
+  <data name="RotatorManual.Azimuth">
+    <value>アジマス (°)</value>
+  </data>
+  <data name="RotatorManual.Elevation">
+    <value>エレベーション (°)</value>
+  </data>
+  <data name="RotatorManual.NotConnected">
+    <value>未接続</value>
+  </data>
+  <data name="RotatorManual.PositionUnknown">
+    <value>位置不明</value>
+  </data>
+  <data name="RotatorManual.PositionAzEl">
+    <value>Az {0} · El {1}</value>
+  </data>
+  <data name="RotatorManual.PositionAzimuth">
+    <value>Az {0}</value>
   </data>
   <data name="Window.RotatorManual.Title">
     <value>手動ローテーター操作</value>
@@ -4665,11 +4833,56 @@
   <data name="Ft4.DecodeFontSize.Note">
     <value>デコード一覧のフォントサイズ（10–28）。大きいほど見やすくなります。</value>
   </data>
+  <data name="Ft4.DecodeLayout">
+    <value>レイアウト</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Basic">
+    <value>ベーシック（一覧 1 つ）</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Advanced">
+    <value>アドバンス（2 列）</value>
+  </data>
+  <data name="Ft4.DecodeLayout.Note">
+    <value>ベーシックはすべてのデコードを 1 つの一覧に表示します。アドバンスは、自局を呼んでいる局と自局の送信だけを表示する 2 列目を追加し、混雑したパスでも追いやすくします。これらの行は全体の一覧にも表示されます。</value>
+  </data>
+  <data name="Ft4.Decodes.BandActivity">
+    <value>バンドの動き</value>
+  </data>
+  <data name="Ft4.Decodes.CallingMe">
+    <value>自局宛て</value>
+  </data>
   <data name="Ft4.WaterfallRange">
     <value>ウォーターフォールの範囲</value>
   </data>
   <data name="Ft4.WaterfallRange.Note">
     <value>自動で追従するノイズフロアからのデシベル幅です。範囲を狭くすると信号が目立ちます。初期値は 40 dB です。</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten">
+    <value>ウォーターフォールを平坦化</value>
+  </data>
+  <data name="Ft4.WaterfallFlatten.Note">
+    <value>無線機の SSB フィルターの傾きを補正し、通過帯域の端が中央より暗く表示されないようにします（WSJT-X の Flatten と同様）。既定でオンです。</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines">
+    <value>スロット境界線と UTC 時刻</value>
+  </data>
+  <data name="Ft4.WaterfallSlotLines.Note">
+    <value>各スロットの開始位置にウォーターフォールを横切る線を引き、UTC 開始時刻を表示します（WSJT-X と同様）。既定でオンです。</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed">
+    <value>ウォーターフォールの速度</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Note">
+    <value>新しい行を足す速さです。遅くするとパスのより長い時間が画面に残り、弱いトレースが見え続け、スペクトルの計算も少なくなります。「速い」は従来の速度です。</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Slow">
+    <value>遅い（{0} 秒）</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Medium">
+    <value>中（{0} 秒）</value>
+  </data>
+  <data name="Ft4.WaterfallSpeed.Fast">
+    <value>速い（{0} 秒）</value>
   </data>
   <data name="Ft4.Decode.CallingMe">
     <value>自分宛て</value>
@@ -4742,6 +4955,12 @@
   </data>
   <data name="Ft4.Status.EchoClearedAll">
     <value>すべてのエコー校正をクリアしました</value>
+  </data>
+  <data name="Ft4.Status.DecodingAgain">
+    <value>直前の受信スロットを再デコード中（ディープ、スロット全体）</value>
+  </data>
+  <data name="Ft4.Status.NothingToDecodeAgain">
+    <value>再デコードできる受信スロットがありません。目的のスロットの次のスロット中にダブルクリックしてください。</value>
   </data>
   <data name="Ft4.TxLevel">
     <value>TXレベル</value>
@@ -5409,6 +5628,9 @@
   </data>
   <data name="Terminal.Uhm.Status.NoSatellite">
     <value>UHM: デジピーター付き衛星を選択してください</value>
+  </data>
+  <data name="Terminal.Uhm.Status.BelowHorizon">
+    <value>UHM: 衛星は地平線下です</value>
   </data>
   <data name="Terminal.Uhm.Status.RateLimited">
     <value>UHM: レート制限中、まもなく再試行します</value>
@@ -6321,5 +6543,350 @@
   </data>
   <data name="ComPort.TerminalKissAndFt4Ptt" xml:space="preserve">
     <value>Terminal の KISS TNC とFT4 の個別 PTTが両方とも {0} を使用しています。別の COM ポートを使うか、どちらかの機器を無効にしてください。</value>
+  </data>
+  <data name="Logbook.Cw.Wpm">
+    <value>WPM</value>
+  </data>
+  <data name="Logbook.Cw.WpmToolTip">
+    <value>CW の速度（WPM）</value>
+  </data>
+  <data name="Logbook.Cw.Stop">
+    <value>停止</value>
+  </data>
+  <data name="Logbook.Cw.StopToolTip">
+    <value>送信を止める（Esc）</value>
+  </data>
+  <data name="Logbook.Cw.ButtonEmpty">
+    <value>{0}: メッセージ未設定。ログブック設定で追加してください。</value>
+  </data>
+  <data name="Logbook.Cw.ButtonToolTip">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Stopped">
+    <value>CW を停止しました。</value>
+  </data>
+  <data name="Logbook.Cw.Status.Empty">
+    <value>{0} には送る内容がありません。</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sending">
+    <value>{0} を送信中: {1}</value>
+  </data>
+  <data name="Logbook.Cw.Status.SendingUnknown">
+    <value>{0} を送信中: {1}。不明なマクロは省きました: {2}</value>
+  </data>
+  <data name="Logbook.Cw.Status.Sent">
+    <value>{0} を送信しました。</value>
+  </data>
+  <data name="Logbook.Cw.Status.Rejected">
+    <value>無線機が CW を受け付けませんでした。接続と CW モードを確認してください。</value>
+  </data>
+  <data name="Logbook.Cw.Status.RigNotConnected">
+    <value>無線機経由で CW をキーイングするにはリグ制御が必要です。有効にするか、別の COM ポートを使ってください。</value>
+  </data>
+  <data name="Logbook.Cw.Status.KeyLineUnavailable">
+    <value>この無線機接続では DTR や RTS を操作できません。ログブック設定で別の COM ポートを選んでください。</value>
+  </data>
+  <data name="Logbook.Cw.Status.RtsBlocked">
+    <value>この無線機の CAT ポートの RTS はフロー制御に使われています。DTR か別の COM ポートを使ってください。</value>
+  </data>
+  <data name="Logbook.Cw.Status.NoPort">
+    <value>ログブック設定で CW キーイング用の COM ポートを選んでください。</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortConflict">
+    <value>{0} は無線機、ローテーター、GPS または PTT ポートで使用中です。別の CW キーイング用ポートを選んでください。</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortBusy">
+    <value>{0} は別のアプリケーションで使用中です。</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortNotFound">
+    <value>{0} が見つかりません。ケーブルを確認し、ポート一覧を更新してください。</value>
+  </data>
+  <data name="Logbook.Cw.Status.PortFailed">
+    <value>CW キーイング用に {0} を開けませんでした。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tab">
+    <value>CW キーヤー</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Section">
+    <value>CW キーヤー</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Intro">
+    <value>アップリンクが CW のとき、QSO 入力欄とログの間に 12 個のメッセージボタンが表示されます。ボタンをクリックするか F1 から F12 を押すと送信します。Esc か停止で中止します。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Enable">
+    <value>ログブックに CW キーヤーを表示する</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Keying">
+    <value>キーイング</value>
+  </data>
+  <data name="Logbook.Settings.Cw.NoRig">
+    <value>リグ制御がオフです。CW をキーイングできるのは別の COM ポートだけです。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Uplink">
+    <value>アップリンク無線機: {0}</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Kenwood">
+    <value>Kenwood の KY コマンドでテキストを送ります。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.Icom">
+    <value>Icom の CI-V コマンド 0x17 でテキストを送ります。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.CatLine">
+    <value>無線機の CAT ポートの {0} でキーイングします。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Route.SeparateLine">
+    <value>専用の COM ポートの {0} でキーイングします。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KenwoodNote">
+    <value>Kenwood の無線機はテキストから自分でモールスを作るため、キーイング線は不要です。無線機を CW モードにしてブレークインをオンにしてください。速度の変更は KS で送ります。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomNote">
+    <value>この無線機は CI-V で送られたテキストから自分でモールスを作ります。CW モードにしてブレークインをオンにしてください。Icom の速度は 6 から 48 WPM です。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.IcomUseLine">
+    <value>CI-V テキストの代わりに COM のキーイング線を使う</value>
+  </data>
+  <data name="Logbook.Settings.Cw.KeyLine">
+    <value>キーイング線</value>
+  </data>
+  <data name="Logbook.Settings.Cw.UseSeparatePort">
+    <value>キーイング線に別の COM ポートを使う</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Port">
+    <value>CW キーイング用 COM ポート</value>
+  </data>
+  <data name="Logbook.Settings.Cw.RefreshPorts">
+    <value>更新</value>
+  </data>
+  <data name="Logbook.Settings.Cw.LineNote">
+    <value>OscarWatch が線上の短点と長点をすべて計時します。キーイングインターフェース経由で無線機のキー入力に接続し、無線機を CW モードにしてブレークインをオンにしてください。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Messages">
+    <value>メッセージ</value>
+  </data>
+  <data name="Logbook.Settings.Cw.ButtonName">
+    <value>ボタン名</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Message">
+    <value>メッセージ</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Tokens">
+    <value>{MYCALL} または * 自局コール、{CALL} または ! 相手局コール、{SENTRST} 送ったレポート、{SENTRSTCUT} カットナンバーで送るレポート（599 を 5NN）、{RCVDRST} 受けたレポート、{GRID} 相手局グリッド、{MYGRID} 自局グリッド、{NAME} 相手局の名前、{SAT} 衛星。略符号: {AR} {SK} {BT} {KN}。</value>
+  </data>
+  <data name="Logbook.Settings.Cw.Help">
+    <value>CW キーヤーのヘルプ</value>
+  </data>
+  <data name="Menu.Tools.Cw">
+    <value>_OscarWatch CW</value>
+  </data>
+  <data name="Window.Cw.Title">
+    <value>OscarWatch CW</value>
+  </data>
+  <data name="Window.CwSettings.Title">
+    <value>OscarWatch CW 設定</value>
+  </data>
+  <data name="Cw.Start">
+    <value>開始</value>
+  </data>
+  <data name="Cw.Stop">
+    <value>停止</value>
+  </data>
+  <data name="Cw.Clear">
+    <value>クリア</value>
+  </data>
+  <data name="Cw.Clear.Tip">
+    <value>受信テキストを消去して、最初から解読し直します。</value>
+  </data>
+  <data name="Cw.SaveCopy">
+    <value>テキストを保存</value>
+  </data>
+  <data name="Cw.SaveCopy.Tip">
+    <value>解読したテキストを UTC 時刻付きでテキストファイルに保存します。</value>
+  </data>
+  <data name="Cw.SaveCopy.Picker">
+    <value>CW テキストを保存</value>
+  </data>
+  <data name="Cw.SaveCopy.TextFiles">
+    <value>テキストファイル</value>
+  </data>
+  <data name="Cw.Saved">
+    <value>テキストを {0} に保存しました</value>
+  </data>
+  <data name="Cw.OpenSettings">
+    <value>設定</value>
+  </data>
+  <data name="Cw.Help">
+    <value>ヘルプ</value>
+  </data>
+  <data name="Cw.Help.Tip">
+    <value>oscarwatch.org の OscarWatch CW ガイドを開きます。</value>
+  </data>
+  <data name="Cw.Level">
+    <value>レベル</value>
+  </data>
+  <data name="Cw.Waterfall">
+    <value>CW ウォーターフォール</value>
+  </data>
+  <data name="Cw.Waterfall.Tip">
+    <value>0 から 2000 Hz までの音声です。デコーダーは網掛けの帯域を読みます。CW の軌跡をクリックするとそれを解読し、右クリックで帯域を 400 から 1200 Hz に戻します。黄色の線は最も強い安定した音を示します。</value>
+  </data>
+  <data name="Cw.Copy.Hint">
+    <value>下線付きのコールサインとロケーターは、クリック、または Enter かスペースでログブックの入力欄に入ります。QSO を追加するまで何も記録されません。</value>
+  </data>
+  <data name="Cw.Pending.Tip">
+    <value>最新の文字です。デコーダーがまだ変更する可能性があります。</value>
+  </data>
+  <data name="Cw.Lag">
+    <value>テキストは信号より約 2 秒遅れて表示されます。</value>
+  </data>
+  <data name="Cw.Tone">
+    <value>音 {0:0} Hz</value>
+  </data>
+  <data name="Cw.Tone.None">
+    <value>安定した音なし</value>
+  </data>
+  <data name="Cw.Tone.OutOfBand">
+    <value>{0:0} Hz の音は解読帯域の外です。ウォーターフォールでクリックしてください。</value>
+  </data>
+  <data name="Cw.Doppler">
+    <value>ダウンリンク ドップラー {0}</value>
+  </data>
+  <data name="Cw.FeedForward">
+    <value>無線機補正 {0:+0;-0;0} Hz</value>
+  </data>
+  <data name="Cw.Logbook.CallTip">
+    <value>{0} をログブックのコールサイン欄に入れる</value>
+  </data>
+  <data name="Cw.Logbook.GridTip">
+    <value>{0} をログブックのロケーター欄に入れる</value>
+  </data>
+  <data name="Cw.Logbook.FilledCall">
+    <value>{0} をログブックのコールサイン欄に入れました。</value>
+  </data>
+  <data name="Cw.Logbook.FilledGrid">
+    <value>{0} をログブックのロケーター欄に入れました。</value>
+  </data>
+  <data name="Cw.Logbook.Opening">
+    <value>{0} を入れてログブックを開いています。</value>
+  </data>
+  <data name="Cw.Logbook.Editing">
+    <value>ログブックで保存済みの QSO を編集中です。先に保存するか編集を取り消してください。</value>
+  </data>
+  <data name="Cw.Status.Idle">
+    <value>停止中です。開始を押すと受信します。</value>
+  </data>
+  <data name="Cw.Status.Listening">
+    <value>受信中</value>
+  </data>
+  <data name="Cw.Status.ListeningSat">
+    <value>{0} を受信中</value>
+  </data>
+  <data name="Cw.Status.NoAudio">
+    <value>このコンピューターでは音声入力を使用できません。</value>
+  </data>
+  <data name="Cw.Status.Error">
+    <value>CW デコーダーが停止しました: {0}</value>
+  </data>
+  <data name="Cw.Status.SilentInput">
+    <value>{0} から OscarWatch に音声が届いていません。設定で無線機のオーディオインターフェースを選んでください。</value>
+  </data>
+  <data name="Cw.Status.CaptureRetrying">
+    <value>サウンドカードから音声がありません。再接続しています…</value>
+  </data>
+  <data name="Cw.Status.WaitingNoSatellite">
+    <value>準備完了。衛星が選択されるのを待っています。</value>
+  </data>
+  <data name="Cw.Status.WaitingNotCw">
+    <value>準備完了。{0} の周波数パネルが CW になるのを待っています。</value>
+  </data>
+  <data name="Cw.Status.WaitingNextPass">
+    <value>準備完了。{0} の次のパスを待っています。</value>
+  </data>
+  <data name="Cw.Status.WaitingNoElevation">
+    <value>準備完了。{0} の仰角を待っています。</value>
+  </data>
+  <data name="Cw.Status.Waiting">
+    <value>準備完了。{0} が {1}° より上がるのを待っています。</value>
+  </data>
+  <data name="Cw.Settings.Audio">
+    <value>オーディオ</value>
+  </data>
+  <data name="Cw.Input">
+    <value>入力</value>
+  </data>
+  <data name="Cw.Refresh">
+    <value>更新</value>
+  </data>
+  <data name="Cw.CatFeedForward">
+    <value>無線機制御のドップラーステップに合わせて音を補正する</value>
+  </data>
+  <data name="Cw.CatFeedForward.Tip">
+    <value>無線機制御が段階的に同調すると、ステップの間で CW の音がずれます。この設定はその差の分だけ音を戻し、同調した位置に保ちます。受信のみで、無線機の周波数は変更しません。</value>
+  </data>
+  <data name="Cw.Settings.AutoStart">
+    <value>自動開始</value>
+  </data>
+  <data name="Cw.AutoStart">
+    <value>選択中の衛星が昇ったら受信を開始する</value>
+  </data>
+  <data name="Cw.AutoStart.Tip">
+    <value>このウィンドウが開いていて、周波数パネルが CW のときだけ動作します。衛星が沈むと受信を停止します。</value>
+  </data>
+  <data name="Cw.AutoStart.Elevation">
+    <value>開始仰角（°）</value>
+  </data>
+  <data name="Cw.Settings.Credit">
+    <value>解読には e04 による DeepCW モデル（MIT ライセンス）を使い、このコンピューター上で実行します。音声が外部に送られることはありません。</value>
+  </data>
+  <data name="Cw.Speed">
+    <value>{0:0} WPM</value>
+  </data>
+  <data name="Cw.Settings.Decoding">
+    <value>解読</value>
+  </data>
+  <data name="Cw.FollowNote">
+    <value>ずれていく音に追従する</value>
+  </data>
+  <data name="Cw.FollowNote.Tip">
+    <value>網掛けの帯域の中央に最も近い安定した音を中央に保ち、ドップラーのずれで帯域から外れないようにします。ウォーターフォールの別の軌跡をクリックするとその信号を解読し、右クリックで帯域を元に戻します。</value>
+  </data>
+  <data name="Cw.SquelchNoise">
+    <value>ノイズによる余分な文字を隠す</value>
+  </data>
+  <data name="Cw.SquelchNoise.Tip">
+    <value>モデルが確信できない 1 文字または 2 文字の語を取り除きます。送信の合間に出るこれらはほぼ必ずノイズです。K のような確かな短い語は残ります。</value>
+  </data>
+  <data name="Cw.Settings.Display">
+    <value>表示</value>
+  </data>
+  <data name="Cw.CopyFontSize">
+    <value>解読テキストのサイズ</value>
+  </data>
+  <data name="Cw.CopyFontSize.Tip">
+    <value>CW ウィンドウでは、テキストの上で Ctrl を押しながらマウスホイールを回すか、Ctrl とプラスまたはマイナスを押しても変更できます。Ctrl+0 で既定のサイズに戻ります。</value>
+  </data>
+  <data name="Cw.Legend.NewCall">
+    <value>新しいコール</value>
+  </data>
+  <data name="Cw.Legend.NewGrid">
+    <value>新しいグリッド</value>
+  </data>
+  <data name="Cw.Legend.Worked">
+    <value>交信済み</value>
+  </data>
+  <data name="Cw.Legend.You">
+    <value>自局のコール</value>
+  </data>
+  <data name="Cw.Worked.NewCall">
+    <value>新しいコール: どのログブックにもありません。</value>
+  </data>
+  <data name="Cw.Worked.Call">
+    <value>交信済み: このコールはログブックにあります。</value>
+  </data>
+  <data name="Cw.Worked.NewGrid">
+    <value>新しいグリッド: この 4 文字のグリッドではまだ交信がありません。</value>
+  </data>
+  <data name="Cw.Worked.Grid">
+    <value>交信済み: このグリッドでの交信があります。</value>
   </data>
 </root>

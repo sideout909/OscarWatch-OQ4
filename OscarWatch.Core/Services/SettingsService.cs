@@ -76,6 +76,8 @@ public sealed class SettingsService : ISettingsService, IDisposable
             settings = JsonSerializer.Deserialize<AppSettings>(json, JsonOptions) ?? new AppSettings();
             MigrateDisplayTimesInUtc(json, settings);
             MigrateMissingEnabledSatelliteNoradIds(json, settings);
+            MigratePassPlannerPredictionHours(json, settings);
+            MigrateSstvFadeDefaults(json, settings);
         }
         catch (JsonException ex)
         {
@@ -430,16 +432,25 @@ public sealed class SettingsService : ISettingsService, IDisposable
         settings.Sstv.InputDeviceId ??= "";
         settings.Sstv.InputDeviceDisplayName ??= "";
         settings.Sstv.ForcedMode ??= "";
+        settings.CwDecoder ??= new OscarWatch.Core.CwDecode.CwDecodeSettings();
+        settings.CwDecoder.Normalise();
         settings.Terminal ??= new OscarWatch.Core.Terminal.TerminalSettings();
         settings.Terminal.Normalise();
         settings.QsoLogbook ??= new QsoLogbookSettings();
         settings.QsoLogbook.HistoryColumnWidthsPx ??=
             new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        settings.QsoLogbook.CwKeyer ??= new OscarWatch.Core.Cw.CwKeyerSettings();
+        settings.QsoLogbook.CwKeyer.Normalise();
         settings.TleSource ??= new TleSourceSettings();
         settings.TleSource = TleSourceResolver.NormalizeLegacyCustomUrl(settings.TleSource);
         settings.TransponderConflictAcknowledgments ??= [];
         settings.EnabledSatelliteNames ??= [];
         settings.EnabledSatelliteNoradIds ??= [];
+        settings.UpcomingPassesMinDurationMinutes = Math.Clamp(settings.UpcomingPassesMinDurationMinutes, 0, 120);
+        settings.PassFilterMinDurationMinutes = Math.Clamp(settings.PassFilterMinDurationMinutes, 0, 120);
+        settings.PassPlannerPredictionHours = Math.Clamp(settings.PassPlannerPredictionHours, 6, 168);
+        if (settings.PassPlannerMinElevationDeg is { } plannerMinElevation)
+            settings.PassPlannerMinElevationDeg = Math.Clamp(plannerMinElevation, 0, 90);
         MigrateGroundStationCallsignToSavedStations(settings);
     }
 
@@ -472,6 +483,52 @@ public sealed class SettingsService : ISettingsService, IDisposable
                 return;
 
             settings.EnabledSatelliteNoradIds = [];
+        }
+        catch (JsonException)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Planner lookahead used to share <see cref="AppSettings.PassPredictionHours"/> with the sidebar.
+    /// Copy that value once so an existing window is not reset to the new-install default.
+    /// </summary>
+    private static void MigratePassPlannerPredictionHours(string json, AppSettings settings)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.TryGetProperty("passPlannerPredictionHours", out _))
+                return;
+
+            settings.PassPlannerPredictionHours = settings.PassPredictionHours;
+        }
+        catch (JsonException)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Hold through fades and adaptive bandwidth used to default off, so older files saved them as
+    /// false without the operator choosing that. Turn them on once for files from before the change.
+    /// </summary>
+    private static void MigrateSstvFadeDefaults(string json, AppSettings settings)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            if (!doc.RootElement.TryGetProperty("sstv", out var sstv) || sstv.ValueKind != JsonValueKind.Object)
+                return;
+
+            if (sstv.TryGetProperty("fadeDefaultsVersion", out var version)
+                && version.ValueKind == JsonValueKind.Number
+                && version.TryGetInt32(out var v)
+                && v >= OscarWatch.Core.Sstv.SstvSettings.CurrentFadeDefaultsVersion)
+                return;
+
+            settings.Sstv.HoldThroughFades = true;
+            settings.Sstv.AdaptiveBandwidth = true;
+            settings.Sstv.FadeDefaultsVersion = OscarWatch.Core.Sstv.SstvSettings.CurrentFadeDefaultsVersion;
         }
         catch (JsonException)
         {

@@ -1,3 +1,4 @@
+using OscarWatch.Core.Cw;
 using OscarWatch.Core.Models;
 using OscarWatch.Core.Radio;
 using Serilog;
@@ -19,6 +20,7 @@ public sealed class KenwoodTs2000Driver : IRigDriver
     private readonly int _satModeRetryDelayMs;
     private readonly int _linkHoldPollIntervalMs;
     private readonly bool _traceEnabled;
+    private readonly Func<DateTime> _utcNow;
     private DateTime _lastLinkHoldPollUtc = DateTime.MinValue;
     private bool _satelliteMode;
     private bool _satelliteLayoutConfirmed;
@@ -59,7 +61,8 @@ public sealed class KenwoodTs2000Driver : IRigDriver
         int satModeRetryCount = 3,
         int satModeRetryDelayMs = 200,
         int? linkHoldPollIntervalMs = null,
-        bool traceEnabled = true)
+        bool traceEnabled = true,
+        Func<DateTime>? utcNow = null)
     {
         _transport = transport;
         _catDelayMs = catDelayMs;
@@ -68,6 +71,7 @@ public sealed class KenwoodTs2000Driver : IRigDriver
         _satModeRetryDelayMs = satModeRetryDelayMs;
         _linkHoldPollIntervalMs = linkHoldPollIntervalMs ?? KenwoodCatCodec.SatelliteLinkHoldPollIntervalMs;
         _traceEnabled = traceEnabled;
+        _utcNow = utcNow ?? (() => DateTime.UtcNow);
     }
 
     public RigType RigType => RigType.KenwoodTs2000;
@@ -368,7 +372,7 @@ public sealed class KenwoodTs2000Driver : IRigDriver
 
         if (_linkHoldPollIntervalMs > 0
             && _lastLinkHoldPollUtc != DateTime.MinValue
-            && DateTime.UtcNow - _lastLinkHoldPollUtc < TimeSpan.FromMilliseconds(_linkHoldPollIntervalMs))
+            && _utcNow() - _lastLinkHoldPollUtc < TimeSpan.FromMilliseconds(_linkHoldPollIntervalMs))
         {
             return;
         }
@@ -383,7 +387,7 @@ public sealed class KenwoodTs2000Driver : IRigDriver
             return;
 
         _transport.Transact(KenwoodCatCodec.BuildReadFrequencyCommand('A'), _catDelayMs);
-        _lastLinkHoldPollUtc = DateTime.UtcNow;
+        _lastLinkHoldPollUtc = _utcNow();
     }
 
     public void SetSatelliteMode(bool on)
@@ -421,6 +425,18 @@ public sealed class KenwoodTs2000Driver : IRigDriver
             Thread.Sleep(_satModeSettlingDelayMs);
         RestoreMemoryVfoIfNeeded();
     }
+
+    public bool SupportsCwText => true;
+
+    public bool TrySendCwText(CwMessage piece) =>
+        _transport.IsOpen && !piece.IsEmpty
+        && _transport.SendFireAndForget(KenwoodCwCodec.BuildSendCommand(piece), _catDelayMs);
+
+    public bool TryStopCwText() =>
+        _transport.IsOpen && _transport.SendFireAndForget(KenwoodCwCodec.BuildStopCommand(ts2000: true), _catDelayMs);
+
+    public bool TrySetCwSpeed(int wpm) =>
+        _transport.IsOpen && _transport.SendFireAndForget(KenwoodCwCodec.BuildSpeedCommand(wpm, ts2000: true), _catDelayMs);
 
     /// <summary>
     /// Closes CAT only. <see cref="RigController"/> sends the satellite mode exit first when

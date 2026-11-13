@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">text/microsoft-resx</resheader>
+  <resheader name="version">2.0</resheader>
+  <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</resheader>
+  <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</resheader>
+  <data name="Window.Title">
+    <value>OscarWatch-Fehlerbehebung</value>
+  </data>
+  <data name="Intro">
+    <value>Verwenden Sie dieses Werkzeug, wenn OscarWatch nicht startet oder sein Fenster nicht erscheint. Es funktioniert auch, wenn OscarWatch nicht läuft.</value>
+  </data>
+  <data name="Section.Status">
+    <value>Status</value>
+  </data>
+  <data name="Action.Refresh">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="Label.Process">
+    <value>OscarWatch-Prozess</value>
+  </data>
+  <data name="Label.Application">
+    <value>Anwendung</value>
+  </data>
+  <data name="Label.System">
+    <value>System</value>
+  </data>
+  <data name="Label.DataFolder">
+    <value>OscarWatch-Ordner</value>
+  </data>
+  <data name="Label.LogFolder">
+    <value>Protokollordner</value>
+  </data>
+  <data name="Label.LatestLog">
+    <value>Neuestes Protokoll</value>
+  </data>
+  <data name="Label.Settings">
+    <value>Einstellungsdatei</value>
+  </data>
+  <data name="Label.Radio">
+    <value>Funkgerät</value>
+  </data>
+  <data name="Label.Rotator">
+    <value>Rotor</value>
+  </data>
+  <data name="Label.Gps">
+    <value>GPS</value>
+  </data>
+  <data name="Process.NotRunning">
+    <value>Läuft nicht</value>
+  </data>
+  <data name="Process.Running">
+    <value>Läuft (Prozess {0}, gestartet {1})</value>
+  </data>
+  <data name="Application.Found">
+    <value>Version {0}</value>
+  </data>
+  <data name="Application.NotFound">
+    <value>OscarWatch wurde nicht neben der Fehlerbehebung gefunden.</value>
+  </data>
+  <data name="Log.None">
+    <value>Keine Protokolldateien. OscarWatch wurde möglicherweise beendet, bevor die Protokollierung beginnen konnte.</value>
+  </data>
+  <data name="Log.Latest">
+    <value>{0}, geschrieben {1}</value>
+  </data>
+  <data name="Settings.Missing">
+    <value>Nicht gefunden. OscarWatch legt beim Start eine Datei mit Standardeinstellungen an.</value>
+  </data>
+  <data name="Settings.Readable">
+    <value>Lesbar, geschrieben {0}</value>
+  </data>
+  <data name="Settings.Unreadable">
+    <value>Kann nicht gelesen werden: {0}</value>
+  </data>
+  <data name="Device.On">
+    <value>Ein ({0})</value>
+  </data>
+  <data name="Device.OnNoTarget">
+    <value>Ein</value>
+  </data>
+  <data name="Device.Off">
+    <value>Aus</value>
+  </data>
+  <data name="Device.Unknown">
+    <value>Nicht festgelegt</value>
+  </data>
+  <data name="Section.RecentErrors">
+    <value>Letzte Fehler im Protokoll</value>
+  </data>
+  <data name="Errors.None">
+    <value>Keine Fehler im neuesten Protokoll.</value>
+  </data>
+  <data name="Section.Files">
+    <value>Dateien und Diagnose</value>
+  </data>
+  <data name="Files.Hint">
+    <value>Die Diagnose enthält das neueste Protokoll, Ihre Einstellungen ohne Passwörter und API-Schlüssel sowie Systemangaben. Senden Sie sie mit einer Beschreibung des Problems an den Support.</value>
+  </data>
+  <data name="Action.OpenDataFolder">
+    <value>OscarWatch-Ordner öffnen</value>
+  </data>
+  <data name="Action.OpenLogFolder">
+    <value>Protokollordner öffnen</value>
+  </data>
+  <data name="Action.CopyDiagnostics">
+    <value>Diagnose kopieren</value>
+  </data>
+  <data name="Action.SaveDiagnostics">
+    <value>Diagnosedatei speichern</value>
+  </data>
+  <data name="Section.Process">
+    <value>OscarWatch hängt</value>
+  </data>
+  <data name="Process.Hint">
+    <value>Wenn OscarWatch läuft, aber kein Fenster erscheint, beenden Sie es und starten Sie es neu.</value>
+  </data>
+  <data name="Action.CloseOscarWatch">
+    <value>OscarWatch beenden</value>
+  </data>
+  <data name="Action.StartOscarWatch">
+    <value>OscarWatch starten</value>
+  </data>
+  <data name="Section.Hardware">
+    <value>Funkgerät, Rotor und GPS</value>
+  </data>
+  <data name="Hardware.Hint">
+    <value>Wenn OscarWatch beim Verbinden hängt oder sich schließt, schalten Sie diese aus. Ports und andere Einstellungen bleiben erhalten, sodass Sie sie in den Einstellungen wieder einschalten können.</value>
+  </data>
+  <data name="Action.DisableHardware">
+    <value>Funkgerät, Rotor und GPS ausschalten</value>
+  </data>
+  <data name="Section.Reset">
+    <value>Einstellungen zurücksetzen</value>
+  </data>
+  <data name="Reset.Hint">
+    <value>Letzter Ausweg. Verschiebt settings.json und ihre Sicherungen in einen datierten Ordner, sodass OscarWatch mit Standardeinstellungen startet. Es wird nichts gelöscht.</value>
+  </data>
+  <data name="Action.PutSettingsAside">
+    <value>Einstellungen beiseitelegen</value>
+  </data>
+  <data name="Confirm.Continue">
+    <value>Fortfahren</value>
+  </data>
+  <data name="Confirm.Cancel">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Confirm.CloseOscarWatch">
+    <value>OscarWatch jetzt beenden? Nicht gespeicherte Änderungen können verloren gehen.</value>
+  </data>
+  <data name="Confirm.CloseFirst">
+    <value>OscarWatch läuft. Es muss zuerst beendet werden, sonst könnte es diese Änderung beim Beenden rückgängig machen. OscarWatch beenden und fortfahren?</value>
+  </data>
+  <data name="Confirm.DisableHardware">
+    <value>Diese Verbindungen in settings.json ausschalten?
+
+Funkgerät: {0}
+Rotor: {1}
+GPS: {2}</value>
+  </data>
+  <data name="Confirm.PutSettingsAside">
+    <value>settings.json und ihre Sicherungen nach {0} verschieben? OscarWatch startet dann mit Standardeinstellungen.</value>
+  </data>
+  <data name="Result.Closed">
+    <value>OscarWatch wurde beendet.</value>
+  </data>
+  <data name="Result.CloseFailed">
+    <value>OscarWatch konnte nicht beendet werden: {0}</value>
+  </data>
+  <data name="Result.StillRunning">
+    <value>OscarWatch läuft noch, daher wurde nichts geändert.</value>
+  </data>
+  <data name="Result.Started">
+    <value>OscarWatch wurde gestartet.</value>
+  </data>
+  <data name="Result.StartFailed">
+    <value>OscarWatch konnte nicht gestartet werden: {0}</value>
+  </data>
+  <data name="Result.AlreadyRunning">
+    <value>OscarWatch läuft bereits.</value>
+  </data>
+  <data name="Result.HardwareDisabled">
+    <value>Funkgerät, Rotor und GPS sind jetzt aus. Starten Sie OscarWatch, um zu prüfen, ob es sich öffnet.</value>
+  </data>
+  <data name="Result.HardwareAlreadyOff">
+    <value>Funkgerät, Rotor und GPS sind bereits aus.</value>
+  </data>
+  <data name="Result.SettingsMissing">
+    <value>Es gibt keine settings.json, die geändert werden könnte.</value>
+  </data>
+  <data name="Result.SettingsUnreadable">
+    <value>settings.json kann nicht gelesen werden und wurde daher nicht geändert.</value>
+  </data>
+  <data name="Result.SettingsAside">
+    <value>Einstellungen nach {0} verschoben.</value>
+  </data>
+  <data name="Result.NothingToMove">
+    <value>Es gibt keine Einstellungsdateien zum Verschieben.</value>
+  </data>
+  <data name="Result.DiagnosticsCopied">
+    <value>Diagnose in die Zwischenablage kopiert.</value>
+  </data>
+  <data name="Result.DiagnosticsSaved">
+    <value>Diagnose gespeichert unter {0}.</value>
+  </data>
+  <data name="Result.Failed">
+    <value>Das hat nicht funktioniert: {0}</value>
+  </data>
+  <data name="Result.FolderOpenFailed">
+    <value>Der Ordner konnte nicht geöffnet werden: {0}</value>
+  </data>
+  <data name="Label.EchoCalibrations">
+    <value>FT4-Echo-Kalibrierungen</value>
+  </data>
+  <data name="Echo.None">
+    <value>Keine gespeichert</value>
+  </data>
+  <data name="Echo.Count">
+    <value>{0} gespeichert</value>
+  </data>
+  <data name="Section.Echo">
+    <value>FT4-Echo-Kalibrierungen</value>
+  </data>
+  <data name="Echo.Hint">
+    <value>Wenn FT4 nach einem falschen Echo neben der Frequenz sendet, löschen Sie die gespeicherten Uplink-Korrekturen. OscarWatch kann sie aus Ihren nächsten Echos neu lernen.</value>
+  </data>
+  <data name="Action.ClearEchoCalibrations">
+    <value>FT4-Echo-Kalibrierungen löschen</value>
+  </data>
+  <data name="Confirm.ClearEchoCalibrations">
+    <value>Alle {0} gespeicherten FT4-Echo-Kalibrierungen löschen? Jeder Satellit und Transponder hat danach keine Uplink-Korrektur mehr.</value>
+  </data>
+  <data name="Result.EchoCleared">
+    <value>FT4-Echo-Kalibrierungen gelöscht. OscarWatch kann sie aus Ihren nächsten Echos neu lernen.</value>
+  </data>
+  <data name="Result.EchoNoneSaved">
+    <value>Es gibt keine FT4-Echo-Kalibrierungen zum Löschen.</value>
+  </data>
+  <data name="Save.Title">
+    <value>Diagnosedatei speichern</value>
+  </data>
+  <data name="Tab.Status">
+    <value>Status</value>
+  </data>
+  <data name="Tab.Gs232">
+    <value>Rotor</value>
+  </data>
+  <data name="Gs232.Hint">
+    <value>Prüft einen Yaesu-GS-232-kompatiblen Rotorcontroller direkt und protokolliert jedes gesendete und empfangene Byte, auch Antworten, die OscarWatch sonst ignoriert. OscarWatch muss geschlossen sein, damit der COM-Port frei ist. Speichern Sie dieses Protokoll und hängen Sie es an, wenn Sie ein Rotorproblem melden.</value>
+  </data>
+  <data name="Gs232.Label.Status">
+    <value>Test</value>
+  </data>
+  <data name="Gs232.Label.Port">
+    <value>COM-Port</value>
+  </data>
+  <data name="Gs232.Label.Baud">
+    <value>Baudrate</value>
+  </data>
+  <data name="Gs232.Label.AzimuthOnly">
+    <value>Nur Azimut</value>
+  </data>
+  <data name="Gs232.Label.Position">
+    <value>Letzte Position</value>
+  </data>
+  <data name="Gs232.Yes">
+    <value>Ja</value>
+  </data>
+  <data name="Gs232.No">
+    <value>Nein</value>
+  </data>
+  <data name="Gs232.SettingsUnavailable">
+    <value>Nicht verfügbar. settings.json fehlt oder kann nicht gelesen werden, daher ist der Rotor-Port unbekannt.</value>
+  </data>
+  <data name="Gs232.NotGs232">
+    <value>Nicht verfügbar. Der Rotor in den Einstellungen ist kein Yaesu GS-232 an einem COM-Port.</value>
+  </data>
+  <data name="Gs232.NoPort">
+    <value>Nicht verfügbar. Für den Rotor ist in den Einstellungen kein COM-Port eingetragen.</value>
+  </data>
+  <data name="Gs232.Ready">
+    <value>Bereit. Verwendet die in OscarWatch gespeicherten Rotoreinstellungen.</value>
+  </data>
+  <data name="Gs232.PositionUnknown">
+    <value>Noch nicht gelesen</value>
+  </data>
+  <data name="Gs232.Position">
+    <value>Azimut {0}°, Elevation {1}°</value>
+  </data>
+  <data name="Gs232.PositionAzimuth">
+    <value>Azimut {0}°</value>
+  </data>
+  <data name="Gs232.PositionElevation">
+    <value>Elevation {0}°</value>
+  </data>
+  <data name="Gs232.PositionNone">
+    <value>Keine Position gemeldet</value>
+  </data>
+  <data name="Action.Gs232Read">
+    <value>Position lesen</value>
+  </data>
+  <data name="Action.Gs232Stop">
+    <value>Stopp</value>
+  </data>
+  <data name="Action.Gs232Move">
+    <value>5 Grad drehen</value>
+  </data>
+  <data name="Gs232.MoveHint">
+    <value>„5 Grad drehen“ dreht die Antenne nach einer Bestätigung um 5° im Azimut und behält die Elevation bei. Die Schaltfläche ist verfügbar, sobald „Position lesen“ den Azimut geliefert hat (und die Elevation, außer bei Controllern nur für Azimut).</value>
+  </data>
+  <data name="Gs232.LogHeading">
+    <value>Sitzungsprotokoll</value>
+  </data>
+  <data name="Gs232.LogEmpty">
+    <value>Noch nichts gesendet. Jede Schaltfläche öffnet den COM-Port, protokolliert jedes Byte und schließt ihn wieder.</value>
+  </data>
+  <data name="Action.Gs232CopyLog">
+    <value>Protokoll kopieren</value>
+  </data>
+  <data name="Action.Gs232SaveLog">
+    <value>Protokoll speichern</value>
+  </data>
+  <data name="Confirm.Gs232Move">
+    <value>{0} an den Rotor an {1} senden? Die Antenne dreht von Azimut {2}° auf {3}°. Prüfen Sie, dass nichts im Weg ist.</value>
+  </data>
+  <data name="Result.Gs232Position">
+    <value>Position gelesen: {0}.</value>
+  </data>
+  <data name="Result.Gs232NoPosition">
+    <value>Der Controller hat keine Position gemeldet. Das Sitzungsprotokoll zeigt, was zurückkam.</value>
+  </data>
+  <data name="Result.Gs232Stopped">
+    <value>Stopp gesendet. Das Sitzungsprotokoll zeigt eine eventuelle Antwort.</value>
+  </data>
+  <data name="Result.Gs232Moved">
+    <value>{0} gesendet. Position danach: {1}.</value>
+  </data>
+  <data name="Result.Gs232PortFailed">
+    <value>{0} konnte nicht verwendet werden: {1}</value>
+  </data>
+  <data name="Result.Gs232LogCopied">
+    <value>Sitzungsprotokoll in die Zwischenablage kopiert.</value>
+  </data>
+  <data name="Result.Gs232LogSaved">
+    <value>Sitzungsprotokoll gespeichert unter {0}.</value>
+  </data>
+  <data name="Section.Findings">
+    <value>Was die Fehlersuche gefunden hat</value>
+  </data>
+  <data name="Findings.Hint">
+    <value>Eine verständliche Auswertung des Status oben. Ports werden nur nachgeschlagen, nie geöffnet, daher wird nichts an Ihr Funkgerät gesendet.</value>
+  </data>
+  <data name="Findings.Level.Problem">
+    <value>Problem</value>
+  </data>
+  <data name="Findings.Level.Check">
+    <value>Prüfen</value>
+  </data>
+  <data name="Findings.Level.Note">
+    <value>Hinweis</value>
+  </data>
+  <data name="Findings.NotResponding">
+    <value>OscarWatch läuft, aber Windows meldet, dass es nicht reagiert. Erstellen Sie einen Hängerbericht, bevor Sie es schließen.</value>
+  </data>
+  <data name="Findings.SeveralRunning">
+    <value>{0} Instanzen von OscarWatch laufen. Schließen Sie alle und starten Sie dann eine.</value>
+  </data>
+  <data name="Findings.SettingsMissing">
+    <value>Es gibt noch keine settings.json. OscarWatch legt beim Start eine mit Standardeinstellungen an.</value>
+  </data>
+  <data name="Findings.SettingsUnreadable">
+    <value>settings.json kann nicht gelesen werden, daher startet OscarWatch eventuell mit Standardeinstellungen. Stellen Sie eine Sicherung wieder her oder legen Sie die Einstellungen beiseite.</value>
+  </data>
+  <data name="Findings.NoPort">
+    <value>{0} ist eingeschaltet, aber in den Einstellungen ist kein Port gewählt.</value>
+  </data>
+  <data name="Findings.PortMissing">
+    <value>{0} ist eingeschaltet und auf {1} eingestellt, aber {1} ist derzeit nicht auf diesem Computer vorhanden. Prüfen Sie Kabel, Stromversorgung und Treiber oder wählen Sie den Port in den Einstellungen neu.</value>
+  </data>
+  <data name="Findings.PortPresent">
+    <value>{0} ist auf {1} eingestellt, der auf diesem Computer vorhanden ist. Das zeigt nur, dass der Port existiert, nicht dass das Gerät antwortet.</value>
+  </data>
+  <data name="Findings.PortPresentGs232">
+    <value>{0} ist auf {1} eingestellt, der auf diesem Computer vorhanden ist. Das zeigt nur, dass der Port existiert, nicht dass die Steuerung antwortet. Auf dem Reiter Rotor können Sie sie testen.</value>
+  </data>
+  <data name="Findings.PortShared">
+    <value>{0} und {1} sind beide auf {2} eingestellt. Jedes Gerät braucht einen eigenen Port.</value>
+  </data>
+  <data name="Findings.RecentErrors">
+    <value>Das neueste Protokoll enthält {0} Fehler. Die jüngsten stehen weiter unten.</value>
+  </data>
+  <data name="Findings.NoneFound">
+    <value>In den Einstellungen und im neuesten Protokoll ist nichts offensichtlich falsch.</value>
+  </data>
+  <data name="Hardware.Radio">
+    <value>Funkgerät</value>
+  </data>
+  <data name="Hardware.RadioDownlink">
+    <value>Downlink-Funkgerät</value>
+  </data>
+  <data name="Hardware.RadioUplink">
+    <value>Uplink-Funkgerät</value>
+  </data>
+  <data name="Hardware.Rotator">
+    <value>Rotor</value>
+  </data>
+  <data name="Hardware.RotatorElevation">
+    <value>Rotor Elevation</value>
+  </data>
+  <data name="Hardware.Gps">
+    <value>GPS</value>
+  </data>
+  <data name="Freeze.Hint">
+    <value>Wenn OscarWatch hängt, erstellen Sie vor dem Schließen einen Hängerbericht. Er speichert eine Momentaufnahme dessen, was OscarWatch gerade tat, zusammen mit den neuesten Protokollen in einer ZIP-Datei für den Support. Die Momentaufnahme enthält einen Teil des Speichers von OscarWatch, senden Sie sie also nur an vertrauenswürdige Personen.</value>
+  </data>
+  <data name="Action.CaptureFreezeReport">
+    <value>Hängerbericht erstellen</value>
+  </data>
+  <data name="Result.FreezeCapturing">
+    <value>Hängerbericht wird erstellt. Das kann eine Minute dauern…</value>
+  </data>
+  <data name="Result.FreezeSaved">
+    <value>Hängerbericht gespeichert unter {0} ({1} MB). OscarWatch läuft weiter.</value>
+  </data>
+  <data name="Result.FreezeSavedNoDump">
+    <value>Hängerbericht gespeichert unter {0} ({1} MB), aber ohne vollständige Momentaufnahme: {2}</value>
+  </data>
+  <data name="Section.Restore">
+    <value>Einstellungen wiederherstellen</value>
+  </data>
+  <data name="Restore.Hint">
+    <value>Eine Einstellungsdatei zurückholen, die OscarWatch oder die Fehlersuche aufbewahrt hat. Die aktuellen Einstellungen werden vorher gesichert, das lässt sich also rückgängig machen.</value>
+  </data>
+  <data name="Backup.None">
+    <value>Keine Sicherungen gefunden.</value>
+  </data>
+  <data name="Backup.Count">
+    <value>{0} Sicherungen gefunden, neueste zuerst.</value>
+  </data>
+  <data name="Backup.Item">
+    <value>{0}, gespeichert {1}, {2}</value>
+  </data>
+  <data name="Backup.ItemNoCallsign">
+    <value>{0}, gespeichert {1}</value>
+  </data>
+  <data name="Action.RestoreBackup">
+    <value>Ausgewählte Sicherung wiederherstellen</value>
+  </data>
+  <data name="Confirm.RestoreBackup">
+    <value>settings.json durch {0} (gespeichert {1}) ersetzen? Die aktuellen Einstellungen werden vorher gesichert.</value>
+  </data>
+  <data name="Result.BackupRestored">
+    <value>{0} wiederhergestellt. Die vorherigen Einstellungen wurden gesichert. Starten Sie OscarWatch, um sie zu verwenden.</value>
+  </data>
+  <data name="Result.BackupMissing">
+    <value>Diese Sicherung existiert nicht mehr.</value>
+  </data>
+  <data name="Result.BackupUnreadable">
+    <value>Diese Sicherung kann nicht gelesen werden und wurde nicht wiederhergestellt.</value>
+  </data>
+  <data name="Trace.Heading">
+    <value>Rotorverkehr von OscarWatch aufzeichnen</value>
+  </data>
+  <data name="Trace.Hint">
+    <value>Bittet OscarWatch, 30 Minuten lang jeden Rotorbefehl, jede Antwort, jede Zeitüberschreitung und jede Wiederholung aufzuzeichnen, während Sie es normal verwenden, zum Beispiel ein Drehen im Standby oder ein Überflug. Benötigt OscarWatch 1.1.7 oder neuer. Die Aufzeichnung beginnt, sobald OscarWatch das nächste Mal mit dem Rotor spricht.</value>
+  </data>
+  <data name="Trace.Label.Status">
+    <value>Aufzeichnung</value>
+  </data>
+  <data name="Trace.Label.File">
+    <value>Neueste Datei</value>
+  </data>
+  <data name="Trace.Recording">
+    <value>An bis {0}</value>
+  </data>
+  <data name="Trace.NotRecording">
+    <value>Aus</value>
+  </data>
+  <data name="Trace.NoFile">
+    <value>Noch keine</value>
+  </data>
+  <data name="Trace.LatestFile">
+    <value>{0}, geschrieben {1}, {2} KB</value>
+  </data>
+  <data name="Trace.TailHeading">
+    <value>Ende der neuesten Aufzeichnung</value>
+  </data>
+  <data name="Trace.TailEmpty">
+    <value>Noch keine Aufzeichnung.</value>
+  </data>
+  <data name="Action.TraceStart">
+    <value>Aufzeichnung starten</value>
+  </data>
+  <data name="Action.TraceStop">
+    <value>Aufzeichnung beenden</value>
+  </data>
+  <data name="Action.TraceCopy">
+    <value>Aufzeichnung kopieren</value>
+  </data>
+  <data name="Result.TraceStarted">
+    <value>Aufzeichnung für {0} Minuten angefordert. Verwenden Sie OscarWatch normal und beenden Sie die Aufzeichnung dann hier.</value>
+  </data>
+  <data name="Result.TraceStopped">
+    <value>Aufzeichnung beendet.</value>
+  </data>
+  <data name="Result.TraceCopied">
+    <value>{0} in die Zwischenablage kopiert.</value>
+  </data>
+  <data name="Gs232.Heading">
+    <value>GS-232-Steuerungstest</value>
+  </data>
+</root>

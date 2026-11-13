@@ -35,6 +35,7 @@ public sealed class SstvDecoderOptions
     /// <summary>
     /// Weigh every sample by the subcarrier power, so the envelope dips where FM clicks and
     /// fades happen count for little in sync detection, the VIS and pixel averages.
+    /// Off by default: on recorded passes it lets noise start many short sync-only pictures.
     /// </summary>
     public bool ImpulseSuppression { get; set; }
 
@@ -42,26 +43,51 @@ public sealed class SstvDecoderOptions
     /// Once the mode is known, demodulate the picture again through a filter only as wide as
     /// the mode needs, which lets less noise through for the slower modes.
     /// </summary>
-    public bool AdaptiveBandwidth { get; set; }
+    public bool AdaptiveBandwidth { get; set; } = true;
 
     /// <summary>
     /// Score line syncs on how much of the subcarrier power is at the sync tone as well as on
     /// the demodulated frequency. Tone energy holds up better in FM clicks.
     /// </summary>
-    public bool ToneSync { get; set; }
+    public bool ToneSync { get; set; } = true;
+
+    /// <summary>
+    /// Read a VIS header from the power of each bit's tone when noise has buried its leader.
+    /// Every bit must be clearly one tone and the mode one the station is known to send.
+    /// </summary>
+    public bool ToneVis { get; set; } = true;
+
+    /// <summary>
+    /// When fades take out too many syncs for a regular run of pulses, add up the syncs at each
+    /// mode's line period over several lines, so the picture is still found from the rest.
+    /// </summary>
+    public bool StackedSyncSearch { get; set; } = true;
+
+    /// <summary>
+    /// Weigh each sample of a pixel by the subcarrier power, so the envelope dips where FM
+    /// clicks happen count for little. Only the picture is weighted, not the search.
+    /// </summary>
+    public bool WeightedPixels { get; set; } = true;
+
+    /// <summary>
+    /// Fade pixels towards a dim grey where the subcarrier envelope says the signal is mostly noise, so
+    /// noise reads as grey grain rather than full-strength random colour. Pictures down to about 4 dB
+    /// carrier to noise keep their colour.
+    /// </summary>
+    public bool NoiseFade { get; set; } = true;
 
     /// <summary>
     /// Once the line timing is well established, keep a picture going through a longer loss
     /// of signal (a deep fade or the antenna pointing away), and give a picture announced by
     /// a VIS header longer to find its first syncs.
     /// </summary>
-    public bool HoldThroughFades { get; set; }
+    public bool HoldThroughFades { get; set; } = true;
 
     /// <summary>
     /// Follow the Doppler time compression given in <see cref="SstvDecoder.TimeCompressionPpm"/>
     /// when predicting where the next lines start, so the line timing stays right through fades.
     /// </summary>
-    public bool DopplerLinePrior { get; set; }
+    public bool DopplerLinePrior { get; set; } = true;
 
     /// <summary>
     /// Modes the satellite is known to send, or null for no preference. Pictures found without
@@ -81,6 +107,21 @@ public sealed class SstvDecoderOptions
     /// <see cref="SstvDecoder.MaxRepairedRun"/>) by blending the good lines either side.
     /// </summary>
     public bool RepairBadLines { get; set; }
+
+    /// <summary>
+    /// When the picture is finished, take each pixel from its neighbours on the rows above and
+    /// below as well as along the row (a 3 × 3 median). Less speckle on weak pictures, less
+    /// fine detail on all.
+    /// </summary>
+    public bool SmoothAcrossLines { get; set; }
+
+    /// <summary>
+    /// When the picture is finished, smooth only the rows that are noisy: each row moves towards its 3 × 3 median
+    /// by how noisy its neighbourhood is, measured from the picture itself. Strong pictures are left alone and
+    /// weak ones get the speckle taken out, so unlike <see cref="SmoothAcrossLines"/> it can stay on. Not used
+    /// when <see cref="SmoothAcrossLines"/> is on, which smooths every row.
+    /// </summary>
+    public bool AdaptiveSmoothing { get; set; } = true;
 }
 
 public sealed class SstvImageStartedEventArgs(SstvMode mode, bool fromVis, double offsetHz) : EventArgs
@@ -138,8 +179,6 @@ public sealed class SstvDecoder
     private const int FalseStartMinLocked = 4;
     private const double MaxOffsetHz = 500;
     private const double LostSignalSeconds = 8;
-    /// <summary>Lost-signal time with <see cref="SstvDecoderOptions.HoldThroughFades"/> once the grid is established.</summary>
-    private const double HeldLostSignalSeconds = 20;
     /// <summary>Locked lines after which the line grid counts as established.</summary>
     private const int EstablishedGridLines = 16;
     /// <summary>With <see cref="SstvDecoderOptions.HoldThroughFades"/>, a VIS picture gets this many lines to find its first syncs.</summary>
@@ -150,6 +189,17 @@ public sealed class SstvDecoder
     private const double AfcMinScore = 0.6;
     /// <summary>A best sync score at or below this means nothing pulse-shaped was there at all.</summary>
     private const double NoPulseScore = 0.15;
+    /// <summary>Missed lines after which a sync off the established grid needs the next line to confirm it.</summary>
+    private const int ReacquireMisses = 3;
+    /// <summary>How far a sync may sit from the grid (or from one period after a held sync) and still agree.</summary>
+    private const double ReacquireToleranceMs = 2;
+    /// <summary>A sync this clean is trusted off the grid without waiting for the next line.</summary>
+    private const double ReacquireStrongScore = 0.8;
+    /// <summary>
+    /// With <see cref="SstvDecoderOptions.HoldThroughFades"/> and an established grid, the longest
+    /// fade held before the picture is closed early. Lines after the last sync are dropped then.
+    /// </summary>
+    private const double MaxHeldFadeSeconds = 45;
     /// <summary>Bandwidth each side of 1900 Hz of the demodulator used for the VIS, sync and search.</summary>
     private const double SearchBandwidthHz = 1200;
 
@@ -163,9 +213,9 @@ public sealed class SstvDecoder
     private readonly List<float> _envelope = new(4096);
     private readonly List<float> _weights = new(4096);
     private readonly SstvEnvelopeWeigher _weigher = new(InternalRate);
-    /// <summary>Resampled audio, kept alongside <see cref="_buffer"/> (same indices) for demodulating again.</summary>
-    private readonly SstvSignalBuffer _raw = new();
-    /// <summary>Search demodulator I/Q for <see cref="SstvDecoderOptions.ToneSync"/>, same indices as <see cref="_buffer"/>.</summary>
+    /// <summary>Resampled audio, kept alongside <see cref="_buffer"/> (same indices) for demodulating again. Read by index only.</summary>
+    private readonly SstvRawAudioBuffer _raw = new();
+    /// <summary>Search demodulator I/Q for the tone power tests, same indices as <see cref="_buffer"/>.</summary>
     private readonly SstvBasebandBuffer _baseband = new();
     private readonly List<float> _pictureValues = new(4096);
     private readonly List<float> _pictureEnvelope = new(4096);
@@ -191,8 +241,20 @@ public sealed class SstvDecoder
     private int _nextLine;
     private int _missesSinceLock;
     private int _lastLockedLine = -1;
+    /// <summary>Line whose sync is held until the next line confirms it, or −1.</summary>
+    private int _pendingLine = -1;
+    private double _pendingPosition;
+    private double _pendingScore;
     private double _afcHz;
+    // A step in the line timing found after a run of missed lines, until the next line agrees with it. The
+    // state taken before it is kept so that a step that does not hold up can be taken back.
+    private int _stepStartLine = -1;
+    private int _stepCheckLine = -1;
+    private int _stepLockedLine = -1;
+    private int _stepPriorLastLocked = -1;
+    private int _stepPriorMisses;
     private bool _fromVis;
+    private bool _visFromTonePower;
     private long _imageStartIndex;
     private double _feedForwardHz;
     private double _timeCompressionPpm;
@@ -379,18 +441,30 @@ public sealed class SstvDecoder
     /// <summary>Lines without a sync after which the transmission is taken to have ended.</summary>
     private int LostSignalLines(SstvMode mode)
     {
-        var seconds = Options.HoldThroughFades && _tracker is { AcceptedCount: >= EstablishedGridLines }
-            ? HeldLostSignalSeconds
-            : LostSignalSeconds;
-        return Math.Max(16, (int)Math.Ceiling(seconds * 1000 / mode.LineMs));
+        var seconds = HoldingGrid ? MaxHeldFadeSeconds : LostSignalSeconds;
+        return LinesFor(mode, seconds);
     }
+
+    private bool HoldingGrid => Options.HoldThroughFades && _tracker is { AcceptedCount: >= EstablishedGridLines };
+
+    private static int LinesFor(SstvMode mode, double seconds) => Math.Max(16, (int)Math.Ceiling(seconds * 1000 / mode.LineMs));
+
+    /// <summary>
+    /// A held picture that reached its last line without the signal coming back had really
+    /// ended at its last sync (the pass or the sender stopped), so the noise drawn since then
+    /// is dropped, as it would have been without the hold.
+    /// </summary>
+    private bool EndedInHeldFade(SstvMode mode) =>
+        HoldingGrid && _missesSinceLock >= LinesFor(mode, LostSignalSeconds);
 
     private bool IsFalseStart()
     {
         // A mode this satellite is not known to send needs clearly more locked lines.
         if (Options.ExpectedModes is { Count: > 0 } expected && !expected.Contains(_mode!.Id))
             return _nextLine == FalseStartCheckLine && CountLocked() < FalseStartCheckLine / 2;
-        if (Options.HoldThroughFades && _fromVis)
+        // A header read from tone power came through noise the syncs may not survive, so its
+        // picture has to lock like one found from its syncs.
+        if (Options.HoldThroughFades && _fromVis && !_visFromTonePower)
             return _nextLine == VisFalseStartCheckLine && CountLocked() < VisFalseStartMinLocked;
         return _nextLine == FalseStartCheckLine && CountLocked() < FalseStartMinLocked;
     }
@@ -401,6 +475,7 @@ public sealed class SstvDecoder
     /// </summary>
     private void EndAfterLastLock()
     {
+        RollBackOpenStep();
         var mode = _mode!;
         var keep = _lastLockedLine + 1;
         for (var i = keep; i < _nextLine; i++)
@@ -458,12 +533,16 @@ public sealed class SstvDecoder
     {
         var expected = Options.ExpectedModes is { Count: > 0 } e ? e : null;
         _vis.ExpectedModes = expected;
+        _vis.Baseband = Options.ToneVis ? _baseband : null;
+        _vis.SearchOffsetHz = _searchOffsetHz;
+        _vis.BasebandShiftHz = FeedForwardHz;
         if (_vis.TryFind(_buffer, requireFullHeader: false, out var vis))
         {
             var mode = Forced ?? vis.Mode!;
             _searchOffsetHz = vis.OffsetHz;
             var line0Start = vis.ImageStartIndex + mode.LeadInMs * InternalRate / 1000.0;
             StartImage(mode, line0Start + mode.SyncOffsetMs * InternalRate / 1000.0, vis.OffsetHz, fromVis: true);
+            _visFromTonePower = vis.FromTonePower;
             return true;
         }
 
@@ -474,7 +553,10 @@ public sealed class SstvDecoder
             IReadOnlyList<SstvMode> candidates = Forced is { } f ? [f]
                 : expected is not null ? SstvModeTable.SyncTrainCandidates.Where(m => expected.Contains(m.Id)).ToArray()
                 : SstvModeTable.SyncTrainCandidates;
-            if (_train.TryFind(_buffer, Math.Max(_buffer.Start, _trainFrom), _searchOffsetHz, candidates, out var train))
+            var trainFrom = Math.Max(_buffer.Start, _trainFrom);
+            if (_train.TryFind(_buffer, trainFrom, _searchOffsetHz, candidates, out var train)
+                || (Options.StackedSyncSearch
+                    && _train.TryFindStacked(_buffer, trainFrom, _searchOffsetHz, candidates, out train)))
             {
                 StartImage(train.Mode, train.FirstSyncIndex, train.OffsetHz, fromVis: false);
                 return true;
@@ -491,7 +573,7 @@ public sealed class SstvDecoder
     {
         _mode = mode;
         _image = new SstvImage(mode.Width, mode.Height);
-        _renderer = new SstvLineRenderer(mode, _image, Options.ChromaSmoothing);
+        _renderer = new SstvLineRenderer(mode, _image, Options.ChromaSmoothing, Options.WeightedPixels, Options.NoiseFade);
         var nominal = mode.LineMs * InternalRate / 1000.0;
         _tracker = new SstvLineTracker(nominal)
         {
@@ -509,8 +591,12 @@ public sealed class SstvDecoder
         _nextLine = 0;
         _missesSinceLock = 0;
         _lastLockedLine = -1;
+        _pendingLine = -1;
+        _stepCheckLine = -1;
+        _stepStartLine = -1;
         _afcHz = Options.AutoTune ? Math.Clamp(offsetHz, -MaxOffsetHz, MaxOffsetHz) : 0;
         _fromVis = fromVis;
+        _visFromTonePower = false;
         _imageStartIndex = (long)(line0Sync - mode.SyncOffsetMs * InternalRate / 1000.0 - mode.LeadInMs * InternalRate / 1000.0);
         TrimBefore(_imageStartIndex - InternalRate);
         StartPicturePath(mode);
@@ -548,17 +634,26 @@ public sealed class SstvDecoder
                 return true;
 
             var hit = SstvSyncDetector.Find(
-                _buffer, predicted, half, syncLen, _afcHz + Options.TuningOffsetHz, Options.ToneSync ? _baseband : null);
+                _buffer, predicted, half, syncLen, _afcHz + Options.TuningOffsetHz, Options.ToneSync ? _baseband : null, FeedForwardHz);
+            if (_stepCheckLine == line)
+            {
+                var agrees = hit is { } next
+                    && next.Score >= Options.SyncThreshold
+                    && Math.Abs(next.Position - predicted) <= ReacquireToleranceMs * rate / 1000.0;
+                _stepCheckLine = -1;
+                if (!agrees)
+                {
+                    // The sync that started the step was not a real step: go back to the old timing and look again.
+                    UndoStep();
+                    continue;
+                }
+            }
+
             if (hit is { } found)
                 _syncScore[line] = (float)found.Score;
-            if (hit is { } h && h.Score >= Options.SyncThreshold)
+            if (hit is { } h && h.Score >= Options.SyncThreshold && !HoldForConfirmation(line, h, predicted))
             {
-                tracker.Accept(line, h.Position, h.Score);
-                _syncPosition[line] = h.Position;
-                _failure[line] = SstvLineFailure.None;
-                _quality[line] = SstvLineQuality.Locked;
-                _missesSinceLock = 0;
-                _lastLockedLine = line;
+                AcceptSync(line, h.Position, h.Score);
                 if (Options.AutoTune && h.Score >= AfcMinScore && !double.IsNaN(h.MeasuredHz))
                 {
                     var estimate = h.MeasuredHz - Options.TuningOffsetHz - SstvSyncDetector.SyncHz;
@@ -567,6 +662,8 @@ public sealed class SstvDecoder
             }
             else
             {
+                if (_pendingLine != line)
+                    _pendingLine = -1;
                 _quality[line] = SstvLineQuality.Predicted;
                 _failure[line] = hit is { Score: > NoPulseScore } ? SstvLineFailure.WeakSync : SstvLineFailure.NoPulse;
                 _missesSinceLock++;
@@ -601,11 +698,105 @@ public sealed class SstvDecoder
 
         if (_nextLine >= mode.TransmittedLines)
         {
-            FinishImage(complete: true);
+            if (EndedInHeldFade(mode))
+                EndAfterLastLock();
+            else
+                FinishImage(complete: true);
             return true;
         }
 
         return false;
+    }
+
+    private void AcceptSync(int line, double position, double score)
+    {
+        BeginStepIfLost(line, position);
+        _tracker!.Accept(line, position, score);
+        _syncPosition[line] = position;
+        _failure[line] = SstvLineFailure.None;
+        _quality[line] = SstvLineQuality.Locked;
+        _missesSinceLock = 0;
+        _lastLockedLine = Math.Max(_lastLockedLine, line);
+    }
+
+    /// <summary>
+    /// A well established grid that was lost for several lines and now has a sync well off where it
+    /// predicted: the line timing most likely stepped, which a dropout in the recording or a pause in the
+    /// sender's audio does. The grid is restarted from the first missed line, so the old timing does not
+    /// keep pulling the predictions back to where the lines used to be. It is a trial: if the next line does
+    /// not land one period later on the new grid, the old grid is restored.
+    /// </summary>
+    private void BeginStepIfLost(int line, double position)
+    {
+        var tracker = _tracker!;
+        if (_stepCheckLine >= 0
+            || tracker.AcceptedCount < EstablishedGridLines
+            || _missesSinceLock < ReacquireMisses
+            || Math.Abs(position - tracker.Predict(line)) <= ReacquireToleranceMs * InternalRate / 1000.0)
+            return;
+
+        _stepStartLine = Math.Clamp(_lastLockedLine + 1, 0, line);
+        _stepLockedLine = line;
+        _stepPriorLastLocked = _lastLockedLine;
+        _stepPriorMisses = _missesSinceLock;
+        _stepCheckLine = line + 1;
+        tracker.StartSegment(_stepStartLine);
+    }
+
+    /// <summary>
+    /// A trial step still waiting for its next line when the picture ends can no longer be confirmed, and the final
+    /// redraw would put the lines since the step on its grid. Take it back, as a lone pulse is taken back.
+    /// </summary>
+    private void RollBackOpenStep()
+    {
+        if (_stepCheckLine < 0 || _stepStartLine < 0)
+            return;
+        _stepCheckLine = -1;
+        UndoStep();
+    }
+
+    private void UndoStep()
+    {
+        _tracker!.UndoSegment(_stepStartLine);
+        _syncPosition[_stepLockedLine] = double.NaN;
+        _quality[_stepLockedLine] = SstvLineQuality.Predicted;
+        _failure[_stepLockedLine] = SstvLineFailure.OffGrid;
+        _lastLockedLine = _stepPriorLastLocked;
+        _missesSinceLock = _stepPriorMisses + 1;
+        _stepStartLine = -1;
+    }
+
+    /// <summary>
+    /// After a fade, noise often throws up one sync-like pulse away from the established line
+    /// grid. Such a pulse is only used once the next line's sync lands one line period after it.
+    /// </summary>
+    /// <returns>True when the sync is held back (the line counts as a miss for now).</returns>
+    private bool HoldForConfirmation(int line, SstvSyncHit hit, double predicted)
+    {
+        var tracker = _tracker!;
+        var tolerance = ReacquireToleranceMs * InternalRate / 1000.0;
+        if (_pendingLine >= 0 && _pendingLine == line - 1)
+        {
+            var pending = _pendingLine;
+            _pendingLine = -1;
+            if (Math.Abs(hit.Position - _pendingPosition - tracker.PeriodAt(line, centred: false)) <= tolerance)
+            {
+                AcceptSync(pending, _pendingPosition, _pendingScore);
+                _stepCheckLine = -1; // this line has just agreed with it
+                return false;
+            }
+        }
+
+        if (tracker.AcceptedCount < EstablishedGridLines
+            || _missesSinceLock < ReacquireMisses
+            || hit.Score >= ReacquireStrongScore
+            || Math.Abs(hit.Position - predicted) <= tolerance)
+            return false;
+
+        _pendingLine = line;
+        _pendingPosition = hit.Position;
+        _pendingScore = hit.Score;
+        return true;
     }
 
     private double HalfWindowSamples(double nominal, int accepted)
@@ -683,16 +874,21 @@ public sealed class SstvDecoder
 
     private void FinishImage(bool complete, bool alignToBottom = false)
     {
+        RollBackOpenStep();
         var mode = _mode!;
         ReSync();
         var tracker = _tracker!;
         MarkOffGridSyncs();
         var endSync = tracker.Fitted(Math.Max(0, _nextLine - 1));
         var end = (long)(endSync - mode.SyncOffsetMs * InternalRate / 1000.0 + tracker.NominalSamplesPerLine);
-        var lockPercent = LockPercent;
         var clockPpm = ClockPpm;
         var noise = MeasureLineNoise();
+        var lockPercent = LockPercent;
         var repaired = Options.RepairBadLines ? RepairBadLines(noise) : [];
+        if (Options.SmoothAcrossLines)
+            SstvPictureSmoother.Smooth(_image!, 0, _nextLine * mode.RowsPerLine);
+        else if (Options.AdaptiveSmoothing)
+            SstvPictureSmoother.SmoothAdaptive(_image!, 0, _nextLine * mode.RowsPerLine);
         if (alignToBottom)
         {
             var shift = mode.TransmittedLines - _nextLine;
@@ -904,5 +1100,6 @@ public sealed class SstvDecoder
         _nextLine = 0;
         _missesSinceLock = 0;
         _lastLockedLine = -1;
+        _pendingLine = -1;
     }
 }

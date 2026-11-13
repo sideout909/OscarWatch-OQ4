@@ -48,9 +48,9 @@ public sealed class SstvReceiverService : IDisposable
     private SstvCaptureHealth _captureHealth = new(true, false, 0);
     private volatile bool _inputSilent;
     private double _feedForwardHz;
-    private readonly object _spectrumGate = new();
-    private float[]? _spectrum;
-    private long _spectrumVersion;
+    private double _timeCompressionPpm;
+    private const int MaxQueuedSpectrumRows = 50;
+    private readonly Queue<float[]> _spectrumRows = new();
 
     private readonly SstvPictureUploader? _shareQueue;
 
@@ -111,6 +111,20 @@ public sealed class SstvReceiverService : IDisposable
         set => Volatile.Write(ref _feedForwardHz, double.IsFinite(value) ? value : 0);
     }
 
+    /// <summary>
+    /// Doppler time compression of the received audio in ppm (range rate over the speed of light,
+    /// positive while the satellite moves away), applied to the live decoder's line timing.
+    /// </summary>
+    public double TimeCompressionPpm
+    {
+        get => Volatile.Read(ref _timeCompressionPpm);
+        set => Volatile.Write(ref _timeCompressionPpm, double.IsFinite(value) ? value : 0);
+    }
+
+    /// <summary>Time compression in ppm for a range rate in km/s (positive when receding).</summary>
+    public static double TimeCompressionPpmFromRangeRate(double rangeRateKmPerSec) =>
+        double.IsFinite(rangeRateKmPerSec) ? rangeRateKmPerSec / 299792.458 * 1e6 : 0;
+
     public event EventHandler<SstvReceivedPicture>? PictureReceived;
     public event EventHandler<SstvImageStartedEventArgs>? PictureStarted;
     public event EventHandler<Exception>? Faulted;
@@ -132,15 +146,20 @@ public sealed class SstvReceiverService : IDisposable
         }
     }
 
-    /// <summary>Latest spectrum row (dB, <see cref="SstvSpectrumTap.MinHz"/> to <see cref="SstvSpectrumTap.MaxHz"/>) if new since <paramref name="version"/>.</summary>
-    public float[]? TryGetSpectrum(ref long version)
+    /// <summary>
+    /// Spectrum rows (dB, <see cref="SstvSpectrumTap.MinHz"/> to <see cref="SstvSpectrumTap.MaxHz"/>)
+    /// produced since the last call, oldest first. Every row is kept so the waterfall scrolls evenly
+    /// whether the UI tick lands just before or just after a row.
+    /// </summary>
+    public float[][] TakeSpectrumRows()
     {
-        lock (_spectrumGate)
+        lock (_spectrumRows)
         {
-            if (_spectrumVersion == version || _spectrum is null)
-                return null;
-            version = _spectrumVersion;
-            return (float[])_spectrum.Clone();
+            if (_spectrumRows.Count == 0)
+                return [];
+            var rows = _spectrumRows.ToArray();
+            _spectrumRows.Clear();
+            return rows;
         }
     }
 
@@ -281,6 +300,9 @@ public sealed class SstvReceiverService : IDisposable
             var tap = new SstvSpectrumTap(rate, SpectrumRowsPerSecond);
             var stall = new CaptureStallWatch(DateTime.UtcNow);
             _captureHealth = new SstvCaptureHealth(true, false, 0);
+            var lostSince = DateTime.UtcNow;
+            var lostOverflows = 0;
+            var lostSamples = 0L;
             while (!token.IsCancellationRequested)
             {
                 RunCommands(decoder);
@@ -310,6 +332,7 @@ public sealed class SstvReceiverService : IDisposable
                     continue;
                 }
 
+                ReportLostAudio(device, rate, ref lostSince, ref lostOverflows, ref lostSamples);
                 silence.Add(buffer.AsSpan(0, n));
                 heardSound |= silence.HeardSound;
                 loudestPeak = Math.Max(loudestPeak, silence.LoudestPeak);
@@ -323,11 +346,12 @@ public sealed class SstvReceiverService : IDisposable
                 }
 
                 decoder.FeedForwardHz = FeedForwardHz;
+                decoder.TimeCompressionPpm = TimeCompressionPpm;
                 decoder.Options.ExpectedModes = ExpectedModesProvider?.Invoke();
                 if (wavPath is not null && decoder.Options.ExpectedModes is { } expected)
                     LastSessionExpectedModes = expected;
                 decoder.Process(buffer.AsSpan(0, n));
-                PublishSpectrum(tap.Add(buffer.AsSpan(0, n)));
+                PublishSpectrum(tap, buffer.AsSpan(0, n));
 
                 if (wav is not null && wavResampler is not null)
                 {
@@ -396,7 +420,7 @@ public sealed class SstvReceiverService : IDisposable
                 RunCommands(decoder);
                 var chunk = samples.AsSpan(i, Math.Min(ChunkSamples, samples.Length - i));
                 decoder.Process(chunk);
-                PublishSpectrum(tap.Add(chunk));
+                PublishSpectrum(tap, chunk);
                 FileProgress = (double)Math.Min(samples.Length, i + ChunkSamples) / samples.Length;
                 PublishStatus(decoder, ref lastPreview, force: false);
             }
@@ -542,15 +566,43 @@ public sealed class SstvReceiverService : IDisposable
         }
     }
 
-    private void PublishSpectrum(float[]? row)
+    private void PublishSpectrum(SstvSpectrumTap tap, ReadOnlySpan<float> samples)
     {
-        if (row is null)
+        var rows = new List<float[]>(2);
+        tap.Add(samples, rows);
+        if (rows.Count == 0)
             return;
-        lock (_spectrumGate)
+        lock (_spectrumRows)
         {
-            _spectrum = row;
-            _spectrumVersion++;
+            foreach (var row in rows)
+                _spectrumRows.Enqueue(row);
+            while (_spectrumRows.Count > MaxQueuedSpectrumRows)
+                _spectrumRows.Dequeue();
         }
+    }
+
+    /// <summary>
+    /// Warns, at most every 30 s, when the soundcard overran or decoding fell behind, so
+    /// pictures cut up by lost audio can be traced from the log.
+    /// </summary>
+    private void ReportLostAudio(string device, int rate, ref DateTime since, ref int overflows, ref long dropped)
+    {
+        var (o, d) = _audio.TakeLostAudio();
+        overflows += o;
+        dropped += d;
+        var now = DateTime.UtcNow;
+        if (now - since < TimeSpan.FromSeconds(30))
+            return;
+        if (overflows > 0 || dropped > 0)
+        {
+            Log.Warning(
+                "SSTV audio lost on '{Device}' in the last {Seconds:0} s: {Overflows} soundcard input overflows, {Dropped:0.0} s dropped because decoding fell behind. Pictures will be cut up",
+                device, (now - since).TotalSeconds, overflows, (double)dropped / rate);
+        }
+
+        since = now;
+        overflows = 0;
+        dropped = 0;
     }
 
     private void RunCommands(SstvDecoder decoder)
@@ -607,6 +659,7 @@ public sealed class SstvReceiverService : IDisposable
         options.AdaptiveBandwidth = settings.AdaptiveBandwidth;
         options.AlignAosFragments = settings.AlignAosFragments;
         options.RepairBadLines = settings.RepairBadLines;
+        options.SmoothAcrossLines = settings.SmoothAcrossLines;
     }
 
     public void Dispose() => Stop();

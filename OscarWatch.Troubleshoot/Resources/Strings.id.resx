@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">text/microsoft-resx</resheader>
+  <resheader name="version">2.0</resheader>
+  <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</resheader>
+  <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</resheader>
+  <data name="Window.Title">
+    <value>Pemecah Masalah OscarWatch</value>
+  </data>
+  <data name="Intro">
+    <value>Gunakan ini saat OscarWatch tidak mau mulai atau jendelanya tidak muncul. Alat ini berfungsi tanpa OscarWatch berjalan.</value>
+  </data>
+  <data name="Section.Status">
+    <value>Status</value>
+  </data>
+  <data name="Action.Refresh">
+    <value>Segarkan</value>
+  </data>
+  <data name="Label.Process">
+    <value>Proses OscarWatch</value>
+  </data>
+  <data name="Label.Application">
+    <value>Aplikasi</value>
+  </data>
+  <data name="Label.System">
+    <value>Sistem</value>
+  </data>
+  <data name="Label.DataFolder">
+    <value>Folder OscarWatch</value>
+  </data>
+  <data name="Label.LogFolder">
+    <value>Folder log</value>
+  </data>
+  <data name="Label.LatestLog">
+    <value>Log terbaru</value>
+  </data>
+  <data name="Label.Settings">
+    <value>Berkas pengaturan</value>
+  </data>
+  <data name="Label.Radio">
+    <value>Radio</value>
+  </data>
+  <data name="Label.Rotator">
+    <value>Rotator</value>
+  </data>
+  <data name="Label.Gps">
+    <value>GPS</value>
+  </data>
+  <data name="Process.NotRunning">
+    <value>Tidak berjalan</value>
+  </data>
+  <data name="Process.Running">
+    <value>Berjalan (proses {0}, dimulai {1})</value>
+  </data>
+  <data name="Application.Found">
+    <value>Versi {0}</value>
+  </data>
+  <data name="Application.NotFound">
+    <value>OscarWatch tidak ditemukan di samping pemecah masalah.</value>
+  </data>
+  <data name="Log.None">
+    <value>Tidak ada berkas log. OscarWatch mungkin berhenti sebelum sempat mulai mencatat log.</value>
+  </data>
+  <data name="Log.Latest">
+    <value>{0}, ditulis {1}</value>
+  </data>
+  <data name="Settings.Missing">
+    <value>Tidak ditemukan. OscarWatch membuatnya dengan pengaturan bawaan saat mulai.</value>
+  </data>
+  <data name="Settings.Readable">
+    <value>Dapat dibaca, ditulis {0}</value>
+  </data>
+  <data name="Settings.Unreadable">
+    <value>Tidak dapat dibaca: {0}</value>
+  </data>
+  <data name="Device.On">
+    <value>Aktif ({0})</value>
+  </data>
+  <data name="Device.OnNoTarget">
+    <value>Aktif</value>
+  </data>
+  <data name="Device.Off">
+    <value>Nonaktif</value>
+  </data>
+  <data name="Device.Unknown">
+    <value>Belum diatur</value>
+  </data>
+  <data name="Section.RecentErrors">
+    <value>Galat terbaru di log</value>
+  </data>
+  <data name="Errors.None">
+    <value>Tidak ada galat di log terbaru.</value>
+  </data>
+  <data name="Section.Files">
+    <value>Berkas dan diagnostik</value>
+  </data>
+  <data name="Files.Hint">
+    <value>Diagnostik berisi log terbaru, pengaturan Anda tanpa kata sandi dan kunci API, serta detail sistem. Kirimkan ke dukungan beserta penjelasan masalahnya.</value>
+  </data>
+  <data name="Action.OpenDataFolder">
+    <value>Buka folder OscarWatch</value>
+  </data>
+  <data name="Action.OpenLogFolder">
+    <value>Buka folder log</value>
+  </data>
+  <data name="Action.CopyDiagnostics">
+    <value>Salin diagnostik</value>
+  </data>
+  <data name="Action.SaveDiagnostics">
+    <value>Simpan berkas diagnostik</value>
+  </data>
+  <data name="Section.Process">
+    <value>OscarWatch macet</value>
+  </data>
+  <data name="Process.Hint">
+    <value>Jika OscarWatch berjalan tetapi jendelanya tidak muncul, tutup lalu jalankan lagi.</value>
+  </data>
+  <data name="Action.CloseOscarWatch">
+    <value>Tutup OscarWatch</value>
+  </data>
+  <data name="Action.StartOscarWatch">
+    <value>Jalankan OscarWatch</value>
+  </data>
+  <data name="Section.Hardware">
+    <value>Radio, rotator, dan GPS</value>
+  </data>
+  <data name="Hardware.Hint">
+    <value>Jika OscarWatch macet atau tertutup saat menyambung, matikan perangkat ini. Port dan pengaturan lain tetap disimpan, sehingga Anda dapat menyalakannya lagi di Pengaturan.</value>
+  </data>
+  <data name="Action.DisableHardware">
+    <value>Matikan radio, rotator, dan GPS</value>
+  </data>
+  <data name="Section.Reset">
+    <value>Atur ulang pengaturan</value>
+  </data>
+  <data name="Reset.Hint">
+    <value>Pilihan terakhir. Memindahkan settings.json dan cadangannya ke folder bertanggal, sehingga OscarWatch mulai dengan pengaturan bawaan. Tidak ada yang dihapus.</value>
+  </data>
+  <data name="Action.PutSettingsAside">
+    <value>Sisihkan pengaturan</value>
+  </data>
+  <data name="Confirm.Continue">
+    <value>Lanjutkan</value>
+  </data>
+  <data name="Confirm.Cancel">
+    <value>Batal</value>
+  </data>
+  <data name="Confirm.CloseOscarWatch">
+    <value>Tutup OscarWatch sekarang? Perubahan yang belum disimpan bisa hilang.</value>
+  </data>
+  <data name="Confirm.CloseFirst">
+    <value>OscarWatch sedang berjalan. OscarWatch harus ditutup dulu, atau perubahan ini bisa dibatalkan saat ia keluar. Tutup OscarWatch dan lanjutkan?</value>
+  </data>
+  <data name="Confirm.DisableHardware">
+    <value>Matikan sambungan ini di settings.json?
+
+Radio: {0}
+Rotator: {1}
+GPS: {2}</value>
+  </data>
+  <data name="Confirm.PutSettingsAside">
+    <value>Pindahkan settings.json dan cadangannya ke {0}? OscarWatch akan mulai dengan pengaturan bawaan.</value>
+  </data>
+  <data name="Result.Closed">
+    <value>OscarWatch telah ditutup.</value>
+  </data>
+  <data name="Result.CloseFailed">
+    <value>OscarWatch tidak dapat ditutup: {0}</value>
+  </data>
+  <data name="Result.StillRunning">
+    <value>OscarWatch masih berjalan, jadi tidak ada yang diubah.</value>
+  </data>
+  <data name="Result.Started">
+    <value>OscarWatch telah dijalankan.</value>
+  </data>
+  <data name="Result.StartFailed">
+    <value>OscarWatch tidak dapat dijalankan: {0}</value>
+  </data>
+  <data name="Result.AlreadyRunning">
+    <value>OscarWatch sudah berjalan.</value>
+  </data>
+  <data name="Result.HardwareDisabled">
+    <value>Radio, rotator, dan GPS sekarang nonaktif. Jalankan OscarWatch untuk memastikan ia terbuka.</value>
+  </data>
+  <data name="Result.HardwareAlreadyOff">
+    <value>Radio, rotator, dan GPS sudah nonaktif.</value>
+  </data>
+  <data name="Result.SettingsMissing">
+    <value>Tidak ada settings.json yang bisa diubah.</value>
+  </data>
+  <data name="Result.SettingsUnreadable">
+    <value>settings.json tidak dapat dibaca, jadi tidak diubah.</value>
+  </data>
+  <data name="Result.SettingsAside">
+    <value>Pengaturan dipindahkan ke {0}.</value>
+  </data>
+  <data name="Result.NothingToMove">
+    <value>Tidak ada berkas pengaturan yang perlu dipindahkan.</value>
+  </data>
+  <data name="Result.DiagnosticsCopied">
+    <value>Diagnostik disalin ke papan klip.</value>
+  </data>
+  <data name="Result.DiagnosticsSaved">
+    <value>Diagnostik disimpan ke {0}.</value>
+  </data>
+  <data name="Result.Failed">
+    <value>Tidak berhasil: {0}</value>
+  </data>
+  <data name="Result.FolderOpenFailed">
+    <value>Folder tidak dapat dibuka: {0}</value>
+  </data>
+  <data name="Label.EchoCalibrations">
+    <value>Kalibrasi gema FT4</value>
+  </data>
+  <data name="Echo.None">
+    <value>Tidak ada yang tersimpan</value>
+  </data>
+  <data name="Echo.Count">
+    <value>{0} tersimpan</value>
+  </data>
+  <data name="Section.Echo">
+    <value>Kalibrasi gema FT4</value>
+  </data>
+  <data name="Echo.Hint">
+    <value>Jika FT4 memancar di luar frekuensi setelah gema yang salah, hapus koreksi uplink yang tersimpan. OscarWatch dapat mempelajarinya lagi dari gema Anda berikutnya.</value>
+  </data>
+  <data name="Action.ClearEchoCalibrations">
+    <value>Hapus kalibrasi gema FT4</value>
+  </data>
+  <data name="Confirm.ClearEchoCalibrations">
+    <value>Hapus semua {0} kalibrasi gema FT4 yang tersimpan? Semua satelit dan transponder kembali tanpa koreksi uplink.</value>
+  </data>
+  <data name="Result.EchoCleared">
+    <value>Kalibrasi gema FT4 dihapus. OscarWatch dapat mempelajarinya lagi dari gema Anda berikutnya.</value>
+  </data>
+  <data name="Result.EchoNoneSaved">
+    <value>Tidak ada kalibrasi gema FT4 untuk dihapus.</value>
+  </data>
+  <data name="Save.Title">
+    <value>Simpan berkas diagnostik</value>
+  </data>
+  <data name="Tab.Status">
+    <value>Status</value>
+  </data>
+  <data name="Tab.Gs232">
+    <value>Rotator</value>
+  </data>
+  <data name="Gs232.Hint">
+    <value>Menguji pengendali rotator yang kompatibel dengan Yaesu GS-232 secara langsung dan mencatat setiap byte yang dikirim dan diterima, termasuk balasan yang biasanya diabaikan OscarWatch. OscarWatch harus ditutup agar port COM bebas. Simpan log ini dan lampirkan saat melaporkan masalah rotator.</value>
+  </data>
+  <data name="Gs232.Label.Status">
+    <value>Uji</value>
+  </data>
+  <data name="Gs232.Label.Port">
+    <value>Port COM</value>
+  </data>
+  <data name="Gs232.Label.Baud">
+    <value>Baud rate</value>
+  </data>
+  <data name="Gs232.Label.AzimuthOnly">
+    <value>Hanya azimut</value>
+  </data>
+  <data name="Gs232.Label.Position">
+    <value>Posisi terakhir</value>
+  </data>
+  <data name="Gs232.Yes">
+    <value>Ya</value>
+  </data>
+  <data name="Gs232.No">
+    <value>Tidak</value>
+  </data>
+  <data name="Gs232.SettingsUnavailable">
+    <value>Tidak tersedia. settings.json tidak ada atau tidak dapat dibaca, sehingga port rotator tidak diketahui.</value>
+  </data>
+  <data name="Gs232.NotGs232">
+    <value>Tidak tersedia. Rotator di Pengaturan bukan Yaesu GS-232 pada port COM.</value>
+  </data>
+  <data name="Gs232.NoPort">
+    <value>Tidak tersedia. Belum ada port COM untuk rotator di Pengaturan.</value>
+  </data>
+  <data name="Gs232.Ready">
+    <value>Siap. Menggunakan pengaturan rotator yang disimpan di OscarWatch.</value>
+  </data>
+  <data name="Gs232.PositionUnknown">
+    <value>Belum dibaca</value>
+  </data>
+  <data name="Gs232.Position">
+    <value>Azimut {0}°, elevasi {1}°</value>
+  </data>
+  <data name="Gs232.PositionAzimuth">
+    <value>Azimut {0}°</value>
+  </data>
+  <data name="Gs232.PositionElevation">
+    <value>Elevasi {0}°</value>
+  </data>
+  <data name="Gs232.PositionNone">
+    <value>Tidak ada posisi yang dilaporkan</value>
+  </data>
+  <data name="Action.Gs232Read">
+    <value>Baca posisi</value>
+  </data>
+  <data name="Action.Gs232Stop">
+    <value>Berhenti</value>
+  </data>
+  <data name="Action.Gs232Move">
+    <value>Putar 5 derajat</value>
+  </data>
+  <data name="Gs232.MoveHint">
+    <value>Putar 5 derajat memutar antena 5° pada azimut setelah dikonfirmasi, dan elevasi tetap. Tombol ini tersedia setelah Baca posisi mengembalikan azimut (dan elevasi, kecuali pengendali hanya azimut).</value>
+  </data>
+  <data name="Gs232.LogHeading">
+    <value>Log sesi</value>
+  </data>
+  <data name="Gs232.LogEmpty">
+    <value>Belum ada yang dikirim. Setiap tombol membuka port COM, mencatat setiap byte, lalu menutupnya kembali.</value>
+  </data>
+  <data name="Action.Gs232CopyLog">
+    <value>Salin log</value>
+  </data>
+  <data name="Action.Gs232SaveLog">
+    <value>Simpan log</value>
+  </data>
+  <data name="Confirm.Gs232Move">
+    <value>Kirim {0} ke rotator di {1}? Antena akan berputar dari azimut {2}° ke {3}°. Pastikan tidak ada yang menghalangi.</value>
+  </data>
+  <data name="Result.Gs232Position">
+    <value>Posisi terbaca: {0}.</value>
+  </data>
+  <data name="Result.Gs232NoPosition">
+    <value>Pengendali tidak melaporkan posisi. Log sesi menunjukkan apa yang diterima.</value>
+  </data>
+  <data name="Result.Gs232Stopped">
+    <value>Perintah berhenti terkirim. Log sesi menunjukkan balasan jika ada.</value>
+  </data>
+  <data name="Result.Gs232Moved">
+    <value>{0} terkirim. Posisi setelahnya: {1}.</value>
+  </data>
+  <data name="Result.Gs232PortFailed">
+    <value>{0} tidak dapat digunakan: {1}</value>
+  </data>
+  <data name="Result.Gs232LogCopied">
+    <value>Log sesi disalin ke papan klip.</value>
+  </data>
+  <data name="Result.Gs232LogSaved">
+    <value>Log sesi disimpan ke {0}.</value>
+  </data>
+  <data name="Section.Findings">
+    <value>Temuan pemecah masalah</value>
+  </data>
+  <data name="Findings.Hint">
+    <value>Penjelasan sederhana dari status di atas. Port hanya diperiksa, tidak pernah dibuka, jadi tidak ada yang dikirim ke radio Anda.</value>
+  </data>
+  <data name="Findings.Level.Problem">
+    <value>Masalah</value>
+  </data>
+  <data name="Findings.Level.Check">
+    <value>Periksa</value>
+  </data>
+  <data name="Findings.Level.Note">
+    <value>Catatan</value>
+  </data>
+  <data name="Findings.NotResponding">
+    <value>OscarWatch berjalan, tetapi Windows melaporkannya tidak merespons. Ambil laporan macet sebelum menutupnya.</value>
+  </data>
+  <data name="Findings.SeveralRunning">
+    <value>{0} salinan OscarWatch sedang berjalan. Tutup semuanya, lalu jalankan satu saja.</value>
+  </data>
+  <data name="Findings.SettingsMissing">
+    <value>Belum ada settings.json. OscarWatch membuatnya dengan pengaturan bawaan saat dimulai.</value>
+  </data>
+  <data name="Findings.SettingsUnreadable">
+    <value>settings.json tidak dapat dibaca, jadi OscarWatch mungkin dimulai dengan pengaturan bawaan. Pulihkan cadangan atau sisihkan pengaturan.</value>
+  </data>
+  <data name="Findings.NoPort">
+    <value>{0} aktif, tetapi belum ada port yang dipilih di Pengaturan.</value>
+  </data>
+  <data name="Findings.PortMissing">
+    <value>{0} aktif dan diatur ke {1}, tetapi {1} tidak ada di komputer ini sekarang. Periksa kabel, daya, dan driver, atau pilih ulang port di Pengaturan.</value>
+  </data>
+  <data name="Findings.PortPresent">
+    <value>{0} diatur ke {1}, yang ada di komputer ini. Itu hanya menunjukkan port ada, bukan bahwa perangkat menjawab.</value>
+  </data>
+  <data name="Findings.PortPresentGs232">
+    <value>{0} diatur ke {1}, yang ada di komputer ini. Itu hanya menunjukkan port ada, bukan bahwa pengontrol menjawab. Tab Rotator dapat mengujinya.</value>
+  </data>
+  <data name="Findings.PortShared">
+    <value>{0} dan {1} sama-sama diatur ke {2}. Setiap perangkat memerlukan port sendiri.</value>
+  </data>
+  <data name="Findings.RecentErrors">
+    <value>Log terbaru berisi {0} galat. Yang terbaru tercantum di bawah.</value>
+  </data>
+  <data name="Findings.NoneFound">
+    <value>Tidak ada yang jelas salah di pengaturan atau log terbaru.</value>
+  </data>
+  <data name="Hardware.Radio">
+    <value>Radio</value>
+  </data>
+  <data name="Hardware.RadioDownlink">
+    <value>Radio downlink</value>
+  </data>
+  <data name="Hardware.RadioUplink">
+    <value>Radio uplink</value>
+  </data>
+  <data name="Hardware.Rotator">
+    <value>Rotator</value>
+  </data>
+  <data name="Hardware.RotatorElevation">
+    <value>Elevasi rotator</value>
+  </data>
+  <data name="Hardware.Gps">
+    <value>GPS</value>
+  </data>
+  <data name="Freeze.Hint">
+    <value>Jika OscarWatch macet, ambil laporan macet sebelum menutupnya. Laporan ini menyimpan cuplikan apa yang sedang dilakukan OscarWatch, beserta log terbaru, ke file zip untuk dukungan. Cuplikan berisi sebagian memori OscarWatch, jadi kirimkan hanya kepada orang yang Anda percayai.</value>
+  </data>
+  <data name="Action.CaptureFreezeReport">
+    <value>Ambil laporan macet</value>
+  </data>
+  <data name="Result.FreezeCapturing">
+    <value>Mengambil laporan macet. Ini bisa memakan waktu satu menit…</value>
+  </data>
+  <data name="Result.FreezeSaved">
+    <value>Laporan macet disimpan ke {0} ({1} MB). OscarWatch masih berjalan.</value>
+  </data>
+  <data name="Result.FreezeSavedNoDump">
+    <value>Laporan macet disimpan ke {0} ({1} MB), tetapi tanpa cuplikan lengkap: {2}</value>
+  </data>
+  <data name="Section.Restore">
+    <value>Pulihkan pengaturan</value>
+  </data>
+  <data name="Restore.Hint">
+    <value>Kembalikan file pengaturan yang disimpan OscarWatch atau pemecah masalah. Pengaturan saat ini dicadangkan lebih dulu, jadi langkah ini dapat dibatalkan.</value>
+  </data>
+  <data name="Backup.None">
+    <value>Tidak ada cadangan yang ditemukan.</value>
+  </data>
+  <data name="Backup.Count">
+    <value>{0} cadangan ditemukan, terbaru lebih dulu.</value>
+  </data>
+  <data name="Backup.Item">
+    <value>{0}, disimpan {1}, {2}</value>
+  </data>
+  <data name="Backup.ItemNoCallsign">
+    <value>{0}, disimpan {1}</value>
+  </data>
+  <data name="Action.RestoreBackup">
+    <value>Pulihkan cadangan terpilih</value>
+  </data>
+  <data name="Confirm.RestoreBackup">
+    <value>Ganti settings.json dengan {0}, disimpan {1}? Pengaturan saat ini dicadangkan lebih dulu.</value>
+  </data>
+  <data name="Result.BackupRestored">
+    <value>{0} dipulihkan. Pengaturan sebelumnya telah dicadangkan. Jalankan OscarWatch untuk menggunakannya.</value>
+  </data>
+  <data name="Result.BackupMissing">
+    <value>Cadangan itu sudah tidak ada.</value>
+  </data>
+  <data name="Result.BackupUnreadable">
+    <value>Cadangan itu tidak dapat dibaca, jadi tidak dipulihkan.</value>
+  </data>
+  <data name="Trace.Heading">
+    <value>Rekam lalu lintas rotator OscarWatch</value>
+  </data>
+  <data name="Trace.Hint">
+    <value>Meminta OscarWatch merekam setiap perintah, balasan, batas waktu, dan pengulangan rotator selama 30 menit saat Anda menggunakannya seperti biasa, misalnya Putar saat Siaga atau satu lintasan. Memerlukan OscarWatch 1.1.7 atau lebih baru. Perekaman dimulai saat OscarWatch berikutnya berkomunikasi dengan rotator.</value>
+  </data>
+  <data name="Trace.Label.Status">
+    <value>Perekaman</value>
+  </data>
+  <data name="Trace.Label.File">
+    <value>File terbaru</value>
+  </data>
+  <data name="Trace.Recording">
+    <value>Aktif hingga {0}</value>
+  </data>
+  <data name="Trace.NotRecording">
+    <value>Mati</value>
+  </data>
+  <data name="Trace.NoFile">
+    <value>Belum ada</value>
+  </data>
+  <data name="Trace.LatestFile">
+    <value>{0}, ditulis {1}, {2} KB</value>
+  </data>
+  <data name="Trace.TailHeading">
+    <value>Akhir rekaman terbaru</value>
+  </data>
+  <data name="Trace.TailEmpty">
+    <value>Belum ada rekaman.</value>
+  </data>
+  <data name="Action.TraceStart">
+    <value>Mulai merekam</value>
+  </data>
+  <data name="Action.TraceStop">
+    <value>Hentikan perekaman</value>
+  </data>
+  <data name="Action.TraceCopy">
+    <value>Salin rekaman</value>
+  </data>
+  <data name="Result.TraceStarted">
+    <value>Perekaman diminta selama {0} menit. Gunakan OscarWatch seperti biasa, lalu hentikan perekaman di sini.</value>
+  </data>
+  <data name="Result.TraceStopped">
+    <value>Perekaman dihentikan.</value>
+  </data>
+  <data name="Result.TraceCopied">
+    <value>{0} disalin ke papan klip.</value>
+  </data>
+  <data name="Gs232.Heading">
+    <value>Uji pengontrol GS-232</value>
+  </data>
+</root>

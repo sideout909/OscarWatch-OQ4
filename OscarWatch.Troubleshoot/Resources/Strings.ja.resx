@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">text/microsoft-resx</resheader>
+  <resheader name="version">2.0</resheader>
+  <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</resheader>
+  <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</resheader>
+  <data name="Window.Title">
+    <value>OscarWatch トラブルシューティング</value>
+  </data>
+  <data name="Intro">
+    <value>OscarWatch が起動しない、またはウィンドウが表示されないときに使います。OscarWatch が動いていなくても使えます。</value>
+  </data>
+  <data name="Section.Status">
+    <value>状態</value>
+  </data>
+  <data name="Action.Refresh">
+    <value>更新</value>
+  </data>
+  <data name="Label.Process">
+    <value>OscarWatch プロセス</value>
+  </data>
+  <data name="Label.Application">
+    <value>アプリケーション</value>
+  </data>
+  <data name="Label.System">
+    <value>システム</value>
+  </data>
+  <data name="Label.DataFolder">
+    <value>OscarWatch フォルダー</value>
+  </data>
+  <data name="Label.LogFolder">
+    <value>ログフォルダー</value>
+  </data>
+  <data name="Label.LatestLog">
+    <value>最新のログ</value>
+  </data>
+  <data name="Label.Settings">
+    <value>設定ファイル</value>
+  </data>
+  <data name="Label.Radio">
+    <value>無線機</value>
+  </data>
+  <data name="Label.Rotator">
+    <value>ローテーター</value>
+  </data>
+  <data name="Label.Gps">
+    <value>GPS</value>
+  </data>
+  <data name="Process.NotRunning">
+    <value>実行されていません</value>
+  </data>
+  <data name="Process.Running">
+    <value>実行中（プロセス {0}、開始 {1}）</value>
+  </data>
+  <data name="Application.Found">
+    <value>バージョン {0}</value>
+  </data>
+  <data name="Application.NotFound">
+    <value>トラブルシューティングと同じ場所に OscarWatch が見つかりません。</value>
+  </data>
+  <data name="Log.None">
+    <value>ログファイルがありません。OscarWatch がログを書き始める前に停止した可能性があります。</value>
+  </data>
+  <data name="Log.Latest">
+    <value>{0}（書き込み {1}）</value>
+  </data>
+  <data name="Settings.Missing">
+    <value>見つかりません。OscarWatch は起動時に既定の設定で作成します。</value>
+  </data>
+  <data name="Settings.Readable">
+    <value>読み取り可能（書き込み {0}）</value>
+  </data>
+  <data name="Settings.Unreadable">
+    <value>読み取れません: {0}</value>
+  </data>
+  <data name="Device.On">
+    <value>オン（{0}）</value>
+  </data>
+  <data name="Device.OnNoTarget">
+    <value>オン</value>
+  </data>
+  <data name="Device.Off">
+    <value>オフ</value>
+  </data>
+  <data name="Device.Unknown">
+    <value>未設定</value>
+  </data>
+  <data name="Section.RecentErrors">
+    <value>ログ内の最近のエラー</value>
+  </data>
+  <data name="Errors.None">
+    <value>最新のログにエラーはありません。</value>
+  </data>
+  <data name="Section.Files">
+    <value>ファイルと診断</value>
+  </data>
+  <data name="Files.Hint">
+    <value>診断情報には、最新のログ、パスワードと API キーを除いた設定、システムの詳細が含まれます。問題の説明と一緒にサポートへ送ってください。</value>
+  </data>
+  <data name="Action.OpenDataFolder">
+    <value>OscarWatch フォルダーを開く</value>
+  </data>
+  <data name="Action.OpenLogFolder">
+    <value>ログフォルダーを開く</value>
+  </data>
+  <data name="Action.CopyDiagnostics">
+    <value>診断情報をコピー</value>
+  </data>
+  <data name="Action.SaveDiagnostics">
+    <value>診断ファイルを保存</value>
+  </data>
+  <data name="Section.Process">
+    <value>応答しない OscarWatch</value>
+  </data>
+  <data name="Process.Hint">
+    <value>OscarWatch が実行中なのにウィンドウが表示されない場合は、終了してから起動し直してください。</value>
+  </data>
+  <data name="Action.CloseOscarWatch">
+    <value>OscarWatch を終了</value>
+  </data>
+  <data name="Action.StartOscarWatch">
+    <value>OscarWatch を起動</value>
+  </data>
+  <data name="Section.Hardware">
+    <value>無線機、ローテーター、GPS</value>
+  </data>
+  <data name="Hardware.Hint">
+    <value>接続中に OscarWatch が止まったり終了したりする場合は、これらをオフにしてください。ポートなどの設定は残るので、設定画面でいつでもオンに戻せます。</value>
+  </data>
+  <data name="Action.DisableHardware">
+    <value>無線機、ローテーター、GPS をオフにする</value>
+  </data>
+  <data name="Section.Reset">
+    <value>設定のリセット</value>
+  </data>
+  <data name="Reset.Hint">
+    <value>最後の手段です。settings.json とそのバックアップを日付付きのフォルダーへ移動し、OscarWatch を既定の設定で起動させます。削除されるものはありません。</value>
+  </data>
+  <data name="Action.PutSettingsAside">
+    <value>設定を退避する</value>
+  </data>
+  <data name="Confirm.Continue">
+    <value>続行</value>
+  </data>
+  <data name="Confirm.Cancel">
+    <value>キャンセル</value>
+  </data>
+  <data name="Confirm.CloseOscarWatch">
+    <value>今すぐ OscarWatch を終了しますか？保存されていない変更は失われる可能性があります。</value>
+  </data>
+  <data name="Confirm.CloseFirst">
+    <value>OscarWatch が実行中です。先に終了しないと、終了時にこの変更が元に戻る可能性があります。OscarWatch を終了して続行しますか？</value>
+  </data>
+  <data name="Confirm.DisableHardware">
+    <value>settings.json で次の接続をオフにしますか？
+
+無線機: {0}
+ローテーター: {1}
+GPS: {2}</value>
+  </data>
+  <data name="Confirm.PutSettingsAside">
+    <value>settings.json とそのバックアップを {0} へ移動しますか？OscarWatch は既定の設定で起動します。</value>
+  </data>
+  <data name="Result.Closed">
+    <value>OscarWatch を終了しました。</value>
+  </data>
+  <data name="Result.CloseFailed">
+    <value>OscarWatch を終了できませんでした: {0}</value>
+  </data>
+  <data name="Result.StillRunning">
+    <value>OscarWatch がまだ実行中のため、何も変更していません。</value>
+  </data>
+  <data name="Result.Started">
+    <value>OscarWatch を起動しました。</value>
+  </data>
+  <data name="Result.StartFailed">
+    <value>OscarWatch を起動できませんでした: {0}</value>
+  </data>
+  <data name="Result.AlreadyRunning">
+    <value>OscarWatch はすでに実行中です。</value>
+  </data>
+  <data name="Result.HardwareDisabled">
+    <value>無線機、ローテーター、GPS をオフにしました。OscarWatch を起動して開くか確認してください。</value>
+  </data>
+  <data name="Result.HardwareAlreadyOff">
+    <value>無線機、ローテーター、GPS はすでにオフです。</value>
+  </data>
+  <data name="Result.SettingsMissing">
+    <value>変更する settings.json がありません。</value>
+  </data>
+  <data name="Result.SettingsUnreadable">
+    <value>settings.json を読み取れないため、変更していません。</value>
+  </data>
+  <data name="Result.SettingsAside">
+    <value>設定を {0} へ移動しました。</value>
+  </data>
+  <data name="Result.NothingToMove">
+    <value>移動する設定ファイルがありません。</value>
+  </data>
+  <data name="Result.DiagnosticsCopied">
+    <value>診断情報をクリップボードにコピーしました。</value>
+  </data>
+  <data name="Result.DiagnosticsSaved">
+    <value>診断情報を {0} に保存しました。</value>
+  </data>
+  <data name="Result.Failed">
+    <value>うまくいきませんでした: {0}</value>
+  </data>
+  <data name="Result.FolderOpenFailed">
+    <value>フォルダーを開けませんでした: {0}</value>
+  </data>
+  <data name="Label.EchoCalibrations">
+    <value>FT4 エコー校正</value>
+  </data>
+  <data name="Echo.None">
+    <value>保存なし</value>
+  </data>
+  <data name="Echo.Count">
+    <value>{0} 件保存</value>
+  </data>
+  <data name="Section.Echo">
+    <value>FT4 エコー校正</value>
+  </data>
+  <data name="Echo.Hint">
+    <value>誤ったエコーの後で FT4 の送信周波数がずれる場合は、保存されたアップリンクトリムを消去してください。次のエコーから再び学習できます。</value>
+  </data>
+  <data name="Action.ClearEchoCalibrations">
+    <value>FT4 エコー校正を消去</value>
+  </data>
+  <data name="Confirm.ClearEchoCalibrations">
+    <value>保存されている FT4 エコー校正 {0} 件をすべて消去しますか？すべての衛星とトランスポンダーのアップリンクトリムがなくなります。</value>
+  </data>
+  <data name="Result.EchoCleared">
+    <value>FT4 エコー校正を消去しました。次のエコーから再び学習できます。</value>
+  </data>
+  <data name="Result.EchoNoneSaved">
+    <value>消去する FT4 エコー校正はありません。</value>
+  </data>
+  <data name="Save.Title">
+    <value>診断ファイルを保存</value>
+  </data>
+  <data name="Tab.Status">
+    <value>状態</value>
+  </data>
+  <data name="Tab.Gs232">
+    <value>ローテーター</value>
+  </data>
+  <data name="Gs232.Hint">
+    <value>Yaesu GS-232 互換のローテーターコントローラーを直接テストし、送受信したすべてのバイトを記録します。OscarWatch が通常無視する応答も含まれます。COM ポートを空けるため、OscarWatch を閉じておく必要があります。ローテーターの問題を報告するときは、このログを保存して添付してください。</value>
+  </data>
+  <data name="Gs232.Label.Status">
+    <value>テスト</value>
+  </data>
+  <data name="Gs232.Label.Port">
+    <value>COM ポート</value>
+  </data>
+  <data name="Gs232.Label.Baud">
+    <value>ボーレート</value>
+  </data>
+  <data name="Gs232.Label.AzimuthOnly">
+    <value>方位角のみ</value>
+  </data>
+  <data name="Gs232.Label.Position">
+    <value>最新の位置</value>
+  </data>
+  <data name="Gs232.Yes">
+    <value>はい</value>
+  </data>
+  <data name="Gs232.No">
+    <value>いいえ</value>
+  </data>
+  <data name="Gs232.SettingsUnavailable">
+    <value>利用できません。settings.json がないか読み取れないため、ローテーターのポートが不明です。</value>
+  </data>
+  <data name="Gs232.NotGs232">
+    <value>利用できません。設定のローテーターが COM ポート接続の Yaesu GS-232 ではありません。</value>
+  </data>
+  <data name="Gs232.NoPort">
+    <value>利用できません。設定でローテーターの COM ポートが指定されていません。</value>
+  </data>
+  <data name="Gs232.Ready">
+    <value>準備完了。OscarWatch に保存されたローテーター設定を使います。</value>
+  </data>
+  <data name="Gs232.PositionUnknown">
+    <value>まだ読み取っていません</value>
+  </data>
+  <data name="Gs232.Position">
+    <value>方位角 {0}°、仰角 {1}°</value>
+  </data>
+  <data name="Gs232.PositionAzimuth">
+    <value>方位角 {0}°</value>
+  </data>
+  <data name="Gs232.PositionElevation">
+    <value>仰角 {0}°</value>
+  </data>
+  <data name="Gs232.PositionNone">
+    <value>位置が報告されませんでした</value>
+  </data>
+  <data name="Action.Gs232Read">
+    <value>位置を読み取る</value>
+  </data>
+  <data name="Action.Gs232Stop">
+    <value>停止</value>
+  </data>
+  <data name="Action.Gs232Move">
+    <value>5 度回転</value>
+  </data>
+  <data name="Gs232.MoveHint">
+    <value>「5 度回転」は確認後にアンテナを方位角で 5° 回し、仰角はそのままです。「位置を読み取る」で方位角（方位角のみのコントローラー以外は仰角も）が取得できると使えます。</value>
+  </data>
+  <data name="Gs232.LogHeading">
+    <value>セッションログ</value>
+  </data>
+  <data name="Gs232.LogEmpty">
+    <value>まだ何も送信していません。各ボタンは COM ポートを開き、すべてのバイトを記録してから閉じます。</value>
+  </data>
+  <data name="Action.Gs232CopyLog">
+    <value>ログをコピー</value>
+  </data>
+  <data name="Action.Gs232SaveLog">
+    <value>ログを保存</value>
+  </data>
+  <data name="Confirm.Gs232Move">
+    <value>{1} のローテーターに {0} を送信しますか？アンテナは方位角 {2}° から {3}° へ回転します。周囲に障害物がないことを確認してください。</value>
+  </data>
+  <data name="Result.Gs232Position">
+    <value>位置を読み取りました: {0}。</value>
+  </data>
+  <data name="Result.Gs232NoPosition">
+    <value>コントローラーが位置を報告しませんでした。返ってきた内容はセッションログで確認できます。</value>
+  </data>
+  <data name="Result.Gs232Stopped">
+    <value>停止を送信しました。応答があればセッションログに表示されます。</value>
+  </data>
+  <data name="Result.Gs232Moved">
+    <value>{0} を送信しました。送信後の位置: {1}。</value>
+  </data>
+  <data name="Result.Gs232PortFailed">
+    <value>{0} を使用できませんでした: {1}</value>
+  </data>
+  <data name="Result.Gs232LogCopied">
+    <value>セッションログをクリップボードにコピーしました。</value>
+  </data>
+  <data name="Result.Gs232LogSaved">
+    <value>セッションログを {0} に保存しました。</value>
+  </data>
+  <data name="Section.Findings">
+    <value>トラブルシューターの診断結果</value>
+  </data>
+  <data name="Findings.Hint">
+    <value>上の状態をわかりやすく説明します。ポートは確認するだけで開かないため、無線機には何も送信されません。</value>
+  </data>
+  <data name="Findings.Level.Problem">
+    <value>問題</value>
+  </data>
+  <data name="Findings.Level.Check">
+    <value>確認</value>
+  </data>
+  <data name="Findings.Level.Note">
+    <value>メモ</value>
+  </data>
+  <data name="Findings.NotResponding">
+    <value>OscarWatch は実行中ですが、Windows は応答なしと報告しています。閉じる前にフリーズレポートを取得してください。</value>
+  </data>
+  <data name="Findings.SeveralRunning">
+    <value>OscarWatch が {0} 個実行中です。すべて閉じてから 1 つだけ起動してください。</value>
+  </data>
+  <data name="Findings.SettingsMissing">
+    <value>settings.json はまだありません。OscarWatch は起動時に既定の設定で作成します。</value>
+  </data>
+  <data name="Findings.SettingsUnreadable">
+    <value>settings.json を読み取れないため、OscarWatch は既定の設定で起動する可能性があります。バックアップを復元するか、設定を退避してください。</value>
+  </data>
+  <data name="Findings.NoPort">
+    <value>{0} はオンですが、設定でポートが選ばれていません。</value>
+  </data>
+  <data name="Findings.PortMissing">
+    <value>{0} はオンで {1} に設定されていますが、{1} は現在このコンピューターにありません。ケーブル、電源、ドライバーを確認するか、設定でポートを選び直してください。</value>
+  </data>
+  <data name="Findings.PortPresent">
+    <value>{0} は {1} に設定されており、このポートはこのコンピューターにあります。ポートが存在することはわかりますが、機器が応答するかどうかはわかりません。</value>
+  </data>
+  <data name="Findings.PortPresentGs232">
+    <value>{0} は {1} に設定されており、このポートはこのコンピューターにあります。ポートが存在することはわかりますが、コントローラーが応答するかどうかはわかりません。ローテーター タブでテストできます。</value>
+  </data>
+  <data name="Findings.PortShared">
+    <value>{0} と {1} はどちらも {2} に設定されています。機器ごとに別のポートが必要です。</value>
+  </data>
+  <data name="Findings.RecentErrors">
+    <value>最新のログに {0} 件のエラーがあります。最近のものは下に表示されています。</value>
+  </data>
+  <data name="Findings.NoneFound">
+    <value>設定と最新のログに明らかな問題は見つかりませんでした。</value>
+  </data>
+  <data name="Hardware.Radio">
+    <value>無線機</value>
+  </data>
+  <data name="Hardware.RadioDownlink">
+    <value>ダウンリンク無線機</value>
+  </data>
+  <data name="Hardware.RadioUplink">
+    <value>アップリンク無線機</value>
+  </data>
+  <data name="Hardware.Rotator">
+    <value>ローテーター</value>
+  </data>
+  <data name="Hardware.RotatorElevation">
+    <value>ローテーター仰角</value>
+  </data>
+  <data name="Hardware.Gps">
+    <value>GPS</value>
+  </data>
+  <data name="Freeze.Hint">
+    <value>OscarWatch が固まったら、閉じる前にフリーズレポートを取得してください。OscarWatch が何をしていたかのスナップショットと最新のログを、サポート用の zip ファイルに保存します。スナップショットには OscarWatch のメモリの一部が含まれるため、信頼できる相手にだけ送ってください。</value>
+  </data>
+  <data name="Action.CaptureFreezeReport">
+    <value>フリーズレポートを取得</value>
+  </data>
+  <data name="Result.FreezeCapturing">
+    <value>フリーズレポートを取得しています。1 分ほどかかることがあります…</value>
+  </data>
+  <data name="Result.FreezeSaved">
+    <value>フリーズレポートを {0} に保存しました ({1} MB)。OscarWatch は実行中のままです。</value>
+  </data>
+  <data name="Result.FreezeSavedNoDump">
+    <value>フリーズレポートを {0} に保存しました ({1} MB) が、完全なスナップショットは含まれていません: {2}</value>
+  </data>
+  <data name="Section.Restore">
+    <value>設定を復元</value>
+  </data>
+  <data name="Restore.Hint">
+    <value>OscarWatch またはトラブルシューターが保存した設定ファイルを元に戻します。現在の設定は先にバックアップされるため、元に戻せます。</value>
+  </data>
+  <data name="Backup.None">
+    <value>バックアップは見つかりませんでした。</value>
+  </data>
+  <data name="Backup.Count">
+    <value>{0} 件のバックアップが見つかりました (新しい順)。</value>
+  </data>
+  <data name="Backup.Item">
+    <value>{0}、保存 {1}、{2}</value>
+  </data>
+  <data name="Backup.ItemNoCallsign">
+    <value>{0}、保存 {1}</value>
+  </data>
+  <data name="Action.RestoreBackup">
+    <value>選んだバックアップを復元</value>
+  </data>
+  <data name="Confirm.RestoreBackup">
+    <value>settings.json を {0} (保存 {1}) で置き換えますか? 現在の設定は先にバックアップされます。</value>
+  </data>
+  <data name="Result.BackupRestored">
+    <value>{0} を復元しました。以前の設定はバックアップされています。使用するには OscarWatch を起動してください。</value>
+  </data>
+  <data name="Result.BackupMissing">
+    <value>そのバックアップはもうありません。</value>
+  </data>
+  <data name="Result.BackupUnreadable">
+    <value>そのバックアップは読み取れないため、復元しませんでした。</value>
+  </data>
+  <data name="Trace.Heading">
+    <value>OscarWatch のローテーター通信を記録</value>
+  </data>
+  <data name="Trace.Hint">
+    <value>通常どおり使っている間 (たとえばスタンバイでの回転やパス)、ローテーターへのコマンド、応答、タイムアウト、再送を 30 分間記録するよう OscarWatch に依頼します。OscarWatch 1.1.7 以降が必要です。記録は OscarWatch が次にローテーターと通信したときに始まります。</value>
+  </data>
+  <data name="Trace.Label.Status">
+    <value>記録</value>
+  </data>
+  <data name="Trace.Label.File">
+    <value>最新のファイル</value>
+  </data>
+  <data name="Trace.Recording">
+    <value>{0} までオン</value>
+  </data>
+  <data name="Trace.NotRecording">
+    <value>オフ</value>
+  </data>
+  <data name="Trace.NoFile">
+    <value>まだありません</value>
+  </data>
+  <data name="Trace.LatestFile">
+    <value>{0}、書き込み {1}、{2} KB</value>
+  </data>
+  <data name="Trace.TailHeading">
+    <value>最新の記録の末尾</value>
+  </data>
+  <data name="Trace.TailEmpty">
+    <value>まだ記録はありません。</value>
+  </data>
+  <data name="Action.TraceStart">
+    <value>記録を開始</value>
+  </data>
+  <data name="Action.TraceStop">
+    <value>記録を停止</value>
+  </data>
+  <data name="Action.TraceCopy">
+    <value>記録をコピー</value>
+  </data>
+  <data name="Result.TraceStarted">
+    <value>{0} 分間の記録を依頼しました。OscarWatch を通常どおり使い、終わったらここで記録を停止してください。</value>
+  </data>
+  <data name="Result.TraceStopped">
+    <value>記録を停止しました。</value>
+  </data>
+  <data name="Result.TraceCopied">
+    <value>{0} をクリップボードにコピーしました。</value>
+  </data>
+  <data name="Gs232.Heading">
+    <value>GS-232 コントローラーのテスト</value>
+  </data>
+</root>

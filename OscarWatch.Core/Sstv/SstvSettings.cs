@@ -59,17 +59,28 @@ public sealed class SstvSettings
     /// </summary>
     public bool UseSatelliteModes { get; set; } = true;
 
-    /// <summary>Keep a picture going through a long fade once its line timing is known. Default off.</summary>
-    public bool HoldThroughFades { get; set; }
+    /// <summary>Keep a picture going through a long fade once its line timing is known. Default on.</summary>
+    public bool HoldThroughFades { get; set; } = true;
 
-    /// <summary>Demodulate slower modes through a narrower filter to let less noise in. Default off.</summary>
-    public bool AdaptiveBandwidth { get; set; }
+    /// <summary>Demodulate slower modes through a narrower filter to let less noise in. Default on.</summary>
+    public bool AdaptiveBandwidth { get; set; } = true;
+
+    /// <summary>
+    /// Version of the fade defaults the saved settings were written with. Files saved before
+    /// version 1 had <see cref="HoldThroughFades"/> and <see cref="AdaptiveBandwidth"/> off by default.
+    /// </summary>
+    public int FadeDefaultsVersion { get; set; } = CurrentFadeDefaultsVersion;
+
+    public const int CurrentFadeDefaultsVersion = 1;
 
     /// <summary>Move a picture caught part way through at AOS down to the rows it belongs on. Default on.</summary>
     public bool AlignAosFragments { get; set; } = true;
 
     /// <summary>Redraw short runs of noisy lines from the lines either side. Default on.</summary>
     public bool RepairBadLines { get; set; } = true;
+
+    /// <summary>Remove speckle from finished pictures at the cost of fine detail. Default off.</summary>
+    public bool SmoothAcrossLines { get; set; }
 
     /// <summary>Merge repeat copies of a picture and save the merged picture as well. Default on.</summary>
     public bool CombineRepeats { get; set; } = true;
@@ -85,6 +96,16 @@ public sealed class SstvSettings
     /// Negative values start before AOS so the radio and audio can settle. Default −5°.
     /// </summary>
     public double AutoStartElevationDeg { get; set; } = DefaultAutoStartElevationDeg;
+
+    /// <summary>
+    /// When true, the computer and display are kept out of idle sleep while SSTV is listening
+    /// live. Decoding a saved recording does not. Default off.
+    /// </summary>
+    public bool KeepAwakeWhileListening { get; set; }
+
+    /// <summary>Whether to hold the keep-awake request: only for a live session with the option on.</summary>
+    public static bool ShouldKeepAwake(bool keepAwakeWhileListening, bool isRunning, bool isDecodingFile) =>
+        keepAwakeWhileListening && isRunning && !isDecodingFile;
 
     public static double ClampAutoStartElevationDeg(double value) =>
         double.IsFinite(value)

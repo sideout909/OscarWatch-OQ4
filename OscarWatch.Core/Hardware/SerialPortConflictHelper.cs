@@ -41,8 +41,8 @@ public static class SerialPortConflictHelper
         {
             if (rig.DualRadioEnabled)
             {
-                var downPort = rig.Downlink.Port?.Trim() ?? "";
-                var upPort = rig.Uplink.Type == RigType.Dummy ? "" : rig.Uplink.Port?.Trim() ?? "";
+                var downPort = rig.Downlink.SerialPortInUse;
+                var upPort = rig.Uplink.SerialPortInUse;
 
                 if (downPort.Length > 0 && upPort.Length > 0
                     && string.Equals(downPort, upPort, StringComparison.OrdinalIgnoreCase))
@@ -78,16 +78,13 @@ public static class SerialPortConflictHelper
                 return false;
             }
 
-            if (TryDescribeGpsConflict(gpsPort, rig.Port?.Trim() ?? "", "radio", out message))
+            var rigPort = rig.SerialPortInUse;
+            if (TryDescribeGpsConflict(gpsPort, rigPort, "radio", out message))
                 return true;
 
             if (rotatorPorts.Count == 0)
                 return false;
 
-            if (rig.Type == RigType.Dummy)
-                return false;
-
-            var rigPort = rig.Port?.Trim() ?? "";
             if (rigPort.Length == 0)
                 return false;
 
@@ -210,6 +207,28 @@ public static class SerialPortConflictHelper
         return false;
     }
 
+    /// <summary>
+    /// True when the CW keyer's own COM port is the radio, rotator or GPS port, or a separate PTT
+    /// port that FT4 or Terminal key on.
+    /// </summary>
+    public static bool IsCwKeyPortOccupied(AppSettings settings, string? cwPort)
+    {
+        var port = cwPort?.Trim() ?? "";
+        if (port.Length == 0)
+            return false;
+
+        if (EnumerateOccupiedPorts(settings.Rig, settings.Rotator, settings.Gps)
+            .Any(p => string.Equals(p.Port, port, StringComparison.OrdinalIgnoreCase)))
+            return true;
+
+        var ft4 = Ft4SeparatePttPort(settings)?.Trim() ?? "";
+        var terminal = settings.Terminal.BuiltIn.PttMethod == PttMethod.SeparateComPort
+            ? settings.Terminal.BuiltIn.SeparatePttPort?.Trim() ?? ""
+            : "";
+        return string.Equals(port, ft4, StringComparison.OrdinalIgnoreCase)
+            || string.Equals(port, terminal, StringComparison.OrdinalIgnoreCase);
+    }
+
     private static IEnumerable<(string Port, string Label)> EnumerateOccupiedPorts(
         RigSettings rig,
         RotatorSettings rotator,
@@ -219,17 +238,17 @@ public static class SerialPortConflictHelper
         {
             if (rig.DualRadioEnabled)
             {
-                var down = rig.Downlink.Port?.Trim() ?? "";
-                if (down.Length > 0 && rig.Downlink.Type != RigType.Dummy)
+                var down = rig.Downlink.SerialPortInUse;
+                if (down.Length > 0)
                     yield return (down, "downlink radio");
 
-                var up = rig.Uplink.Port?.Trim() ?? "";
-                if (up.Length > 0 && rig.Uplink.Type != RigType.Dummy)
+                var up = rig.Uplink.SerialPortInUse;
+                if (up.Length > 0)
                     yield return (up, "uplink radio");
             }
-            else if (rig.Type != RigType.Dummy)
+            else
             {
-                var port = rig.Port?.Trim() ?? "";
+                var port = rig.SerialPortInUse;
                 if (port.Length > 0)
                     yield return (port, "radio");
             }

@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">text/microsoft-resx</resheader>
+  <resheader name="version">2.0</resheader>
+  <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</resheader>
+  <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</resheader>
+  <data name="Window.Title">
+    <value>OscarWatch Troubleshooter</value>
+  </data>
+  <data name="Intro">
+    <value>Use this when OscarWatch will not start or its window does not appear. It works without OscarWatch running.</value>
+  </data>
+  <data name="Section.Status">
+    <value>Status</value>
+  </data>
+  <data name="Action.Refresh">
+    <value>Refresh</value>
+  </data>
+  <data name="Label.Process">
+    <value>OscarWatch process</value>
+  </data>
+  <data name="Label.Application">
+    <value>Application</value>
+  </data>
+  <data name="Label.System">
+    <value>System</value>
+  </data>
+  <data name="Label.DataFolder">
+    <value>OscarWatch folder</value>
+  </data>
+  <data name="Label.LogFolder">
+    <value>Log folder</value>
+  </data>
+  <data name="Label.LatestLog">
+    <value>Latest log</value>
+  </data>
+  <data name="Label.Settings">
+    <value>Settings file</value>
+  </data>
+  <data name="Label.Radio">
+    <value>Radio</value>
+  </data>
+  <data name="Label.Rotator">
+    <value>Rotator</value>
+  </data>
+  <data name="Label.Gps">
+    <value>GPS</value>
+  </data>
+  <data name="Process.NotRunning">
+    <value>Not running</value>
+  </data>
+  <data name="Process.Running">
+    <value>Running (process {0}, started {1})</value>
+  </data>
+  <data name="Application.Found">
+    <value>Version {0}</value>
+  </data>
+  <data name="Application.NotFound">
+    <value>OscarWatch was not found beside the troubleshooter.</value>
+  </data>
+  <data name="Log.None">
+    <value>No log files. OscarWatch may have stopped before it could start logging.</value>
+  </data>
+  <data name="Log.Latest">
+    <value>{0}, written {1}</value>
+  </data>
+  <data name="Settings.Missing">
+    <value>Not found. OscarWatch creates one with default settings when it starts.</value>
+  </data>
+  <data name="Settings.Readable">
+    <value>Readable, written {0}</value>
+  </data>
+  <data name="Settings.Unreadable">
+    <value>Cannot be read: {0}</value>
+  </data>
+  <data name="Device.On">
+    <value>On ({0})</value>
+  </data>
+  <data name="Device.OnNoTarget">
+    <value>On</value>
+  </data>
+  <data name="Device.Off">
+    <value>Off</value>
+  </data>
+  <data name="Device.Unknown">
+    <value>Not set</value>
+  </data>
+  <data name="Section.RecentErrors">
+    <value>Recent errors in the log</value>
+  </data>
+  <data name="Errors.None">
+    <value>No errors in the latest log.</value>
+  </data>
+  <data name="Section.Files">
+    <value>Files and diagnostics</value>
+  </data>
+  <data name="Files.Hint">
+    <value>Diagnostics include the latest log, your settings with passwords and API keys removed, and system details. Send them to support with a description of the problem.</value>
+  </data>
+  <data name="Action.OpenDataFolder">
+    <value>Open OscarWatch folder</value>
+  </data>
+  <data name="Action.OpenLogFolder">
+    <value>Open log folder</value>
+  </data>
+  <data name="Action.CopyDiagnostics">
+    <value>Copy diagnostics</value>
+  </data>
+  <data name="Action.SaveDiagnostics">
+    <value>Save diagnostics file</value>
+  </data>
+  <data name="Section.Process">
+    <value>Stuck OscarWatch</value>
+  </data>
+  <data name="Process.Hint">
+    <value>If OscarWatch is running but no window appears, close it and start it again.</value>
+  </data>
+  <data name="Action.CloseOscarWatch">
+    <value>Close OscarWatch</value>
+  </data>
+  <data name="Action.StartOscarWatch">
+    <value>Start OscarWatch</value>
+  </data>
+  <data name="Section.Hardware">
+    <value>Radio, rotator and GPS</value>
+  </data>
+  <data name="Hardware.Hint">
+    <value>If OscarWatch hangs or closes while connecting, turn these off. Ports and other settings are kept, so you can turn them back on in Settings.</value>
+  </data>
+  <data name="Action.DisableHardware">
+    <value>Turn off radio, rotator and GPS</value>
+  </data>
+  <data name="Section.Reset">
+    <value>Reset settings</value>
+  </data>
+  <data name="Reset.Hint">
+    <value>Last resort. Moves settings.json and its backups into a dated folder, so OscarWatch starts with default settings. Nothing is deleted.</value>
+  </data>
+  <data name="Action.PutSettingsAside">
+    <value>Put settings aside</value>
+  </data>
+  <data name="Confirm.Continue">
+    <value>Continue</value>
+  </data>
+  <data name="Confirm.Cancel">
+    <value>Cancel</value>
+  </data>
+  <data name="Confirm.CloseOscarWatch">
+    <value>Close OscarWatch now? Changes it has not saved may be lost.</value>
+  </data>
+  <data name="Confirm.CloseFirst">
+    <value>OscarWatch is running. It has to be closed first, or it could undo this change when it exits. Close OscarWatch and continue?</value>
+  </data>
+  <data name="Confirm.DisableHardware">
+    <value>Turn off these connections in settings.json?
+
+Radio: {0}
+Rotator: {1}
+GPS: {2}</value>
+  </data>
+  <data name="Confirm.PutSettingsAside">
+    <value>Move settings.json and its backups into {0}? OscarWatch will start with default settings.</value>
+  </data>
+  <data name="Result.Closed">
+    <value>OscarWatch has been closed.</value>
+  </data>
+  <data name="Result.CloseFailed">
+    <value>OscarWatch could not be closed: {0}</value>
+  </data>
+  <data name="Result.StillRunning">
+    <value>OscarWatch is still running, so nothing was changed.</value>
+  </data>
+  <data name="Result.Started">
+    <value>OscarWatch has been started.</value>
+  </data>
+  <data name="Result.StartFailed">
+    <value>OscarWatch could not be started: {0}</value>
+  </data>
+  <data name="Result.AlreadyRunning">
+    <value>OscarWatch is already running.</value>
+  </data>
+  <data name="Result.HardwareDisabled">
+    <value>Radio, rotator and GPS are now off. Start OscarWatch to check that it opens.</value>
+  </data>
+  <data name="Result.HardwareAlreadyOff">
+    <value>Radio, rotator and GPS are already off.</value>
+  </data>
+  <data name="Result.SettingsMissing">
+    <value>There is no settings.json to change.</value>
+  </data>
+  <data name="Result.SettingsUnreadable">
+    <value>settings.json cannot be read, so it was not changed.</value>
+  </data>
+  <data name="Result.SettingsAside">
+    <value>Settings moved to {0}.</value>
+  </data>
+  <data name="Result.NothingToMove">
+    <value>There are no settings files to move.</value>
+  </data>
+  <data name="Result.DiagnosticsCopied">
+    <value>Diagnostics copied to the clipboard.</value>
+  </data>
+  <data name="Result.DiagnosticsSaved">
+    <value>Diagnostics saved to {0}.</value>
+  </data>
+  <data name="Result.Failed">
+    <value>That did not work: {0}</value>
+  </data>
+  <data name="Result.FolderOpenFailed">
+    <value>The folder could not be opened: {0}</value>
+  </data>
+  <data name="Label.EchoCalibrations">
+    <value>FT4 echo calibrations</value>
+  </data>
+  <data name="Echo.None">
+    <value>None saved</value>
+  </data>
+  <data name="Echo.Count">
+    <value>{0} saved</value>
+  </data>
+  <data name="Section.Echo">
+    <value>FT4 echo calibrations</value>
+  </data>
+  <data name="Echo.Hint">
+    <value>If FT4 transmits off frequency after a bad echo, clear the saved uplink trims. OscarWatch can learn them again from your next echoes.</value>
+  </data>
+  <data name="Action.ClearEchoCalibrations">
+    <value>Clear FT4 echo calibrations</value>
+  </data>
+  <data name="Confirm.ClearEchoCalibrations">
+    <value>Clear all {0} saved FT4 echo calibrations? Every satellite and transponder goes back to no uplink trim.</value>
+  </data>
+  <data name="Result.EchoCleared">
+    <value>FT4 echo calibrations cleared. OscarWatch can learn them again from your next echoes.</value>
+  </data>
+  <data name="Result.EchoNoneSaved">
+    <value>There are no FT4 echo calibrations to clear.</value>
+  </data>
+  <data name="Save.Title">
+    <value>Save diagnostics file</value>
+  </data>
+  <data name="Tab.Status">
+    <value>Status</value>
+  </data>
+  <data name="Tab.Gs232">
+    <value>Rotator</value>
+  </data>
+  <data name="Gs232.Hint">
+    <value>Tests a Yaesu GS-232 compatible rotator controller directly and logs every byte sent and received, including replies OscarWatch normally ignores. OscarWatch has to be closed so the COM port is free. When you report a rotator problem, save this log and attach it.</value>
+  </data>
+  <data name="Gs232.Label.Status">
+    <value>Probe</value>
+  </data>
+  <data name="Gs232.Label.Port">
+    <value>COM port</value>
+  </data>
+  <data name="Gs232.Label.Baud">
+    <value>Baud rate</value>
+  </data>
+  <data name="Gs232.Label.AzimuthOnly">
+    <value>Azimuth only</value>
+  </data>
+  <data name="Gs232.Label.Position">
+    <value>Last position</value>
+  </data>
+  <data name="Gs232.Yes">
+    <value>Yes</value>
+  </data>
+  <data name="Gs232.No">
+    <value>No</value>
+  </data>
+  <data name="Gs232.SettingsUnavailable">
+    <value>Not available. settings.json is missing or cannot be read, so the rotator port is not known.</value>
+  </data>
+  <data name="Gs232.NotGs232">
+    <value>Not available. The rotator in Settings is not a Yaesu GS-232 on a COM port.</value>
+  </data>
+  <data name="Gs232.NoPort">
+    <value>Not available. No COM port is set for the rotator in Settings.</value>
+  </data>
+  <data name="Gs232.Ready">
+    <value>Ready. Uses the rotator settings saved in OscarWatch.</value>
+  </data>
+  <data name="Gs232.PositionUnknown">
+    <value>Not read yet</value>
+  </data>
+  <data name="Gs232.Position">
+    <value>Azimuth {0}°, elevation {1}°</value>
+  </data>
+  <data name="Gs232.PositionAzimuth">
+    <value>Azimuth {0}°</value>
+  </data>
+  <data name="Gs232.PositionElevation">
+    <value>Elevation {0}°</value>
+  </data>
+  <data name="Gs232.PositionNone">
+    <value>No position reported</value>
+  </data>
+  <data name="Action.Gs232Read">
+    <value>Read position</value>
+  </data>
+  <data name="Action.Gs232Stop">
+    <value>Stop</value>
+  </data>
+  <data name="Action.Gs232Move">
+    <value>Move 5 degrees</value>
+  </data>
+  <data name="Gs232.MoveHint">
+    <value>Move 5 degrees turns the antenna 5° in azimuth after a confirm, and keeps the elevation. It is available once Read position has returned the azimuth (and the elevation, unless the controller is azimuth only).</value>
+  </data>
+  <data name="Gs232.LogHeading">
+    <value>Session log</value>
+  </data>
+  <data name="Gs232.LogEmpty">
+    <value>Nothing sent yet. Each button opens the COM port, logs every byte, and closes it again.</value>
+  </data>
+  <data name="Action.Gs232CopyLog">
+    <value>Copy log</value>
+  </data>
+  <data name="Action.Gs232SaveLog">
+    <value>Save log</value>
+  </data>
+  <data name="Confirm.Gs232Move">
+    <value>Send {0} to the rotator on {1}? The antenna will turn from azimuth {2}° to {3}°. Check nothing is in the way.</value>
+  </data>
+  <data name="Result.Gs232Position">
+    <value>Position read: {0}.</value>
+  </data>
+  <data name="Result.Gs232NoPosition">
+    <value>The controller did not report a position. The session log shows what came back.</value>
+  </data>
+  <data name="Result.Gs232Stopped">
+    <value>Stop sent. The session log shows any reply.</value>
+  </data>
+  <data name="Result.Gs232Moved">
+    <value>{0} sent. Position afterwards: {1}.</value>
+  </data>
+  <data name="Result.Gs232PortFailed">
+    <value>{0} could not be used: {1}</value>
+  </data>
+  <data name="Result.Gs232LogCopied">
+    <value>Session log copied to the clipboard.</value>
+  </data>
+  <data name="Result.Gs232LogSaved">
+    <value>Session log saved to {0}.</value>
+  </data>
+  <data name="Section.Findings">
+    <value>What the troubleshooter found</value>
+  </data>
+  <data name="Findings.Hint">
+    <value>A plain reading of the status above. Ports are only looked up, never opened, so nothing is sent to your radio.</value>
+  </data>
+  <data name="Findings.Level.Problem">
+    <value>Problem</value>
+  </data>
+  <data name="Findings.Level.Check">
+    <value>Check</value>
+  </data>
+  <data name="Findings.Level.Note">
+    <value>Note</value>
+  </data>
+  <data name="Findings.NotResponding">
+    <value>OscarWatch is running but Windows reports it as not responding. Capture a freeze report before you close it.</value>
+  </data>
+  <data name="Findings.SeveralRunning">
+    <value>{0} copies of OscarWatch are running. Close them all, then start one.</value>
+  </data>
+  <data name="Findings.SettingsMissing">
+    <value>There is no settings.json yet. OscarWatch creates one with default settings when it starts.</value>
+  </data>
+  <data name="Findings.SettingsUnreadable">
+    <value>settings.json cannot be read, so OscarWatch may start with default settings. Restore a backup or put the settings aside.</value>
+  </data>
+  <data name="Findings.NoPort">
+    <value>{0} is on, but no port is chosen for it in Settings.</value>
+  </data>
+  <data name="Findings.PortMissing">
+    <value>{0} is on and set to {1}, but {1} is not on this computer now. Check the cable, power and driver, or choose the port again in Settings.</value>
+  </data>
+  <data name="Findings.PortPresent">
+    <value>{0} is set to {1}, which is on this computer. That only shows the port exists, not that the device answers.</value>
+  </data>
+  <data name="Findings.PortPresentGs232">
+    <value>{0} is set to {1}, which is on this computer. That only shows the port exists, not that the controller answers. The Rotator tab can test it.</value>
+  </data>
+  <data name="Findings.PortShared">
+    <value>{0} and {1} are both set to {2}. Each device needs its own port.</value>
+  </data>
+  <data name="Findings.RecentErrors">
+    <value>The latest log has {0} errors. The most recent are listed below.</value>
+  </data>
+  <data name="Findings.NoneFound">
+    <value>Nothing obviously wrong in the settings or the latest log.</value>
+  </data>
+  <data name="Hardware.Radio">
+    <value>Radio</value>
+  </data>
+  <data name="Hardware.RadioDownlink">
+    <value>Downlink radio</value>
+  </data>
+  <data name="Hardware.RadioUplink">
+    <value>Uplink radio</value>
+  </data>
+  <data name="Hardware.Rotator">
+    <value>Rotator</value>
+  </data>
+  <data name="Hardware.RotatorElevation">
+    <value>Rotator elevation</value>
+  </data>
+  <data name="Hardware.Gps">
+    <value>GPS</value>
+  </data>
+  <data name="Freeze.Hint">
+    <value>If OscarWatch is stuck, capture a freeze report before you close it. It saves a snapshot of what OscarWatch was doing, with the latest logs, to a zip file for support. The snapshot holds part of OscarWatch's memory, so only send it to someone you trust.</value>
+  </data>
+  <data name="Action.CaptureFreezeReport">
+    <value>Capture freeze report</value>
+  </data>
+  <data name="Result.FreezeCapturing">
+    <value>Capturing a freeze report. This can take a minute…</value>
+  </data>
+  <data name="Result.FreezeSaved">
+    <value>Freeze report saved to {0} ({1} MB). OscarWatch is still running.</value>
+  </data>
+  <data name="Result.FreezeSavedNoDump">
+    <value>Freeze report saved to {0} ({1} MB), but without a full snapshot: {2}</value>
+  </data>
+  <data name="Section.Restore">
+    <value>Restore settings</value>
+  </data>
+  <data name="Restore.Hint">
+    <value>Put back a settings file that OscarWatch or the troubleshooter kept. The current settings are backed up first, so this can be undone.</value>
+  </data>
+  <data name="Backup.None">
+    <value>No backups found.</value>
+  </data>
+  <data name="Backup.Count">
+    <value>{0} backups found, newest first.</value>
+  </data>
+  <data name="Backup.Item">
+    <value>{0}, saved {1}, {2}</value>
+  </data>
+  <data name="Backup.ItemNoCallsign">
+    <value>{0}, saved {1}</value>
+  </data>
+  <data name="Action.RestoreBackup">
+    <value>Restore selected backup</value>
+  </data>
+  <data name="Confirm.RestoreBackup">
+    <value>Replace settings.json with {0}, saved {1}? The current settings are backed up first.</value>
+  </data>
+  <data name="Result.BackupRestored">
+    <value>Restored {0}. The previous settings were backed up. Start OscarWatch to use them.</value>
+  </data>
+  <data name="Result.BackupMissing">
+    <value>That backup no longer exists.</value>
+  </data>
+  <data name="Result.BackupUnreadable">
+    <value>That backup cannot be read, so it was not restored.</value>
+  </data>
+  <data name="Trace.Heading">
+    <value>Record OscarWatch rotator traffic</value>
+  </data>
+  <data name="Trace.Hint">
+    <value>Asks OscarWatch to record every rotator command, reply, timeout and retry for 30 minutes while you use it as normal, for example a Rotate in Standby or a pass. Needs OscarWatch 1.1.7 or later. Recording starts when OscarWatch next talks to the rotator.</value>
+  </data>
+  <data name="Trace.Label.Status">
+    <value>Recording</value>
+  </data>
+  <data name="Trace.Label.File">
+    <value>Latest file</value>
+  </data>
+  <data name="Trace.Recording">
+    <value>On until {0}</value>
+  </data>
+  <data name="Trace.NotRecording">
+    <value>Off</value>
+  </data>
+  <data name="Trace.NoFile">
+    <value>None yet</value>
+  </data>
+  <data name="Trace.LatestFile">
+    <value>{0}, written {1}, {2} KB</value>
+  </data>
+  <data name="Trace.TailHeading">
+    <value>End of the latest recording</value>
+  </data>
+  <data name="Trace.TailEmpty">
+    <value>No recording yet.</value>
+  </data>
+  <data name="Action.TraceStart">
+    <value>Start recording</value>
+  </data>
+  <data name="Action.TraceStop">
+    <value>Stop recording</value>
+  </data>
+  <data name="Action.TraceCopy">
+    <value>Copy recording</value>
+  </data>
+  <data name="Result.TraceStarted">
+    <value>Recording requested for {0} minutes. Use OscarWatch as normal, then stop the recording here.</value>
+  </data>
+  <data name="Result.TraceStopped">
+    <value>Recording stopped.</value>
+  </data>
+  <data name="Result.TraceCopied">
+    <value>{0} copied to the clipboard.</value>
+  </data>
+  <data name="Gs232.Heading">
+    <value>GS-232 controller test</value>
+  </data>
+</root>

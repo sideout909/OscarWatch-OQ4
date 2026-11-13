@@ -5,12 +5,31 @@ namespace OscarWatch.Tests.Sstv;
 
 /// <summary>
 /// Each optional decoder improvement against the plain decoder on the simulated satellite
-/// link. An option has to help on weak links and must not hurt a clean one before it can be
-/// turned on by default.
+/// link. An option has to help on weak links and must not hurt a clean one to stay on by default.
 /// </summary>
 public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
 {
     private static readonly double[] WeakLink = [5, 6, 7, 8, 10];
+
+    /// <summary>Options with every fade defence off, plus whatever <paramref name="enable"/> turns on.</summary>
+    internal static SstvDecoderOptions Plain(Action<SstvDecoderOptions>? enable = null)
+    {
+        var o = new SstvDecoderOptions
+        {
+            ImpulseSuppression = false,
+            AdaptiveBandwidth = false,
+            ToneSync = false,
+            HoldThroughFades = false,
+            DopplerLinePrior = false,
+            ToneVis = false,
+            StackedSyncSearch = false,
+            WeightedPixels = false,
+            AdaptiveSmoothing = false,
+            NoiseFade = false,
+        };
+        enable?.Invoke(o);
+        return o;
+    }
 
     private (List<SstvChannelSimulationTests.Point> Off, List<SstvChannelSimulationTests.Point> On) Compare(
         SstvMode mode,
@@ -19,10 +38,10 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
         double[]? cnr = null)
     {
         cnr ??= WeakLink;
-        var off = SstvChannelSimulationTests.Curve(mode, cnr, () => new SstvDecoderOptions(), settings);
+        var off = SstvChannelSimulationTests.Curve(mode, cnr, () => Plain(), settings);
         var on = SstvChannelSimulationTests.Curve(mode, cnr, () =>
         {
-            var o = new SstvDecoderOptions();
+            var o = Plain();
             enable(o);
             return o;
         }, settings);
@@ -54,11 +73,59 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
     public void Impulse_suppression_keeps_clean_pictures(SstvModeId id)
     {
         var mode = SstvModeTable.Get(id);
-        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), new SstvDecoderOptions());
-        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), new SstvDecoderOptions { ImpulseSuppression = true });
+        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain(o => o.ImpulseSuppression = true));
 
         Assert.True(on.LockPercent >= off.LockPercent - 0.5);
         Assert.True(on.MeanError <= off.MeanError + 0.5, $"error {on.MeanError:0.00} on, {off.MeanError:0.00} off");
+    }
+
+    [Theory]
+    [InlineData(SstvModeId.Robot36)]
+    [InlineData(SstvModeId.MartinM1)]
+    [InlineData(SstvModeId.Pd120)]
+    public void Weighted_pixels_help_on_a_weak_fm_link(SstvModeId id)
+    {
+        var mode = SstvModeTable.Get(id);
+        var (off, on) = Compare(mode, o => o.WeightedPixels = true);
+
+        Assert.True(TotalError(on) < TotalError(off), $"error {TotalError(on):0.0} on, {TotalError(off):0.0} off");
+        Assert.True(on.Sum(p => p.LockPercent) >= off.Sum(p => p.LockPercent), "lock fell");
+    }
+
+    [Theory]
+    [InlineData(SstvModeId.Robot36)]
+    [InlineData(SstvModeId.Pd120)]
+    [InlineData(SstvModeId.MartinM1)]
+    public void Weighted_pixels_keep_clean_pictures(SstvModeId id)
+    {
+        var mode = SstvModeTable.Get(id);
+        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain(o => o.WeightedPixels = true));
+
+        Assert.Equal(off.LockPercent, on.LockPercent, 1);
+        Assert.True(on.MeanError <= off.MeanError + 0.5, $"error {on.MeanError:0.00} on, {off.MeanError:0.00} off");
+    }
+
+    [Fact]
+    public void Weighted_pixels_do_not_hurt_with_audio_clicks_and_bursts()
+    {
+        var mode = SstvModeTable.Pd120;
+        var settings = new SstvTestEncoder.Settings
+        {
+            NoiseRms = 0.1,
+            ClicksPerSecond = 80,
+            ClickAmplitude = 2,
+            BurstEveryMs = 1500,
+            BurstMs = 120,
+            BurstNoiseRms = 1.2,
+        };
+        var off = SstvChannelSimulationTests.Measure(mode, settings, Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, settings, Plain(o => o.WeightedPixels = true));
+        output.WriteLine($"off lock {off.LockPercent:0.0}% error {off.MeanError:0.0}; on lock {on.LockPercent:0.0}% error {on.MeanError:0.0}");
+
+        Assert.True(on.MeanError <= off.MeanError * 1.05, $"error {on.MeanError:0.0} on, {off.MeanError:0.0} off");
+        Assert.Equal(off.LockPercent, on.LockPercent, 1);
     }
 
     [Theory]
@@ -81,8 +148,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
     public void Adaptive_bandwidth_keeps_clean_pictures_in_place(SstvModeId id)
     {
         var mode = SstvModeTable.Get(id);
-        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), new SstvDecoderOptions());
-        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), new SstvDecoderOptions { AdaptiveBandwidth = true });
+        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain(o => o.AdaptiveBandwidth = true));
 
         Assert.True(on.LockPercent >= off.LockPercent - 0.5);
         Assert.True(on.MeanError <= off.MeanError + 1.5, $"error {on.MeanError:0.00} on, {off.MeanError:0.00} off");
@@ -107,8 +174,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
     public void Tone_sync_keeps_clean_pictures_in_place(SstvModeId id)
     {
         var mode = SstvModeTable.Get(id);
-        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), new SstvDecoderOptions());
-        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), new SstvDecoderOptions { ToneSync = true });
+        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain(o => o.ToneSync = true));
 
         Assert.True(on.LockPercent >= off.LockPercent - 0.5);
         Assert.True(on.MeanError <= off.MeanError + 1.5, $"error {on.MeanError:0.00} on, {off.MeanError:0.00} off");
@@ -125,8 +192,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
             DropoutEverySeconds = 1000,
             DropoutSeconds = 12,
         };
-        var off = SstvChannelSimulationTests.Measure(mode, fade, new SstvDecoderOptions());
-        var on = SstvChannelSimulationTests.Measure(mode, fade, new SstvDecoderOptions { HoldThroughFades = true });
+        var off = SstvChannelSimulationTests.Measure(mode, fade, Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, fade, Plain(o => o.HoldThroughFades = true));
         output.WriteLine($"off lock {off.LockPercent:0.0}% error {off.MeanError:0.0}; on lock {on.LockPercent:0.0}% error {on.MeanError:0.0}");
 
         Assert.True(on.Decoded);
@@ -144,8 +211,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
             DropoutEverySeconds = 1000,
             DropoutSeconds = 2.4,
         };
-        var off = SstvChannelSimulationTests.Measure(mode, fade, new SstvDecoderOptions());
-        var on = SstvChannelSimulationTests.Measure(mode, fade, new SstvDecoderOptions { HoldThroughFades = true });
+        var off = SstvChannelSimulationTests.Measure(mode, fade, Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, fade, Plain(o => o.HoldThroughFades = true));
         output.WriteLine($"off lock {off.LockPercent:0.0}% decoded {off.Decoded}; on lock {on.LockPercent:0.0}% error {on.MeanError:0.0}");
 
         Assert.True(on.Decoded);
@@ -158,8 +225,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
     public void Hold_through_fades_keeps_clean_pictures_in_place(SstvModeId id)
     {
         var mode = SstvModeTable.Get(id);
-        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), new SstvDecoderOptions());
-        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), new SstvDecoderOptions { HoldThroughFades = true });
+        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain(o => o.HoldThroughFades = true));
 
         Assert.Equal(off.LockPercent, on.LockPercent, 1);
         Assert.Equal(off.MeanError, on.MeanError, 1);
@@ -200,8 +267,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
             DropoutEverySeconds = 1000,
             DropoutSeconds = 6,
         };
-        var off = DecodeWithDoppler(mode, settings, new SstvDecoderOptions { HoldThroughFades = true });
-        var on = DecodeWithDoppler(mode, settings, new SstvDecoderOptions { HoldThroughFades = true, DopplerLinePrior = true });
+        var off = DecodeWithDoppler(mode, settings, Plain(o => o.HoldThroughFades = true));
+        var on = DecodeWithDoppler(mode, settings, Plain(o => { o.HoldThroughFades = true; o.DopplerLinePrior = true; }));
         output.WriteLine($"{mode.Name}: off lock {off.Lock:0.0}% error {off.Error:0.0}; on lock {on.Lock:0.0}% error {on.Error:0.0}");
 
         // The finished picture is redrawn from a fit centred on each line, which already bends
@@ -215,8 +282,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
     {
         var mode = SstvModeTable.Robot36;
         var settings = new SstvTestEncoder.Settings { CnrDb = 10 };
-        var off = DecodeWithDoppler(mode, settings, new SstvDecoderOptions());
-        var on = DecodeWithDoppler(mode, settings, new SstvDecoderOptions { DopplerLinePrior = true });
+        var off = DecodeWithDoppler(mode, settings, Plain());
+        var on = DecodeWithDoppler(mode, settings, Plain(o => o.DopplerLinePrior = true));
         Assert.Equal(off, on);
     }
 
@@ -279,8 +346,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
             DropoutEverySeconds = 3.3,
             DropoutSeconds = line * 1.5,
         };
-        var off = SstvChannelSimulationTests.Measure(mode, settings, new SstvDecoderOptions());
-        var on = SstvChannelSimulationTests.Measure(mode, settings, new SstvDecoderOptions { RepairBadLines = true });
+        var off = SstvChannelSimulationTests.Measure(mode, settings, Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, settings, Plain(o => o.RepairBadLines = true));
         output.WriteLine($"{mode.Name}: error {off.MeanError:0.0} off, {on.MeanError:0.0} on");
 
         Assert.True(on.MeanError < off.MeanError * 0.85, $"error {on.MeanError:0.0} on, {off.MeanError:0.0} off");
@@ -298,6 +365,201 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
 
         Assert.Empty(image.RepairedLines);
         Assert.InRange(image.LineNoise.Where(float.IsFinite).Max(), 0, 2.5);
+    }
+
+    [Theory]
+    [InlineData(SstvModeId.Robot36)]
+    [InlineData(SstvModeId.MartinM1)]
+    [InlineData(SstvModeId.Pd120)]
+    public void Smoothing_across_lines_cuts_speckle_on_a_weak_fm_link(SstvModeId id)
+    {
+        var mode = SstvModeTable.Get(id);
+        var (off, on) = Compare(mode, o => o.SmoothAcrossLines = true);
+
+        Assert.True(TotalError(on) < TotalError(off) * 0.85, $"error {TotalError(on):0.0} on, {TotalError(off):0.0} off");
+        Assert.Equal(off.Sum(p => p.LockPercent), on.Sum(p => p.LockPercent), 1);
+    }
+
+    [Theory]
+    [InlineData(SstvModeId.Robot36)]
+    [InlineData(SstvModeId.Pd120)]
+    public void Smoothing_across_lines_keeps_clean_pictures_close(SstvModeId id)
+    {
+        var mode = SstvModeTable.Get(id);
+        var off = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, new SstvTestEncoder.Settings(), Plain(o => o.SmoothAcrossLines = true));
+
+        Assert.Equal(off.LockPercent, on.LockPercent, 1);
+        Assert.True(on.MeanError <= off.MeanError + 1.5, $"error {on.MeanError:0.00} on, {off.MeanError:0.00} off");
+    }
+
+    [Fact]
+    public void Smoothing_removes_a_lone_click_and_keeps_a_straight_edge()
+    {
+        var image = new SstvImage(8, 6);
+        for (var y = 0; y < 6; y++)
+        {
+            for (var x = 0; x < 8; x++)
+                image.SetPixel(x, y, x < 4 ? 20 : 220, 100, 100);
+        }
+
+        image.SetPixel(1, 2, 255, 255, 255);
+        SstvPictureSmoother.Smooth(image, 0, 6);
+
+        Assert.Equal((byte)20, image.GetPixel(1, 2).R);
+        Assert.Equal((byte)100, image.GetPixel(1, 2).G);
+        for (var y = 0; y < 6; y++)
+        {
+            Assert.Equal((byte)20, image.GetPixel(3, y).R);
+            Assert.Equal((byte)220, image.GetPixel(4, y).R);
+        }
+    }
+
+    [Fact]
+    public void Smoothing_leaves_rows_not_yet_received_black()
+    {
+        var image = new SstvImage(6, 6);
+        for (var y = 0; y < 3; y++)
+        {
+            for (var x = 0; x < 6; x++)
+                image.SetPixel(x, y, 200, 200, 200);
+        }
+
+        SstvPictureSmoother.Smooth(image, 0, 3);
+
+        Assert.Equal((byte)200, image.GetPixel(2, 2).R);
+        Assert.Equal((byte)0, image.GetPixel(2, 3).R);
+    }
+
+    [Theory]
+    [InlineData(SstvModeId.Robot36)]
+    [InlineData(SstvModeId.Pd120)]
+    public void Adaptive_smoothing_cuts_speckle_on_a_weak_fm_link(SstvModeId id)
+    {
+        var mode = SstvModeTable.Get(id);
+        var (off, on) = Compare(mode, o => o.AdaptiveSmoothing = true);
+
+        Assert.True(TotalError(on) < TotalError(off) * 0.95, $"error {TotalError(on):0.0} on, {TotalError(off):0.0} off");
+        Assert.Equal(off.Sum(p => p.LockPercent), on.Sum(p => p.LockPercent), 1);
+    }
+
+    [Theory]
+    [InlineData(SstvModeId.Robot36)]
+    [InlineData(SstvModeId.Pd120)]
+    public void Adaptive_smoothing_keeps_clean_pictures_close(SstvModeId id)
+    {
+        var mode = SstvModeTable.Get(id);
+        foreach (var cnr in new[] { 40.0, 30.0 })
+        {
+            var settings = new SstvTestEncoder.Settings { CnrDb = cnr };
+            var off = SstvChannelSimulationTests.Measure(mode, settings, Plain());
+            var on = SstvChannelSimulationTests.Measure(mode, settings, Plain(o => o.AdaptiveSmoothing = true));
+
+            Assert.Equal(off.LockPercent, on.LockPercent, 1);
+            Assert.True(on.MeanError <= off.MeanError + 0.3, $"{cnr} dB: error {on.MeanError:0.00} on, {off.MeanError:0.00} off");
+        }
+    }
+
+    [Fact]
+    public void Adaptive_smoothing_leaves_a_clean_picture_untouched()
+    {
+        var image = new SstvImage(32, 40);
+        for (var y = 0; y < 40; y++)
+        {
+            for (var x = 0; x < 32; x++)
+                image.SetPixel(x, y, (byte)(x < 16 ? 20 : 220), (byte)(y * 5), 100);
+        }
+
+        image.SetPixel(5, 20, 255, 255, 255);
+        var before = image.Rgb.ToArray();
+        SstvPictureSmoother.SmoothAdaptive(image, 0, 40);
+
+        Assert.Equal(before, image.Rgb);
+    }
+
+    [Fact]
+    public void Adaptive_smoothing_flattens_a_noisy_picture_and_not_rows_not_yet_received()
+    {
+        var random = new Random(7);
+        var image = new SstvImage(32, 40);
+        for (var y = 0; y < 30; y++)
+        {
+            for (var x = 0; x < 32; x++)
+                image.SetPixel(x, y, (byte)random.Next(60, 200), (byte)random.Next(60, 200), (byte)random.Next(60, 200));
+        }
+
+        static double Spread(SstvImage i)
+        {
+            double sum = 0;
+            for (var y = 5; y < 25; y++)
+            {
+                for (var x = 1; x < 31; x++)
+                    sum += Math.Abs(i.GetPixel(x, y).G - i.GetPixel(x + 1, y).G);
+            }
+
+            return sum;
+        }
+
+        var before = Spread(image);
+        SstvPictureSmoother.SmoothAdaptive(image, 0, 30);
+
+        Assert.True(Spread(image) < before * 0.7, $"{Spread(image):0} after, {before:0} before");
+        Assert.Equal((byte)0, image.GetPixel(3, 35).G);
+    }
+
+    [Fact]
+    public void Adaptive_smoothing_weights_rise_with_noise_and_stay_in_range()
+    {
+        const int rows = 30;
+        const int width = 10;
+        const int stride = width * 3;
+        // Pixels alternate either side of 100 along each row, which is what noise looks like: far from the 3 x 3
+        // median and from the row's own 3 pixel median.
+        var spread = new[] { 0, 3, 6, 8, 12 };
+        var weights = new float[spread.Length];
+        for (var level = 0; level < spread.Length; level++)
+        {
+            var src = new byte[rows * stride];
+            var med = new byte[rows * stride];
+            Array.Fill<byte>(med, 100);
+            for (var y = 0; y < rows; y++)
+            {
+                for (var x = 0; x < width; x++)
+                {
+                    for (var c = 0; c < 3; c++)
+                        src[y * stride + x * 3 + c] = (byte)(100 + (x % 2 == 0 ? spread[level] : -spread[level]));
+                }
+            }
+
+            weights[level] = SstvPictureSmoother.RowWeights(src, med, rows, stride)[rows / 2];
+        }
+
+        Assert.Equal(0f, weights[0]);
+        Assert.Equal(0f, weights[1]);
+        Assert.Equal(1f, weights[4]);
+        for (var i = 1; i < weights.Length; i++)
+            Assert.True(weights[i] >= weights[i - 1]);
+        Assert.InRange(weights[2], 0.01f, 0.99f);
+    }
+
+    [Fact]
+    public void Adaptive_smoothing_leaves_fine_horizontal_lines_alone()
+    {
+        // Lines one row apart are as far from their 3 x 3 median as noise is, but they are the same along the row.
+        var image = new SstvImage(32, 40);
+        for (var y = 0; y < 40; y++)
+        {
+            for (var x = 0; x < 32; x++)
+            {
+                var v = (byte)(y % 2 == 0 ? 20 : 220);
+                image.SetPixel(x, y, v, v, v);
+            }
+        }
+
+        var before = image.Rgb.ToArray();
+        SstvPictureSmoother.SmoothAdaptive(image, 0, 40);
+
+        Assert.Equal(before, image.Rgb);
     }
 
     [Fact]
@@ -327,8 +589,8 @@ public sealed class SstvDecoderOptionGainTests(ITestOutputHelper output)
             BurstMs = 120,
             BurstNoiseRms = 1.2,
         };
-        var off = SstvChannelSimulationTests.Measure(mode, settings, new SstvDecoderOptions());
-        var on = SstvChannelSimulationTests.Measure(mode, settings, new SstvDecoderOptions { ImpulseSuppression = true });
+        var off = SstvChannelSimulationTests.Measure(mode, settings, Plain());
+        var on = SstvChannelSimulationTests.Measure(mode, settings, Plain(o => o.ImpulseSuppression = true));
         output.WriteLine($"off lock {off.LockPercent:0.0}% error {off.MeanError:0.0}; on lock {on.LockPercent:0.0}% error {on.MeanError:0.0}");
 
         Assert.True(on.MeanError <= off.MeanError * 1.05, $"error {on.MeanError:0.0} on, {off.MeanError:0.0} off");
