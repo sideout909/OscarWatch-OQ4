@@ -1,0 +1,52 @@
+name: Publish tested release candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful Publish workflow run ID
+        required: true
+      commit:
+        description: Tested commit SHA
+        required: true
+      tag:
+        description: Release candidate tag
+        required: true
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify tested workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          EXPECTED_SHA: ${{ inputs.commit }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-OQ4-rc[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" > run.json
+          jq -e --arg sha "$EXPECTED_SHA" '.name == "Publish" and .event == "workflow_dispatch" and .status == "completed" and .conclusion == "success" and .head_sha == $sha' run.json
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ github.token }}
+          path: artifacts
+          merge-multiple: true
+      - name: Publish tested packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TESTED_SHA: ${{ inputs.commit }}
+          RUN_ID: ${{ inputs.run_id }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          mapfile -d '' packages < <(find artifacts -maxdepth 1 -type f \( -name '*.zip' -o -name '*.tar.gz' \) -print0)
+          [[ ${#packages[@]} -eq 6 ]]
+          printf 'Release candidate built and tested from commit `%s`.\n\nPackages are from [the successful build](https://github.com/%s/actions/runs/%s).\n' "$TESTED_SHA" "$GITHUB_REPOSITORY" "$RUN_ID" > notes.md
+          gh release create "$RELEASE_TAG" "${packages[@]}" --repo "$GITHUB_REPOSITORY" --target "$TESTED_SHA" --title "$RELEASE_TAG" --notes-file notes.md --prerelease
