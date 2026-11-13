@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.VisualTree;
 using Avalonia.Input;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
 using OscarWatch.Services;
 using OscarWatch.Localization;
 using Serilog;
@@ -28,6 +29,7 @@ public partial class Oq4Window : Window
 {
     private readonly Ft4AudioService _audio = new();
     private readonly ObservableCollection<Ft4DecodeRowViewModel> _rows = new();
+    private readonly ObservableCollection<Ft4DecodeRowViewModel> _callsToMe = new();
     private readonly Ft4QsoSequencer _sequencer;
     private readonly Oq4TransmitRunner _transmitter;
     private readonly IQsoLogbookRepository _logbook;
@@ -55,6 +57,7 @@ public partial class Oq4Window : Window
     public bool IsTransmissionActive => _armed || _tx is not null || _tuning || _changingOperation;
 
     private readonly ISettingsService _settings;
+    private readonly Ft4ViewModel _displaySettings;
     private readonly PttKeyer _ptt;
     private readonly IRigController _rig;
     private readonly MainViewModel? _main;
@@ -71,6 +74,7 @@ public partial class Oq4Window : Window
     private long _lastSlot = long.MinValue;
     private DateTime _armedAt;
     private int _waterfallTicks;
+    private int _spectrumTicks;
     private int _clockTicks;
     private readonly List<float> _resampled = new();
     private readonly Oq4ReceiveWindowBuffer _receiveBuffer = new();
@@ -79,11 +83,13 @@ public partial class Oq4Window : Window
     private PolyphaseResampler? _receiveResampler;
     private int _receiveGeneration;
     private bool _decoding;
+    private readonly Dictionary<long, Oq4ReceiveWindowBuffer.Window> _recentWindows = new();
 
     public Oq4Window()
     {
         InitializeComponent();
         _settings = App.Services.GetRequiredService<ISettingsService>();
+        ApplySavedBounds();
         _rig = App.Services.GetRequiredService<IRigController>();
         _main = App.MainWindow?.DataContext as MainViewModel;
         _gps = App.Services.GetRequiredService<IGpsService>();
@@ -117,6 +123,13 @@ public partial class Oq4Window : Window
             if (!_closed) ManualPttPrompt.Text = L(prompt == "key" ? "Ft4.ManualKey" : "Ft4.ManualUnkey");
         }));
         ActivityList.ItemsSource = _rows;
+        CallsToMeList.ItemsSource = _callsToMe;
+        _displaySettings = App.Services.GetRequiredService<Ft4ViewModel>();
+        BandHeader.Content = _displaySettings;
+        CallingHeader.Content = _displaySettings;
+        _displaySettings.PropertyChanged += OnDisplaySettingsChanged;
+        DecodeColumnsSplitter.DragCompleted += (_, _) => SaveDecodeColumnShare();
+        Waterfall.DecodeAgainCommand = new RelayCommand(DecodeAgain);
         _logbook.QsosChanged += OnLogbookChanged;
         AutoReply.IsChecked = _settings.Current.Ft4.AutoReply;
         SkipRrr.IsChecked = _settings.Current.Ft4.SkipRrr;
@@ -136,6 +149,7 @@ public partial class Oq4Window : Window
         };
         EvenSlot.IsCheckedChanged += (_, _) => { _sequencer.PreferEvenSlot = EvenSlot.IsChecked == true; RetargetPendingTransmit(); };
         ActivityList.SelectionChanged += OnDecodeSelected;
+        CallsToMeList.SelectionChanged += OnDecodeSelected;
         TxFrequency.Value = (decimal)Math.Clamp(_settings.Current.Ft4.TxAudioHz, 200, 3000);
         _sequencer.TxAudioHz = (double)TxFrequency.Value.Value;
         Volatile.Write(ref _nextTransmitFrequency, _sequencer.TxAudioHz);
@@ -169,11 +183,12 @@ public partial class Oq4Window : Window
         Waterfall.FrequencySelected += (_, _) => TxFrequency.Value = (decimal)Waterfall.TxAudioHz;
         _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
         _timer.Tick += OnTimerTick;
-        Opened += (_, _) => { RefreshStation(); if (StationReady()) StartMonitor(); RefreshHighlights(); UpdateButtons(); _timer.Start(); _ = LoadWorkedAsync(); };
+        Opened += (_, _) => { if (WindowStartupLocation == WindowStartupLocation.Manual) Position = QsoLogbookWindowBounds.ClampToVisibleArea(this, Position); ApplyDecodeLayout(false); RefreshStation(); if (StationReady()) StartMonitor(); RefreshHighlights(); UpdateButtons(); _timer.Start(); _ = LoadWorkedAsync(); };
         Closing += OnClosing;
         Closed += (_, _) =>
         {
             _closed = true;
+            _displaySettings.PropertyChanged -= OnDisplaySettingsChanged;
             _logbook.QsosChanged -= OnLogbookChanged;
             _armed = false;
             _timer.Stop();
@@ -181,6 +196,69 @@ public partial class Oq4Window : Window
             _transmitter.Stop();
             if (_tx is null) DisposeHardware();
         };
+    }
+
+    private void OnDisplaySettingsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (_closed) return;
+        if (e.PropertyName == nameof(Ft4ViewModel.IsAdvancedDecodeLayout)) ApplyDecodeLayout(true);
+        if (e.PropertyName is nameof(Ft4ViewModel.DecodeFontSize) or nameof(Ft4ViewModel.WaterfallRangeDb) or nameof(Ft4ViewModel.WaterfallFlatten)
+            or nameof(Ft4ViewModel.WaterfallSlotLines)) RefreshHighlights();
+    }
+
+    private void ApplySavedBounds()
+    {
+        var settings = _settings.Current.Ft4;
+        if (settings.Oq4WindowWidth is { } width && settings.Oq4WindowHeight is { } height)
+        {
+            Width = Math.Max(720, width);
+            Height = Math.Max(MinHeight, height);
+        }
+        if (settings.Oq4WindowX is { } x && settings.Oq4WindowY is { } y)
+        {
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            Position = new PixelPoint(x, y);
+        }
+        if (settings.Oq4WindowMaximised) WindowState = WindowState.Maximized;
+    }
+
+    private void CaptureBounds()
+    {
+        var settings = _settings.Current.Ft4;
+        settings.Oq4WindowMaximised = WindowState == WindowState.Maximized;
+        if (WindowState == WindowState.Normal)
+        {
+            settings.Oq4WindowWidth = (int)Math.Round(Width);
+            settings.Oq4WindowHeight = (int)Math.Round(Height);
+            settings.Oq4WindowX = Position.X;
+            settings.Oq4WindowY = Position.Y;
+        }
+        _settings.RequestSave();
+    }
+
+    private void ApplyDecodeLayout(bool widen)
+    {
+        var settings = _settings.Current.Ft4;
+        var advanced = _displaySettings.IsAdvancedDecodeLayout;
+        var share = Ft4Settings.ClampDecodeColumnShare(settings.Oq4DecodeColumnShare);
+        var columns = DecodeColumns.ColumnDefinitions;
+        columns[0].Width = new GridLength(advanced ? share : 1, GridUnitType.Star);
+        columns[0].MinWidth = advanced ? 300 : 0;
+        columns[2].Width = advanced ? new GridLength(1 - share, GridUnitType.Star) : new GridLength(0);
+        columns[2].MinWidth = advanced ? 300 : 0;
+        BandActivityTitle.IsVisible = DecodeColumnsSplitter.IsVisible = CallingMePanel.IsVisible = advanced;
+        MinWidth = advanced ? 960 : 720;
+        if (widen && advanced && WindowState == WindowState.Normal && Width < 1180) Width = 1180;
+    }
+
+    private void SaveDecodeColumnShare()
+    {
+        if (!_displaySettings.IsAdvancedDecodeLayout) return;
+        var left = DecodeColumns.ColumnDefinitions[0].ActualWidth;
+        var right = DecodeColumns.ColumnDefinitions[2].ActualWidth;
+        if (left + right <= 0) return;
+        _settings.Current.Ft4.Oq4DecodeColumnShare = Ft4Settings.ClampDecodeColumnShare(left / (left + right));
+        _settings.RequestSave();
     }
 
     private void StartMonitor()
@@ -194,6 +272,7 @@ public partial class Oq4Window : Window
             _receiveBuffer.Clear();
             _reportedDroppedWindows = 0;
             _recentDecodes.Clear();
+            _recentWindows.Clear();
             _receiveResampler = new PolyphaseResampler(_audio.CaptureSampleRate, 12000);
             _receiveGeneration++;
             _captureRunning = true;
@@ -255,11 +334,17 @@ public partial class Oq4Window : Window
         if (_captureRunning && ++_waterfallTicks >= 2)
         {
             _waterfallTicks = 0;
-            var scratch = new float[4096];
-            var n = _audio.CopyMonitorSamples(scratch);
-            var bins = new float[Ft4WaterfallControl.SpectrumColumns];
-            if (n >= 512 && Ft4SpectrumAnalyzer.TryComputePassband(scratch.AsSpan(0, n), _audio.CaptureSampleRate, bins))
-                Waterfall.Spectrum = bins;
+            // Match FT4's full monitor ring so the spectrum can average
+            // overlapping FFTs and keep weak traces visible beside strong ones.
+            var scratch = new float[Ft4AudioService.MonitorSamples];
+            if (++_spectrumTicks >= Ft4Settings.WaterfallTicksPerRow(_settings.Current.Ft4.WaterfallSpeed))
+            {
+                _spectrumTicks = 0;
+                var n = _audio.CopyMonitorSamples(scratch);
+                var bins = new float[Ft4WaterfallControl.SpectrumColumns];
+                if (n >= 512 && Ft4SpectrumAnalyzer.TryComputePassband(scratch.AsSpan(0, n), _audio.CaptureSampleRate, bins))
+                    Waterfall.Spectrum = bins;
+            }
             int count;
             while ((count = _audio.ReadCaptureSamples(scratch)) > 0)
                 AppendReceiveSamples(scratch.AsSpan(0, count), _audio.CaptureSampleRate);
@@ -306,11 +391,33 @@ public partial class Oq4Window : Window
             if (!_armed && _tx is null && !_lastTxFailed) StatusText.Text = "RX processing is behind; an old slot was skipped.";
         }
         if (_decoding || !_receiveBuffer.TryTake(out var window) || window is null) return;
+        _recentWindows[window.Slot] = window;
+        foreach (var old in _recentWindows.Keys.Where(slot => slot < window.Slot - 2).ToArray()) _recentWindows.Remove(old);
+        DecodeWindow(window, null);
+    }
+
+    private void DecodeAgain()
+    {
+        if (_decoding) { StatusText.Text = "OQ4 receive is busy."; return; }
+        var previousSlot = Oq4SlotClock.SlotNumber(Ft4Clock.UtcNow) - 1;
+        if (!_recentWindows.TryGetValue(previousSlot, out var window))
+        {
+            StatusText.Text = L("Ft4.Status.NothingToDecodeAgain");
+            return;
+        }
+        StatusText.Text = L("Ft4.Status.DecodingAgain");
+        DecodeWindow(window, Waterfall.RxAudioHz);
+    }
+
+    private void DecodeWindow(Oq4ReceiveWindowBuffer.Window window, double? selectedFrequency)
+    {
         var audio = window.Audio;
         var firstSample = window.FirstSample;
         var generation = _receiveGeneration;
         _decoding = true;
-        _ = Task.Run(() => Oq4Decoder.DecodeWideband(audio)).ContinueWith(task =>
+        _ = Task.Run(() => selectedFrequency is { } hz
+            ? Oq4Decoder.DecodeNearFrequency(audio, hz) is { } result ? new[] { result } : Array.Empty<Oq4Decoder.Result>()
+            : Oq4Decoder.DecodeWideband(audio)).ContinueWith(task =>
             Dispatcher.UIThread.Post(() =>
             {
                 _decoding = false;
@@ -320,6 +427,8 @@ public partial class Oq4Window : Window
                     StatusText.Text = "OQ4 receive failed: " + task.Exception?.GetBaseException().Message;
                     return;
                 }
+                if (selectedFrequency.HasValue && !_armed && _tx is null)
+                    StatusText.Text = task.Result.Length == 0 ? "No OQ4 message decoded at the selected frequency." : L("Ft4.Status.Listening");
                 foreach (var result in task.Result)
                 {
                     var sample = firstSample + (long)(result.TimeSeconds * 12000);
@@ -591,6 +700,7 @@ public partial class Oq4Window : Window
     private void OnClearClick(object? sender, RoutedEventArgs e)
     {
         _rows.Clear();
+        _callsToMe.Clear();
         Waterfall.RxAudioHz = Waterfall.TxAudioHz;
         StatusText.Text = L("Ft4.Status.DecodesCleared");
     }
@@ -647,6 +757,7 @@ public partial class Oq4Window : Window
             SkipRrr.IsChecked = _settings.Current.Ft4.SkipRrr;
             RefreshStation();
             StartMonitor();
+            ApplyDecodeLayout(true);
             RefreshHighlights(); UpdateButtons();
         }
     }
@@ -685,7 +796,12 @@ public partial class Oq4Window : Window
     {
         var row = new Ft4DecodeRowViewModel(message, dtWsjtxConvention: false);
         _rows.Insert(0, row);
-        while (_rows.Count > 200) _rows.RemoveAt(_rows.Count - 1);
+        if (Ft4CallingMeColumn.Includes(message, _settings.Current.GroundStation.Callsign)) _callsToMe.Insert(0, row);
+        while (_rows.Count > 200)
+        {
+            _callsToMe.Remove(_rows[^1]);
+            _rows.RemoveAt(_rows.Count - 1);
+        }
         RefreshHighlights();
         Dispatcher.UIThread.Post(() =>
         {
@@ -693,6 +809,7 @@ public partial class Oq4Window : Window
             ActivityList.ScrollIntoView(0);
             _decodeScroll ??= ActivityList.GetVisualDescendants().OfType<ScrollViewer>().FirstOrDefault();
             if (_decodeScroll is not null) _decodeScroll.Offset = new Vector(_decodeScroll.Offset.X, 0);
+            if (CallsToMeList.ItemCount > 0) CallsToMeList.ScrollIntoView(0);
         }, DispatcherPriority.Background);
     }
 
@@ -713,10 +830,11 @@ public partial class Oq4Window : Window
     {
         var settings = _settings.Current.Ft4;
         ActivityList.FontSize = settings.DecodeFontSize;
-        foreach (var header in new[] { HeaderTime, HeaderKind, HeaderDt, HeaderSnr, HeaderMessage, HeaderHz })
-            header.FontSize = settings.DecodeFontSize;
+        CallsToMeList.FontSize = settings.DecodeFontSize;
         SyncPounceDisplay();
         Waterfall.DisplayRangeDb = settings.WaterfallRangeDb;
+        Waterfall.Flatten = settings.WaterfallFlatten;
+        Waterfall.SlotSeconds = settings.WaterfallSlotLines ? Oq4SlotClock.SlotSeconds : 0;
         foreach (var row in _rows)
             row.RefreshHighlight(_settings.Current.GroundStation.Callsign, _sequencer.TheirCall,
                 settings.CallingMeColour, settings.ReplyingColour, settings.NewCallColour,
@@ -762,7 +880,7 @@ public partial class Oq4Window : Window
 
     private async void OnClosing(object? sender, WindowClosingEventArgs e)
     {
-        if (_closeConfirmed || !IsTransmissionActive) return;
+        if (_closeConfirmed || !IsTransmissionActive) { CaptureBounds(); return; }
         e.Cancel = true;
         var stop = await SimpleConfirmDialog.ShowAsync(this, "Close OQ4 while transmitting?",
             "Stop OQ4 transmission and close this window?");
@@ -779,7 +897,8 @@ public partial class Oq4Window : Window
 
     private void OnDecodeContextOpening(object? sender, CancelEventArgs e)
     {
-        _contextRow ??= ActivityList.SelectedItem as Ft4DecodeRowViewModel;
+        var list = ReferenceEquals(sender, CallsToMeList.ContextMenu) ? CallsToMeList : ActivityList;
+        _contextRow ??= list.SelectedItem as Ft4DecodeRowViewModel;
         if (_contextRow?.Message is not { IsReceiveActivity: true } message || string.IsNullOrWhiteSpace(message.CallDe))
         {
             _contextRow = null;
@@ -799,7 +918,7 @@ public partial class Oq4Window : Window
 
     private void OnDecodeSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (ActivityList.SelectedItem is Ft4DecodeRowViewModel row) AnswerDecode(row.Message);
+        if ((sender as ListBox)?.SelectedItem is Ft4DecodeRowViewModel row) AnswerDecode(row.Message);
     }
 
     private async void AnswerDecode(Ft4DecodedMessage message)

@@ -76,6 +76,26 @@ public sealed class Oq4ReceiveTests
     }
 
     [Theory]
+    [InlineData(-68, 1760)]
+    [InlineData(68, 1760)]
+    [InlineData(68, 1926)]
+    public void Selected_frequency_redecode_finds_the_requested_drifting_station(double slope, double selectedHz)
+    {
+        if (!OperatingSystem.IsLinux()) return;
+        Assert.True(Ft8Native.IsAvailable, Ft8Native.LoadError);
+        var audio = new float[48000];
+        var strong = Oq4Waveform.EncodePacket(Ft8Native.EncodeOq4Codeword("CQ K1ABC FN42"), 2550, -17);
+        var selected = Oq4Waveform.EncodePacket(Ft8Native.EncodeOq4Codeword("CQ K8OTY EN73"), 1760, slope);
+        for (var i = 0; i < strong.Length; i++) audio[6300 + i] = .4f * strong[i] + .025f * selected[i];
+
+        var result = Oq4Decoder.DecodeNearFrequency(audio, selectedHz);
+
+        Assert.NotNull(result);
+        Assert.Equal("CQ K8OTY EN73", result.Message);
+        Assert.InRange(result.FrequencyHz, 1750, 1770);
+    }
+
+    [Theory]
     [InlineData(68)]
     [InlineData(-68)]
     public void Wideband_search_recovers_fast_drift_next_to_a_much_stronger_signal(double slope)

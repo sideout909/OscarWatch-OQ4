@@ -1,8 +1,8 @@
 # Build, test, and publish release packages on version tags (v*).
 # A version tag also runs the WA8LMF TNC benchmark before packages are built.
 # Package archives are uploaded as Actions artifacts only so the release job can
-# attach them. That job then deletes the copies. A manual run keeps them for one
-# day, which is the shortest retention upload-artifact allows.
+# attach them. That job then deletes the copies. A manual run keeps them for seven
+# days so operators have time to test an OQ4 build before publication.
 # Manual run: Actions → Publish → Run workflow (skips the TNC benchmark).
 
 name: Publish
@@ -347,7 +347,7 @@ jobs:
           name: OscarWatch-${{ matrix.rid }}
           path: ${{ steps.archive.outputs.path }}
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7
 
   release:
     name: GitHub Release
@@ -366,9 +366,8 @@ jobs:
           files: artifacts/**
           generate_release_notes: true
 
-      # Operator notes live in the tagged commit. When that file is present it
-      # replaces the generated commit list. A tag without the file keeps the
-      # generated notes.
+      # Only publish operator notes written for this tag; upstream notes may
+      # describe a different version from the OQ4 fork's next release.
       - uses: actions/checkout@v4
 
       - name: Publish operator release notes
@@ -376,10 +375,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if [[ -f .github/RELEASE_NOTES.md ]]; then
+          if [[ -f .github/RELEASE_NOTES.md ]] && grep -Fq -- "${GITHUB_REF_NAME}" .github/RELEASE_NOTES.md; then
             gh release edit "${GITHUB_REF_NAME}" --notes-file .github/RELEASE_NOTES.md
           else
-            echo "No .github/RELEASE_NOTES.md on this tag. Keeping the generated notes."
+            echo "No release notes for ${GITHUB_REF_NAME}. Keeping the generated notes."
           fi
 
       - name: Delete Actions copies of the release packages

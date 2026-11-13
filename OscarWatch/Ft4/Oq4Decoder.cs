@@ -195,6 +195,23 @@ internal static class Oq4Decoder
         return (best, candidate with { StartHz = candidate.StartHz + bestOffset, EndHz = candidate.EndHz + bestOffset });
     }
 
+    /// <summary>Revisit a selected carrier, including drifting and inverted candidates.</summary>
+    internal static Result? DecodeNearFrequency(float[] samples, double centerHz)
+    {
+        if (!double.IsFinite(centerHz) || centerHz < 200 || centerHz > 3000) return null;
+        var candidates = Oq4Search.Find(samples, FallbackCandidatePool, expanded: true)
+            .Where(c => Math.Abs(c.StartHz - centerHz) <= 30 || Math.Abs(c.EndHz - centerHz) <= 30)
+            .Select(c => RankPreamble(samples, c))
+            .OrderByDescending(c => c.Score)
+            .Take(MaximumFallbackAttempts);
+        foreach (var candidate in candidates)
+        {
+            var result = DecodeCandidate(samples, candidate.Candidate);
+            if (result is not null) return result;
+        }
+        return Decode(samples, centerHz);
+    }
+
     internal static Result? Decode(float[] samples, double centerHz, int searchHz = 30)
     {
         if (samples.Length < Oq4Waveform.PacketSampleCount || centerHz < 200 || centerHz > 3000) return null;

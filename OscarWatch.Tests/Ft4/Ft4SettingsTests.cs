@@ -75,6 +75,31 @@ public sealed class Ft4SettingsTests
     }
 
     [Fact]
+    public void Oq4_window_geometry_and_divider_round_trip_separately_from_ft4()
+    {
+        var settings = new Ft4Settings
+        {
+            WindowWidth = 900, WindowHeight = 700, WindowX = 10, WindowY = 20,
+            DecodeColumnShare = .4,
+            Oq4WindowWidth = 1200, Oq4WindowHeight = 800, Oq4WindowX = 30, Oq4WindowY = 40,
+            Oq4WindowMaximised = true, Oq4DecodeColumnShare = .6
+        };
+
+        var restored = JsonSerializer.Deserialize<Ft4Settings>(JsonSerializer.Serialize(settings));
+
+        Assert.NotNull(restored);
+        Assert.Equal(900, restored.WindowWidth);
+        Assert.Equal(700, restored.WindowHeight);
+        Assert.Equal(.4, restored.DecodeColumnShare);
+        Assert.Equal(1200, restored.Oq4WindowWidth);
+        Assert.Equal(800, restored.Oq4WindowHeight);
+        Assert.Equal(30, restored.Oq4WindowX);
+        Assert.Equal(40, restored.Oq4WindowY);
+        Assert.True(restored.Oq4WindowMaximised);
+        Assert.Equal(.6, restored.Oq4DecodeColumnShare);
+    }
+
+    [Fact]
     public void MigrateLegacyNumericDeviceIds_clears_index_ids_and_keeps_names()
     {
         var settings = new Ft4Settings

@@ -274,6 +274,14 @@ public sealed class Ft4Settings
     public int? WindowY { get; set; }
     public bool WindowMaximised { get; set; }
 
+    // OQ4 has its own window, so moving or resizing it must not move FT4.
+    public int? Oq4WindowWidth { get; set; }
+    public int? Oq4WindowHeight { get; set; }
+    public int? Oq4WindowX { get; set; }
+    public int? Oq4WindowY { get; set; }
+    public bool Oq4WindowMaximised { get; set; }
+    public double Oq4DecodeColumnShare { get; set; } = DefaultDecodeColumnShare;
+
     public const double DefaultDecodeColumnShare = 0.5;
 
     public const double MinDecodeColumnShare = 0.25;
