@@ -1041,6 +1041,7 @@ public partial class Oq4Window : Window
 
     private void RefreshStation()
     {
+        StationTitle.Text = L("Ft4.Station.BannerTitle");
         StationBanner.IsVisible = !StationReady();
         _waitingForStation = StationBanner.IsVisible;
         Waterfall.ShowTuningBrackets = !StationBanner.IsVisible;

@@ -244,7 +244,7 @@
               >
         <StackPanel Spacing="8">
           <TextBlock Classes="ft4-station-title"
-                     Text="{loc:Localize Key=Ft4.Station.BannerTitle}" />
+                     x:Name="StationTitle" />
           <TextBlock Classes="ft4-station-body"
                      x:Name="StationMessage" />
           <Button Content="{loc:Localize Key=Ft4.Station.OpenSettings}"
