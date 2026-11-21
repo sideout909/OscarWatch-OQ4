@@ -80,7 +80,7 @@ Per-radio subclasses only override what differs, usually **`SetSatelliteMode`**:
 | [`IcomIc910Driver`](../OscarWatch/Rig/IcomIc910Driver.cs) | `IcomIc910` | `1A 07 01` / `00` |
 | [`IcomIc9100Driver`](../OscarWatch/Rig/IcomIc9100Driver.cs) | `IcomIc9100` | `16 5A 01` / `00` (same as IC-9700) |
 | [`IcomIc9700Driver`](../OscarWatch/Rig/IcomIc9700Driver.cs) | `IcomIc9700` | `16 5A 01` / `00` |
-| [`IcomIc821hDriver`](../OscarWatch/Rig/IcomIc821hDriver.cs) | `IcomIc821h` | `1A 07 01` / `00`; inverted `07 D0`/`D1` in SAT; split no-op |
+| [`IcomIc821hDriver`](../OscarWatch/Rig/IcomIc821hDriver.cs) | `IcomIc821h` | Front-panel SAT only (no `1A 07`); inverted `07 D0`/`D1` in SAT; `07 B0` band swap; split no-op |
 | [`IcomIc705Driver`](../OscarWatch/Rig/IcomIc705Driver.cs) | `IcomIc705` | no-op (dual-radio VFO A only) |
 | [`IcomIc7300Driver`](../OscarWatch/Rig/IcomIc7300Driver.cs) | `IcomIc7300` | no-op (dual-radio VFO A only) |
 | [`IcomIc905Driver`](../OscarWatch/Rig/IcomIc905Driver.cs) | `IcomIc905` | no-op (dual-radio VFO A only) |
@@ -160,6 +160,7 @@ Keep **protocol parsing in the app project**; put only reusable math (frequency 
 - Cross-check against [Hamlib `ft817.c`](https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ft817.c).
 - CTCSS tone frequency (opcode `0x0B`) uses BCD in bytes 1–2 (Hamlib / KA7OEI), not the FT-847 single-byte tone table.
 - CAT opcode **0x00** is **dial lock on**, **0x80** is lock off (not “CAT session on/off”). `Open()` unlocks the panel; `SetMode` locks on **FM/FMN** only so linear USB/LSB/CW can still be spun for passband trim.
+- **Digital modes:** catalogue `DATA-USB` / `DATA-LSB` send DIG (`0x0A`) so audio uses the rear DATA jack (Digirig, etc.). Plain `USB` / `LSB` stay voice modes on the mic jack. `DATA-FM` / `FM-DATA` send PKT (`0x0C`). The DIG sideband is **not** written over CAT (avoids EEPROM wear and FT-857 address differences); the operator sets menu **#26 DIG MODE** to **USER-U** for `DATA-USB` (FT4) or **USER-L** for `DATA-LSB`. The FT-857 shares this codec and the same DIG MODE choices.
 
 ### Hardware checklist (FT-817 / FT-818)
 
@@ -167,6 +168,7 @@ Keep **protocol parsing in the app project**; put only reusable math (frequency 
 - Menu **#14** CAT rate on **each** radio must match Settings for that leg (OscarWatch suggests **4800**; **38400** also works).
 - OscarWatch uses **8N2** Yaesu CAT. One main VFO per radio — downlink for RX, uplink for TX + CTCSS.
 - **FM:** dial lock on via CAT while tracking. **USB/LSB/CW:** dial unlocked on downlink so you can scan the transponder; uplink doppler continues on the other radio.
+- **FT4 / Digirig:** set menu **#26 DIG MODE** to **USER-U** (or **USER-L** for LSB data). OscarWatch selects DIG when the pass mode is `DATA-USB` / `DATA-LSB`.
 - On a real pass: both legs get doppler; CTCSS on uplink only (USA: TSQL for ICOM and most rigs; TS-2000 always encode-only because CT mutes receive).
 
 ## Reference: ICOM IC-905 (shipped, dual radio only)

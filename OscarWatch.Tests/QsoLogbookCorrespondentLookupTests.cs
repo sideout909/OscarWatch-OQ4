@@ -253,12 +253,16 @@ public class QsoLogbookCorrespondentLookupTests
     }
 
     private static QsoLogbookViewModel CreateViewModel(FakeLogbookRepository repo) =>
+        CreateViewModel((IQsoLogbookRepository)repo);
+
+    internal static QsoLogbookViewModel CreateViewModel(IQsoLogbookRepository? repo = null) =>
         new(
-            repo,
+            repo ?? new FakeLogbookRepository(),
             new FakeTracker(),
             new FakeSettings(),
             new FakeCloudlogUpload(),
             new FakeSatelliteLink(),
+            new NoOpWsjtxUdp(),
             new FakeSatelliteStatus(),
             new FakeDxcc(),
             new FakeQrz(),
@@ -324,6 +328,15 @@ public class QsoLogbookCorrespondentLookupTests
             Task.FromResult<QsoRecord?>(null);
         public Task<QsoRecord> AddQsoAsync(QsoRecordCreateRequest request, CancellationToken cancellationToken = default) =>
             throw new NotSupportedException();
+        public Task<IReadOnlyList<QsoRecord>> AddQsosBatchAsync(
+            IReadOnlyList<QsoRecordCreateRequest> requests,
+            bool preserveBlankPropMode = false,
+            CancellationToken cancellationToken = default) =>
+            throw new NotSupportedException();
+        public Task<IReadOnlySet<string>> ListQsoDuplicateKeysAsync(
+            long logbookId,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlySet<string>>(new HashSet<string>(StringComparer.Ordinal));
         public QsoRecordUpdateRequest? LastUpdate { get; private set; }
 
         public Task<QsoRecord> UpdateQsoAsync(QsoRecordUpdateRequest request, CancellationToken cancellationToken = default)
@@ -355,6 +368,8 @@ public class QsoLogbookCorrespondentLookupTests
         public Task UpdateQsoCloudlogUploadStateAsync(long qsoId, CloudlogUploadStatus status, int attempts, string? lastError, DateTime? sentUtc, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
         public Task<IReadOnlyList<QsoRecord>> ListQsosPendingCloudlogUploadAsync(int limit = 25, CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<QsoRecord>>([]);
+        public Task<IReadOnlyList<QsoRecord>> ListQsosNotSentToCloudlogAsync(long logbookId, CancellationToken cancellationToken = default) =>
             Task.FromResult<IReadOnlyList<QsoRecord>>([]);
         public Task ResetFailedCloudlogUploadsAsync(long logbookId, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
@@ -398,6 +413,12 @@ public class QsoLogbookCorrespondentLookupTests
         public Task ReuploadQsoAsync(long qsoId, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task ProcessRetryQueueAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task ResetFailedUploadsForRetryAsync(long logbookId, CancellationToken cancellationToken = default) => Task.CompletedTask;
+
+        public Task<CloudlogBulkUploadResult> SendAllToCloudlogAsync(
+            long logbookId,
+            IProgress<(int Done, int Total)>? progress = null,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(CloudlogBulkUploadResult.Blocked(CloudlogBulkUploadOutcome.NotConfigured));
     }
 
     private sealed class FakeSatelliteLink : ISatelliteLinkBroadcastService

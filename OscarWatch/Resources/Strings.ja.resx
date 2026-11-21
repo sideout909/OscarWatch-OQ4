@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">text/microsoft-resx</resheader>
   <resheader name="version">2.0</resheader>
@@ -222,6 +222,18 @@
   </data>
   <data name="Pass.Schedule.AddTooltip">
     <value>AOS前に音とアラートで通知するよう、このパスをスケジュールします</value>
+  </data>
+  <data name="Pass.ElementAge.Label">
+    <value>⚠ {0}日</value>
+  </data>
+  <data name="Pass.ElementAge.ToolTip">
+    <value>{0} のTLEは{1}日前のものです (エポック {2:yyyy-MM-dd})。パス時刻とドップラーの精度が低下する可能性があります。</value>
+  </data>
+  <data name="Pass.ElementAge.Automation">
+    <value>{0} の古いTLE: {1}日</value>
+  </data>
+  <data name="Pass.Notice.Automation">
+    <value>{0}の運用告知: {1}</value>
   </data>
   <data name="Pass.Schedule.RemoveTooltip">
     <value>このパスをスケジュールから削除します</value>
@@ -1392,6 +1404,12 @@
   <data name="Settings.Tle.UpdatesNote">
     <value>自動ダウンロードはOscarWatchとカスタムURLのみに適用されます。ローカルファイルは設定保存時または衛星→TLEを更新で再読み込みされます。</value>
   </data>
+  <data name="Settings.Tle.ElementAge">
+    <value>TLEが次の日数以上古い場合に警告する</value>
+  </data>
+  <data name="Settings.Tle.ElementAgeNote">
+    <value>TLEがこの日数以上古い衛星は、パス一覧に警告が表示され、衛星選択では古いTLEとして印が付きます。古いTLEは予測の精度を下げ、特に低軌道で顕著です。経過日数はTLE自体のエポックから数えるため、フッターに表示されるダウンロードからの経過時間とは異なります。</value>
+  </data>
   <data name="Settings.Tle.Source.OscarWatch">
     <value>OscarWatch (tle.oscarwatch.org)</value>
   </data>
@@ -1432,7 +1450,7 @@
     <value>起動時にトランスポンダーDBの更新を確認</value>
   </data>
   <data name="Settings.Tracking.TransponderCheckNote">
-    <value>更新がある場合 tle.oscarwatch.org/satellite_database.json をダウンロードします。新しい衛星とモードはマージ候補として提示され、公開変更を承認しない限りローカル編集は保持されます。</value>
+    <value>更新がある場合 oscarwatch.org/satellite_database.json をダウンロードします。新しい衛星とモードはマージ候補として提示され、公開変更を承認しない限りローカル編集は保持されます。</value>
   </data>
   <data name="Settings.AppUpdate.Enabled">
     <value>起動時および稼働中は1日1回、アプリの更新を確認する</value>
@@ -2526,6 +2544,9 @@
   <data name="Menu.Tools.Ft4">
     <value>_OscarWatch FT4</value>
   </data>
+  <data name="Menu.Tools.Ft8">
+    <value>OscarWatch _FT8</value>
+  </data>
   <data name="Menu.Tools.Sstv">
     <value>_OscarWatch SSTV</value>
   </data>
@@ -3000,11 +3021,14 @@
   <data name="Logbook.Menu.NoLogbook">
     <value>ログブック未選択</value>
   </data>
+  <data name="Logbook.Menu.Current">
+    <value>現在: {0}</value>
+  </data>
+  <data name="Logbook.Menu.Switch">
+    <value>ログブックを切り替え</value>
+  </data>
   <data name="Logbook.Menu.Edit">
     <value>編集</value>
-  </data>
-  <data name="Logbook.Menu.Export">
-    <value>エクスポート</value>
   </data>
   <data name="Logbook.Menu.Settings">
     <value>設定</value>
@@ -3044,6 +3068,24 @@
   </data>
   <data name="Logbook.Settings.Cloudlog.RetryStarted">
     <value>失敗したアップロードを再試行しています…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAll">
+    <value>すべての QSO を Cloudlog に送信</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNote">
+    <value>このログブックの QSO のうち、OscarWatch がまだ Cloudlog に送信していないものを古い順にすべて送信します。送信済みの QSO はスキップされます。保存済みの局の場所を使用します。</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllProgress">
+    <value>QSO {0} / {1} を Cloudlog に送信中…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllDone">
+    <value>{0} 件の QSO を Cloudlog に送信しました。{1} 件は失敗しました。Cloudlog 列を確認してください。</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNothing">
+    <value>このログブックのすべての QSO は Cloudlog に送信済みです。</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNeedsSave">
+    <value>すべての QSO を送信する前に、局の場所を選択してログブックを保存してください。</value>
   </data>
   <data name="Logbook.Settings.Cloudlog.ProfilesLoaded">
     <value>ステーション位置を {0} 件読み込みました。</value>
@@ -3156,6 +3198,114 @@
   <data name="Logbook.Station.Unavailable">
     <value>衛星未選択またはモード未同期</value>
   </data>
+  <data name="Logbook.ImportAdif">
+    <value>ADIFをインポート</value>
+  </data>
+  <data name="Logbook.ImportAdif.Picker.Title">
+    <value>ADIFをインポート</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Title">
+    <value>ADIFをインポート</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Intro">
+    <value>このログブックに書き込む前に、ファイル内の交信を確認してください。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.SatelliteOnly">
+    <value>衛星交信のみ</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewNone">
+    <value>追加する新しいQSOはありません。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewOne">
+    <value>1件のQSOが追加されます。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewMany">
+    <value>{0}件のQSOが追加されます。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateOne">
+    <value>1件のQSOは既にログブック（またはファイル内の先の行）にあります。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateMany">
+    <value>{0}件のQSOは既にログブック（またはファイル内の先の行）にあります。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedOne">
+    <value>1件のレコードを読み取れませんでした。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedMany">
+    <value>{0}件のレコードを読み取れませんでした。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredOne">
+    <value>地上波のQSOを1件除外しました。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredMany">
+    <value>地上波のQSOを{0}件除外しました。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Import">
+    <value>インポート</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Title">
+    <value>重複するQSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Message">
+    <value>この交信は既にログブック（またはファイル内の先の行）にあります。両方を残すにはインポート、または無視してください。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.ImportAnyway">
+    <value>インポートする</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Ignore">
+    <value>無視</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Title">
+    <value>重複するQSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Intro">
+    <value>インポートする交信にチェックを付けてください。チェックのない行はスキップされます。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.SelectAll">
+    <value>すべての重複をインポート</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Call">
+    <value>コールサイン</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Utc">
+    <value>UTC</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Satellite">
+    <value>衛星</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Mode">
+    <value>モード</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Grid">
+    <value>グリッド</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source">
+    <value>一致</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.Logbook">
+    <value>ログブック内</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.File">
+    <value>ファイル内の先の行</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Import">
+    <value>インポート</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedOne">
+    <value>1件のQSOをインポートしました。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedMany">
+    <value>{0}件のQSOをインポートしました。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedNone">
+    <value>QSOはインポートされませんでした。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.EmptyFile">
+    <value>ファイルに読み取れるQSOがありません。</value>
+  </data>
+  <data name="Logbook.ExportSelectedAdif">
+    <value>選択をADIFにエクスポート</value>
+  </data>
   <data name="Logbook.ExportAdif">
     <value>ADIFをエクスポート</value>
   </data>
@@ -3173,6 +3323,15 @@
   </data>
   <data name="Logbook.ExportAdif.Dialog.Scope.DateRange">
     <value>UTC 日付範囲の QSO</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedNone">
+    <value>選択したQSO（未選択）</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedOne">
+    <value>選択したQSO（1）</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedMany">
+    <value>選択したQSO（{0}）</value>
   </data>
   <data name="Logbook.ExportAdif.Dialog.FromUtc">
     <value>開始 (UTC)</value>
@@ -3243,6 +3402,12 @@
   <data name="Logbook.Status.ExportedManyRange">
     <value>{0} 件の QSO を ADIF にエクスポートしました（{1} UTC）。</value>
   </data>
+  <data name="Logbook.Status.ExportedOneSelected">
+    <value>選択したQSOを1件ADIFにエクスポートしました。</value>
+  </data>
+  <data name="Logbook.Status.ExportedManySelected">
+    <value>選択したQSOを{0}件ADIFにエクスポートしました。</value>
+  </data>
   <data name="Logbook.CloudlogStatus.Pending">
     <value>保留</value>
   </data>
@@ -3260,6 +3425,63 @@
   </data>
   <data name="Logbook.Error.NameRequired">
     <value>ログブック名を入力してください。</value>
+  </data>
+  <data name="Logbook.PotaRef">
+    <value>POTA パーク</value>
+  </data>
+  <data name="Logbook.PotaRef.Watermark">
+    <value>US-1356</value>
+  </data>
+  <data name="Logbook.PotaRef.Hint">
+    <value>1 か所、またはカンマで区切って複数指定できます。パークを運用しない場合は空欄のままにしてください。</value>
+  </data>
+  <data name="Logbook.SotaRef">
+    <value>SOTA サミット</value>
+  </data>
+  <data name="Logbook.SotaRef.Watermark">
+    <value>W3/SV-001</value>
+  </data>
+  <data name="Logbook.SotaRef.Hint">
+    <value>サミットを運用しない場合は空欄のままにしてください。</value>
+  </data>
+  <data name="Logbook.WwffRef">
+    <value>WWFF リファレンス</value>
+  </data>
+  <data name="Logbook.WwffRef.Watermark">
+    <value>KFF-4655</value>
+  </data>
+  <data name="Logbook.WwffRef.Hint">
+    <value>WWFF リファレンスを運用しない場合は空欄のままにしてください。</value>
+  </data>
+  <data name="Logbook.Error.PotaRef">
+    <value>POTA リファレンスが正しくありません。US-1356 のようなパークを指定するか、カンマで区切って複数指定してください。</value>
+  </data>
+  <data name="Logbook.Error.SotaRef">
+    <value>SOTA リファレンスが正しくありません。W3/SV-001 のようなサミットを指定してください。</value>
+  </data>
+  <data name="Logbook.Error.WwffRef">
+    <value>WWFF リファレンスが正しくありません。KFF-4655 のようなリファレンスを指定してください。</value>
+  </data>
+  <data name="Logbook.Refs.Loading">
+    <value>{0} の一覧を読み込み中...</value>
+  </data>
+  <data name="Logbook.Refs.Unavailable">
+    <value>{0} の一覧はまだ利用できません。リファレンスは入力できます。</value>
+  </data>
+  <data name="Logbook.Refs.Ready">
+    <value>{0} の一覧: {1} 件、更新日 {2}。</value>
+  </data>
+  <data name="Logbook.Refs.SavedCopy">
+    <value>{0} の一覧: 保存済みのコピー {1} 件、最終更新 {2}。最新のダウンロードは失敗しました。</value>
+  </data>
+  <data name="Logbook.Refs.Pota.Short">
+    <value>POTA</value>
+  </data>
+  <data name="Logbook.Refs.Sota.Short">
+    <value>SOTA</value>
+  </data>
+  <data name="Logbook.Refs.Wwff.Short">
+    <value>WWFF</value>
   </data>
   <data name="Logbook.CallHint.Previous">
     <value>このログブックに以前のQSOがあります。</value>
@@ -4360,7 +4582,7 @@
     <value>CTCSS アーム (Hz)</value>
   </data>
   <data name="DbEditor.ModeHint">
-    <value>ビーコンのみの場合はアップリンクを 0 に。CTCSS なしは 0 のまま。FM モードは Hz（例: 67.0）。</value>
+    <value>周波数は kHz です（マイクロ波も含む。QO-100 はアップリンク 2400245、ダウンリンク 10489745）。ビーコンのみの場合はアップリンクを 0 に。CTCSS なしは 0 のまま。FM モードは Hz（例: 67.0）。</value>
   </data>
   <data name="DbEditor.FileType.Json">
     <value>JSON</value>
@@ -4467,6 +4689,12 @@
   <data name="DbMerge.NoradIdBackfills">
     <value>NORAD カタログ ID</value>
   </data>
+  <data name="DbMerge.PreferredNameUpdates">
+    <value>衛星の改名</value>
+  </data>
+  <data name="DbMerge.NoticeUpdates">
+    <value>運用告知</value>
+  </data>
   <data name="DbMerge.NewModes">
     <value>新しいトランスポンダモード</value>
   </data>
@@ -4480,7 +4708,7 @@
     <value>インポートしたファイル</value>
   </data>
   <data name="DbMerge.Source.Remote">
-    <value>tle.oscarwatch.org</value>
+    <value>oscarwatch.org</value>
   </data>
   <data name="DbMerge.UseImported">
     <value>インポート版を使用</value>
@@ -4505,6 +4733,12 @@
   </data>
   <data name="DbMerge.Intro.NoradIds">
     <value>これらのカタログ番号は、まだ番号がないローカルデータベースの衛星に追加されます。更新するには「選択を適用」をクリックしてください。</value>
+  </data>
+  <data name="DbMerge.Intro.Renames">
+    <value>公開データベースでこれらの衛星の表示名が新しくなりました（例: OSCAR 呼称）。「選択を適用」でローカル側も改名します。</value>
+  </data>
+  <data name="DbMerge.Intro.Notices">
+    <value>これらの運用告知はローカルデータベースに追加・更新・削除されます。「選択を適用」をクリックしてください。</value>
   </data>
   <data name="DbMerge.Summary.Matches">
     <value>トランスポンダデータベースは {0} と一致しています。</value>
@@ -4533,6 +4767,18 @@
   <data name="DbMerge.Summary.ManyNoradIds">
     <value>NORAD カタログ ID {0} 件</value>
   </data>
+  <data name="DbMerge.Summary.OneRename">
+    <value>衛星の改名 {0} 件</value>
+  </data>
+  <data name="DbMerge.Summary.ManyRenames">
+    <value>衛星の改名 {0} 件</value>
+  </data>
+  <data name="DbMerge.Summary.OneNotice">
+    <value>運用告知 {0} 件</value>
+  </data>
+  <data name="DbMerge.Summary.ManyNotices">
+    <value>運用告知 {0} 件</value>
+  </data>
   <data name="DbMerge.Summary.FromSuffix">
     <value>（{0} より）。</value>
   </data>
@@ -4547,6 +4793,18 @@
   </data>
   <data name="DbMerge.Item.NoradIdLine">
     <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.PreferredNameLine">
+    <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeLine">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeMany">
+    <value>{0}: 告知 {1} 件</value>
+  </data>
+  <data name="DbMerge.Item.NoticeCleared">
+    <value>{0}: 運用告知を削除</value>
   </data>
   <data name="DbAdd.Title">
     <value>衛星を追加</value>
@@ -4713,6 +4971,9 @@
   <data name="Window.Ft4.Title">
     <value>OscarWatch FT4</value>
   </data>
+  <data name="Window.Ft8.Title">
+    <value>OscarWatch FT8</value>
+  </data>
   <data name="Window.Ft4Settings.Title">
     <value>OscarWatch FT4設定</value>
   </data>
@@ -4832,6 +5093,18 @@
   </data>
   <data name="Ft4.DecodeFontSize.Note">
     <value>デコード一覧のフォントサイズ（10–28）。大きいほど見やすくなります。</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers">
+    <value>スロット区切りを表示</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers.Note">
+    <value>各 7.5 秒スロットの最初のデコードの上に細い罫線を引き、サイクルを見分けやすくします。詳細レイアウトの「呼び出し」にも適用されます。</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom">
+    <value>新しいデコードを下に表示</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom.Note">
+    <value>バンドアクティビティと「呼び出し」は、WSJT-X と同様に新しい行を下に追加して追従します。オフのままにすると新しい行は上に付きます。古い行を読むためにスクロールした場合は、戻るまでその位置を保ちます。</value>
   </data>
   <data name="Ft4.DecodeLayout">
     <value>レイアウト</value>
@@ -4976,6 +5249,33 @@
   </data>
   <data name="Ft4.CallCq">
     <value>CQ</value>
+  </data>
+  <data name="Ft4.CallCq.Directed">
+    <value>CQ {0}</value>
+  </data>
+  <data name="Ft4.CqModifier">
+    <value>CQワード</value>
+  </data>
+  <data name="Ft4.CqModifier.None">
+    <value>(なし)</value>
+  </data>
+  <data name="Ft4.CqModifier.Custom">
+    <value>カスタム</value>
+  </data>
+  <data name="Ft4.CqModifier.CustomPlaceholder">
+    <value>EU</value>
+  </data>
+  <data name="Ft4.CqModifier.Preview">
+    <value>次のCQ:</value>
+  </data>
+  <data name="Ft4.CqModifier.Note">
+    <value>CQとコールサインの間に入る語です（例: CQ POTA）。英字1～4文字または数字3桁を使用できます。通常のCQと同じように応答されます。</value>
+  </data>
+  <data name="Ft4.CqModifier.Invalid">
+    <value>「{0}」は送信できません。英字1～4文字または数字3桁を使用してください。次のCQは {1} のままです。</value>
+  </data>
+  <data name="Ft4.CqModifier.CompoundCall">
+    <value>{0} は送信されません。複合コールサインが語とグリッドの領域を使用するためです。</value>
   </data>
   <data name="Ft4.SendReport">
     <value>レポート</value>
@@ -5207,6 +5507,15 @@
   </data>
   <data name="Ft4.DopplerDownlink">
     <value>ダウンリンク:</value>
+  </data>
+  <data name="Ft4.EchoTrim">
+    <value>エコー:</value>
+  </data>
+  <data name="Ft4.EchoTrim.Value">
+    <value>{0} Hz</value>
+  </data>
+  <data name="Ft4.EchoTrim.Tip">
+    <value>この衛星とFT4トランスポンダーに保存されているアップリンクトリムです。ゼロはトリムなしです。それ以外の値は、設定で消去するまで送信周波数をずらします。</value>
   </data>
   <data name="Ft4.Decodes">
     <value>デコード</value>
@@ -6562,6 +6871,12 @@
   <data name="Logbook.Cw.ButtonToolTip">
     <value>{0}: {1}</value>
   </data>
+  <data name="Logbook.Cw.SaveNote">
+    <value>送信が終わると交信を記録します。</value>
+  </data>
+  <data name="Logbook.Cw.Status.NotLogged">
+    <value>交信は記録されませんでした。コールサイン、グリッド、衛星が選ばれているかを確認してください。</value>
+  </data>
   <data name="Logbook.Cw.Status.Stopped">
     <value>CW を停止しました。</value>
   </data>
@@ -6593,7 +6908,7 @@
     <value>ログブック設定で CW キーイング用の COM ポートを選んでください。</value>
   </data>
   <data name="Logbook.Cw.Status.PortConflict">
-    <value>{0} は無線機、ローテーター、GPS または PTT ポートで使用中です。別の CW キーイング用ポートを選んでください。</value>
+    <value>{0} は無線機、ローテーター、または GPS で使用中です。別の CW キーイング用ポートを選んでください。</value>
   </data>
   <data name="Logbook.Cw.Status.PortBusy">
     <value>{0} は別のアプリケーションで使用中です。</value>
@@ -6671,7 +6986,7 @@
     <value>メッセージ</value>
   </data>
   <data name="Logbook.Settings.Cw.Tokens">
-    <value>{MYCALL} または * 自局コール、{CALL} または ! 相手局コール、{SENTRST} 送ったレポート、{SENTRSTCUT} カットナンバーで送るレポート（599 を 5NN）、{RCVDRST} 受けたレポート、{GRID} 相手局グリッド、{MYGRID} 自局グリッド、{NAME} 相手局の名前、{SAT} 衛星。略符号: {AR} {SK} {BT} {KN}。</value>
+    <value>{MYCALL} または * 自局コール、{CALL} または ! 相手局コール、{SENTRST} 送ったレポート、{SENTRSTCUT} カットナンバーで送るレポート（599 を 5NN）、{RCVDRST} 受けたレポート、{GRID} 相手局グリッド、{MYGRID} 自局グリッド、{NAME} 相手局の名前、{SAT} 衛星。略符号: {AR} {SK} {BT} {KN}。{SAVEQSO} は送信が終わると交信を記録します。</value>
   </data>
   <data name="Logbook.Settings.Cw.Help">
     <value>CW キーヤーのヘルプ</value>
@@ -6888,5 +7203,32 @@
   </data>
   <data name="Cw.Worked.Grid">
     <value>交信済み: このグリッドでの交信があります。</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Tab">
+    <value>WSJT-X</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Section">
+    <value>WSJT-X UDP</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Intro">
+    <value>ログブックの新しい交信を WSJT-X の UDP データグラムとして送り、ほかのログソフトが受け取れるようにします。Satellite Link とは別です。待っているソフトがなければオフのままにしてください。</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Enable">
+    <value>新しい QSO を UDP で送る</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Host">
+    <value>サーバー</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Port">
+    <value>ポート</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Note">
+    <value>通常の宛先は 127.0.0.1 のポート 2237 で、WSJT-X がログパケットを送る先と同じです。送られるのは新しい交信だけです。受信側がいなくても交信は保存されます。</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.HostRequired">
+    <value>サーバーのアドレスを入力してください。</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.PortInvalid">
+    <value>1 から 65535 のポートを入力してください。</value>
   </data>
 </root>

@@ -25,6 +25,20 @@ public static class Ft4UplinkCalibration
             mode.UplinkKHz);
     }
 
+    /// <summary>
+    /// Signed hertz for the FT4 status strip. Zero has no sign.
+    /// No thousands separator, so a comma is never read as a decimal point.
+    /// </summary>
+    public static string FormatSignedHz(double khz)
+    {
+        var scaled = khz * 1000.0;
+        if (!double.IsFinite(scaled) || scaled is < long.MinValue or > long.MaxValue)
+            return "0";
+
+        var hz = (long)Math.Round(scaled, MidpointRounding.AwayFromZero);
+        return hz.ToString("+0;-0;0", CultureInfo.InvariantCulture);
+    }
+
     public static string FormatDisplayLabel(string key)
     {
         if (!IsTransponderKey(key))
@@ -67,6 +81,6 @@ public static class Ft4UplinkCalibration
 
         mode.DownlinkKHz = down;
         mode.UplinkKHz = up;
-        return satelliteName.Length > 0 && Ft4SlotGate.IsFt4Transponder(mode);
+        return satelliteName.Length > 0 && Ft4SlotGate.IsModemTransponder(mode);
     }
 }

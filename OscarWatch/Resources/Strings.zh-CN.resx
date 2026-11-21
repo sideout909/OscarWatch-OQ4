@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">text/microsoft-resx</resheader>
   <resheader name="version">2.0</resheader>
@@ -240,6 +240,18 @@
   </data>
   <data name="Pass.Schedule.AddTooltip">
     <value>安排此过境，以便在 AOS 前发出提示音和警报</value>
+  </data>
+  <data name="Pass.ElementAge.Label">
+    <value>⚠ {0} 天</value>
+  </data>
+  <data name="Pass.ElementAge.ToolTip">
+    <value>{0} 的 TLE 已有 {1} 天（历元 {2:yyyy-MM-dd}）。过境时间和多普勒可能不够准确。</value>
+  </data>
+  <data name="Pass.ElementAge.Automation">
+    <value>{0} 的旧 TLE：{1} 天</value>
+  </data>
+  <data name="Pass.Notice.Automation">
+    <value>{0} 的操作通知：{1}</value>
   </data>
   <data name="Pass.Schedule.RemoveTooltip">
     <value>从此过境安排中移除</value>
@@ -1056,6 +1068,9 @@
   <data name="Menu.Tools.Ft4">
     <value>_OscarWatch FT4</value>
   </data>
+  <data name="Menu.Tools.Ft8">
+    <value>OscarWatch _FT8</value>
+  </data>
   <data name="Menu.Tools.Sstv">
     <value>_OscarWatch SSTV</value>
   </data>
@@ -1530,11 +1545,14 @@
   <data name="Logbook.Menu.NoLogbook">
     <value>未选择日志</value>
   </data>
+  <data name="Logbook.Menu.Current">
+    <value>当前: {0}</value>
+  </data>
+  <data name="Logbook.Menu.Switch">
+    <value>切换日志</value>
+  </data>
   <data name="Logbook.Menu.Edit">
     <value>编辑</value>
-  </data>
-  <data name="Logbook.Menu.Export">
-    <value>导出</value>
   </data>
   <data name="Logbook.Menu.Settings">
     <value>设置</value>
@@ -1574,6 +1592,24 @@
   </data>
   <data name="Logbook.Settings.Cloudlog.RetryStarted">
     <value>正在重试失败的上传…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAll">
+    <value>将所有 QSO 发送到 Cloudlog</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNote">
+    <value>发送本日志中尚未由 OscarWatch 发送到 Cloudlog 的每条 QSO，从最早的开始。已发送的 QSO 会被跳过。使用已保存的电台位置。</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllProgress">
+    <value>正在发送第 {0} 条（共 {1} 条）QSO 到 Cloudlog…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllDone">
+    <value>已发送 {0} 条 QSO 到 Cloudlog，{1} 条失败；请查看 Cloudlog 列。</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNothing">
+    <value>本日志中的所有 QSO 都已发送到 Cloudlog。</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNeedsSave">
+    <value>发送所有 QSO 前，请先选择电台位置并保存日志。</value>
   </data>
   <data name="Logbook.Settings.Cloudlog.ProfilesLoaded">
     <value>已加载 {0} 个台站位置。</value>
@@ -1686,6 +1722,114 @@
   <data name="Logbook.Station.Unavailable">
     <value>未选择卫星或未同步模式</value>
   </data>
+  <data name="Logbook.ImportAdif">
+    <value>导入 ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Picker.Title">
+    <value>导入 ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Title">
+    <value>导入 ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Intro">
+    <value>在写入此日志之前，请先核对文件中的通联。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.SatelliteOnly">
+    <value>仅卫星通联</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewNone">
+    <value>没有可添加的新 QSO。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewOne">
+    <value>将添加 1 条 QSO。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewMany">
+    <value>将添加 {0} 条 QSO。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateOne">
+    <value>有 1 条 QSO 已在日志中（或在文件前面出现过）。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateMany">
+    <value>有 {0} 条 QSO 已在日志中（或在文件前面出现过）。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedOne">
+    <value>有 1 条记录无法读取。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedMany">
+    <value>有 {0} 条记录无法读取。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredOne">
+    <value>已排除 1 条地面 QSO。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredMany">
+    <value>已排除 {0} 条地面 QSO。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Import">
+    <value>导入</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Title">
+    <value>重复的 QSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Message">
+    <value>此通联已在日志中（或在文件前面出现过）。仍要导入以保留两条，或忽略。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.ImportAnyway">
+    <value>仍要导入</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Ignore">
+    <value>忽略</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Title">
+    <value>重复的 QSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Intro">
+    <value>勾选仍要导入的通联。未勾选的将跳过。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.SelectAll">
+    <value>导入全部重复项</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Call">
+    <value>呼号</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Utc">
+    <value>UTC</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Satellite">
+    <value>卫星</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Mode">
+    <value>模式</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Grid">
+    <value>网格</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source">
+    <value>匹配</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.Logbook">
+    <value>已在日志中</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.File">
+    <value>文件前面</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Import">
+    <value>导入</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedOne">
+    <value>已导入 1 条 QSO。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedMany">
+    <value>已导入 {0} 条 QSO。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedNone">
+    <value>未导入任何 QSO。</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.EmptyFile">
+    <value>文件中没有可读的 QSO。</value>
+  </data>
+  <data name="Logbook.ExportSelectedAdif">
+    <value>导出所选到 ADIF</value>
+  </data>
   <data name="Logbook.ExportAdif">
     <value>导出 ADIF</value>
   </data>
@@ -1703,6 +1847,15 @@
   </data>
   <data name="Logbook.ExportAdif.Dialog.Scope.DateRange">
     <value>UTC 日期范围内的 QSO</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedNone">
+    <value>所选 QSO（未选择）</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedOne">
+    <value>所选 QSO（1）</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedMany">
+    <value>所选 QSO（{0}）</value>
   </data>
   <data name="Logbook.ExportAdif.Dialog.FromUtc">
     <value>起始 (UTC)</value>
@@ -1773,6 +1926,12 @@
   <data name="Logbook.Status.ExportedManyRange">
     <value>已将 {0} 条 QSO 导出为 ADIF（{1} UTC）。</value>
   </data>
+  <data name="Logbook.Status.ExportedOneSelected">
+    <value>已将 1 条所选 QSO 导出为 ADIF。</value>
+  </data>
+  <data name="Logbook.Status.ExportedManySelected">
+    <value>已将 {0} 条所选 QSO 导出为 ADIF。</value>
+  </data>
   <data name="Logbook.CloudlogStatus.Pending">
     <value>待上传</value>
   </data>
@@ -1790,6 +1949,63 @@
   </data>
   <data name="Logbook.Error.NameRequired">
     <value>请输入日志名称。</value>
+  </data>
+  <data name="Logbook.PotaRef">
+    <value>POTA 公园</value>
+  </data>
+  <data name="Logbook.PotaRef.Watermark">
+    <value>US-1356</value>
+  </data>
+  <data name="Logbook.PotaRef.Hint">
+    <value>一个公园，或用逗号分隔多个。不进行公园活动时请留空。</value>
+  </data>
+  <data name="Logbook.SotaRef">
+    <value>SOTA 山峰</value>
+  </data>
+  <data name="Logbook.SotaRef.Watermark">
+    <value>W3/SV-001</value>
+  </data>
+  <data name="Logbook.SotaRef.Hint">
+    <value>不进行山峰活动时请留空。</value>
+  </data>
+  <data name="Logbook.WwffRef">
+    <value>WWFF 参考编号</value>
+  </data>
+  <data name="Logbook.WwffRef.Watermark">
+    <value>KFF-4655</value>
+  </data>
+  <data name="Logbook.WwffRef.Hint">
+    <value>不进行 WWFF 活动时请留空。</value>
+  </data>
+  <data name="Logbook.Error.PotaRef">
+    <value>POTA 参考编号无效。请使用公园编号，例如 US-1356，多个请用逗号分隔。</value>
+  </data>
+  <data name="Logbook.Error.SotaRef">
+    <value>SOTA 参考编号无效。请使用山峰编号，例如 W3/SV-001。</value>
+  </data>
+  <data name="Logbook.Error.WwffRef">
+    <value>WWFF 参考编号无效。请使用参考编号，例如 KFF-4655。</value>
+  </data>
+  <data name="Logbook.Refs.Loading">
+    <value>正在加载 {0} 列表...</value>
+  </data>
+  <data name="Logbook.Refs.Unavailable">
+    <value>{0} 列表暂不可用，仍可手动输入参考编号。</value>
+  </data>
+  <data name="Logbook.Refs.Ready">
+    <value>{0} 列表：{1} 条，更新于 {2}。</value>
+  </data>
+  <data name="Logbook.Refs.SavedCopy">
+    <value>{0} 列表：使用已保存的副本，共 {1} 条，最后更新于 {2}。最近一次下载失败。</value>
+  </data>
+  <data name="Logbook.Refs.Pota.Short">
+    <value>POTA</value>
+  </data>
+  <data name="Logbook.Refs.Sota.Short">
+    <value>SOTA</value>
+  </data>
+  <data name="Logbook.Refs.Wwff.Short">
+    <value>WWFF</value>
   </data>
   <data name="Logbook.CallHint.Previous">
     <value>在此日志中找到之前的 QSO。</value>
@@ -2721,6 +2937,12 @@
   <data name="Settings.Tle.UpdatesNote">
     <value>自动下载仅适用于 OscarWatch 和自定义 URL。当您保存设置或选择卫星 -> 刷新 TLE 时，将重新读取本地文件。</value>
   </data>
+  <data name="Settings.Tle.ElementAge">
+    <value>当 TLE 至少达到此天数时发出警告</value>
+  </data>
+  <data name="Settings.Tle.ElementAgeNote">
+    <value>TLE 达到此天数的卫星会在过境列表中显示警告，并在卫星选择器中标记为过时的 TLE。旧的 TLE 会降低预测精度，低轨道尤其明显。天数从 TLE 自身的历元起算，因此与页脚显示的下载时间不同。</value>
+  </data>
   <data name="Settings.Tle.Source.OscarWatch">
     <value>OscarWatch (tle.oscarwatch.org)</value>
   </data>
@@ -2761,7 +2983,7 @@
     <value>启动时检查转发器数据库更新</value>
   </data>
   <data name="Settings.Tracking.TransponderCheckNote">
-    <value>当更新可用时下载 tle.oscarwatch.org/satellite_database.json。提供新的卫星和模式进行合并：除非您接受已发布的更改，否则您的本地编辑将被保留。</value>
+    <value>当更新可用时下载 oscarwatch.org/satellite_database.json。提供新的卫星和模式进行合并：除非您接受已发布的更改，否则您的本地编辑将被保留。</value>
   </data>
   <data name="Settings.AppUpdate.Enabled">
     <value>启动时以及运行期间每天检查应用程序更新</value>
@@ -4363,7 +4585,7 @@
     <value>CTCSS 激活 (Hz)</value>
   </data>
   <data name="DbEditor.ModeHint">
-    <value>对于卫星信标，将上行链路设置为 0。将 CTCSS 设置为 0 表示 无。 FM 模式使用 Hz（例如 67.0）。</value>
+    <value>频率单位为 kHz，包括微波（QO-100：上行 2400245，下行 10489745）。对于卫星信标，将上行链路设置为 0。将 CTCSS 设置为 0 表示无。FM 模式使用 Hz（例如 67.0）。</value>
   </data>
   <data name="DbEditor.FileType.Json">
     <value>JSON</value>
@@ -4470,6 +4692,12 @@
   <data name="DbMerge.NoradIdBackfills">
     <value>NORAD 目录编号</value>
   </data>
+  <data name="DbMerge.PreferredNameUpdates">
+    <value>卫星重命名</value>
+  </data>
+  <data name="DbMerge.NoticeUpdates">
+    <value>操作通知</value>
+  </data>
   <data name="DbMerge.NewModes">
     <value>新转发器模式</value>
   </data>
@@ -4483,7 +4711,7 @@
     <value>导入的文件</value>
   </data>
   <data name="DbMerge.Source.Remote">
-    <value>tle.oscarwatch.org</value>
+    <value>oscarwatch.org</value>
   </data>
   <data name="DbMerge.UseImported">
     <value>使用导入版本</value>
@@ -4508,6 +4736,12 @@
   </data>
   <data name="DbMerge.Intro.NoradIds">
     <value>这些目录编号将添加到本地数据库中尚无编号的卫星。点击“应用所选项”进行更新。</value>
+  </data>
+  <data name="DbMerge.Intro.Renames">
+    <value>这些卫星在已发布数据库中有了新的首选名称（例如 OSCAR 编号）。点击“应用所选”以在本地重命名。</value>
+  </data>
+  <data name="DbMerge.Intro.Notices">
+    <value>这些操作通知将在您的本地数据库中添加、更新或清除。请点击“应用所选”。</value>
   </data>
   <data name="DbMerge.Summary.Matches">
     <value>您的转发器数据库与 {0} 匹配。</value>
@@ -4536,6 +4770,18 @@
   <data name="DbMerge.Summary.ManyNoradIds">
     <value>{0} 个 NORAD 目录编号</value>
   </data>
+  <data name="DbMerge.Summary.OneRename">
+    <value>{0} 个卫星重命名</value>
+  </data>
+  <data name="DbMerge.Summary.ManyRenames">
+    <value>{0} 个卫星重命名</value>
+  </data>
+  <data name="DbMerge.Summary.OneNotice">
+    <value>{0} 条操作通知</value>
+  </data>
+  <data name="DbMerge.Summary.ManyNotices">
+    <value>{0} 条操作通知</value>
+  </data>
   <data name="DbMerge.Summary.FromSuffix">
     <value>来自 {0}。</value>
   </data>
@@ -4550,6 +4796,18 @@
   </data>
   <data name="DbMerge.Item.NoradIdLine">
     <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.PreferredNameLine">
+    <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeLine">
+    <value>{0}：{1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeMany">
+    <value>{0}：{1} 条通知</value>
+  </data>
+  <data name="DbMerge.Item.NoticeCleared">
+    <value>{0}：清除操作通知</value>
   </data>
   <data name="DbAdd.Title">
     <value>添加卫星</value>
@@ -4713,6 +4971,9 @@
   <data name="Window.Ft4.Title">
     <value>OscarWatch FT4</value>
   </data>
+  <data name="Window.Ft8.Title">
+    <value>OscarWatch FT8</value>
+  </data>
   <data name="Window.Ft4Settings.Title">
     <value>OscarWatch FT4 设置</value>
   </data>
@@ -4832,6 +5093,18 @@
   </data>
   <data name="Ft4.DecodeFontSize.Note">
     <value>解码列表字体大小（10–28）。较大字号便于视力较弱时阅读。</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers">
+    <value>显示时隙分隔</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers.Note">
+    <value>在每个 7.5 秒时隙的第一条解码上方画一条细线，便于区分周期。高级布局中的“呼叫我”也会显示。</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom">
+    <value>最新解码显示在底部</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom.Note">
+    <value>波段活动和“呼叫我”会像 WSJT-X 一样把新行加在底部并跟随滚动。不勾选则新行仍在顶部。若已向上滚动阅读旧行，列表会保持当前位置，直到你滚回。</value>
   </data>
   <data name="Ft4.DecodeLayout">
     <value>布局</value>
@@ -4976,6 +5249,33 @@
   </data>
   <data name="Ft4.CallCq">
     <value>CQ</value>
+  </data>
+  <data name="Ft4.CallCq.Directed">
+    <value>CQ {0}</value>
+  </data>
+  <data name="Ft4.CqModifier">
+    <value>CQ 附加词</value>
+  </data>
+  <data name="Ft4.CqModifier.None">
+    <value>(无)</value>
+  </data>
+  <data name="Ft4.CqModifier.Custom">
+    <value>自定义</value>
+  </data>
+  <data name="Ft4.CqModifier.CustomPlaceholder">
+    <value>EU</value>
+  </data>
+  <data name="Ft4.CqModifier.Preview">
+    <value>下一个 CQ：</value>
+  </data>
+  <data name="Ft4.CqModifier.Note">
+    <value>该词位于 CQ 和您的呼号之间，例如 CQ POTA。可使用 1 至 4 个字母或 3 位数字。其他电台会像应答普通 CQ 一样应答。</value>
+  </data>
+  <data name="Ft4.CqModifier.Invalid">
+    <value>无法发送“{0}”。请使用 1 至 4 个字母或 3 位数字。下一个 CQ 仍为 {1}。</value>
+  </data>
+  <data name="Ft4.CqModifier.CompoundCall">
+    <value>不发送 {0}。复合呼号占用了附加词和网格的位置。</value>
   </data>
   <data name="Ft4.SendReport">
     <value>报告</value>
@@ -5207,6 +5507,15 @@
   </data>
   <data name="Ft4.DopplerDownlink">
     <value>下行:</value>
+  </data>
+  <data name="Ft4.EchoTrim">
+    <value>回波:</value>
+  </data>
+  <data name="Ft4.EchoTrim.Value">
+    <value>{0} Hz</value>
+  </data>
+  <data name="Ft4.EchoTrim.Tip">
+    <value>此卫星和 FT4 转发器已保存的上行微调。零表示没有微调。其他数值会偏移发射频率，直到在设置中清除。</value>
   </data>
   <data name="Ft4.Decodes">
     <value>解码</value>
@@ -6562,6 +6871,12 @@
   <data name="Logbook.Cw.ButtonToolTip">
     <value>{0}：{1}</value>
   </data>
+  <data name="Logbook.Cw.SaveNote">
+    <value>发送结束后记录通联。</value>
+  </data>
+  <data name="Logbook.Cw.Status.NotLogged">
+    <value>通联未记录。请检查呼号、网格，以及是否已选择卫星。</value>
+  </data>
   <data name="Logbook.Cw.Status.Stopped">
     <value>已停止 CW。</value>
   </data>
@@ -6593,7 +6908,7 @@
     <value>请在日志设置中选择 CW 键控 COM 端口。</value>
   </data>
   <data name="Logbook.Cw.Status.PortConflict">
-    <value>{0} 已被电台、转台、GPS 或 PTT 端口占用。请选择其他 CW 键控端口。</value>
+    <value>{0} 已被电台、转台或 GPS 占用。请选择其他 CW 键控端口。</value>
   </data>
   <data name="Logbook.Cw.Status.PortBusy">
     <value>{0} 正被其他应用程序使用。</value>
@@ -6671,7 +6986,7 @@
     <value>消息</value>
   </data>
   <data name="Logbook.Settings.Cw.Tokens">
-    <value>{MYCALL} 或 * 本台呼号，{CALL} 或 ! 对方呼号，{SENTRST} 发出的报告，{SENTRSTCUT} 使用缩写数字发出的报告（599 写作 5NN），{RCVDRST} 收到的报告，{GRID} 对方网格，{MYGRID} 本台网格，{NAME} 对方姓名，{SAT} 卫星。程序信号：{AR} {SK} {BT} {KN}。</value>
+    <value>{MYCALL} 或 * 本台呼号，{CALL} 或 ! 对方呼号，{SENTRST} 发出的报告，{SENTRSTCUT} 使用缩写数字发出的报告（599 写作 5NN），{RCVDRST} 收到的报告，{GRID} 对方网格，{MYGRID} 本台网格，{NAME} 对方姓名，{SAT} 卫星。程序信号：{AR} {SK} {BT} {KN}。{SAVEQSO} 在发送结束后记录通联。</value>
   </data>
   <data name="Logbook.Settings.Cw.Help">
     <value>CW 键控器帮助</value>
@@ -6888,5 +7203,32 @@
   </data>
   <data name="Cw.Worked.Grid">
     <value>已通联：你在此网格有通联记录。</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Tab">
+    <value>WSJT-X</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Section">
+    <value>WSJT-X UDP</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Intro">
+    <value>将日志中的每个新联络作为 WSJT-X UDP 数据报发出，供其他日志软件接收。这与 Satellite Link 无关。没有其他软件在监听时请保持关闭。</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Enable">
+    <value>通过 UDP 发送新的 QSO</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Host">
+    <value>服务器</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Port">
+    <value>端口</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Note">
+    <value>常用地址是 127.0.0.1 端口 2237，也就是 WSJT-X 发送日志数据包的地址。只发送新联络。即使没有程序在监听，联络仍会保存。</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.HostRequired">
+    <value>请输入服务器地址。</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.PortInvalid">
+    <value>请输入 1 到 65535 之间的端口。</value>
   </data>
 </root>

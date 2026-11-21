@@ -18,6 +18,7 @@ public partial class LogbookSettingsViewModel : ViewModelBase
     private readonly ICloudlogQsoUploadService _upload;
     private readonly IQrzCallbookService _qrz;
     private readonly IHamQthCallbookService _hamQth;
+    private readonly IWsjtxUdpBroadcastService _wsjtxUdp;
     private long _logbookId;
 
     public LogbookSettingsViewModel(
@@ -27,7 +28,8 @@ public partial class LogbookSettingsViewModel : ViewModelBase
         ICloudlogLookupService lookup,
         ICloudlogQsoUploadService upload,
         IQrzCallbookService qrz,
-        IHamQthCallbookService hamQth)
+        IHamQthCallbookService hamQth,
+        IWsjtxUdpBroadcastService wsjtxUdp)
     {
         _settings = settings;
         _l = localization;
@@ -36,6 +38,7 @@ public partial class LogbookSettingsViewModel : ViewModelBase
         _upload = upload;
         _qrz = qrz;
         _hamQth = hamQth;
+        _wsjtxUdp = wsjtxUdp;
     }
 
     public ObservableCollection<CloudlogStationProfile> StationProfiles { get; } = [];
@@ -47,7 +50,12 @@ public partial class LogbookSettingsViewModel : ViewModelBase
     private string _cloudlogUrlSummary = "";
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SendAllToCloudlogCommand))]
     private bool _cloudlogConfigured;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SendAllToCloudlogCommand))]
+    private bool _isSendingAllToCloudlog;
 
     [ObservableProperty]
     private bool _cloudlogAutoUpload;
@@ -96,6 +104,15 @@ public partial class LogbookSettingsViewModel : ViewModelBase
 
     public bool HasHamQthStatus => !string.IsNullOrWhiteSpace(HamQthTestStatus);
 
+    [ObservableProperty]
+    private bool _wsjtxEnabled;
+
+    [ObservableProperty]
+    private string _wsjtxHost = WsjtxUdpSettings.DefaultHost;
+
+    [ObservableProperty]
+    private decimal? _wsjtxPort = WsjtxUdpSettings.DefaultPort;
+
     public bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
 
     public bool HasStatus => !string.IsNullOrWhiteSpace(StatusText);
@@ -131,6 +148,11 @@ public partial class LogbookSettingsViewModel : ViewModelBase
         HamQthUsername = hamQth.Username;
         HamQthPassword = hamQth.Password;
         HamQthTestStatus = "";
+
+        var wsjtx = _settings.Current.WsjtxUdp ?? new WsjtxUdpSettings();
+        WsjtxEnabled = wsjtx.Enabled;
+        WsjtxHost = string.IsNullOrWhiteSpace(wsjtx.Host) ? WsjtxUdpSettings.DefaultHost : wsjtx.Host.Trim();
+        WsjtxPort = WsjtxUdpSettings.IsValidPort(wsjtx.Port) ? wsjtx.Port : WsjtxUdpSettings.DefaultPort;
 
         LoadCwKeyer();
     }
@@ -184,6 +206,40 @@ public partial class LogbookSettingsViewModel : ViewModelBase
         await _upload.ResetFailedUploadsForRetryAsync(_logbookId).ConfigureAwait(true);
         StatusText = _l.Get("Logbook.Settings.Cloudlog.RetryStarted");
     }
+
+    [RelayCommand(CanExecute = nameof(CanSendAllToCloudlog))]
+    private async Task SendAllToCloudlogAsync()
+    {
+        ErrorText = "";
+        StatusText = "";
+        IsSendingAllToCloudlog = true;
+        try
+        {
+            var progress = new Progress<(int Done, int Total)>(p =>
+                StatusText = _l.Get("Logbook.Settings.Cloudlog.SendAllProgress", p.Done, p.Total));
+            var result = await _upload.SendAllToCloudlogAsync(_logbookId, progress).ConfigureAwait(true);
+            switch (result.Outcome)
+            {
+                case CloudlogBulkUploadOutcome.NotConfigured:
+                    ErrorText = _l.Get("Logbook.Settings.Cloudlog.ConfigureIntegrationsFirst");
+                    break;
+                case CloudlogBulkUploadOutcome.NoStationProfile:
+                    ErrorText = _l.Get("Logbook.Settings.Cloudlog.SendAllNeedsSave");
+                    break;
+                default:
+                    StatusText = result.Total == 0
+                        ? _l.Get("Logbook.Settings.Cloudlog.SendAllNothing")
+                        : _l.Get("Logbook.Settings.Cloudlog.SendAllDone", result.Sent, result.Failed);
+                    break;
+            }
+        }
+        finally
+        {
+            IsSendingAllToCloudlog = false;
+        }
+    }
+
+    private bool CanSendAllToCloudlog => CloudlogConfigured && !IsSendingAllToCloudlog;
 
     [RelayCommand]
     private async Task TestQrzAsync()
@@ -287,6 +343,9 @@ public partial class LogbookSettingsViewModel : ViewModelBase
             return false;
         }
 
+        if (!TryReadWsjtx(out var wsjtx))
+            return false;
+
         request = new QsoLogbookCloudlogSettingsRequest
         {
             Id = _logbookId,
@@ -307,7 +366,37 @@ public partial class LogbookSettingsViewModel : ViewModelBase
             Password = HamQthPassword
         };
         SaveCwKeyer();
+        _settings.Current.WsjtxUdp = wsjtx;
+        _wsjtxUdp.ApplySettings(wsjtx);
         _settings.RequestSave();
+        return true;
+    }
+
+    private bool TryReadWsjtx([NotNullWhen(true)] out WsjtxUdpSettings? settings)
+    {
+        settings = null;
+        var host = WsjtxHost?.Trim() ?? "";
+        if (!WsjtxUdpSettings.IsValidHost(host))
+        {
+            ErrorText = _l.Get("Logbook.Settings.Wsjtx.HostRequired");
+            return false;
+        }
+
+        if (WsjtxPort is not decimal portValue
+            || portValue != decimal.Truncate(portValue)
+            || portValue < WsjtxUdpSettings.MinPort
+            || portValue > WsjtxUdpSettings.MaxPort)
+        {
+            ErrorText = _l.Get("Logbook.Settings.Wsjtx.PortInvalid");
+            return false;
+        }
+
+        settings = new WsjtxUdpSettings
+        {
+            Enabled = WsjtxEnabled,
+            Host = host,
+            Port = (int)portValue
+        };
         return true;
     }
 

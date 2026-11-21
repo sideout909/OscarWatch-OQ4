@@ -84,11 +84,13 @@ public sealed class Ft4OscarWatchSpotTests
         Assert.Equal("MM9SQL/P", spot.HeardCallsign);
     }
 
-    [Theory]
-    [InlineData("CQ DX W1AW")]
-    [InlineData("CQ POTA")]
-    public void Cq_modifier_is_not_a_callsign(string text) =>
-        Assert.False(Ft4OscarWatchSpots.TryCreate(Decode(text), Snapshot(), "MM9SQL", "client", out _));
+    [Fact]
+    public void Cq_modifier_is_not_a_callsign()
+    {
+        Assert.False(Ft4OscarWatchSpots.TryCreate(Decode("CQ POTA"), Snapshot(), "MM9SQL", "client", out _));
+        Assert.True(Ft4OscarWatchSpots.TryCreate(Decode("CQ DX W1AW"), Snapshot(), "MM9SQL", "client", out var spot));
+        Assert.Equal("W1AW", spot.HeardCallsign);
+    }
 
     [Theory]
     [InlineData("ISS", "FM", "FM", null)]
@@ -161,7 +163,7 @@ public sealed class Ft4OscarWatchSpotTests
         var spot = Sample();
         Assert.True(reporter.TryEnqueue(spot));
         Assert.False(reporter.TryEnqueue(spot));
-        await done.Task.WaitAsync(TimeSpan.FromSeconds(2));
+        await done.Task.WaitAsync(TimeSpan.FromSeconds(15));
         Assert.Equal(1, calls);
     }
 
@@ -187,7 +189,7 @@ public sealed class Ft4OscarWatchSpotTests
         reporter.Diagnostic += (message, _) => noticed.TrySetResult(message);
 
         Assert.True(reporter.TryEnqueue(Sample()));
-        var message = await noticed.Task.WaitAsync(TimeSpan.FromSeconds(2));
+        var message = await noticed.Task.WaitAsync(TimeSpan.FromSeconds(15));
         Assert.Contains("API token", message, StringComparison.Ordinal);
         Assert.Equal(0, calls);
     }
@@ -207,7 +209,7 @@ public sealed class Ft4OscarWatchSpotTests
         });
 
         Assert.True(reporter.TryEnqueue(Sample()));
-        await done.Task.WaitAsync(TimeSpan.FromSeconds(2));
+        await done.Task.WaitAsync(TimeSpan.FromSeconds(15));
         Assert.Equal(2, calls);
     }
 

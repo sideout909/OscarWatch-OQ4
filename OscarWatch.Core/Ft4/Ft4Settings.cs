@@ -96,6 +96,22 @@ public sealed class Ft4Settings
     /// </summary>
     public List<string> BlockedCallsigns { get; set; } = [];
 
+    private string _cqModifier = "";
+
+    /// <summary>
+    /// Word sent between CQ and the callsign (POTA, DX, 290). Empty sends a plain CQ.
+    /// Only 1 to 4 letters or exactly 3 digits are kept; anything else is stored as empty.
+    /// </summary>
+    public string CqModifier
+    {
+        get => _cqModifier;
+        set
+        {
+            var word = Ft4MessageCodec.NormalizeCqModifier(value);
+            _cqModifier = Ft4MessageCodec.IsCqModifier(word) ? word : "";
+        }
+    }
+
     /// <summary>
     /// When true, FT4 sets the radio's RF power to <see cref="Ft4RfPowerLimit.MaxWatts"/>
     /// before transmitting if the radio reports a higher setting. ICOM uses CI-V.
@@ -139,6 +155,18 @@ public sealed class Ft4Settings
     /// Display only; decode filtering always uses the raw slot-relative DT.
     /// </summary>
     public bool ShowDtWsjtxConvention { get; set; } = true;
+
+    /// <summary>
+    /// When true (default), the first decode of each 7.5 s slot gets a thin rule above it on
+    /// Band activity and Calling me so cycles are easier to tell apart.
+    /// </summary>
+    public bool ShowSlotDividers { get; set; } = true;
+
+    /// <summary>
+    /// When true, Band activity and Calling me append new decodes at the bottom (WSJT-X style).
+    /// When false (default), new decodes stay at the top.
+    /// </summary>
+    public bool NewestDecodesAtBottom { get; set; }
 
     /// <summary>When true, receive decodes are reported to PSK Reporter. Off by default.</summary>
     public bool PskReporterEnabled { get; set; }
@@ -306,7 +334,7 @@ public sealed class Ft4Settings
 
     public double GetUplinkCalibrationKHz(string? satelliteName, SatelliteTransponderMode? mode = null)
     {
-        if (mode is not null && Ft4SlotGate.IsFt4Transponder(mode)
+        if (mode is not null && Ft4SlotGate.IsModemTransponder(mode)
             && !string.IsNullOrWhiteSpace(satelliteName))
         {
             var transponderKey = Ft4UplinkCalibration.FormatTransponderKey(satelliteName, mode);
@@ -326,7 +354,7 @@ public sealed class Ft4Settings
     public void SetUplinkCalibrationKHz(string? satelliteName, double khz, SatelliteTransponderMode? mode = null)
     {
         string key;
-        var perTransponder = mode is not null && Ft4SlotGate.IsFt4Transponder(mode)
+        var perTransponder = mode is not null && Ft4SlotGate.IsModemTransponder(mode)
             && !string.IsNullOrWhiteSpace(satelliteName);
         if (perTransponder)
         {

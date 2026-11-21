@@ -22,6 +22,7 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
     private readonly ISettingsService _settings;
     private readonly ICloudlogQsoUploadService _cloudlogUpload;
     private readonly ISatelliteLinkBroadcastService _satelliteLink;
+    private readonly IWsjtxUdpBroadcastService _wsjtxUdp;
     private readonly ISatelliteStatusReportService _satelliteStatus;
     private readonly IDxccLookupService _dxccLookup;
     private readonly IQrzCallbookService _qrz;
@@ -37,6 +38,10 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
     private bool _dxccBackfillStarted;
     private CancellationTokenSource? _qrzLookupCts;
     private readonly OscarWatch.Services.QsoLogbookEntryBridge? _entryBridge;
+    private readonly ActivationDirectoryService _activationDirectories;
+    private readonly ActivationReferenceSuggestions _potaSuggestions;
+    private readonly ActivationReferenceSuggestions _sotaSuggestions;
+    private readonly ActivationReferenceSuggestions _wwffSuggestions;
     /// <summary>Locator sent from a decoder; call lookups keep it instead of clearing or replacing it.</summary>
     private string? _decodedGrid;
     /// <summary>Call the decoded locator belongs to, or null when it arrived before any call.</summary>
@@ -48,20 +53,27 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         ISettingsService settings,
         ICloudlogQsoUploadService cloudlogUpload,
         ISatelliteLinkBroadcastService satelliteLink,
+        IWsjtxUdpBroadcastService wsjtxUdp,
         ISatelliteStatusReportService satelliteStatus,
         IDxccLookupService dxccLookup,
         IQrzCallbookService qrz,
         IHamQthCallbookService hamQth,
         ILocalizationService localization,
         OscarWatch.Hardware.CwKeyerService? cwKeyer = null,
-        OscarWatch.Services.QsoLogbookEntryBridge? entryBridge = null)
+        OscarWatch.Services.QsoLogbookEntryBridge? entryBridge = null,
+        ActivationDirectoryService? activationDirectories = null)
     {
         _entryBridge = entryBridge;
+        _activationDirectories = activationDirectories ?? new ActivationDirectoryService();
+        _potaSuggestions = new ActivationReferenceSuggestions(_activationDirectories, ActivationProgramme.Pota);
+        _sotaSuggestions = new ActivationReferenceSuggestions(_activationDirectories, ActivationProgramme.Sota);
+        _wwffSuggestions = new ActivationReferenceSuggestions(_activationDirectories, ActivationProgramme.Wwff);
         _repository = repository;
         _tracker = tracker;
         _settings = settings;
         _cloudlogUpload = cloudlogUpload;
         _satelliteLink = satelliteLink;
+        _wsjtxUdp = wsjtxUdp;
         _satelliteStatus = satelliteStatus;
         _dxccLookup = dxccLookup;
         _qrz = qrz;
@@ -100,11 +112,37 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
 
     public ObservableCollection<QsoRowViewModel> QsoRows { get; } = [];
 
+    /// <summary>POTA park reference or comma-separated list for this QSO. Defaults to the logbook's value.</summary>
+    [ObservableProperty]
+    private string _potaRef = "";
+
+    /// <summary>SOTA summit reference for this QSO. Defaults to the logbook's value.</summary>
+    [ObservableProperty]
+    private string _sotaRef = "";
+
+    /// <summary>WWFF reference for this QSO. Defaults to the logbook's value.</summary>
+    [ObservableProperty]
+    private string _wwffRef = "";
+
+    public ObservableCollection<ActivationDirectoryEntry> PotaSuggestions => _potaSuggestions.Items;
+
+    public ObservableCollection<ActivationDirectoryEntry> SotaSuggestions => _sotaSuggestions.Items;
+
+    public ObservableCollection<ActivationDirectoryEntry> WwffSuggestions => _wwffSuggestions.Items;
+
+    partial void OnPotaRefChanged(string value) => _potaSuggestions.Update(value);
+
+    partial void OnSotaRefChanged(string value) => _sotaSuggestions.Update(value);
+
+    partial void OnWwffRefChanged(string value) => _wwffSuggestions.Update(value);
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(DeleteSelectedQsoCommand))]
     [NotifyCanExecuteChangedFor(nameof(BeginEditSelectedQsoCommand))]
     [NotifyCanExecuteChangedFor(nameof(ReuploadSelectedQsoCommand))]
     private QsoRowViewModel? _selectedQso;
+
+    private IReadOnlyList<QsoRowViewModel> _selectedQsos = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(EntryCommitLabel))]
@@ -226,9 +264,22 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
 
     public bool CanExport => SelectedLogbook is not null && QsoRows.Count > 0;
 
-    public bool CanDeleteQso => SelectedQso is not null && !IsEditingQso;
+    /// <summary>True when a logbook is selected and ADIF import can run.</summary>
+    public bool CanImport => SelectedLogbook is not null;
 
-    public bool CanEditQso => SelectedQso is not null && !IsEditingQso;
+    public int SelectedQsoCount => _selectedQsos.Count;
+
+    public bool CanExportSelected => SelectedLogbook is not null && SelectedQsoCount > 0;
+
+    /// <summary>
+    /// True when a single QSO is the active target. Tests may set <see cref="SelectedQso"/>
+    /// without a DataGrid multi-selection list (<see cref="SelectedQsoCount"/> stays 0).
+    /// </summary>
+    public bool HasSingleSelectedQso => SelectedQso is not null && SelectedQsoCount <= 1;
+
+    public bool CanDeleteQso => HasSingleSelectedQso && !IsEditingQso;
+
+    public bool CanEditQso => HasSingleSelectedQso && !IsEditingQso;
 
     public bool ShowCancelEdit => IsEditingQso;
 
@@ -241,7 +292,18 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
             : "";
 
     public string CurrentLogbookDisplayName =>
-        SelectedLogbook?.Name ?? _l.Get("Logbook.Menu.NoLogbook");
+        _l.Get("Logbook.Menu.Current", SelectedLogbook?.Name ?? _l.Get("Logbook.Menu.NoLogbook"));
+
+    /// <summary>Window title, with the selected logbook name in brackets when one is open.</summary>
+    public string WindowTitle
+    {
+        get
+        {
+            var baseTitle = _l.Get("Window.Logbook.Title");
+            var name = SelectedLogbook?.Name;
+            return string.IsNullOrWhiteSpace(name) ? baseTitle : string.Format("{0} ({1})", baseTitle, name);
+        }
+    }
 
     public bool ShowDxccBadge =>
         ResolvedDxcc.HasValue
@@ -290,6 +352,7 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         _liveTimer.Start();
         RefreshStationPanel();
         _dxccLookup.EnsureLoaded();
+        _ = LoadActivationDirectoriesAsync();
         _ = _cloudlogUpload.ProcessRetryQueueAsync();
         _ = BackfillMissingDxccAsync();
         _entryBridge?.Attach(this);
@@ -345,7 +408,10 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         {
             Name = result.Name,
             MyCallsign = result.MyCallsign,
-            MyGridSquare = result.MyGridSquare
+            MyGridSquare = result.MyGridSquare,
+            PotaRef = result.PotaRef,
+            SotaRef = result.SotaRef,
+            WwffRef = result.WwffRef
         }).ConfigureAwait(true);
         StatusText = _l.Get("Logbook.Status.Created", result.Name);
     }
@@ -360,7 +426,10 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
             Id = result.UpdateLogbookId.Value,
             Name = result.Name,
             MyCallsign = result.MyCallsign,
-            MyGridSquare = result.MyGridSquare
+            MyGridSquare = result.MyGridSquare,
+            PotaRef = result.PotaRef,
+            SotaRef = result.SotaRef,
+            WwffRef = result.WwffRef
         }).ConfigureAwait(true);
 
         await ReloadLogbooksAsync().ConfigureAwait(true);
@@ -437,6 +506,9 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         if (!TryNormalizeWorkedGrid(Grid, out var workedGrid))
             return;
 
+        if (!TryReadActivationRefs(out var potaRef, out var sotaRef, out var wwffRef))
+            return;
+
         var snapshot = _tracker.GetCurrent();
         if (!snapshot.IsAvailable)
         {
@@ -469,6 +541,9 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
             BandRx = snapshot.BandRx,
             Dxcc = dxcc,
             Country = country,
+            PotaRef = potaRef,
+            SotaRef = sotaRef,
+            WwffRef = wwffRef,
             CloudlogUploadStatus = cloudlogUpload
         }).ConfigureAwait(true);
 
@@ -476,6 +551,8 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
             await _cloudlogUpload.QueueUploadIfEnabledAsync(record.Id).ConfigureAwait(true);
 
         PublishQsoEvent(record, SatelliteLinkQsoEventKind.Logged);
+        if (SelectedLogbook is { } loggedBook)
+            _wsjtxUdp.PublishLoggedQso(record, loggedBook);
         _ = TryAutoReportSatelliteStatusAsync(record, snapshot);
 
         await ReloadQsosAsync().ConfigureAwait(true);
@@ -530,6 +607,9 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         if (!TryNormalizeWorkedGrid(Grid, out var workedGrid))
             return;
 
+        if (!TryReadActivationRefs(out var potaRef, out var sotaRef, out var wwffRef))
+            return;
+
         ++_callLookupGeneration;
 
         if (EditQsoDate is not { } qsoDate
@@ -566,7 +646,10 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
             BandRx = _editingSource.BandRx,
             PropMode = _editingSource.PropMode,
             Dxcc = dxcc,
-            Country = country
+            Country = country,
+            PotaRef = potaRef,
+            SotaRef = sotaRef,
+            WwffRef = wwffRef
         }).ConfigureAwait(true);
 
         var editedId = record.Id;
@@ -580,6 +663,49 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         CommitQsoCommand.NotifyCanExecuteChanged();
     }
 
+    /// <summary>Reads the directories for the reference boxes, then refreshes their suggestions. Never throws for network problems.</summary>
+    private async Task LoadActivationDirectoriesAsync()
+    {
+        foreach (var programme in Enum.GetValues<ActivationProgramme>())
+        {
+            await Task.Run(() => _activationDirectories.EnsureLoadedAsync(programme)).ConfigureAwait(true);
+            _potaSuggestions.Update(PotaRef);
+            _sotaSuggestions.Update(SotaRef);
+            _wwffSuggestions.Update(WwffRef);
+        }
+    }
+
+    /// <summary>
+    /// Normalises the three QSO reference fields. Returns false, with a status message, when one of them
+    /// is not in a valid format, so nothing is saved with a malformed reference.
+    /// </summary>
+    private bool TryReadActivationRefs(out string pota, out string sota, out string wwff)
+    {
+        pota = ActivationReferences.Normalize(PotaRef);
+        sota = ActivationReferences.Normalize(SotaRef);
+        wwff = ActivationReferences.Normalize(WwffRef);
+
+        if (!ActivationReferences.IsValid(ActivationProgramme.Pota, pota))
+        {
+            StatusText = _l.Get("Logbook.Error.PotaRef");
+            return false;
+        }
+
+        if (!ActivationReferences.IsValid(ActivationProgramme.Sota, sota))
+        {
+            StatusText = _l.Get("Logbook.Error.SotaRef");
+            return false;
+        }
+
+        if (!ActivationReferences.IsValid(ActivationProgramme.Wwff, wwff))
+        {
+            StatusText = _l.Get("Logbook.Error.WwffRef");
+            return false;
+        }
+
+        return true;
+    }
+
     private void ClearEntryForm()
     {
         _decodedGrid = null;
@@ -590,6 +716,9 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         Grid = "";
         Name = "";
         Comment = "";
+        PotaRef = SelectedLogbook?.PotaRef ?? "";
+        SotaRef = SelectedLogbook?.SotaRef ?? "";
+        WwffRef = SelectedLogbook?.WwffRef ?? "";
         EditQsoDate = null;
         EditQsoTime = null;
         EditMode = "";
@@ -613,6 +742,9 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         Grid = record.GridSquare;
         Name = record.Name;
         Comment = record.Comment;
+        PotaRef = record.PotaRef;
+        SotaRef = record.SotaRef;
+        WwffRef = record.WwffRef;
         EditQsoDate = new DateTimeOffset(qsoUtc.Year, qsoUtc.Month, qsoUtc.Day, 0, 0, 0, TimeSpan.Zero);
         EditQsoTime = new TimeSpan(qsoUtc.Hour, qsoUtc.Minute, qsoUtc.Second);
         _loadedModeText = QsoModeText.Format(record.Mode, record.ModeRx);
@@ -636,11 +768,20 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         && left.Minute == right.Minute
         && left.Second == right.Second;
 
+    public void SetSelectedQsos(IReadOnlyList<QsoRowViewModel> rows)
+    {
+        _selectedQsos = rows ?? [];
+        NotifySelectionDependentState();
+    }
+
     [RelayCommand(CanExecute = nameof(CanExport))]
     public async Task<int> CountQsosForExportAsync(QsoAdifExportOptions options)
     {
         if (SelectedLogbook is null)
             return 0;
+
+        if (options.Scope == QsoAdifExportScope.Selected)
+            return SelectedQsoCount;
 
         var (fromInclusive, toExclusive) = QsoLogbookExportRange.ToQueryBounds(options);
         return await _repository.CountQsosAsync(
@@ -649,13 +790,19 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
             toExclusive).ConfigureAwait(true);
     }
 
-    public QsoAdifExportDialogDefaults GetExportDialogDefaults()
+    public QsoAdifExportDialogDefaults GetExportDialogDefaults(
+        QsoAdifExportScope preferredScope = QsoAdifExportScope.All)
     {
         var utcDates = QsoRows.Select(row => row.Record.QsoUtc).ToList();
         var (from, to) = QsoLogbookExportRange.DefaultUtcDates(utcDates);
+        var initialScope = preferredScope == QsoAdifExportScope.Selected && SelectedQsoCount > 0
+            ? QsoAdifExportScope.Selected
+            : QsoAdifExportScope.All;
         return new QsoAdifExportDialogDefaults(
             new DateTimeOffset(from, TimeSpan.Zero),
-            new DateTimeOffset(to, TimeSpan.Zero));
+            new DateTimeOffset(to, TimeSpan.Zero),
+            SelectedQsoCount,
+            initialScope);
     }
 
     public async Task<string?> ExportAdifAsync(QsoAdifExportOptions options)
@@ -663,19 +810,109 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         if (SelectedLogbook is null)
             return null;
 
-        var (fromInclusive, toExclusive) = QsoLogbookExportRange.ToQueryBounds(options);
-        var qsos = await _repository.ListQsosAsync(
-            SelectedLogbook.Id,
-            fromInclusive,
-            toExclusive).ConfigureAwait(true);
+        IReadOnlyList<QsoRecord> qsos;
+        if (options.Scope == QsoAdifExportScope.Selected)
+        {
+            qsos = _selectedQsos.Select(row => row.Record).ToList();
+        }
+        else
+        {
+            var (fromInclusive, toExclusive) = QsoLogbookExportRange.ToQueryBounds(options);
+            qsos = await _repository.ListQsosAsync(
+                SelectedLogbook.Id,
+                fromInclusive,
+                toExclusive).ConfigureAwait(true);
+        }
+
         if (qsos.Count == 0)
             return null;
 
         return AdifExporter.ExportLogbook(SelectedLogbook, qsos, options.ForLotw);
     }
 
+    /// <summary>
+    /// Builds an import preview for the given ADI text against the current logbook.
+    /// </summary>
+    public async Task<AdifImportPreview?> BuildAdifImportPreviewAsync(
+        string adifText,
+        bool satelliteOnly)
+    {
+        if (SelectedLogbook is null)
+            return null;
+
+        var parsed = AdifImporter.Parse(adifText);
+        var existing = await _repository.ListQsoDuplicateKeysAsync(SelectedLogbook.Id).ConfigureAwait(true);
+        return AdifImportClassifier.BuildPreview(parsed, existing, satelliteOnly);
+    }
+
+    /// <summary>
+    /// Writes imported QSOs in one batch. Does not queue Cloudlog, Satellite Link, or WSJT-X UDP.
+    /// </summary>
+    public async Task<int> ImportAdifQsosAsync(IReadOnlyList<AdifImportedQso> qsos)
+    {
+        if (SelectedLogbook is null || qsos.Count == 0)
+            return 0;
+
+        var logbookId = SelectedLogbook.Id;
+        var requests = new List<QsoRecordCreateRequest>(qsos.Count);
+        foreach (var qso in qsos)
+        {
+            var dxcc = qso.Dxcc;
+            var country = qso.Country;
+            if (dxcc is null || string.IsNullOrWhiteSpace(country))
+            {
+                ResolveDxccFields(qso.Call, out var resolvedDxcc, out var resolvedCountry);
+                dxcc ??= resolvedDxcc;
+                if (string.IsNullOrWhiteSpace(country))
+                    country = resolvedCountry;
+            }
+
+            requests.Add(new QsoRecordCreateRequest
+            {
+                LogbookId = logbookId,
+                QsoUtc = qso.QsoUtc,
+                Call = qso.Call,
+                RstSent = qso.RstSent,
+                RstRcvd = qso.RstRcvd,
+                GridSquare = qso.GridSquare,
+                Name = qso.Name,
+                Comment = qso.Comment,
+                SatName = qso.SatName,
+                Mode = qso.Mode,
+                ModeRx = qso.ModeRx,
+                FreqHz = qso.FreqHz,
+                FreqRxHz = qso.FreqRxHz,
+                Band = qso.Band,
+                BandRx = qso.BandRx,
+                PropMode = qso.PropMode,
+                Dxcc = dxcc,
+                Country = country,
+                CloudlogUploadStatus = CloudlogUploadStatus.None
+            });
+        }
+
+        var inserted = await _repository.AddQsosBatchAsync(requests, preserveBlankPropMode: true)
+            .ConfigureAwait(true);
+        return inserted.Count;
+    }
+
+    public string FormatImportStatusText(int importedCount) =>
+        importedCount switch
+        {
+            0 => _l.Get("Logbook.ImportAdif.Status.ImportedNone"),
+            1 => _l.Get("Logbook.ImportAdif.Status.ImportedOne"),
+            _ => _l.Get("Logbook.ImportAdif.Status.ImportedMany", importedCount)
+        };
+
     public string FormatExportStatusText(QsoAdifExportOptions options, int exportedCount)
     {
+        if (options.Scope == QsoAdifExportScope.Selected)
+        {
+            return exportedCount == 1
+                ? _l.Get("Logbook.Status.ExportedOneSelected")
+                : _l.Get("Logbook.Status.ExportedManySelected", exportedCount);
+        }
+
         if (options.Scope == QsoAdifExportScope.DateRange)
         {
             var (from, to) = QsoLogbookExportRange.NormalizeUtcDates(options.FromUtcDate, options.ToUtcDate);
@@ -695,6 +932,9 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
     public static string BuildSuggestedExportFileName(string logbookName, QsoAdifExportOptions options)
     {
         var safeName = SanitizeExportFileName(logbookName);
+        if (options.Scope == QsoAdifExportScope.Selected)
+            return $"{safeName}_selected.adi";
+
         if (options.Scope != QsoAdifExportScope.DateRange)
             return $"{safeName}.adi";
 
@@ -755,12 +995,16 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
 
     partial void OnSelectedLogbookChanged(QsoLogbook? value)
     {
+        _selectedQsos = [];
+        NotifySelectionDependentState();
         _ = ApplySelectedLogbookChangeAsync();
         CommitQsoCommand.NotifyCanExecuteChanged();
         OnPropertyChanged(nameof(CanEditLogbook));
         OnPropertyChanged(nameof(CanDeleteLogbook));
         OnPropertyChanged(nameof(CanExport));
+        OnPropertyChanged(nameof(CanImport));
         OnPropertyChanged(nameof(CurrentLogbookDisplayName));
+        OnPropertyChanged(nameof(WindowTitle));
         OnPropertyChanged(nameof(QsoCountText));
         OnPropertyChanged(nameof(ShowQsoCountText));
         RefreshLogbookSwitchItems();
@@ -779,6 +1023,8 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
         BeginEditSelectedQsoCommand.NotifyCanExecuteChanged();
         DeleteSelectedQsoCommand.NotifyCanExecuteChanged();
         ReuploadSelectedQsoCommand.NotifyCanExecuteChanged();
+        OnPropertyChanged(nameof(CanEditQso));
+        OnPropertyChanged(nameof(CanDeleteQso));
         OnPropertyChanged(nameof(EntryCommitLabel));
         OnPropertyChanged(nameof(ShowCancelEdit));
         OnPropertyChanged(nameof(EditingStatusText));
@@ -788,8 +1034,24 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
 
     partial void OnSelectedQsoChanged(QsoRowViewModel? value)
     {
+        OnPropertyChanged(nameof(HasSingleSelectedQso));
+        OnPropertyChanged(nameof(CanEditQso));
+        OnPropertyChanged(nameof(CanDeleteQso));
         BeginEditSelectedQsoCommand.NotifyCanExecuteChanged();
         DeleteSelectedQsoCommand.NotifyCanExecuteChanged();
+        ReuploadSelectedQsoCommand.NotifyCanExecuteChanged();
+    }
+
+    private void NotifySelectionDependentState()
+    {
+        OnPropertyChanged(nameof(SelectedQsoCount));
+        OnPropertyChanged(nameof(CanExportSelected));
+        OnPropertyChanged(nameof(HasSingleSelectedQso));
+        OnPropertyChanged(nameof(CanEditQso));
+        OnPropertyChanged(nameof(CanDeleteQso));
+        BeginEditSelectedQsoCommand.NotifyCanExecuteChanged();
+        DeleteSelectedQsoCommand.NotifyCanExecuteChanged();
+        ReuploadSelectedQsoCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnCallChanged(string value)
@@ -1181,7 +1443,10 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
                     BandRx = qso.BandRx,
                     PropMode = qso.PropMode,
                     Dxcc = dxcc,
-                    Country = country
+                    Country = country,
+                    PotaRef = qso.PotaRef,
+                    SotaRef = qso.SotaRef,
+                    WwffRef = qso.WwffRef
                 }).ConfigureAwait(true);
             }
 
@@ -1215,6 +1480,7 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
 
         RefreshLogbookSwitchItems();
         OnPropertyChanged(nameof(CurrentLogbookDisplayName));
+        OnPropertyChanged(nameof(WindowTitle));
     }
 
     private void RefreshLogbookSwitchItems()
@@ -1232,6 +1498,8 @@ public partial class QsoLogbookViewModel : ViewModelBase, IDisposable
     private async Task ReloadQsosAsync(string? callFilter = null)
     {
         QsoRows.Clear();
+        _selectedQsos = [];
+        NotifySelectionDependentState();
         if (SelectedLogbook is null)
         {
             QsoCount = 0;

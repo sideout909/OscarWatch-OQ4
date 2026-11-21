@@ -1,6 +1,8 @@
 using Microsoft.Data.Sqlite;
 using OscarWatch.Core.Logbook;
 using OscarWatch.Core.Models;
+using OscarWatch.Localization;
+using OscarWatch.ViewModels;
 
 namespace OscarWatch.Tests;
 
@@ -677,6 +679,42 @@ public class QsoLogbookRepositoryTests : IDisposable
     }
 
     [Fact]
+    public void QsoLogbookExportRange_defaults_empty_log_to_today_utc()
+    {
+        var today = DateTime.UtcNow.Date;
+        var (from, to) = QsoLogbookExportRange.DefaultUtcDates([]);
+        Assert.Equal(today, from);
+        Assert.Equal(today, to);
+    }
+
+    [Fact]
+    public void QsoLogbookExportRange_defaults_single_day_log_to_that_utc_date()
+    {
+        var day = new DateTime(2026, 7, 12);
+        var (from, to) = QsoLogbookExportRange.DefaultUtcDates(
+        [
+            new DateTime(2026, 7, 12, 8, 15, 0, DateTimeKind.Utc),
+            new DateTime(2026, 7, 12, 21, 40, 0, DateTimeKind.Utc)
+        ]);
+        Assert.Equal(day, from);
+        Assert.Equal(day, to);
+    }
+
+    [Fact]
+    public void QsoLogbookExportRange_defaults_multi_day_log_to_latest_utc_date()
+    {
+        var latest = new DateTime(2026, 7, 13);
+        var (from, to) = QsoLogbookExportRange.DefaultUtcDates(
+        [
+            new DateTime(2026, 7, 11, 18, 0, 0, DateTimeKind.Utc),
+            new DateTime(2026, 7, 13, 9, 15, 0, DateTimeKind.Utc),
+            new DateTime(2026, 7, 12, 23, 59, 0, DateTimeKind.Utc)
+        ]);
+        Assert.Equal(latest, from);
+        Assert.Equal(latest, to);
+    }
+
+    [Fact]
     public async Task UpdateLogbookAsync_updates_name_callsign_and_grid()
     {
         await _repository.InitializeAsync();
@@ -812,6 +850,98 @@ public class QsoLogbookRepositoryTests : IDisposable
         Assert.Equal(0, reloaded.CloudlogUploadAttempts);
     }
 
+    [Fact]
+    public async Task Lists_only_qsos_not_yet_sent_to_cloudlog_for_one_logbook_oldest_first()
+    {
+        await _repository.InitializeAsync();
+
+        var logbook = await _repository.CreateLogbookAsync(new QsoLogbookCreateRequest
+        {
+            Name = "Bulk send",
+            MyCallsign = "2M0SQL",
+            MyGridSquare = "IO87IP"
+        });
+        var otherLogbook = await _repository.CreateLogbookAsync(new QsoLogbookCreateRequest
+        {
+            Name = "Other",
+            MyCallsign = "2M0SQL",
+            MyGridSquare = "IO87IP"
+        });
+
+        var now = DateTime.UtcNow;
+        var none = await AddCloudlogQsoAsync(logbook.Id, now.AddHours(-3), "G0AAA", CloudlogUploadStatus.None);
+        await AddCloudlogQsoAsync(logbook.Id, now.AddHours(-2), "G0BBB", CloudlogUploadStatus.Sent);
+        var failed = await AddCloudlogQsoAsync(logbook.Id, now.AddHours(-1), "G0CCC", CloudlogUploadStatus.Pending);
+        await _repository.UpdateQsoCloudlogUploadStateAsync(
+            failed.Id,
+            CloudlogUploadStatus.Failed,
+            1,
+            "Network error",
+            null);
+        var pending = await AddCloudlogQsoAsync(logbook.Id, now, "G0DDD", CloudlogUploadStatus.Pending);
+        await AddCloudlogQsoAsync(otherLogbook.Id, now, "G0EEE", CloudlogUploadStatus.None);
+
+        var toSend = await _repository.ListQsosNotSentToCloudlogAsync(logbook.Id);
+
+        Assert.Equal(new[] { none.Id, failed.Id, pending.Id }, toSend.Select(q => q.Id).ToArray());
+    }
+
+    private async Task<QsoRecord> AddCloudlogQsoAsync(long logbookId, DateTime qsoUtc, string call, CloudlogUploadStatus status) =>
+        await _repository.AddQsoAsync(new QsoRecordCreateRequest
+        {
+            LogbookId = logbookId,
+            QsoUtc = qsoUtc,
+            Call = call,
+            CloudlogUploadStatus = status
+        });
+
+    [Fact]
+    public async Task AddQsosBatchAsync_preserves_blank_prop_mode_and_raises_once()
+    {
+        await _repository.InitializeAsync();
+        var logbook = await _repository.CreateLogbookAsync(new QsoLogbookCreateRequest
+        {
+            Name = "Import",
+            MyCallsign = "MM9SQL",
+            MyGridSquare = "IO87IP"
+        });
+
+        var changed = 0;
+        _repository.QsosChanged += _ => changed++;
+
+        var inserted = await _repository.AddQsosBatchAsync(
+        [
+            new QsoRecordCreateRequest
+            {
+                LogbookId = logbook.Id,
+                QsoUtc = new DateTime(2020, 2, 12, 17, 10, 0, DateTimeKind.Utc),
+                Call = "G0ABC",
+                Mode = "FT4",
+                SatName = "QO-100",
+                PropMode = "",
+                CloudlogUploadStatus = CloudlogUploadStatus.None
+            },
+            new QsoRecordCreateRequest
+            {
+                LogbookId = logbook.Id,
+                QsoUtc = new DateTime(2020, 2, 12, 18, 0, 0, DateTimeKind.Utc),
+                Call = "PA3EK",
+                Mode = "FT8",
+                PropMode = "",
+                CloudlogUploadStatus = CloudlogUploadStatus.None
+            }
+        ], preserveBlankPropMode: true);
+
+        Assert.Equal(2, inserted.Count);
+        Assert.Equal(1, changed);
+        Assert.All(inserted, q => Assert.Equal("", q.PropMode));
+        Assert.All(inserted, q => Assert.Equal(CloudlogUploadStatus.None, q.CloudlogUploadStatus));
+
+        var keys = await _repository.ListQsoDuplicateKeysAsync(logbook.Id);
+        Assert.Contains(AdifImporter.FormatDuplicateKey("G0ABC", new DateTime(2020, 2, 12, 17, 10, 45, DateTimeKind.Utc)), keys);
+        Assert.Contains(AdifImporter.FormatDuplicateKey("PA3EK", new DateTime(2020, 2, 12, 18, 0, 0, DateTimeKind.Utc)), keys);
+    }
+
     public void Dispose()
     {
         _repository.Dispose();
@@ -819,4 +949,214 @@ public class QsoLogbookRepositoryTests : IDisposable
         if (File.Exists(_path))
             File.Delete(_path);
     }
+}
+
+public class QsoLogbookSelectedExportTests
+{
+    [Fact]
+    public async Task SetSelectedQsos_enables_selected_export_and_disables_single_row_actions()
+    {
+        using var vm = QsoLogbookCorrespondentLookupTests.CreateViewModel();
+        vm.SelectedLogbook = new QsoLogbook { Id = 1, Name = "Main" };
+        await Task.Delay(50);
+
+        var first = Row("G1AAA", new DateTime(2026, 7, 12, 10, 0, 0, DateTimeKind.Utc), id: 1);
+        var second = Row("G2BBB", new DateTime(2026, 7, 12, 11, 0, 0, DateTimeKind.Utc), id: 2);
+
+        vm.SelectedQso = first;
+        Assert.True(vm.CanEditQso);
+        Assert.True(vm.CanDeleteQso);
+        Assert.True(vm.BeginEditSelectedQsoCommand.CanExecute(null));
+        Assert.True(vm.ReuploadSelectedQsoCommand.CanExecute(null));
+        Assert.False(vm.CanExportSelected);
+
+        vm.SetSelectedQsos([first]);
+        Assert.Equal(1, vm.SelectedQsoCount);
+        Assert.True(vm.CanExportSelected);
+        Assert.True(vm.CanEditQso);
+        Assert.True(vm.CanDeleteQso);
+
+        vm.SetSelectedQsos([first, second]);
+        Assert.Equal(2, vm.SelectedQsoCount);
+        Assert.True(vm.CanExportSelected);
+        Assert.False(vm.CanEditQso);
+        Assert.False(vm.CanDeleteQso);
+        Assert.False(vm.BeginEditSelectedQsoCommand.CanExecute(null));
+        Assert.False(vm.ReuploadSelectedQsoCommand.CanExecute(null));
+        Assert.False(vm.DeleteSelectedQsoCommand.CanExecute(null));
+    }
+
+    [Fact]
+    public async Task CountQsosForExportAsync_and_ExportAdifAsync_use_highlighted_rows_in_utc_order()
+    {
+        using var vm = QsoLogbookCorrespondentLookupTests.CreateViewModel();
+        vm.SelectedLogbook = new QsoLogbook
+        {
+            Id = 1,
+            Name = "Portable",
+            MyCallsign = "MM9SQL",
+            MyGridSquare = "IO87IP"
+        };
+        await Task.Delay(50);
+
+        var later = Row("G2BBB", new DateTime(2026, 7, 12, 12, 30, 0, DateTimeKind.Utc), id: 2, satName: "ISS");
+        var earlier = Row("G1AAA", new DateTime(2026, 7, 12, 10, 0, 0, DateTimeKind.Utc), id: 1, satName: "ISS");
+        var ignored = Row("G3CCC", new DateTime(2026, 7, 12, 9, 0, 0, DateTimeKind.Utc), id: 3, satName: "SO-50");
+        _ = ignored;
+
+        vm.SetSelectedQsos([later, earlier]);
+
+        var options = new QsoAdifExportOptions { Scope = QsoAdifExportScope.Selected };
+        Assert.Equal(2, await vm.CountQsosForExportAsync(options));
+
+        var adif = await vm.ExportAdifAsync(options);
+        Assert.NotNull(adif);
+        Assert.Contains("<CALL:5>G1AAA", adif, StringComparison.Ordinal);
+        Assert.Contains("<CALL:5>G2BBB", adif, StringComparison.Ordinal);
+        Assert.DoesNotContain("G3CCC", adif, StringComparison.Ordinal);
+        Assert.True(
+            adif!.IndexOf("G1AAA", StringComparison.Ordinal) < adif.IndexOf("G2BBB", StringComparison.Ordinal),
+            "Selected export should write QSOs in UTC chronological order.");
+        Assert.Contains("<SAT_NAME:3>ISS", adif, StringComparison.Ordinal);
+
+        var lotw = await vm.ExportAdifAsync(new QsoAdifExportOptions
+        {
+            Scope = QsoAdifExportScope.Selected,
+            ForLotw = true
+        });
+        Assert.NotNull(lotw);
+        Assert.Contains("<SAT_NAME:5>ARISS", lotw, StringComparison.Ordinal);
+        Assert.DoesNotContain("<SAT_NAME:3>ISS", lotw, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task GetExportDialogDefaults_preselects_selected_scope_when_rows_are_highlighted()
+    {
+        using var vm = QsoLogbookCorrespondentLookupTests.CreateViewModel();
+        vm.SelectedLogbook = new QsoLogbook { Id = 1, Name = "Main" };
+        await Task.Delay(50);
+
+        var row = Row("G1AAA", new DateTime(2026, 7, 12, 10, 0, 0, DateTimeKind.Utc));
+        vm.SetSelectedQsos([row]);
+
+        var defaults = vm.GetExportDialogDefaults(QsoAdifExportScope.Selected);
+        Assert.Equal(1, defaults.SelectedCount);
+        Assert.Equal(QsoAdifExportScope.Selected, defaults.InitialScope);
+
+        var allDefaults = vm.GetExportDialogDefaults();
+        Assert.Equal(1, allDefaults.SelectedCount);
+        Assert.Equal(QsoAdifExportScope.All, allDefaults.InitialScope);
+    }
+
+    [Fact]
+    public async Task BuildSuggestedExportFileName_and_FormatExportStatusText_cover_selected_scope()
+    {
+        using var _ = TestUiCulture.Apply(LocalizationCulture.DefaultLanguage);
+        using var vm = QsoLogbookCorrespondentLookupTests.CreateViewModel();
+        vm.SelectedLogbook = new QsoLogbook { Id = 1, Name = "Field Day" };
+        await Task.Delay(50);
+
+        var options = new QsoAdifExportOptions { Scope = QsoAdifExportScope.Selected };
+        Assert.Equal(
+            "Field Day_selected.adi",
+            QsoLogbookViewModel.BuildSuggestedExportFileName("Field Day", options));
+
+        Assert.Equal("Exported 1 selected QSO to ADIF.", vm.FormatExportStatusText(options, 1));
+        Assert.Equal("Exported 3 selected QSOs to ADIF.", vm.FormatExportStatusText(options, 3));
+    }
+
+    private static QsoRowViewModel Row(
+        string call,
+        DateTime qsoUtc,
+        long id = 1,
+        string satName = "SO-50") =>
+        QsoRowViewModel.From(
+            new QsoRecord
+            {
+                Id = id,
+                LogbookId = 1,
+                Call = call,
+                QsoUtc = qsoUtc,
+                SatName = satName,
+                Mode = "FM",
+                ModeRx = "FM",
+                PropMode = "SAT",
+                CreatedUtc = DateTime.UtcNow
+            },
+            use24Hour: true,
+            LocalizationService.Instance);
+}
+
+public class ActivationReferenceAdifTests
+{
+    [Fact]
+    public void ExportLogbook_writes_pota_sota_and_wwff_references_with_wwff_signature()
+    {
+        var adif = AdifExporter.ExportLogbook(Logbook(), [Qso(pota: "US-1356,US-4516", sota: "W3/SV-001", wwff: "KFF-4655")]);
+
+        Assert.Contains("<MY_POTA_REF:15>US-1356,US-4516", adif, StringComparison.Ordinal);
+        Assert.Contains("<MY_SOTA_REF:9>W3/SV-001", adif, StringComparison.Ordinal);
+        Assert.Contains("<MY_WWFF_REF:8>KFF-4655", adif, StringComparison.Ordinal);
+        Assert.Contains("<MY_SIG:4>WWFF", adif, StringComparison.Ordinal);
+        Assert.Contains("<MY_SIG_INFO:8>KFF-4655", adif, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ExportLogbook_writes_no_signature_for_pota_only()
+    {
+        var adif = AdifExporter.ExportLogbook(Logbook(), [Qso(pota: "US-1356")]);
+
+        Assert.Contains("<MY_POTA_REF:7>US-1356", adif, StringComparison.Ordinal);
+        Assert.DoesNotContain("MY_SIG", adif, StringComparison.Ordinal);
+        Assert.DoesNotContain("MY_WWFF_REF", adif, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ExportLogbook_omits_every_reference_for_lotw()
+    {
+        var adif = AdifExporter.ExportLogbook(
+            Logbook(),
+            [Qso(pota: "US-1356", sota: "W3/SV-001", wwff: "KFF-4655")],
+            forLotw: true);
+
+        Assert.DoesNotContain("MY_POTA_REF", adif, StringComparison.Ordinal);
+        Assert.DoesNotContain("MY_SOTA_REF", adif, StringComparison.Ordinal);
+        Assert.DoesNotContain("MY_WWFF_REF", adif, StringComparison.Ordinal);
+        Assert.DoesNotContain("MY_SIG", adif, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ExportLogbook_skips_a_reference_that_fails_the_format_check()
+    {
+        var adif = AdifExporter.ExportLogbook(Logbook(), [Qso(pota: "US1356", wwff: "KFF4655")]);
+
+        Assert.DoesNotContain("MY_POTA_REF", adif, StringComparison.Ordinal);
+        Assert.DoesNotContain("MY_WWFF_REF", adif, StringComparison.Ordinal);
+        Assert.DoesNotContain("MY_SIG", adif, StringComparison.Ordinal);
+    }
+
+    private static QsoLogbook Logbook() => new()
+    {
+        Id = 1,
+        Name = "Portable",
+        CreatedUtc = DateTime.UtcNow,
+        MyCallsign = "MM9SQL",
+        MyGridSquare = "IO87IP"
+    };
+
+    private static QsoRecord Qso(string pota = "", string sota = "", string wwff = "") => new()
+    {
+        Id = 1,
+        LogbookId = 1,
+        QsoUtc = new DateTime(2026, 11, 19, 10, 0, 0, DateTimeKind.Utc),
+        Call = "G0ABC",
+        Mode = "SSB",
+        ModeRx = "SSB",
+        Band = "20m",
+        FreqHz = 14_250_000,
+        CreatedUtc = DateTime.UtcNow,
+        PotaRef = pota,
+        SotaRef = sota,
+        WwffRef = wwff
+    };
 }

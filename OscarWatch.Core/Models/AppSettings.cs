@@ -36,9 +36,11 @@ public sealed class AppSettings
     /// <summary>When true, UI times use 24-hour clock; otherwise 12-hour with AM/PM per culture.</summary>
     public bool Use24HourClock { get; set; }
     public int TleStaleHours { get; set; } = 6;
+    /// <summary>Warn when a satellite's orbital element set is at least this many days old (see <see cref="ElementAgeWarning"/>).</summary>
+    public int ElementAgeWarningDays { get; set; } = ElementAgeWarning.DefaultDays;
     public TleSourceSettings TleSource { get; set; } = new();
     public TleAutoUpdateMode TleAutoUpdate { get; set; } = TleAutoUpdateMode.OnStartup;
-    /// <summary>On startup, check tle.oscarwatch.org for new transponder database entries.</summary>
+    /// <summary>On startup, check oscarwatch.org for new transponder database entries.</summary>
     public bool TransponderDatabaseCheckOnStartup { get; set; } = true;
     /// <summary>On startup and every 24 hours while running, check GitHub for a newer release.</summary>
     public bool AppUpdateCheckEnabled { get; set; } = true;
@@ -108,6 +110,8 @@ public sealed class AppSettings
     public QrzSettings Qrz { get; set; } = new();
     public HamQthSettings HamQth { get; set; } = new();
     public SatelliteLinkSettings SatelliteLink { get; set; } = new();
+    /// <summary>Optional WSJT-X UDP feed of newly logged contacts. Edited from Logbook Settings.</summary>
+    public WsjtxUdpSettings WsjtxUdp { get; set; } = new();
     public PassRecordingSettings PassRecording { get; set; } = new();
     public Ft4Settings Ft4 { get; set; } = new();
     public OscarWatch.Core.Sstv.SstvSettings Sstv { get; set; } = new();

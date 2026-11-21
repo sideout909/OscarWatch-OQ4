@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">text/microsoft-resx</resheader>
   <resheader name="version">2.0</resheader>
@@ -244,6 +244,18 @@ LOS: {2}
   </data>
   <data name="Pass.Schedule.AddTooltip">
     <value>ตั้งเวลาพาสนี้ให้มีเสียงติ๊งและการแจ้งเตือนก่อน AOS</value>
+  </data>
+  <data name="Pass.ElementAge.Label">
+    <value>⚠ {0} วัน</value>
+  </data>
+  <data name="Pass.ElementAge.ToolTip">
+    <value>TLE ของ {0} มีอายุ {1} วัน (epoch {2:yyyy-MM-dd}) เวลาพาสและดอปเปลอร์อาจแม่นยำน้อยลง</value>
+  </data>
+  <data name="Pass.ElementAge.Automation">
+    <value>TLE เก่าของ {0}: {1} วัน</value>
+  </data>
+  <data name="Pass.Notice.Automation">
+    <value>ประกาศการใช้งานสำหรับ {0}: {1}</value>
   </data>
   <data name="Pass.Schedule.RemoveTooltip">
     <value>นำพาสนี้ออกจากตาราง</value>
@@ -600,6 +612,9 @@ LOS: {2}
   </data>
   <data name="Menu.Tools.Ft4">
     <value>_OscarWatch FT4</value>
+  </data>
+  <data name="Menu.Tools.Ft8">
+    <value>OscarWatch _FT8</value>
   </data>
   <data name="Menu.Tools.Sstv">
     <value>_OscarWatch SSTV</value>
@@ -1537,11 +1552,14 @@ LOS: {2}
   <data name="Logbook.Menu.NoLogbook">
     <value>ยังไม่ได้เลือกล็อกบุ๊ก</value>
   </data>
+  <data name="Logbook.Menu.Current">
+    <value>ปัจจุบัน: {0}</value>
+  </data>
+  <data name="Logbook.Menu.Switch">
+    <value>สลับสมุดบันทึก</value>
+  </data>
   <data name="Logbook.Menu.Edit">
     <value>แก้ไข</value>
-  </data>
-  <data name="Logbook.Menu.Export">
-    <value>ส่งออก</value>
   </data>
   <data name="Logbook.Menu.Settings">
     <value>การตั้งค่า</value>
@@ -1581,6 +1599,24 @@ LOS: {2}
   </data>
   <data name="Logbook.Settings.Cloudlog.RetryStarted">
     <value>กำลังลองอัปโหลดที่ล้มเหลวอีกครั้ง…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAll">
+    <value>ส่ง QSO ทั้งหมดไป Cloudlog</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNote">
+    <value>ส่ง QSO ทุกรายการในสมุดบันทึกนี้ที่ OscarWatch ยังไม่เคยส่งไป Cloudlog เรียงจากเก่าสุดไปใหม่สุด รายการที่ส่งแล้วจะถูกข้าม ใช้ตำแหน่งสถานีที่บันทึกไว้</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllProgress">
+    <value>กำลังส่ง QSO ที่ {0} จาก {1} ไป Cloudlog…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllDone">
+    <value>ส่ง QSO ไป Cloudlog แล้ว {0} รายการ ล้มเหลว {1} รายการ ดูคอลัมน์ Cloudlog</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNothing">
+    <value>QSO ทั้งหมดในสมุดบันทึกนี้ถูกส่งไป Cloudlog แล้ว</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNeedsSave">
+    <value>เลือกตำแหน่งสถานีและบันทึกสมุดบันทึกก่อนส่ง QSO ทั้งหมด</value>
   </data>
   <data name="Logbook.Settings.Cloudlog.ProfilesLoaded">
     <value>โหลดตำแหน่งสถานี {0} แห่งแล้ว</value>
@@ -1693,6 +1729,114 @@ LOS: {2}
   <data name="Logbook.Station.Unavailable">
     <value>ยังไม่ได้เลือกดาวเทียม หรือยังไม่ได้ซิงค์โหมด</value>
   </data>
+  <data name="Logbook.ImportAdif">
+    <value>นำเข้า ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Picker.Title">
+    <value>นำเข้า ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Title">
+    <value>นำเข้า ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Intro">
+    <value>ตรวจทานรายการติดต่อจากไฟล์ก่อนบันทึกลงสมุดบันทึกนี้</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.SatelliteOnly">
+    <value>เฉพาะการติดต่อผ่านดาวเทียม</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewNone">
+    <value>ไม่มี QSO ใหม่ที่จะเพิ่ม</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewOne">
+    <value>จะเพิ่ม 1 QSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewMany">
+    <value>จะเพิ่ม {0} QSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateOne">
+    <value>มี 1 QSO อยู่ในสมุดบันทึกแล้ว (หรือก่อนหน้าในไฟล์)</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateMany">
+    <value>มี {0} QSO อยู่ในสมุดบันทึกแล้ว (หรือก่อนหน้าในไฟล์)</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedOne">
+    <value>อ่านระเบียนไม่ได้ 1 รายการ</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedMany">
+    <value>อ่านระเบียนไม่ได้ {0} รายการ</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredOne">
+    <value>ตัด QSO ภาคพื้นดินออก 1 รายการ</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredMany">
+    <value>ตัด QSO ภาคพื้นดินออก {0} รายการ</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Import">
+    <value>นำเข้า</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Title">
+    <value>QSO ซ้ำ</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Message">
+    <value>รายการนี้มีอยู่ในสมุดบันทึกแล้ว (หรือก่อนหน้าในไฟล์) นำเข้าต่อไปเพื่อเก็บทั้งสองรายการ หรือข้าม</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.ImportAnyway">
+    <value>นำเข้าต่อไป</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Ignore">
+    <value>ข้าม</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Title">
+    <value>QSO ซ้ำ</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Intro">
+    <value>ติ๊กรายการที่ต้องการนำเข้า รายการที่ไม่ได้ติ๊กจะถูกข้าม</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.SelectAll">
+    <value>นำเข้าที่ซ้ำทั้งหมด</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Call">
+    <value>สัญญาณเรียกขาน</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Utc">
+    <value>UTC</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Satellite">
+    <value>ดาวเทียม</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Mode">
+    <value>โหมด</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Grid">
+    <value>กริด</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source">
+    <value>การจับคู่</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.Logbook">
+    <value>มีในสมุดบันทึกแล้ว</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.File">
+    <value>ก่อนหน้าในไฟล์</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Import">
+    <value>นำเข้า</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedOne">
+    <value>นำเข้า 1 QSO แล้ว</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedMany">
+    <value>นำเข้า {0} QSO แล้ว</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedNone">
+    <value>ไม่ได้นำเข้า QSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.EmptyFile">
+    <value>ไฟล์ไม่มี QSO ที่อ่านได้</value>
+  </data>
+  <data name="Logbook.ExportSelectedAdif">
+    <value>ส่งออกที่เลือกเป็น ADIF</value>
+  </data>
   <data name="Logbook.ExportAdif">
     <value>ส่งออก ADIF</value>
   </data>
@@ -1710,6 +1854,15 @@ LOS: {2}
   </data>
   <data name="Logbook.ExportAdif.Dialog.Scope.DateRange">
     <value>QSO ในช่วงวันที่ UTC</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedNone">
+    <value>QSO ที่เลือก (ไม่ได้เลือก)</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedOne">
+    <value>QSO ที่เลือก (1)</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedMany">
+    <value>QSO ที่เลือก ({0})</value>
   </data>
   <data name="Logbook.ExportAdif.Dialog.FromUtc">
     <value>จาก (UTC)</value>
@@ -1780,6 +1933,12 @@ LOS: {2}
   <data name="Logbook.Status.ExportedManyRange">
     <value>ส่งออก {0} QSO เป็น ADIF ({1} UTC)</value>
   </data>
+  <data name="Logbook.Status.ExportedOneSelected">
+    <value>ส่งออก QSO ที่เลือก 1 รายการเป็น ADIF แล้ว</value>
+  </data>
+  <data name="Logbook.Status.ExportedManySelected">
+    <value>ส่งออก QSO ที่เลือก {0} รายการเป็น ADIF แล้ว</value>
+  </data>
   <data name="Logbook.CloudlogStatus.Pending">
     <value>รอดำเนินการ</value>
   </data>
@@ -1797,6 +1956,63 @@ LOS: {2}
   </data>
   <data name="Logbook.Error.NameRequired">
     <value>กรอกชื่อล็อกบุ๊ก</value>
+  </data>
+  <data name="Logbook.PotaRef">
+    <value>พาร์ค POTA</value>
+  </data>
+  <data name="Logbook.PotaRef.Watermark">
+    <value>US-1356</value>
+  </data>
+  <data name="Logbook.PotaRef.Hint">
+    <value>พาร์คเดียว หรือหลายพาร์คคั่นด้วยจุลภาค เว้นว่างไว้หากไม่ได้ออกอากาศจากพาร์ค</value>
+  </data>
+  <data name="Logbook.SotaRef">
+    <value>ยอดเขา SOTA</value>
+  </data>
+  <data name="Logbook.SotaRef.Watermark">
+    <value>W3/SV-001</value>
+  </data>
+  <data name="Logbook.SotaRef.Hint">
+    <value>เว้นว่างไว้หากไม่ได้ออกอากาศจากยอดเขา</value>
+  </data>
+  <data name="Logbook.WwffRef">
+    <value>อ้างอิง WWFF</value>
+  </data>
+  <data name="Logbook.WwffRef.Watermark">
+    <value>KFF-4655</value>
+  </data>
+  <data name="Logbook.WwffRef.Hint">
+    <value>เว้นว่างไว้หากไม่ได้ออกอากาศจากพื้นที่ WWFF</value>
+  </data>
+  <data name="Logbook.Error.PotaRef">
+    <value>รหัสอ้างอิง POTA ไม่ถูกต้อง ใช้พาร์ค เช่น US-1356 หรือหลายพาร์คคั่นด้วยจุลภาค</value>
+  </data>
+  <data name="Logbook.Error.SotaRef">
+    <value>รหัสอ้างอิง SOTA ไม่ถูกต้อง ใช้ยอดเขา เช่น W3/SV-001</value>
+  </data>
+  <data name="Logbook.Error.WwffRef">
+    <value>รหัสอ้างอิง WWFF ไม่ถูกต้อง ใช้อ้างอิง เช่น KFF-4655</value>
+  </data>
+  <data name="Logbook.Refs.Loading">
+    <value>กำลังโหลดรายการ {0}...</value>
+  </data>
+  <data name="Logbook.Refs.Unavailable">
+    <value>ยังไม่มีรายการ {0} คุณยังพิมพ์รหัสอ้างอิงได้</value>
+  </data>
+  <data name="Logbook.Refs.Ready">
+    <value>รายการ {0}: {1} รายการ อัปเดตเมื่อ {2}</value>
+  </data>
+  <data name="Logbook.Refs.SavedCopy">
+    <value>รายการ {0}: {1} รายการจากสำเนาที่บันทึกไว้ อัปเดตล่าสุดเมื่อ {2} การดาวน์โหลดล่าสุดล้มเหลว</value>
+  </data>
+  <data name="Logbook.Refs.Pota.Short">
+    <value>POTA</value>
+  </data>
+  <data name="Logbook.Refs.Sota.Short">
+    <value>SOTA</value>
+  </data>
+  <data name="Logbook.Refs.Wwff.Short">
+    <value>WWFF</value>
   </data>
   <data name="Logbook.CallHint.Previous">
     <value>พบ QSO ก่อนหน้าในล็อกบุ๊กนี้</value>
@@ -2725,6 +2941,12 @@ LOS: {2}
   <data name="Settings.Tle.UpdatesNote">
     <value>การดาวน์โหลดอัตโนมัติใช้กับ OscarWatch และ URL กำหนดเองเท่านั้น ไฟล์ในเครื่องจะถูกอ่านใหม่เมื่อคุณบันทึกการตั้งค่า หรือเลือก ดาวเทียม → รีเฟรช TLE</value>
   </data>
+  <data name="Settings.Tle.ElementAge">
+    <value>เตือนเมื่อ TLE มีอายุอย่างน้อยกี่วัน</value>
+  </data>
+  <data name="Settings.Tle.ElementAgeNote">
+    <value>ดาวเทียมที่มี TLE เก่าขนาดนี้จะมีคำเตือนในรายการพาส และถูกทำเครื่องหมายเป็น TLE ล้าสมัยในตัวเลือกดาวเทียม TLE เก่าทำให้การพยากรณ์แม่นยำน้อยลง โดยเฉพาะวงโคจรต่ำ อายุนับจาก epoch ของ TLE เอง จึงต่างจากอายุการดาวน์โหลดที่แสดงในส่วนท้าย</value>
+  </data>
   <data name="Settings.Tle.Source.OscarWatch">
     <value>OscarWatch (tle.oscarwatch.org)</value>
   </data>
@@ -2765,7 +2987,7 @@ LOS: {2}
     <value>ตรวจการอัปเดตฐานข้อมูลทรานสปอนเดอร์เมื่อเริ่มต้น</value>
   </data>
   <data name="Settings.Tracking.TransponderCheckNote">
-    <value>ดาวน์โหลด tle.oscarwatch.org/satellite_database.json เมื่อมีการอัปเดต จะเสนอให้รวมดาวเทียมและโหมดใหม่; การแก้ไขในเครื่องของคุณจะถูกเก็บไว้ เว้นแต่คุณยอมรับการเปลี่ยนแปลงที่เผยแพร่</value>
+    <value>ดาวน์โหลด oscarwatch.org/satellite_database.json เมื่อมีการอัปเดต จะเสนอให้รวมดาวเทียมและโหมดใหม่; การแก้ไขในเครื่องของคุณจะถูกเก็บไว้ เว้นแต่คุณยอมรับการเปลี่ยนแปลงที่เผยแพร่</value>
   </data>
   <data name="Settings.AppUpdate.Enabled">
     <value>ตรวจหาการอัปเดตแอปเมื่อเริ่มต้น และทุกวันขณะทำงาน</value>
@@ -4367,7 +4589,7 @@ LOS: {2}
     <value>CTCSS arm (Hz)</value>
   </data>
   <data name="DbEditor.ModeHint">
-    <value>ตั้งอัปลิงก์เป็น 0 สำหรับบีคอนเท่านั้น เว้น CTCSS เป็น 0 หากไม่มี โหมด FM ใช้ Hz (เช่น 67.0)</value>
+    <value>ความถี่เป็น kHz รวมไมโครเวฟ (QO-100: อัปลิงก์ 2400245 ดาวน์ลิงก์ 10489745) ตั้งอัปลิงก์เป็น 0 สำหรับบีคอนเท่านั้น เว้น CTCSS เป็น 0 หากไม่มี โหมด FM ใช้ Hz (เช่น 67.0)</value>
   </data>
   <data name="DbEditor.FileType.Json">
     <value>JSON</value>
@@ -4474,6 +4696,12 @@ LOS: {2}
   <data name="DbMerge.NoradIdBackfills">
     <value>หมายเลขแคตตาล็อก NORAD</value>
   </data>
+  <data name="DbMerge.PreferredNameUpdates">
+    <value>การเปลี่ยนชื่อดาวเทียม</value>
+  </data>
+  <data name="DbMerge.NoticeUpdates">
+    <value>ประกาศการใช้งาน</value>
+  </data>
   <data name="DbMerge.NewModes">
     <value>โหมดทรานสปอนเดอร์ใหม่</value>
   </data>
@@ -4487,7 +4715,7 @@ LOS: {2}
     <value>ไฟล์ที่นำเข้า</value>
   </data>
   <data name="DbMerge.Source.Remote">
-    <value>tle.oscarwatch.org</value>
+    <value>oscarwatch.org</value>
   </data>
   <data name="DbMerge.UseImported">
     <value>ใช้รุ่นที่นำเข้า</value>
@@ -4512,6 +4740,12 @@ LOS: {2}
   </data>
   <data name="DbMerge.Intro.NoradIds">
     <value>หมายเลขแคตตาล็อกเหล่านี้จะถูกเพิ่มให้ดาวเทียมในฐานข้อมูลท้องถิ่นที่ยังไม่มี กดใช้รายการที่เลือกเพื่ออัปเดต</value>
+  </data>
+  <data name="DbMerge.Intro.Renames">
+    <value>ดาวเทียมเหล่านี้มีชื่อที่ต้องการใหม่ในฐานข้อมูลที่เผยแพร่ (เช่น รหัส OSCAR) กดใช้รายการที่เลือกเพื่อเปลี่ยนชื่อในเครื่อง</value>
+  </data>
+  <data name="DbMerge.Intro.Notices">
+    <value>ประกาศการใช้งานเหล่านี้จะถูกเพิ่ม อัปเดต หรือลบในฐานข้อมูลในเครื่องของคุณ คลิกใช้รายการที่เลือก</value>
   </data>
   <data name="DbMerge.Summary.Matches">
     <value>ฐานข้อมูลทรานสปอนเดอร์ของคุณตรงกับ {0}</value>
@@ -4540,6 +4774,18 @@ LOS: {2}
   <data name="DbMerge.Summary.ManyNoradIds">
     <value>หมายเลขแคตตาล็อก NORAD {0} รายการ</value>
   </data>
+  <data name="DbMerge.Summary.OneRename">
+    <value>การเปลี่ยนชื่อดาวเทียม {0} รายการ</value>
+  </data>
+  <data name="DbMerge.Summary.ManyRenames">
+    <value>การเปลี่ยนชื่อดาวเทียม {0} รายการ</value>
+  </data>
+  <data name="DbMerge.Summary.OneNotice">
+    <value>ประกาศการใช้งาน {0} รายการ</value>
+  </data>
+  <data name="DbMerge.Summary.ManyNotices">
+    <value>ประกาศการใช้งาน {0} รายการ</value>
+  </data>
   <data name="DbMerge.Summary.FromSuffix">
     <value> จาก {0}</value>
   </data>
@@ -4554,6 +4800,18 @@ LOS: {2}
   </data>
   <data name="DbMerge.Item.NoradIdLine">
     <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.PreferredNameLine">
+    <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeLine">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeMany">
+    <value>{0}: {1} ประกาศ</value>
+  </data>
+  <data name="DbMerge.Item.NoticeCleared">
+    <value>{0}: ล้างประกาศการใช้งาน</value>
   </data>
   <data name="DbAdd.Title">
     <value>เพิ่มดาวเทียม</value>
@@ -4717,6 +4975,9 @@ LOS: {2}
   <data name="Window.Ft4.Title">
     <value>OscarWatch FT4</value>
   </data>
+  <data name="Window.Ft8.Title">
+    <value>OscarWatch FT8</value>
+  </data>
   <data name="Window.Ft4Settings.Title">
     <value>การตั้งค่า OscarWatch FT4</value>
   </data>
@@ -4836,6 +5097,18 @@ LOS: {2}
   </data>
   <data name="Ft4.DecodeFontSize.Note">
     <value>ขนาดแบบอักษรรายการถอดรหัส (10–28) ขนาดใหญ่ช่วยเมื่อสายตาไม่ดี</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers">
+    <value>แสดงตัวแบ่งสล็อต</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers.Note">
+    <value>วาดเส้นบางเหนือการถอดรหัสแรกของแต่ละสล็อต 7.5 วินาที เพื่อแยกวัฏจักรได้ง่ายขึ้น ใช้กับ คอล์ลหาฉัน ในเลย์เอาต์ขั้นสูงด้วย</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom">
+    <value>แสดงการถอดรหัสล่าสุดด้านล่าง</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom.Note">
+    <value>กิจกรรมแบนด์และ คอล์ลหาฉัน เพิ่มบรรทัดใหม่ด้านล่างและติดตามตามแบบ WSJT-X ปล่อยว่างไว้เพื่อให้บรรทัดใหม่อยู่ด้านบน หากเลื่อนไปอ่านบรรทัดเก่า รายการจะอยู่ที่เดิมจนกว่าจะเลื่อนกลับ</value>
   </data>
   <data name="Ft4.DecodeLayout">
     <value>รูปแบบ</value>
@@ -4980,6 +5253,33 @@ LOS: {2}
   </data>
   <data name="Ft4.CallCq">
     <value>CQ</value>
+  </data>
+  <data name="Ft4.CallCq.Directed">
+    <value>CQ {0}</value>
+  </data>
+  <data name="Ft4.CqModifier">
+    <value>คำ CQ</value>
+  </data>
+  <data name="Ft4.CqModifier.None">
+    <value>(ไม่มี)</value>
+  </data>
+  <data name="Ft4.CqModifier.Custom">
+    <value>กำหนดเอง</value>
+  </data>
+  <data name="Ft4.CqModifier.CustomPlaceholder">
+    <value>EU</value>
+  </data>
+  <data name="Ft4.CqModifier.Preview">
+    <value>CQ ถัดไป:</value>
+  </data>
+  <data name="Ft4.CqModifier.Note">
+    <value>คำนี้อยู่ระหว่าง CQ กับสัญญาณเรียกขานของคุณ เช่น CQ POTA ใช้ตัวอักษร 1 ถึง 4 ตัว หรือตัวเลข 3 หลัก สถานีอื่นตอบได้เหมือน CQ ทั่วไป</value>
+  </data>
+  <data name="Ft4.CqModifier.Invalid">
+    <value>ไม่สามารถส่ง "{0}" ได้ ใช้ตัวอักษร 1 ถึง 4 ตัว หรือตัวเลข 3 หลัก CQ ถัดไปยังคงเป็น {1}</value>
+  </data>
+  <data name="Ft4.CqModifier.CompoundCall">
+    <value>ไม่ได้ส่ง {0} เพราะสัญญาณเรียกขานแบบผสมใช้พื้นที่ของคำและกริด</value>
   </data>
   <data name="Ft4.SendReport">
     <value>รายงาน</value>
@@ -5211,6 +5511,15 @@ LOS: {2}
   </data>
   <data name="Ft4.DopplerDownlink">
     <value>ดาวน์ลิงก์:</value>
+  </data>
+  <data name="Ft4.EchoTrim">
+    <value>เอคโค:</value>
+  </data>
+  <data name="Ft4.EchoTrim.Value">
+    <value>{0} Hz</value>
+  </data>
+  <data name="Ft4.EchoTrim.Tip">
+    <value>ค่า trim อัปลิงก์ที่บันทึกไว้สำหรับดาวเทียมและทรานสปอนเดอร์ FT4 นี้ ศูนย์หมายถึงไม่มี trim ค่าอื่นจะเลื่อนความถี่ส่งจนกว่าจะล้างในการตั้งค่า</value>
   </data>
   <data name="Ft4.Decodes">
     <value>ถอดรหัส</value>
@@ -6566,6 +6875,12 @@ LOS: {2}
   <data name="Logbook.Cw.ButtonToolTip">
     <value>{0}: {1}</value>
   </data>
+  <data name="Logbook.Cw.SaveNote">
+    <value>บันทึก QSO เมื่อส่งจบ</value>
+  </data>
+  <data name="Logbook.Cw.Status.NotLogged">
+    <value>ไม่ได้บันทึก QSO โปรดตรวจคอลไซน์ กริด และดาวเทียมที่เลือก</value>
+  </data>
   <data name="Logbook.Cw.Status.Stopped">
     <value>หยุด CW แล้ว</value>
   </data>
@@ -6597,7 +6912,7 @@ LOS: {2}
     <value>เลือกพอร์ต COM สำหรับคีย์ CW ในการตั้งค่าล็อกบุ๊ก</value>
   </data>
   <data name="Logbook.Cw.Status.PortConflict">
-    <value>{0} ถูกใช้โดยวิทยุ โรเตเตอร์ GPS หรือพอร์ต PTT อยู่แล้ว เลือกพอร์ตอื่นสำหรับคีย์ CW</value>
+    <value>{0} ถูกใช้โดยวิทยุ โรเตเตอร์ หรือ GPS อยู่แล้ว เลือกพอร์ตอื่นสำหรับคีย์ CW</value>
   </data>
   <data name="Logbook.Cw.Status.PortBusy">
     <value>{0} ถูกใช้โดยแอปพลิเคชันอื่น</value>
@@ -6675,7 +6990,7 @@ LOS: {2}
     <value>ข้อความ</value>
   </data>
   <data name="Logbook.Settings.Cw.Tokens">
-    <value>{MYCALL} หรือ * คอลซายน์ของคุณ, {CALL} หรือ ! คอลซายน์คู่สถานี, {SENTRST} รายงานที่ส่ง, {SENTRSTCUT} รายงานที่ส่งแบบตัวเลขย่อ (599 เป็น 5NN), {RCVDRST} รายงานที่รับ, {GRID} กริดคู่สถานี, {MYGRID} กริดของคุณ, {NAME} ชื่อคู่สถานี, {SAT} ดาวเทียม เครื่องหมายพิเศษ: {AR} {SK} {BT} {KN}</value>
+    <value>{MYCALL} หรือ * คอลซายน์ของคุณ, {CALL} หรือ ! คอลซายน์คู่สถานี, {SENTRST} รายงานที่ส่ง, {SENTRSTCUT} รายงานที่ส่งแบบตัวเลขย่อ (599 เป็น 5NN), {RCVDRST} รายงานที่รับ, {GRID} กริดคู่สถานี, {MYGRID} กริดของคุณ, {NAME} ชื่อคู่สถานี, {SAT} ดาวเทียม เครื่องหมายพิเศษ: {AR} {SK} {BT} {KN} {SAVEQSO} บันทึก QSO เมื่อส่งจบ</value>
   </data>
   <data name="Logbook.Settings.Cw.Help">
     <value>วิธีใช้คีย์เยอร์ CW</value>
@@ -6892,5 +7207,32 @@ LOS: {2}
   </data>
   <data name="Cw.Worked.Grid">
     <value>เคยติดต่อแล้ว: คุณมี QSO ในช่องกริดนี้</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Tab">
+    <value>WSJT-X</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Section">
+    <value>UDP ของ WSJT-X</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Intro">
+    <value>ส่งทุกการติดต่อใหม่ในสมุดบันทึกเป็นดาตาแกรม UDP แบบ WSJT-X เพื่อให้โปรแกรมบันทึกอื่นรับไปได้ แยกจาก Satellite Link หากไม่มีโปรแกรมอื่นรอรับ ให้ปิดไว้</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Enable">
+    <value>ส่ง QSO ใหม่ทาง UDP</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Host">
+    <value>เซิร์ฟเวอร์</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Port">
+    <value>พอร์ต</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Note">
+    <value>ที่อยู่ปกติคือ 127.0.0.1 พอร์ต 2237 ซึ่งเป็นปลายทางแพ็กเก็ตบันทึกของ WSJT-X ส่งเฉพาะการติดต่อใหม่ หากไม่มีใครรับ การติดต่อยังถูกบันทึก</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.HostRequired">
+    <value>ป้อนที่อยู่เซิร์ฟเวอร์</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.PortInvalid">
+    <value>ป้อนพอร์ตตั้งแต่ 1 ถึง 65535</value>
   </data>
 </root>

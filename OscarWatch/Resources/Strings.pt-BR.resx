@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">text/microsoft-resx</resheader>
   <resheader name="version">2.0</resheader>
@@ -240,6 +240,18 @@
   </data>
   <data name="Pass.Schedule.AddTooltip">
     <value>Agendar esta passagem para um aviso sonoro e um alerta antes do AOS</value>
+  </data>
+  <data name="Pass.ElementAge.Label">
+    <value>⚠ {0} d</value>
+  </data>
+  <data name="Pass.ElementAge.ToolTip">
+    <value>O TLE de {0} tem {1} dias (época {2:yyyy-MM-dd}). Os horários das passagens e o Doppler podem ser menos precisos.</value>
+  </data>
+  <data name="Pass.ElementAge.Automation">
+    <value>TLE antigo de {0}: {1} dias</value>
+  </data>
+  <data name="Pass.Notice.Automation">
+    <value>Aviso operacional para {0}: {1}</value>
   </data>
   <data name="Pass.Schedule.RemoveTooltip">
     <value>Remover esta passagem da agenda</value>
@@ -1056,6 +1068,9 @@ Continuar?</value>
   <data name="Menu.Tools.Ft4">
     <value>_OscarWatch FT4</value>
   </data>
+  <data name="Menu.Tools.Ft8">
+    <value>OscarWatch _FT8</value>
+  </data>
   <data name="Menu.Tools.Sstv">
     <value>_OscarWatch SSTV</value>
   </data>
@@ -1530,11 +1545,14 @@ Continuar?</value>
   <data name="Logbook.Menu.NoLogbook">
     <value>Nenhum livro selecionado</value>
   </data>
+  <data name="Logbook.Menu.Current">
+    <value>Atual: {0}</value>
+  </data>
+  <data name="Logbook.Menu.Switch">
+    <value>Trocar livro</value>
+  </data>
   <data name="Logbook.Menu.Edit">
     <value>Editar</value>
-  </data>
-  <data name="Logbook.Menu.Export">
-    <value>Exportar</value>
   </data>
   <data name="Logbook.Menu.Settings">
     <value>Configurações</value>
@@ -1574,6 +1592,24 @@ Continuar?</value>
   </data>
   <data name="Logbook.Settings.Cloudlog.RetryStarted">
     <value>A repetir envios falhados…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAll">
+    <value>Enviar todos os QSOs para o Cloudlog</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNote">
+    <value>Envia cada QSO deste diário que o OscarWatch ainda não enviou ao Cloudlog, do mais antigo para o mais recente. QSOs já enviados são ignorados. Usa a localização de estação salva.</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllProgress">
+    <value>Enviando o QSO {0} de {1} para o Cloudlog…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllDone">
+    <value>Enviados {0} QSOs para o Cloudlog. {1} falharam; veja a coluna do Cloudlog.</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNothing">
+    <value>Todos os QSOs deste diário já foram enviados ao Cloudlog.</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNeedsSave">
+    <value>Escolha uma localização de estação e salve o diário antes de enviar todos os QSOs.</value>
   </data>
   <data name="Logbook.Settings.Cloudlog.ProfilesLoaded">
     <value>{0} localização(ões) de estação carregada(s).</value>
@@ -1686,6 +1722,114 @@ Continuar?</value>
   <data name="Logbook.Station.Unavailable">
     <value>Nenhum satélite selecionado ou modo não sincronizado</value>
   </data>
+  <data name="Logbook.ImportAdif">
+    <value>Importar ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Picker.Title">
+    <value>Importar ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Title">
+    <value>Importar ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Intro">
+    <value>Revise os contatos do arquivo antes de os gravar neste livro de log.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.SatelliteOnly">
+    <value>Apenas contatos por satélite</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewNone">
+    <value>Não há QSOs novos a adicionar.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewOne">
+    <value>1 QSO será adicionado.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewMany">
+    <value>{0} QSOs serão adicionados.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateOne">
+    <value>1 QSO já está no livro (ou mais cedo no arquivo).</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateMany">
+    <value>{0} QSOs já estão no livro (ou mais cedo no arquivo).</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedOne">
+    <value>1 registro não pôde ser lido.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedMany">
+    <value>{0} registros não puderam ser lidos.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredOne">
+    <value>1 QSO terrestre foi omitido.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredMany">
+    <value>{0} QSOs terrestres foram omitidos.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Import">
+    <value>Importar</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Title">
+    <value>QSO duplicado</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Message">
+    <value>Este contacto já está no livro (ou mais cedo no arquivo). Importe mesmo assim para manter ambos, ou ignore.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.ImportAnyway">
+    <value>Importar mesmo assim</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Ignore">
+    <value>Ignorar</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Title">
+    <value>QSOs duplicados</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Intro">
+    <value>Marque os contatos a importar mesmo assim. Os não marcados são ignorados.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.SelectAll">
+    <value>Importar todos os duplicados</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Call">
+    <value>Indicativo</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Utc">
+    <value>UTC</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Satellite">
+    <value>Satélite</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Mode">
+    <value>Modo</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Grid">
+    <value>Grid</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source">
+    <value>Correspondência</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.Logbook">
+    <value>Já no livro</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.File">
+    <value>Mais cedo no arquivo</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Import">
+    <value>Importar</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedOne">
+    <value>Importado 1 QSO.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedMany">
+    <value>Importados {0} QSOs.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedNone">
+    <value>Nenhum QSO foi importado.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.EmptyFile">
+    <value>O arquivo não tem QSOs legíveis.</value>
+  </data>
+  <data name="Logbook.ExportSelectedAdif">
+    <value>Exportar selecionados para ADIF</value>
+  </data>
   <data name="Logbook.ExportAdif">
     <value>Exportar ADIF</value>
   </data>
@@ -1703,6 +1847,15 @@ Continuar?</value>
   </data>
   <data name="Logbook.ExportAdif.Dialog.Scope.DateRange">
     <value>QSOs no intervalo de datas UTC</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedNone">
+    <value>QSOs selecionados (nenhum selecionado)</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedOne">
+    <value>QSO selecionado (1)</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedMany">
+    <value>QSOs selecionados ({0})</value>
   </data>
   <data name="Logbook.ExportAdif.Dialog.FromUtc">
     <value>De (UTC)</value>
@@ -1773,6 +1926,12 @@ Continuar?</value>
   <data name="Logbook.Status.ExportedManyRange">
     <value>Exportados {0} QSOs para ADIF ({1} UTC).</value>
   </data>
+  <data name="Logbook.Status.ExportedOneSelected">
+    <value>Exportado 1 QSO selecionado para ADIF.</value>
+  </data>
+  <data name="Logbook.Status.ExportedManySelected">
+    <value>Exportados {0} QSOs selecionados para ADIF.</value>
+  </data>
   <data name="Logbook.CloudlogStatus.Pending">
     <value>Pendente</value>
   </data>
@@ -1790,6 +1949,63 @@ Continuar?</value>
   </data>
   <data name="Logbook.Error.NameRequired">
     <value>Informe um nome para o livro.</value>
+  </data>
+  <data name="Logbook.PotaRef">
+    <value>Parque POTA</value>
+  </data>
+  <data name="Logbook.PotaRef.Watermark">
+    <value>US-1356</value>
+  </data>
+  <data name="Logbook.PotaRef.Hint">
+    <value>Um parque, ou vários separados por vírgula. Deixe em branco se não estiver ativando um parque.</value>
+  </data>
+  <data name="Logbook.SotaRef">
+    <value>Cume SOTA</value>
+  </data>
+  <data name="Logbook.SotaRef.Watermark">
+    <value>W3/SV-001</value>
+  </data>
+  <data name="Logbook.SotaRef.Hint">
+    <value>Deixe em branco se não estiver ativando um cume.</value>
+  </data>
+  <data name="Logbook.WwffRef">
+    <value>Referência WWFF</value>
+  </data>
+  <data name="Logbook.WwffRef.Watermark">
+    <value>KFF-4655</value>
+  </data>
+  <data name="Logbook.WwffRef.Hint">
+    <value>Deixe em branco se não estiver ativando uma referência WWFF.</value>
+  </data>
+  <data name="Logbook.Error.PotaRef">
+    <value>A referência POTA não é válida. Use um parque como US-1356, ou vários separados por vírgula.</value>
+  </data>
+  <data name="Logbook.Error.SotaRef">
+    <value>A referência SOTA não é válida. Use um cume como W3/SV-001.</value>
+  </data>
+  <data name="Logbook.Error.WwffRef">
+    <value>A referência WWFF não é válida. Use uma referência como KFF-4655.</value>
+  </data>
+  <data name="Logbook.Refs.Loading">
+    <value>Carregando a lista {0}...</value>
+  </data>
+  <data name="Logbook.Refs.Unavailable">
+    <value>A lista {0} ainda não está disponível. Você ainda pode digitar a referência.</value>
+  </data>
+  <data name="Logbook.Refs.Ready">
+    <value>Lista {0}: {1} entradas, atualizada em {2}.</value>
+  </data>
+  <data name="Logbook.Refs.SavedCopy">
+    <value>Lista {0}: {1} entradas da cópia salva, última atualização em {2}. O último download falhou.</value>
+  </data>
+  <data name="Logbook.Refs.Pota.Short">
+    <value>POTA</value>
+  </data>
+  <data name="Logbook.Refs.Sota.Short">
+    <value>SOTA</value>
+  </data>
+  <data name="Logbook.Refs.Wwff.Short">
+    <value>WWFF</value>
   </data>
   <data name="Logbook.CallHint.Previous">
     <value>QSO anterior encontrado neste livro.</value>
@@ -2721,6 +2937,12 @@ Continuar?</value>
   <data name="Settings.Tle.UpdatesNote">
     <value>O download automático se aplica apenas ao banco de dados OscarWatch e URLs personalizadas. Arquivos locais são relidos quando você salva as configurações ou executa o comando Satélites → Atualizar TLEs.</value>
   </data>
+  <data name="Settings.Tle.ElementAge">
+    <value>Avisar quando um TLE tiver pelo menos este número de dias</value>
+  </data>
+  <data name="Settings.Tle.ElementAgeNote">
+    <value>Um satélite com um TLE tão antigo mostra um aviso na lista de passagens e é marcado como TLE desatualizado no seletor de satélites. TLEs antigos tornam as previsões menos precisas, principalmente em órbitas baixas. A idade é contada a partir da época do próprio TLE, por isso difere da idade do download mostrada no rodapé.</value>
+  </data>
   <data name="Settings.Tle.Source.OscarWatch">
     <value>OscarWatch (tle.oscarwatch.org)</value>
   </data>
@@ -2761,7 +2983,7 @@ Continuar?</value>
     <value>Verificar atualizações do banco de dados de transmissores/transponders na inicialização</value>
   </data>
   <data name="Settings.Tracking.TransponderCheckNote">
-    <value>Baixa tle.oscarwatch.org/satellite_database.json quando há atualizações disponíveis. Novos satélites e modos são oferecidos para mesclagem; suas edições locais são mantidas a menos que você aceite as alterações publicadas.</value>
+    <value>Baixa oscarwatch.org/satellite_database.json quando há atualizações disponíveis. Novos satélites e modos são oferecidos para mesclagem; suas edições locais são mantidas a menos que você aceite as alterações publicadas.</value>
   </data>
   <data name="Settings.AppUpdate.Enabled">
     <value>Verificar atualizações do aplicativo na inicialização e diariamente enquanto estiver em execução</value>
@@ -4363,7 +4585,7 @@ Continuar?</value>
     <value>Arm CTCSS (Hz)</value>
   </data>
   <data name="DbEditor.ModeHint">
-    <value>Defina uplink como 0 para somente beacon. Deixe CTCSS em 0 para nenhum. Modos FM usam Hz (ex.: 67.0).</value>
+    <value>Frequências em kHz, inclusive micro-ondas (QO-100: uplink 2400245, downlink 10489745). Defina uplink como 0 para somente beacon. Deixe CTCSS em 0 para nenhum. Modos FM usam Hz (ex.: 67.0).</value>
   </data>
   <data name="DbEditor.FileType.Json">
     <value>JSON</value>
@@ -4470,6 +4692,12 @@ Continuar?</value>
   <data name="DbMerge.NoradIdBackfills">
     <value>IDs de catálogo NORAD</value>
   </data>
+  <data name="DbMerge.PreferredNameUpdates">
+    <value>Renomeações de satélites</value>
+  </data>
+  <data name="DbMerge.NoticeUpdates">
+    <value>Avisos operacionais</value>
+  </data>
   <data name="DbMerge.NewModes">
     <value>Novos modos de transmissores/transponders</value>
   </data>
@@ -4483,7 +4711,7 @@ Continuar?</value>
     <value>o arquivo importado</value>
   </data>
   <data name="DbMerge.Source.Remote">
-    <value>tle.oscarwatch.org</value>
+    <value>oscarwatch.org</value>
   </data>
   <data name="DbMerge.UseImported">
     <value>Usar versão importada</value>
@@ -4508,6 +4736,12 @@ Continuar?</value>
   </data>
   <data name="DbMerge.Intro.NoradIds">
     <value>Estes números de catálogo serão adicionados aos satélites da sua base local que ainda não tenham um. Clique em Aplicar selecionados para atualizar.</value>
+  </data>
+  <data name="DbMerge.Intro.Renames">
+    <value>Estes satélites têm um novo nome preferido na base publicada (por exemplo uma designação OSCAR). Clique em Aplicar selecionados para renomeá-los localmente.</value>
+  </data>
+  <data name="DbMerge.Intro.Notices">
+    <value>Estes avisos operacionais serão adicionados, atualizados ou removidos na sua base de dados local. Clique em Aplicar selecionados.</value>
   </data>
   <data name="DbMerge.Summary.Matches">
     <value>Seu banco de dados de transmissores/transponders corresponde a {0}.</value>
@@ -4536,6 +4770,18 @@ Continuar?</value>
   <data name="DbMerge.Summary.ManyNoradIds">
     <value>{0} IDs de catálogo NORAD</value>
   </data>
+  <data name="DbMerge.Summary.OneRename">
+    <value>{0} renomeação de satélite</value>
+  </data>
+  <data name="DbMerge.Summary.ManyRenames">
+    <value>{0} renomeações de satélites</value>
+  </data>
+  <data name="DbMerge.Summary.OneNotice">
+    <value>{0} aviso operacional</value>
+  </data>
+  <data name="DbMerge.Summary.ManyNotices">
+    <value>{0} avisos operacionais</value>
+  </data>
   <data name="DbMerge.Summary.FromSuffix">
     <value> de {0}.</value>
   </data>
@@ -4550,6 +4796,18 @@ Continuar?</value>
   </data>
   <data name="DbMerge.Item.NoradIdLine">
     <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.PreferredNameLine">
+    <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeLine">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeMany">
+    <value>{0}: {1} avisos</value>
+  </data>
+  <data name="DbMerge.Item.NoticeCleared">
+    <value>{0}: limpar avisos operacionais</value>
   </data>
   <data name="DbAdd.Title">
     <value>Adicionar satélite</value>
@@ -4713,6 +4971,9 @@ Mais recente: {1} ({2})</value>
   <data name="Window.Ft4.Title">
     <value>OscarWatch FT4</value>
   </data>
+  <data name="Window.Ft8.Title">
+    <value>OscarWatch FT8</value>
+  </data>
   <data name="Window.Ft4Settings.Title">
     <value>Definições de OscarWatch FT4</value>
   </data>
@@ -4832,6 +5093,18 @@ Mais recente: {1} ({2})</value>
   </data>
   <data name="Ft4.DecodeFontSize.Note">
     <value>Tamanho da fonte da lista de decodes (10–28). Tamanhos maiores ajudam com visão reduzida.</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers">
+    <value>Mostrar divisores de slot</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers.Note">
+    <value>Desenha uma linha fina acima do primeiro decode de cada slot de 7,5 segundos para facilitar a distinção dos ciclos. Também se aplica a Chamando-me no layout avançado.</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom">
+    <value>Decodes mais recentes em baixo</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom.Note">
+    <value>Atividade da banda e Chamando-me acrescentam linhas novas em baixo e as seguem, como no WSJT-X. Deixe desmarcado para manter as linhas novas no topo. Se você rolou para ler linhas antigas, a lista fica no lugar até você voltar.</value>
   </data>
   <data name="Ft4.DecodeLayout">
     <value>Layout</value>
@@ -4976,6 +5249,33 @@ Mais recente: {1} ({2})</value>
   </data>
   <data name="Ft4.CallCq">
     <value>CQ</value>
+  </data>
+  <data name="Ft4.CallCq.Directed">
+    <value>CQ {0}</value>
+  </data>
+  <data name="Ft4.CqModifier">
+    <value>Palavra do CQ</value>
+  </data>
+  <data name="Ft4.CqModifier.None">
+    <value>(nenhuma)</value>
+  </data>
+  <data name="Ft4.CqModifier.Custom">
+    <value>Personalizada</value>
+  </data>
+  <data name="Ft4.CqModifier.CustomPlaceholder">
+    <value>EU</value>
+  </data>
+  <data name="Ft4.CqModifier.Preview">
+    <value>Próximo CQ:</value>
+  </data>
+  <data name="Ft4.CqModifier.Note">
+    <value>A palavra vai entre CQ e o seu indicativo, por exemplo CQ POTA. Use de 1 a 4 letras ou 3 dígitos. As estações respondem como a qualquer outro CQ.</value>
+  </data>
+  <data name="Ft4.CqModifier.Invalid">
+    <value>“{0}” não pode ser enviada. Use de 1 a 4 letras ou 3 dígitos. O próximo CQ continua {1}.</value>
+  </data>
+  <data name="Ft4.CqModifier.CompoundCall">
+    <value>{0} não é enviada. Um indicativo composto ocupa o espaço da palavra e do grid.</value>
   </data>
   <data name="Ft4.SendReport">
     <value>Reporte</value>
@@ -5207,6 +5507,15 @@ Mais recente: {1} ({2})</value>
   </data>
   <data name="Ft4.DopplerDownlink">
     <value>Downlink:</value>
+  </data>
+  <data name="Ft4.EchoTrim">
+    <value>Eco:</value>
+  </data>
+  <data name="Ft4.EchoTrim.Value">
+    <value>{0} Hz</value>
+  </data>
+  <data name="Ft4.EchoTrim.Tip">
+    <value>Trim de uplink salvo para este satélite e transponder FT4. Zero significa nenhum trim. Qualquer outro valor desloca a frequência de transmissão até você limpá-lo em Definições.</value>
   </data>
   <data name="Ft4.Decodes">
     <value>Decodificações</value>
@@ -6561,6 +6870,12 @@ Mais recente: {1} ({2})</value>
   <data name="Logbook.Cw.ButtonToolTip">
     <value>{0}: {1}</value>
   </data>
+  <data name="Logbook.Cw.SaveNote">
+    <value>Registra o contato quando o envio termina.</value>
+  </data>
+  <data name="Logbook.Cw.Status.NotLogged">
+    <value>O contato não foi registrado. Verifique o indicativo, o grid e se um satélite está selecionado.</value>
+  </data>
   <data name="Logbook.Cw.Status.Stopped">
     <value>CW interrompido.</value>
   </data>
@@ -6592,7 +6907,7 @@ Mais recente: {1} ({2})</value>
     <value>Escolha a porta COM de manipulação CW nas configurações do logbook.</value>
   </data>
   <data name="Logbook.Cw.Status.PortConflict">
-    <value>{0} já é usada pelo rádio, rotor, GPS ou uma porta PTT. Escolha outra porta para manipular CW.</value>
+    <value>{0} já é usada pelo rádio, rotor ou GPS. Escolha outra porta para manipular CW.</value>
   </data>
   <data name="Logbook.Cw.Status.PortBusy">
     <value>{0} está em uso por outro aplicativo.</value>
@@ -6670,7 +6985,7 @@ Mais recente: {1} ({2})</value>
     <value>Mensagem</value>
   </data>
   <data name="Logbook.Settings.Cw.Tokens">
-    <value>{MYCALL} ou * seu indicativo, {CALL} ou ! indicativo do correspondente, {SENTRST} reporte enviado, {SENTRSTCUT} reporte enviado com números cortados (599 como 5NN), {RCVDRST} reporte recebido, {GRID} grid do correspondente, {MYGRID} seu grid, {NAME} nome do correspondente, {SAT} satélite. Prosinais: {AR} {SK} {BT} {KN}.</value>
+    <value>{MYCALL} ou * seu indicativo, {CALL} ou ! indicativo do correspondente, {SENTRST} reporte enviado, {SENTRSTCUT} reporte enviado com números cortados (599 como 5NN), {RCVDRST} reporte recebido, {GRID} grid do correspondente, {MYGRID} seu grid, {NAME} nome do correspondente, {SAT} satélite. Prosinais: {AR} {SK} {BT} {KN}. {SAVEQSO} registra o contato quando o envio termina.</value>
   </data>
   <data name="Logbook.Settings.Cw.Help">
     <value>Ajuda do manipulador CW</value>
@@ -6887,5 +7202,32 @@ Mais recente: {1} ({2})</value>
   </data>
   <data name="Cw.Worked.Grid">
     <value>Já trabalhado: você tem um QSO neste quadrado.</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Tab">
+    <value>WSJT-X</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Section">
+    <value>UDP do WSJT-X</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Intro">
+    <value>Envia cada novo contato do livro como um datagrama UDP do WSJT-X para que outros aplicativos de registro possam anotá-lo. Isto é separado do Satellite Link. Deixe desligado se nenhum outro aplicativo estiver escutando.</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Enable">
+    <value>Enviar QSOs novos por UDP</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Host">
+    <value>Servidor</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Port">
+    <value>Porta</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Note">
+    <value>O endereço usual é 127.0.0.1 porta 2237, para onde o WSJT-X envia os pacotes de log. Somente contatos novos são enviados. Se ninguém estiver escutando, o contato ainda é gravado.</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.HostRequired">
+    <value>Informe um endereço de servidor.</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.PortInvalid">
+    <value>Informe uma porta de 1 a 65535.</value>
   </data>
 </root>

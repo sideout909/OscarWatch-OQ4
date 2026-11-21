@@ -11,6 +11,7 @@ using OscarWatch.Core.Terminal.Uhm;
 using OscarWatch.Localization;
 using OscarWatch.Services;
 using OscarWatch.Terminal;
+using OscarWatch.Tests;
 using OscarWatch.ViewModels;
 
 namespace OscarWatch.Tests.Terminal;
@@ -166,6 +167,7 @@ public sealed class TerminalUhmHorizonTests : IDisposable
             _repository,
             new NoOpCloudlogUpload(),
             new NoOpSatelliteLink(),
+            new NoOpWsjtxUdp(),
             new EmptySnapshotProvider(),
             tracking,
             frequencies,
@@ -291,6 +293,12 @@ public sealed class TerminalUhmHorizonTests : IDisposable
         public Task ProcessRetryQueueAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task ResetFailedUploadsForRetryAsync(long logbookId, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
+
+        public Task<CloudlogBulkUploadResult> SendAllToCloudlogAsync(
+            long logbookId,
+            IProgress<(int Done, int Total)>? progress = null,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(CloudlogBulkUploadResult.Blocked(CloudlogBulkUploadOutcome.NotConfigured));
     }
 
     private sealed class NoOpSatelliteLink : ISatelliteLinkBroadcastService

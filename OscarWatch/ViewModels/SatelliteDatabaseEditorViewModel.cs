@@ -13,6 +13,9 @@ namespace OscarWatch.ViewModels;
 
 public partial class SatelliteDatabaseEditorViewModel : ViewModelBase
 {
+    /// <summary>Upper frequency bound in kHz (300 GHz), covering VHF/UHF/SHF/EHF amateur bands including QO-100.</summary>
+    public const decimal MaxFrequencyKHz = 300_000_000m;
+
     private readonly ISatelliteDatabaseEditor _editor;
     private readonly ISatelliteDatabaseSyncService _syncService;
     private readonly ITleService _tleService;
@@ -607,6 +610,12 @@ public partial class SatelliteDatabaseEditorViewModel : ViewModelBase
             Name = source.Name,
             NoradId = source.NoradId,
             AlternativeNames = source.AlternativeNames?.ToList() ?? [],
+            Notices = source.Notices?.Select(n => new SatelliteOperatingNotice
+            {
+                Message = n.Message,
+                DaysOfWeekUtc = n.DaysOfWeekUtc?.ToList(),
+                ModeTypes = n.ModeTypes?.ToList()
+            }).ToList(),
             Modes = source.Modes.Select(CloneMode).ToList()
         };
 
@@ -620,6 +629,7 @@ public partial class SatelliteDatabaseEditorViewModel : ViewModelBase
             UplinkMode = source.UplinkMode,
             Doppler = source.Doppler,
             CtcssHz = source.CtcssHz,
-            CtcssArmHz = source.CtcssArmHz
+            CtcssArmHz = source.CtcssArmHz,
+            SstvModes = source.SstvModes?.ToList()
         };
 }

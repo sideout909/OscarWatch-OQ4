@@ -110,8 +110,8 @@
       },
       {
         "type": "UHF Packet",
-        "downlink": 437550,
-        "uplink": 437550,
+        "downlink": 437825,
+        "uplink": 437825,
         "downlink_mode": "DATA-FM",
         "uplink_mode": "DATA-FM",
         "doppler": "NOR"
@@ -221,20 +221,6 @@
         "downlink_mode": "DATA-USB",
         "uplink_mode": "DATA-LSB",
         "doppler": "REV"
-      }
-    ]
-  },
-  {
-    "name": "RADFXSAT (FOX-1B)",
-    "norad_id": "43017",
-    "modes": [
-      {
-        "type": "Voice U/V",
-        "downlink": 145960,
-        "uplink": 435250,
-        "downlink_mode": "FM",
-        "uplink_mode": "FM",
-        "doppler": "NOR"
       }
     ]
   },
@@ -531,6 +517,22 @@
         "uplink": 2400245,
         "downlink_mode": "USB",
         "uplink_mode": "USB",
+        "doppler": "NOR"
+      },
+      {
+        "type": "FT8",
+        "downlink": 10489540,
+        "uplink": 2400040,
+        "downlink_mode": "DATA-USB",
+        "uplink_mode": "DATA-USB",
+        "doppler": "NOR"
+      },
+      {
+        "type": "FT4",
+        "downlink": 10489540,
+        "uplink": 2400040,
+        "downlink_mode": "DATA-USB",
+        "uplink_mode": "DATA-USB",
         "doppler": "NOR"
       },
       {
@@ -841,8 +843,9 @@
     ]
   },
   {
-    "name": "HADES-L",
-    "norad_id": "100909",
+    "name": "SO-132",
+    "norad_id": "101102",
+    "alternative_names": ["HADES-L"],
     "modes": [
       {
         "type": "Voice A/U",
@@ -863,8 +866,9 @@
     ]
   },
   {
-    "name": "Erminaz-2U",
-    "norad_id": "100915",
+    "name": "AO-129",
+    "norad_id": "101098",
+    "alternative_names": ["Erminaz-2U"],
     "modes": [
       {
         "type": "Digipeater (9k6 FSK)",
@@ -885,6 +889,37 @@
       {
         "type": "CW",
         "downlink": 435900,
+        "uplink": 0,
+        "downlink_mode": "CW",
+        "uplink_mode": "CW",
+        "doppler": "NOR"
+      }
+    ]
+  },
+  {
+    "name": "AO-130",
+    "norad_id": "101095",
+    "alternative_names": ["Erminaz-2V"],
+    "modes": [
+      {
+        "type": "Digipeater (9k6 FSK)",
+        "downlink": 145920,
+        "uplink": 145920,
+        "downlink_mode": "DATA-FM",
+        "uplink_mode": "DATA-FM",
+        "doppler": "NOR"
+      },
+      {
+        "type": "9k6 GMSK Telemetry / SSDV",
+        "downlink": 145920,
+        "uplink": 0,
+        "downlink_mode": "FM",
+        "uplink_mode": "FM",
+        "doppler": "NOR"
+      },
+      {
+        "type": "CW",
+        "downlink": 145920,
         "uplink": 0,
         "downlink_mode": "CW",
         "uplink_mode": "CW",
@@ -961,8 +996,15 @@
     ]
   },
   {
-    "name": "UNNE-1B",
-    "norad_id": "100948",
+    "name": "SO-131",
+    "norad_id": "101101",
+    "alternative_names": ["UNNE-1B"],
+    "notices": [
+      {
+        "message": "Wednesdays (UTC): SO-131 repeater is dedicated to FSK digital modes (AMSAT-EA).",
+        "days_of_week_utc": ["Wednesday"]
+      }
+    ],
     "modes": [
       {
         "type": "FM Repeater",
@@ -1033,11 +1075,21 @@
     ]
   },
   {
-    "name": "Luca",
+    "name": "LUCA-1",
     "norad_id": "67287",
+    "alternative_names": ["Luca", "RS90S"],
     "modes": [
       {
-        "type": "SSDV 2k4 GMSK",
+        "type": "SSTV",
+        "downlink": 437180,
+        "uplink": 0,
+        "downlink_mode": "FM",
+        "uplink_mode": "FM",
+        "doppler": "NOR",
+        "sstv_modes": ["Robot36"]
+      },
+      {
+        "type": "Telemetry 2k4 GMSK",
         "downlink": 437180,
         "uplink": 0,
         "downlink_mode": "FM",

@@ -6,11 +6,11 @@ OscarWatch keeps **orbits** (TLEs) and **frequencies/modes** (transponder databa
 
 | Layer | Location | Role |
 |-------|----------|------|
-| **Remote** | [tle.oscarwatch.org/satellite_database.json](https://tle.oscarwatch.org/satellite_database.json) | Canonical published updates — new satellites and new/edited transponder modes |
+| **Remote** | [oscarwatch.org/satellite_database.json](https://oscarwatch.org/satellite_database.json) | Canonical published updates: new satellites and new or edited transponder modes |
 | **Bundled** | `OscarWatch/Assets/satellite_database.json` | Shipped with each app release; fallback when no user file exists |
 | **User** | `%AppData%/OscarWatch/satellite_database.json` | Your working copy after first edit or after a merge from the remote URL |
 
-TLEs are fetched from the same host: [tle.oscarwatch.org](https://tle.oscarwatch.org/).
+TLEs are fetched separately from [tle.oscarwatch.org](https://tle.oscarwatch.org/).
 
 ## Current app behaviour
 
@@ -67,6 +67,8 @@ The app loads **user → bundled** (see `SatelliteDatabaseService`).
 
 Lookup and remote merge prefer **NORAD catalogue ID** when both sides have one, then match by **preferred name** or any **`alternative_names`** entry. That lets you rename a satellite for the map without the next published update treating it as a new spacecraft.
 
+When the published entry keeps the old preferred name as an **`alternative_names`** value (for example `UNNE-1B` → `SO-131`), merge offers that rename locally and also replaces a stale **`norad_id`** when the catalogue number changed. TLE updates alone do not rewrite the transponder database; operators still need **Update transponder database** (or startup check) and to apply the merge.
+
 For frequency lookup, OscarWatch also registers common static aliases (e.g. `AO-7` → `AO-07`, `ISS (ZARYA)` → `ISS`, `FOX-1B` → `RADFXSAT (FOX-1B)`, `SAUDISAT 1C` → `SO-50`) and parenthetical prefixes. Optional `norad_id` remains the most reliable cross-catalog link (for example Celestrak `SAUDISAT 1C` → database `SO-50` via `27607`).
 
 When a database entry is found, the map and pass list show the preferred `name` rather than the raw TLE catalogue name. If a spacecraft has TLEs but no database entry, the frequency panel stays empty until an entry exists locally or via sync, and the map keeps the TLE name.
@@ -74,7 +76,7 @@ When a database entry is found, the map and pass list show the preferred `name` 
 ## Contributing updates
 
 1. **GitHub** — pull requests updating `satellite_database.json` / `OscarWatch/Assets/satellite_database.json` (and the repo root copy if kept in sync).
-2. **Remote publish** — maintained copies on [tle.oscarwatch.org](https://tle.oscarwatch.org/) for operators between app releases.
+2. **Remote publish**: the live copy at [oscarwatch.org/satellite_database.json](https://oscarwatch.org/satellite_database.json) for operators between app releases.
 
 Include a short note in the PR: source (official satellite page, operator reports, coordination with AMSAT/ARISS, etc.). Frequency changes on active spacecraft should reflect confirmed operating status, not rumour.
 

@@ -55,6 +55,38 @@ public sealed class Ft4QsoSequencerTests
     }
 
     [Fact]
+    public void Directed_cq_word_is_on_every_cq_but_not_on_the_contact()
+    {
+        var word = "POTA";
+        var seq = new Ft4QsoSequencer(() => "MM9SQL", () => "IO85", () => true, cqModifier: () => word);
+        seq.StartCq(evenSlot: true);
+        Assert.Equal("CQ POTA MM9SQL IO85", seq.CurrentTxMessage);
+        Assert.True(seq.IsCqMessage);
+
+        Assert.False(seq.OnDecoded(Msg("MM9SQL G4ABC IO91")));
+        Assert.StartsWith("G4ABC MM9SQL ", seq.CurrentTxMessage);
+        Assert.DoesNotContain("POTA", seq.CurrentTxMessage, StringComparison.Ordinal);
+
+        Assert.False(seq.OnDecoded(Msg("MM9SQL G4ABC -10", snr: -10f)));
+        Assert.Equal("G4ABC MM9SQL RR73", seq.CurrentTxMessage);
+        Assert.False(seq.OnTxCompleted());
+
+        word = "DX";
+        Assert.True(seq.OnDecoded(Msg("MM9SQL G4ABC 73")));
+        Assert.Equal("CQ DX MM9SQL IO85", seq.CurrentTxMessage);
+    }
+
+    [Fact]
+    public void Answering_a_directed_cq_calls_the_station_not_the_word()
+    {
+        var seq = new Ft4QsoSequencer(() => "MM9SQL", () => "IO85", () => true);
+        seq.StartAnswer(Msg("CQ POTA W1AW FN20"), oppositeEvenSlot: false);
+        Assert.Equal("W1AW", seq.TheirCall);
+        Assert.Equal("FN20", seq.TheirGrid);
+        Assert.Equal("W1AW MM9SQL IO85", seq.CurrentTxMessage);
+    }
+
+    [Fact]
     public void Repeated_report_after_rr73_resends_rr73()
     {
         var seq = new Ft4QsoSequencer(() => "MM9SQL", () => "IO85", () => true);
@@ -197,6 +229,44 @@ public sealed class Ft4QsoSequencerTests
         seq.StartCq(evenSlot: true);
         seq.OnDecoded(Msg("MM9SQL G4ABC IO91", freq: 1100f));
         Assert.Equal(1650f, seq.TxAudioHz);
+    }
+
+    [Fact]
+    public void Their_grid_call_on_the_next_slot_starts_the_contact()
+    {
+        var seq = new Ft4QsoSequencer(() => "MM9SQL", () => "IO85", () => true);
+        // Their CQ was on an odd slot, so we call them on even.
+        seq.StartAnswer(Msg("CQ G4ABC JO01"), oppositeEvenSlot: true);
+        Assert.True(seq.PreferEvenSlot);
+        Assert.Equal("G4ABC MM9SQL IO85", seq.CurrentTxMessage);
+        Assert.Null(seq.ReportSent);
+
+        // Next slot (odd): they call us, call call grid, instead of a report.
+        Assert.False(seq.OnDecoded(Msg("MM9SQL G4ABC IO91", snr: -6f)));
+        Assert.True(seq.PreferEvenSlot);
+        Assert.Equal("G4ABC", seq.TheirCall);
+        Assert.Equal("IO91", seq.TheirGrid);
+        Assert.Equal("-06", seq.ReportSent);
+        Assert.Equal("G4ABC MM9SQL -06", seq.CurrentTxMessage);
+        Assert.Equal(Ft4QsoPhase.InQso, seq.Phase);
+
+        // Both then send plain reports, so the next step is RR73.
+        Assert.False(seq.OnDecoded(Msg("MM9SQL G4ABC +10", snr: 8f)));
+        Assert.Equal("+10", seq.ReportReceived);
+        Assert.Equal("G4ABC MM9SQL RR73", seq.CurrentTxMessage);
+    }
+
+    [Fact]
+    public void Hinted_grid_while_the_opening_grid_is_queued_does_not_send_a_report()
+    {
+        var seq = new Ft4QsoSequencer(() => "MM9SQL", () => "IO85", () => true);
+        seq.StartAnswer(Msg("CQ G4ABC JO01"), oppositeEvenSlot: false);
+
+        // Their CQ can score as a hinted call to us. Keep sending the grid.
+        Assert.False(seq.OnDecoded(Msg("MM9SQL G4ABC JO01", ap: true)));
+        Assert.Equal("G4ABC MM9SQL IO85", seq.CurrentTxMessage);
+        Assert.Null(seq.ReportSent);
+        Assert.Equal("JO01", seq.TheirGrid);
     }
 
     [Fact]

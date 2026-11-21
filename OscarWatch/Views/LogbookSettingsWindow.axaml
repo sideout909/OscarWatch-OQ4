@@ -104,6 +104,15 @@
                          FontSize="11"
                          Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
             </StackPanel>
+            <StackPanel Spacing="4">
+              <Button Content="{loc:Localize Key=Logbook.Settings.Cloudlog.SendAll}"
+                      Command="{Binding SendAllToCloudlogCommand}"
+                      HorizontalAlignment="Left" />
+              <TextBlock Text="{loc:Localize Key=Logbook.Settings.Cloudlog.SendAllNote}"
+                         TextWrapping="Wrap"
+                         FontSize="11"
+                         Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            </StackPanel>
             <Button Content="{loc:Localize Key=Logbook.Settings.Cloudlog.RetryFailed}"
                     Command="{Binding RetryFailedUploadsCommand}"
                     HorizontalAlignment="Left"
@@ -186,6 +195,40 @@
                        MinHeight="20"
                        Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                        IsVisible="{Binding HasHamQthStatus}" />
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem Header="{loc:Localize Key=Logbook.Settings.Wsjtx.Tab}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4,8,4,0">
+          <StackPanel Spacing="14" MaxWidth="480">
+            <TextBlock Text="{loc:Localize Key=Logbook.Settings.Wsjtx.Section}"
+                       FontWeight="SemiBold"
+                       FontSize="13" />
+            <TextBlock Text="{loc:Localize Key=Logbook.Settings.Wsjtx.Intro}"
+                       TextWrapping="Wrap"
+                       FontSize="11"
+                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            <CheckBox Content="{loc:Localize Key=Logbook.Settings.Wsjtx.Enable}"
+                      IsChecked="{Binding WsjtxEnabled, Mode=TwoWay}" />
+            <StackPanel Spacing="4">
+              <TextBlock Text="{loc:Localize Key=Logbook.Settings.Wsjtx.Host}" />
+              <TextBox Text="{Binding WsjtxHost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       AutomationProperties.Name="{loc:Localize Key=Logbook.Settings.Wsjtx.Host}" />
+            </StackPanel>
+            <StackPanel Spacing="4">
+              <TextBlock Text="{loc:Localize Key=Logbook.Settings.Wsjtx.Port}" />
+              <NumericUpDown Value="{Binding WsjtxPort, Mode=TwoWay}"
+                             Minimum="1"
+                             Maximum="65535"
+                             Increment="1"
+                             FormatString="0"
+                             Width="140"
+                             AutomationProperties.Name="{loc:Localize Key=Logbook.Settings.Wsjtx.Port}" />
+            </StackPanel>
+            <TextBlock Text="{loc:Localize Key=Logbook.Settings.Wsjtx.Note}"
+                       TextWrapping="Wrap"
+                       FontSize="11"
+                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
           </StackPanel>
         </ScrollViewer>
       </TabItem>

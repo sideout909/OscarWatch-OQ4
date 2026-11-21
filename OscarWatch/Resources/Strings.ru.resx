@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">text/microsoft-resx</resheader>
   <resheader name="version">2.0</resheader>
@@ -244,6 +244,18 @@ LOS: {2}
   </data>
   <data name="Pass.Schedule.AddTooltip">
     <value>Запланировать сигнал и оповещение перед AOS</value>
+  </data>
+  <data name="Pass.ElementAge.Label">
+    <value>⚠ {0} дн.</value>
+  </data>
+  <data name="Pass.ElementAge.ToolTip">
+    <value>TLE для {0} имеет возраст {1} дн. (эпоха {2:yyyy-MM-dd}). Время пролётов и доплер могут быть менее точными.</value>
+  </data>
+  <data name="Pass.ElementAge.Automation">
+    <value>Старый TLE для {0}: {1} дн.</value>
+  </data>
+  <data name="Pass.Notice.Automation">
+    <value>Операционное уведомление для {0}: {1}</value>
   </data>
   <data name="Pass.Schedule.RemoveTooltip">
     <value>Убрать этот пролёт из расписания</value>
@@ -600,6 +612,9 @@ LOS: {2}
   </data>
   <data name="Menu.Tools.Ft4">
     <value>_OscarWatch FT4</value>
+  </data>
+  <data name="Menu.Tools.Ft8">
+    <value>OscarWatch _FT8</value>
   </data>
   <data name="Menu.Tools.Sstv">
     <value>_OscarWatch SSTV</value>
@@ -1537,11 +1552,14 @@ LOS: {2}
   <data name="Logbook.Menu.NoLogbook">
     <value>Журнал не выбран</value>
   </data>
+  <data name="Logbook.Menu.Current">
+    <value>Текущий: {0}</value>
+  </data>
+  <data name="Logbook.Menu.Switch">
+    <value>Сменить журнал</value>
+  </data>
   <data name="Logbook.Menu.Edit">
     <value>Правка</value>
-  </data>
-  <data name="Logbook.Menu.Export">
-    <value>Экспорт</value>
   </data>
   <data name="Logbook.Menu.Settings">
     <value>Настройки</value>
@@ -1581,6 +1599,24 @@ LOS: {2}
   </data>
   <data name="Logbook.Settings.Cloudlog.RetryStarted">
     <value>Повтор неудачных отправок…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAll">
+    <value>Отправить все QSO в Cloudlog</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNote">
+    <value>Отправляет в Cloudlog каждое QSO из этого журнала, которое OscarWatch ещё не отправлял, начиная с самого старого. Уже отправленные QSO пропускаются. Используется сохранённое местоположение станции.</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllProgress">
+    <value>Отправка QSO {0} из {1} в Cloudlog…</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllDone">
+    <value>Отправлено QSO в Cloudlog: {0}. Не удалось: {1}. См. столбец Cloudlog.</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNothing">
+    <value>Все QSO из этого журнала уже отправлены в Cloudlog.</value>
+  </data>
+  <data name="Logbook.Settings.Cloudlog.SendAllNeedsSave">
+    <value>Выберите местоположение станции и сохраните журнал, прежде чем отправлять все QSO.</value>
   </data>
   <data name="Logbook.Settings.Cloudlog.ProfilesLoaded">
     <value>Загружено мест станции: {0}.</value>
@@ -1693,6 +1729,114 @@ LOS: {2}
   <data name="Logbook.Station.Unavailable">
     <value>Спутник не выбран или режим не синхронизирован</value>
   </data>
+  <data name="Logbook.ImportAdif">
+    <value>Импорт ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Picker.Title">
+    <value>Импорт ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Title">
+    <value>Импорт ADIF</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Intro">
+    <value>Проверьте контакты из файла перед записью в этот журнал.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.SatelliteOnly">
+    <value>Только спутниковые QSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewNone">
+    <value>Нет новых QSO для добавления.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewOne">
+    <value>Будет добавлен 1 QSO.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.NewMany">
+    <value>Будет добавлено QSO: {0}.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateOne">
+    <value>1 QSO уже есть в журнале (или раньше в файле).</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.DuplicateMany">
+    <value>QSO уже есть в журнале (или раньше в файле): {0}.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedOne">
+    <value>Не удалось прочитать 1 запись.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.UnparsedMany">
+    <value>Не удалось прочитать записей: {0}.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredOne">
+    <value>Пропущен 1 наземный QSO.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Count.FilteredMany">
+    <value>Пропущено наземных QSO: {0}.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Dialog.Import">
+    <value>Импорт</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Title">
+    <value>Повторный QSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Message">
+    <value>Этот контакт уже есть в журнале (или раньше в файле). Импортируйте всё равно, чтобы оставить оба, или пропустите.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.ImportAnyway">
+    <value>Импортировать всё равно</value>
+  </data>
+  <data name="Logbook.ImportAdif.Duplicate.Ignore">
+    <value>Пропустить</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Title">
+    <value>Повторные QSO</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Intro">
+    <value>Отметьте контакты для импорта. Неотмеченные будут пропущены.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.SelectAll">
+    <value>Импортировать все повторы</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Call">
+    <value>Позывной</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Utc">
+    <value>UTC</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Satellite">
+    <value>Спутник</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Mode">
+    <value>Режим</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Grid">
+    <value>Квадрат</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source">
+    <value>Совпадение</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.Logbook">
+    <value>Уже в журнале</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Source.File">
+    <value>Раньше в файле</value>
+  </data>
+  <data name="Logbook.ImportAdif.Conflicts.Import">
+    <value>Импорт</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedOne">
+    <value>Импортирован 1 QSO.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedMany">
+    <value>Импортировано QSO: {0}.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.ImportedNone">
+    <value>QSO не импортированы.</value>
+  </data>
+  <data name="Logbook.ImportAdif.Status.EmptyFile">
+    <value>В файле нет читаемых QSO.</value>
+  </data>
+  <data name="Logbook.ExportSelectedAdif">
+    <value>Экспорт выбранных в ADIF</value>
+  </data>
   <data name="Logbook.ExportAdif">
     <value>Экспорт ADIF</value>
   </data>
@@ -1710,6 +1854,15 @@ LOS: {2}
   </data>
   <data name="Logbook.ExportAdif.Dialog.Scope.DateRange">
     <value>QSO в диапазоне дат UTC</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedNone">
+    <value>Выбранные QSO (ничего не выбрано)</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedOne">
+    <value>Выбранный QSO (1)</value>
+  </data>
+  <data name="Logbook.ExportAdif.Dialog.Scope.SelectedMany">
+    <value>Выбранные QSO ({0})</value>
   </data>
   <data name="Logbook.ExportAdif.Dialog.FromUtc">
     <value>С (UTC)</value>
@@ -1780,6 +1933,12 @@ LOS: {2}
   <data name="Logbook.Status.ExportedManyRange">
     <value>Экспортировано QSO в ADIF: {0} ({1} UTC).</value>
   </data>
+  <data name="Logbook.Status.ExportedOneSelected">
+    <value>Экспортирован 1 выбранный QSO в ADIF.</value>
+  </data>
+  <data name="Logbook.Status.ExportedManySelected">
+    <value>Экспортировано выбранных QSO в ADIF: {0}.</value>
+  </data>
   <data name="Logbook.CloudlogStatus.Pending">
     <value>Ожидает</value>
   </data>
@@ -1797,6 +1956,63 @@ LOS: {2}
   </data>
   <data name="Logbook.Error.NameRequired">
     <value>Введите имя журнала.</value>
+  </data>
+  <data name="Logbook.PotaRef">
+    <value>Парк POTA</value>
+  </data>
+  <data name="Logbook.PotaRef.Watermark">
+    <value>US-1356</value>
+  </data>
+  <data name="Logbook.PotaRef.Hint">
+    <value>Один парк или несколько через запятую. Оставьте пустым, если парк не активируется.</value>
+  </data>
+  <data name="Logbook.SotaRef">
+    <value>Вершина SOTA</value>
+  </data>
+  <data name="Logbook.SotaRef.Watermark">
+    <value>W3/SV-001</value>
+  </data>
+  <data name="Logbook.SotaRef.Hint">
+    <value>Оставьте пустым, если вершина не активируется.</value>
+  </data>
+  <data name="Logbook.WwffRef">
+    <value>Ссылка WWFF</value>
+  </data>
+  <data name="Logbook.WwffRef.Watermark">
+    <value>KFF-4655</value>
+  </data>
+  <data name="Logbook.WwffRef.Hint">
+    <value>Оставьте пустым, если ссылка WWFF не активируется.</value>
+  </data>
+  <data name="Logbook.Error.PotaRef">
+    <value>Ссылка POTA недействительна. Укажите парк, например US-1356, или несколько через запятую.</value>
+  </data>
+  <data name="Logbook.Error.SotaRef">
+    <value>Ссылка SOTA недействительна. Укажите вершину, например W3/SV-001.</value>
+  </data>
+  <data name="Logbook.Error.WwffRef">
+    <value>Ссылка WWFF недействительна. Укажите ссылку, например KFF-4655.</value>
+  </data>
+  <data name="Logbook.Refs.Loading">
+    <value>Загрузка списка {0}...</value>
+  </data>
+  <data name="Logbook.Refs.Unavailable">
+    <value>Список {0} пока недоступен. Ссылку можно ввести вручную.</value>
+  </data>
+  <data name="Logbook.Refs.Ready">
+    <value>Список {0}: записей {1}, обновлён {2}.</value>
+  </data>
+  <data name="Logbook.Refs.SavedCopy">
+    <value>Список {0}: записей {1} из сохранённой копии, последнее обновление {2}. Последняя загрузка не удалась.</value>
+  </data>
+  <data name="Logbook.Refs.Pota.Short">
+    <value>POTA</value>
+  </data>
+  <data name="Logbook.Refs.Sota.Short">
+    <value>SOTA</value>
+  </data>
+  <data name="Logbook.Refs.Wwff.Short">
+    <value>WWFF</value>
   </data>
   <data name="Logbook.CallHint.Previous">
     <value>В этом журнале уже есть QSO.</value>
@@ -2725,6 +2941,12 @@ LOS: {2}
   <data name="Settings.Tle.UpdatesNote">
     <value>Автозагрузка только для OscarWatch и своих URL. Локальные файлы перечитываются при сохранении настроек или Спутники → Обновить TLE.</value>
   </data>
+  <data name="Settings.Tle.ElementAge">
+    <value>Предупреждать, когда возраст TLE достигает указанного числа дней</value>
+  </data>
+  <data name="Settings.Tle.ElementAgeNote">
+    <value>Для спутника с таким старым TLE в списке пролётов появляется предупреждение, а в выборе спутников он отмечается как устаревший TLE. Старые TLE снижают точность прогноза, особенно на низких орбитах. Возраст считается от эпохи самого TLE, поэтому он отличается от возраста загрузки в нижней строке.</value>
+  </data>
   <data name="Settings.Tle.Source.OscarWatch">
     <value>OscarWatch (tle.oscarwatch.org)</value>
   </data>
@@ -2765,7 +2987,7 @@ LOS: {2}
     <value>Проверять обновления базы транспондеров при запуске</value>
   </data>
   <data name="Settings.Tracking.TransponderCheckNote">
-    <value>Скачивает tle.oscarwatch.org/satellite_database.json, когда есть обновления. Новые спутники и режимы предлагаются к слиянию; ваши правки сохраняются, пока вы не примете опубликованные изменения.</value>
+    <value>Скачивает oscarwatch.org/satellite_database.json, когда есть обновления. Новые спутники и режимы предлагаются к слиянию; ваши правки сохраняются, пока вы не примете опубликованные изменения.</value>
   </data>
   <data name="Settings.AppUpdate.Enabled">
     <value>Проверять обновления программы при запуске и ежедневно, пока она запущена</value>
@@ -4367,7 +4589,7 @@ LOS: {2}
     <value>CTCSS взвод (Гц)</value>
   </data>
   <data name="DbEditor.ModeHint">
-    <value>Аплинк 0: только маяк. CTCSS 0: без тона. Режимы FM в Гц (напр. 67.0).</value>
+    <value>Частоты в кГц, включая СВЧ (QO-100: аплинк 2400245, даунлинк 10489745). Аплинк 0: только маяк. CTCSS 0: без тона. Режимы FM в Гц (напр. 67.0).</value>
   </data>
   <data name="DbEditor.FileType.Json">
     <value>JSON</value>
@@ -4474,6 +4696,12 @@ LOS: {2}
   <data name="DbMerge.NoradIdBackfills">
     <value>Каталожные номера NORAD</value>
   </data>
+  <data name="DbMerge.PreferredNameUpdates">
+    <value>Переименования спутников</value>
+  </data>
+  <data name="DbMerge.NoticeUpdates">
+    <value>Операционные уведомления</value>
+  </data>
   <data name="DbMerge.NewModes">
     <value>Новые режимы транспондера</value>
   </data>
@@ -4487,7 +4715,7 @@ LOS: {2}
     <value>импортированный файл</value>
   </data>
   <data name="DbMerge.Source.Remote">
-    <value>tle.oscarwatch.org</value>
+    <value>oscarwatch.org</value>
   </data>
   <data name="DbMerge.UseImported">
     <value>Взять импортированную версию</value>
@@ -4512,6 +4740,12 @@ LOS: {2}
   </data>
   <data name="DbMerge.Intro.NoradIds">
     <value>Эти каталожные номера будут добавлены спутникам в локальной базе, у которых номера ещё нет. Нажмите «Применить выбранное» для обновления.</value>
+  </data>
+  <data name="DbMerge.Intro.Renames">
+    <value>У этих спутников в опубликованной базе новое предпочтительное имя (например обозначение OSCAR). Нажмите «Применить выбранное», чтобы переименовать локально.</value>
+  </data>
+  <data name="DbMerge.Intro.Notices">
+    <value>Эти операционные уведомления будут добавлены, обновлены или удалены в вашей локальной базе. Нажмите «Применить выбранное».</value>
   </data>
   <data name="DbMerge.Summary.Matches">
     <value>Ваша база транспондеров совпадает с {0}.</value>
@@ -4540,6 +4774,18 @@ LOS: {2}
   <data name="DbMerge.Summary.ManyNoradIds">
     <value>{0} каталожных номеров NORAD</value>
   </data>
+  <data name="DbMerge.Summary.OneRename">
+    <value>{0} переименование спутника</value>
+  </data>
+  <data name="DbMerge.Summary.ManyRenames">
+    <value>{0} переименования спутников</value>
+  </data>
+  <data name="DbMerge.Summary.OneNotice">
+    <value>{0} операционное уведомление</value>
+  </data>
+  <data name="DbMerge.Summary.ManyNotices">
+    <value>{0} операционных уведомлений</value>
+  </data>
   <data name="DbMerge.Summary.FromSuffix">
     <value> из {0}.</value>
   </data>
@@ -4554,6 +4800,18 @@ LOS: {2}
   </data>
   <data name="DbMerge.Item.NoradIdLine">
     <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.PreferredNameLine">
+    <value>{0} → {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeLine">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="DbMerge.Item.NoticeMany">
+    <value>{0}: {1} уведомлений</value>
+  </data>
+  <data name="DbMerge.Item.NoticeCleared">
+    <value>{0}: удалить операционные уведомления</value>
   </data>
   <data name="DbAdd.Title">
     <value>Добавить спутник</value>
@@ -4717,6 +4975,9 @@ LOS: {2}
   <data name="Window.Ft4.Title">
     <value>OscarWatch FT4</value>
   </data>
+  <data name="Window.Ft8.Title">
+    <value>OscarWatch FT8</value>
+  </data>
   <data name="Window.Ft4Settings.Title">
     <value>Настройки OscarWatch FT4</value>
   </data>
@@ -4836,6 +5097,18 @@ LOS: {2}
   </data>
   <data name="Ft4.DecodeFontSize.Note">
     <value>Размер шрифта списка декодов (10–28). Больший размер удобнее при слабом зрении.</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers">
+    <value>Показывать разделители слотов</value>
+  </data>
+  <data name="Ft4.ShowSlotDividers.Note">
+    <value>Проводит тонкую линию над первой декодировкой каждого 7,5-секундного слота, чтобы циклы было проще различать. Также применяется к «Вызывают меня» в расширенном виде.</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom">
+    <value>Новые декоды внизу</value>
+  </data>
+  <data name="Ft4.NewestDecodesAtBottom.Note">
+    <value>Активность диапазона и «Вызывают меня» добавляют новые строки внизу и следуют за ними, как в WSJT-X. Снимите галочку, чтобы новые строки оставались сверху. Если вы прокрутили список к старым строкам, он останется на месте, пока вы не вернётесь.</value>
   </data>
   <data name="Ft4.DecodeLayout">
     <value>Вид</value>
@@ -4980,6 +5253,33 @@ LOS: {2}
   </data>
   <data name="Ft4.CallCq">
     <value>CQ</value>
+  </data>
+  <data name="Ft4.CallCq.Directed">
+    <value>CQ {0}</value>
+  </data>
+  <data name="Ft4.CqModifier">
+    <value>Слово CQ</value>
+  </data>
+  <data name="Ft4.CqModifier.None">
+    <value>(нет)</value>
+  </data>
+  <data name="Ft4.CqModifier.Custom">
+    <value>Своё</value>
+  </data>
+  <data name="Ft4.CqModifier.CustomPlaceholder">
+    <value>EU</value>
+  </data>
+  <data name="Ft4.CqModifier.Preview">
+    <value>Следующий CQ:</value>
+  </data>
+  <data name="Ft4.CqModifier.Note">
+    <value>Слово ставится между CQ и вашим позывным, например CQ POTA. Допустимо от 1 до 4 букв или 3 цифры. Станции отвечают как на обычный CQ.</value>
+  </data>
+  <data name="Ft4.CqModifier.Invalid">
+    <value>«{0}» нельзя передать. Допустимо от 1 до 4 букв или 3 цифры. Следующий CQ останется {1}.</value>
+  </data>
+  <data name="Ft4.CqModifier.CompoundCall">
+    <value>{0} не передаётся. Составной позывной занимает место слова и локатора.</value>
   </data>
   <data name="Ft4.SendReport">
     <value>Рапорт</value>
@@ -5211,6 +5511,15 @@ LOS: {2}
   </data>
   <data name="Ft4.DopplerDownlink">
     <value>Даунлинк:</value>
+  </data>
+  <data name="Ft4.EchoTrim">
+    <value>Эхо:</value>
+  </data>
+  <data name="Ft4.EchoTrim.Value">
+    <value>{0} Гц</value>
+  </data>
+  <data name="Ft4.EchoTrim.Tip">
+    <value>Сохранённая поправка аплинка для этого спутника и транспондера FT4. Ноль значит, что поправки нет. Любое другое значение сдвигает частоту передачи, пока вы не сбросите её в настройках.</value>
   </data>
   <data name="Ft4.Decodes">
     <value>Декоды</value>
@@ -6566,6 +6875,12 @@ LOS: {2}
   <data name="Logbook.Cw.ButtonToolTip">
     <value>{0}: {1}</value>
   </data>
+  <data name="Logbook.Cw.SaveNote">
+    <value>Записывает QSO, когда передача заканчивается.</value>
+  </data>
+  <data name="Logbook.Cw.Status.NotLogged">
+    <value>QSO не записано. Проверьте позывной, локатор и что выбран спутник.</value>
+  </data>
   <data name="Logbook.Cw.Status.Stopped">
     <value>Передача CW прервана.</value>
   </data>
@@ -6597,7 +6912,7 @@ LOS: {2}
     <value>Выберите COM-порт для манипуляции CW в настройках журнала.</value>
   </data>
   <data name="Logbook.Cw.Status.PortConflict">
-    <value>{0} уже занят радиостанцией, ОПУ, GPS или портом PTT. Выберите другой порт для манипуляции CW.</value>
+    <value>{0} уже занят радиостанцией, ОПУ или GPS. Выберите другой порт для манипуляции CW.</value>
   </data>
   <data name="Logbook.Cw.Status.PortBusy">
     <value>{0} используется другим приложением.</value>
@@ -6675,7 +6990,7 @@ LOS: {2}
     <value>Сообщение</value>
   </data>
   <data name="Logbook.Settings.Cw.Tokens">
-    <value>{MYCALL} или * ваш позывной, {CALL} или ! позывной корреспондента, {SENTRST} переданный рапорт, {SENTRSTCUT} переданный рапорт с сокращёнными цифрами (599 как 5NN), {RCVDRST} принятый рапорт, {GRID} локатор корреспондента, {MYGRID} ваш локатор, {NAME} имя корреспондента, {SAT} спутник. Служебные знаки: {AR} {SK} {BT} {KN}.</value>
+    <value>{MYCALL} или * ваш позывной, {CALL} или ! позывной корреспондента, {SENTRST} переданный рапорт, {SENTRSTCUT} переданный рапорт с сокращёнными цифрами (599 как 5NN), {RCVDRST} принятый рапорт, {GRID} локатор корреспондента, {MYGRID} ваш локатор, {NAME} имя корреспондента, {SAT} спутник. Служебные знаки: {AR} {SK} {BT} {KN}. {SAVEQSO} записывает QSO, когда передача заканчивается.</value>
   </data>
   <data name="Logbook.Settings.Cw.Help">
     <value>Справка по CW-манипулятору</value>
@@ -6892,5 +7207,32 @@ LOS: {2}
   </data>
   <data name="Cw.Worked.Grid">
     <value>Уже проведена связь: в этом квадрате у вас есть связь.</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Tab">
+    <value>WSJT-X</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Section">
+    <value>UDP WSJT-X</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Intro">
+    <value>Отправлять каждый новый контакт журнала датаграммой UDP в формате WSJT-X, чтобы другие программы журнала могли его принять. Это отдельно от Satellite Link. Оставьте выключенным, если никто не слушает.</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Enable">
+    <value>Отправлять новые QSO по UDP</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Host">
+    <value>Сервер</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Port">
+    <value>Порт</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.Note">
+    <value>Обычный адрес: 127.0.0.1, порт 2237. Туда же WSJT-X шлёт пакеты журнала. Отправляются только новые связи. Если никто не слушает, связь всё равно сохраняется.</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.HostRequired">
+    <value>Введите адрес сервера.</value>
+  </data>
+  <data name="Logbook.Settings.Wsjtx.PortInvalid">
+    <value>Введите порт от 1 до 65535.</value>
   </data>
 </root>
